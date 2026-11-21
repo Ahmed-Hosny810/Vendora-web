@@ -1,0 +1,23 @@
+// ============================================================
+// Self-hosted fonts (Fontsource). Each import adds @font-face
+// rules; the build copies the .woff2 files into the output.
+//
+// Every @font-face carries a unicode-range, so the browser only
+// downloads a file when the page actually shows those letters:
+// an English page never downloads the Arabic font files.
+// ============================================================
+
+// Variable fonts: one file covers every weight.
+@use '@fontsource-variable/bricolage-grotesque'; // headings (EN)
+@use '@fontsource-variable/instrument-sans'; // body (EN)
+@use '@fontsource-variable/alexandria'; // headings (AR)
+
+// Static fonts: one file per weight, so import only the weights we use.
+// `as *`: Sass needs a namespace name, and "400" isn't a valid one.
+@use '@fontsource/ibm-plex-sans-arabic/400.css' as *; // body (AR)
+@use '@fontsource/ibm-plex-sans-arabic/500.css' as *;
+@use '@fontsource/ibm-plex-sans-arabic/600.css' as *;
+@use '@fontsource/ibm-plex-sans-arabic/700.css' as *;
+@use '@fontsource/ibm-plex-mono/400.css' as *; // money, receipts
+@use '@fontsource/ibm-plex-mono/500.css' as *;
+@use '@fontsource/ibm-plex-mono/600.css' as *;

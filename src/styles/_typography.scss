@@ -1,0 +1,13 @@
+@use 'abstracts' as *;
+
+// ============================================================
+// Type classes: <h2 class="heading-md">, <span class="figure">…
+// Generated from the $type-scale map in abstracts/_type.scss.
+// Inside a component, prefer the mixin: @include type(heading-md);
+// ============================================================
+
+@each $name, $style in $type-scale {
+  .#{$name} {
+    @include type($name);
+  }
+}

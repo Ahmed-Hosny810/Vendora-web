@@ -1,0 +1,8 @@
+// ============================================================
+// Abstracts: Sass tools only. Nothing here outputs CSS, so any
+// component can `@use 'abstracts' as *;` without duplicating styles.
+// ============================================================
+
+@forward 'breakpoints';
+@forward 'type';
+@forward 'mixins';

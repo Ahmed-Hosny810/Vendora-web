@@ -1,0 +1,121 @@
+// ============================================================
+// Design tokens: the single source of every colour, size and
+// speed in the app. Emitted once as CSS custom properties on
+// :root so any component can use `var(--name)`.
+//
+// Rule: component styles never contain hex values or raw px for
+// spacing/radius. They use these variables.
+// ============================================================
+
+:root {
+  // ---------- Colour: surfaces (warm paper) ----------
+  --paper-0: #fffef7;
+  --paper-50: #fffbea;
+  --paper-100: #fbf1cf;
+  --paper-200: #f1e4b6;
+  --line: #eadcae;
+  --line-strong: #7d7558;
+
+  // ---------- Colour: text (ink) ----------
+  --ink-900: #013e37;
+  --ink-700: #23504a;
+  --ink-500: #4f6762;
+  --ink-on-dark: #fffbea;
+  --ink-on-dark-muted: #c4d8cf;
+
+  // ---------- Colour: brand ----------
+  --pine-50: #eaf4ef;
+  --pine-100: #d5e9e0;
+  --pine-300: #8cc3b2;
+  --pine-600: #013e37;
+  --pine-700: #0b5b50;
+  --pine-800: #012a25; // pressed state of primary buttons
+  --pine-900: #013e37;
+  --butter-100: #fff8dc;
+  --butter-300: #ffefb3;
+  --butter-500: #ffd75e;
+
+  // ---------- Colour: status ----------
+  --success-fg: #2a6a1f;
+  --success-bg: #e3f1da;
+  --warning-fg: #8a5300;
+  --warning-bg: #fff0cc;
+  --danger-fg: #b3261e;
+  --danger-bg: #fde4e1;
+  --info-fg: #1d5a85;
+  --info-bg: #e1edf6;
+
+  // ---------- Focus, overlay, shadows ----------
+  --focus-ring: var(--pine-600);
+  --focus-ring-inverse: var(--butter-300);
+  --overlay: rgb(1 62 55 / 0.5);
+  --shadow-1: 0 1px 2px rgb(1 62 55 / 0.08), 0 1px 1px rgb(1 62 55 / 0.04);
+  --shadow-2: 0 8px 20px -6px rgb(1 62 55 / 0.16), 0 2px 4px rgb(1 62 55 / 0.06);
+  --shadow-3: 0 28px 56px -16px rgb(1 62 55 / 0.3), 0 4px 10px rgb(1 62 55 / 0.08);
+  --shadow-stamp: 4px 4px 0 0 var(--ink-900);
+
+  // ---------- Spacing (4px grid) ----------
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+  --space-32: 128px;
+
+  // ---------- Radius ----------
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 32px;
+  --radius-pill: 999px;
+
+  // ---------- Motion ----------
+  --duration-instant: 90ms;
+  --duration-fast: 160ms;
+  --duration-base: 240ms;
+  --duration-slow: 400ms;
+  --duration-reveal: 640ms;
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  // ---------- Layout ----------
+  // Breakpoints live in abstracts/_breakpoints.scss: CSS variables
+  // cannot be used inside @media queries.
+  --container-max: 1240px;
+
+  // ---------- Layering ----------
+  --z-sticky: 20;
+  --z-drawer: 40;
+  --z-dialog: 50;
+  --z-toast: 60;
+
+  // ---------- Font stacks ----------
+  // Each stack lists the brand font first, then our self-hosted
+  // stand-ins (Fontsource names end in "Variable"), then system fonts.
+  // Latin fonts have no Arabic letters, so in English an Arabic word
+  // falls through to IBM Plex Sans Arabic automatically.
+  --font-display:
+    'Clash Display', 'Bricolage Grotesque Variable', 'Alexandria Variable', ui-sans-serif,
+    system-ui, sans-serif;
+  --font-sans:
+    'Satoshi', 'Instrument Sans Variable', 'IBM Plex Sans Arabic', ui-sans-serif, system-ui,
+    sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+}
+
+// Arabic: put the Arabic fonts first so Arabic text, and the Latin
+// letters mixed into it, share one consistent look.
+:root:lang(ar) {
+  --font-display:
+    'Alexandria Variable', 'Bricolage Grotesque Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-sans:
+    'IBM Plex Sans Arabic', 'Instrument Sans Variable', ui-sans-serif, system-ui, sans-serif;
+}

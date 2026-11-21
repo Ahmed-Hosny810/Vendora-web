@@ -1,0 +1,54 @@
+@use 'abstracts' as *;
+
+// ============================================================
+// Base: app-wide defaults for the page and for focus.
+// ============================================================
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100dvh;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink-900);
+  background: var(--paper-50);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+// Arabic letters are taller and need more room between lines.
+:root:lang(ar) body {
+  line-height: 1.75;
+}
+
+::selection {
+  background: var(--butter-300);
+  color: var(--ink-900);
+}
+
+// One focus ring everywhere. :focus-visible shows it for keyboard
+// users only, not on mouse click.
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  @include focus-ring;
+}
+
+// On dark surfaces (add class .vd-inverse) the ring turns butter.
+.vd-inverse :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline-color: var(--focus-ring-inverse);
+}
+
+// Respect the "reduce motion" setting in the operating system.
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

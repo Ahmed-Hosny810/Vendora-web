@@ -1,0 +1,38 @@
+// Small reusable patterns.
+
+// The one focus ring: 2px pine, 2px gap from the element.
+@mixin focus-ring($offset: 2px) {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: $offset;
+}
+
+// Hidden on screen, still read by screen readers.
+@mixin visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// One line with "…" at the end (works in RTL too).
+@mixin truncate {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+// Hover styles only on devices that can really hover (not touch),
+// so buttons don't stay "hovered" after a tap on the POS tablet.
+@mixin hover {
+  @media (hover: hover) {
+    &:hover {
+      @content;
+    }
+  }
+}

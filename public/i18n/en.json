@@ -1,0 +1,42 @@
+{
+  "app": {
+    "name": "Vendora"
+  },
+  "language": {
+    "label": "Language",
+    "en": "English",
+    "ar": "العربية",
+    "switchTo": "عربي"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "continue": "Continue",
+    "back": "Back",
+    "close": "Close",
+    "edit": "Edit",
+    "delete": "Delete",
+    "add": "Add",
+    "search": "Search",
+    "retry": "Try again",
+    "loading": "Loading…",
+    "optional": "Optional"
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Enter a valid email address",
+    "minLength": "Use at least {{ min }} characters",
+    "maxLength": "Use at most {{ max }} characters",
+    "min": "Must be {{ min }} or more",
+    "max": "Must be {{ max }} or less",
+    "phone": "Enter a valid phone number"
+  },
+  "preview": {
+    "title": "Foundation check",
+    "intro": "Tokens, fonts and translations. This temporary page is replaced by the router in the next step.",
+    "colors": "Colours",
+    "type": "Type scale",
+    "sample": "Fresh bread, every morning",
+    "total": "Total"
+  }
+}

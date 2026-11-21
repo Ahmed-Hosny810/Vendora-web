@@ -1,1 +1,12 @@
-/* You can add global styles to this file, and also import other style files */
+// ============================================================
+// Global stylesheet: loaded once for the whole app (angular.json
+// → "styles"). Only layers here; the rules live in src/styles/.
+// Order matters: later files can override earlier ones.
+// ============================================================
+
+@use 'styles/fonts';
+@use 'styles/tokens';
+@use 'styles/reset';
+@use 'styles/base';
+@use 'styles/typography';
+@use 'styles/utilities';

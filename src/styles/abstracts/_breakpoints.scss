@@ -1,0 +1,26 @@
+@use 'sass:map';
+
+// Breakpoints match the design system: phone < 768 ≤ tablet < 1024 ≤ desktop.
+// These must be Sass values: @media cannot read CSS variables.
+$breakpoints: (
+  sm: 480px,
+  md: 768px,
+  lg: 1024px,
+  xl: 1280px,
+);
+
+// Mobile-first: styles inside apply from this width UP.
+//   @include up(md) { … }   →  @media (min-width: 768px) { … }
+@mixin up($name) {
+  @media (min-width: map.get($breakpoints, $name)) {
+    @content;
+  }
+}
+
+// Styles inside apply BELOW this width.
+//   @include down(md) { … } →  @media (max-width: 767.98px) { … }
+@mixin down($name) {
+  @media (max-width: (map.get($breakpoints, $name) - 0.02px)) {
+    @content;
+  }
+}
