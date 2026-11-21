@@ -35,3 +35,9 @@
     padding-inline: var(--space-6);
   }
 }
+
+// Icons that point in the reading direction (arrows, chevrons): mirror them
+// in Arabic. Don't use on icons that mean the same both ways (bell, trash).
+:root[dir='rtl'] .vd-flip-rtl {
+  transform: scaleX(-1);
+}

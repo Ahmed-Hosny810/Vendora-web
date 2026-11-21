@@ -1,22 +1,13 @@
 import { TestBed } from '@angular/core/testing';
-import { TranslocoTestingModule } from '@jsverse/transloco';
+import { provideRouter } from '@angular/router';
 
 import { App } from './app';
-import { translocoConfig } from './core/i18n';
-import en from '../../public/i18n/en.json';
 
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        App,
-        // Real English file, loaded synchronously: no HTTP in unit tests.
-        TranslocoTestingModule.forRoot({
-          langs: { en },
-          translocoConfig: { ...translocoConfig, defaultLang: 'en' },
-          preloadLangs: true,
-        }),
-      ],
+      imports: [App],
+      providers: [provideRouter([])],
     }).compileComponents();
   });
 
@@ -25,10 +16,10 @@ describe('App', () => {
     expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it('should render the translated title', async () => {
+  it('should render the router outlet', () => {
     const fixture = TestBed.createComponent(App);
-    await fixture.whenStable();
+    fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Foundation check');
+    expect(compiled.querySelector('router-outlet')).not.toBeNull();
   });
 });

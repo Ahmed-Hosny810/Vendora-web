@@ -1,0 +1,91 @@
+@use '../abstracts' as *;
+
+// ---------- Card: a bordered surface ----------
+// <article class="vd-card">
+//   <h3 class="vd-card__title">Main branch</h3>
+//   <p class="vd-card__meta">2 terminals</p>
+// </article>
+// Make the whole card clickable: put .vd-card--interactive on an <a> or <button>.
+
+.vd-card {
+  display: block;
+  padding: var(--space-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--paper-0);
+  color: inherit;
+  text-align: start;
+  text-decoration: none;
+
+  &--flush {
+    padding: 0;
+    overflow: hidden;
+  }
+
+  &--interactive {
+    width: 100%;
+    cursor: pointer;
+    font: inherit;
+    transition:
+      border-color var(--duration-fast) var(--ease-out),
+      box-shadow var(--duration-fast) var(--ease-out);
+
+    @include hover {
+      border-color: var(--ink-900);
+      box-shadow: var(--shadow-2);
+    }
+  }
+
+  &__title {
+    @include type(heading-sm);
+  }
+
+  &__meta {
+    color: var(--ink-500);
+    font-size: 12px;
+    line-height: 16px;
+  }
+}
+
+// ---------- Stat: number with a label (dashboard) ----------
+// <div class="vd-card vd-stat">
+//   <span class="vd-stat__label">Sales today</span>
+//   <vd-money class="vd-stat__value" [amount]="12480" />
+//   <span class="vd-stat__delta vd-stat__delta--up">+12%</span>
+// </div>
+.vd-stat {
+  display: grid;
+  gap: var(--space-1);
+
+  &__label {
+    color: var(--ink-500);
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  &__value {
+    font-family: var(--font-mono);
+    font-size: 28px;
+    line-height: 32px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__delta {
+    font-size: 12px;
+    font-weight: 600;
+    // "+12%" must not become "12%+" in Arabic.
+    direction: ltr;
+    unicode-bidi: isolate;
+    justify-self: start;
+
+    &--up {
+      color: var(--success-fg);
+    }
+
+    &--down {
+      color: var(--danger-fg);
+    }
+  }
+}

@@ -1,0 +1,64 @@
+// ---------- Banner: a message inside the page ----------
+// <div class="vd-banner vd-banner--warning" role="status">
+//   <svg lucideTriangleExclamationPoint></svg>
+//   <div class="vd-banner__body">
+//     <strong>Payment failed.</strong> Your card was declined.
+//   </div>
+//   <div class="vd-banner__actions"><button vdButton size="sm">Retry</button></div>
+// </div>
+// Use role="alert" only for errors that need attention right away.
+// Tones: --info · --success · --warning · --danger
+
+.vd-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) 14px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  line-height: 20px;
+
+  > svg {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+  }
+
+  &__body {
+    flex: 1 1 200px;
+    min-width: 0;
+  }
+
+  &__actions {
+    display: flex;
+    gap: var(--space-2);
+    margin-inline-start: auto;
+  }
+
+  strong {
+    color: inherit;
+  }
+
+  &--info {
+    background: var(--info-bg);
+    color: var(--info-fg);
+  }
+
+  &--success {
+    background: var(--success-bg);
+    color: var(--success-fg);
+  }
+
+  &--warning {
+    background: var(--warning-bg);
+    color: var(--warning-fg);
+  }
+
+  &--danger {
+    background: var(--danger-bg);
+    color: var(--danger-fg);
+  }
+}

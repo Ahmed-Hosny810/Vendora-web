@@ -1,0 +1,198 @@
+<main class="vd-container kit" *transloco="let t">
+  <header class="kit__head">
+    <div>
+      <p class="overline vd-ltr">/dev/ui</p>
+      <h1 class="heading-lg">{{ t('devUi.title') }}</h1>
+      <p class="body-ui kit__muted">{{ t('devUi.intro') }}</p>
+    </div>
+    <button vdButton="accent" type="button" (click)="language.toggle()">
+      {{ t('language.switchTo') }}
+    </button>
+  </header>
+
+  <!-- ============ Buttons ============ -->
+  <section class="kit__section">
+    <h2 class="heading-md">
+      Button <code class="caption kit__muted vd-ltr">button[vdButton]</code>
+    </h2>
+
+    <h3 class="label">Variants</h3>
+    <div class="kit__row">
+      @for (v of variants; track v) {
+        <button [vdButton]="v" type="button">{{ v }}</button>
+      }
+    </div>
+
+    <h3 class="label">Sizes</h3>
+    <div class="kit__row">
+      <button vdButton="primary" size="sm" type="button">{{ t('common.save') }}</button>
+      <button vdButton="primary" type="button">{{ t('common.save') }}</button>
+      <button vdButton="primary" size="lg" type="button">{{ t('common.save') }}</button>
+    </div>
+
+    <h3 class="label">With icons</h3>
+    <div class="kit__row">
+      <button vdButton="primary" type="button">
+        <svg lucidePlus></svg>
+        {{ t('devUi.addProduct') }}
+      </button>
+      <button vdButton type="button">
+        <svg lucidePencil></svg>
+        {{ t('common.edit') }}
+      </button>
+      <button vdButton="danger" type="button">
+        <svg lucideTrash></svg>
+        {{ t('common.delete') }}
+      </button>
+      <a vdButton="ghost" href="#">
+        {{ t('common.continue') }}
+        <!-- Arrows point the reading direction: flip in Arabic -->
+        <svg lucideArrowRight class="vd-flip-rtl"></svg>
+      </a>
+    </div>
+
+    <h3 class="label">States</h3>
+    <div class="kit__row">
+      <button vdButton="primary" type="button" [loading]="saving()" (click)="save()">
+        {{ t('common.save') }}
+      </button>
+      <button vdButton type="button" [loading]="saving()">{{ t('common.cancel') }}</button>
+      <button vdButton="primary" type="button" disabled>{{ t('common.save') }}</button>
+      <span class="caption kit__muted vd-ltr">clicks: {{ clicks() }}</span>
+    </div>
+
+    <h3 class="label">Stamp (marketing) and block</h3>
+    <div class="kit__row">
+      <button vdButton="accent" stamp size="lg" type="button">{{ t('devUi.startTrial') }}</button>
+    </div>
+    <div class="kit__narrow">
+      <button vdButton="primary" block size="lg" type="button">{{ t('common.continue') }}</button>
+    </div>
+
+    <div class="kit__dark vd-inverse">
+      <button vdButton="accent" type="button">{{ t('devUi.startTrial') }}</button>
+      <button vdButton type="button">{{ t('common.cancel') }}</button>
+      <button vdIconButton type="button" [label]="t('common.notifications')">
+        <svg lucideBell></svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ Icon buttons ============ -->
+  <section class="kit__section">
+    <h2 class="heading-md">
+      Icon button <code class="caption kit__muted vd-ltr">button[vdIconButton]</code>
+    </h2>
+    <div class="kit__row">
+      <button vdIconButton type="button" [label]="t('common.search')">
+        <svg lucideSearch></svg>
+      </button>
+      <button vdIconButton type="button" [label]="t('common.notifications')">
+        <svg lucideBell></svg>
+        <span class="vd-count">3</span>
+      </button>
+      <button vdIconButton outline type="button" [label]="t('common.more')">
+        <svg lucideEllipsisVertical></svg>
+      </button>
+      <button vdIconButton size="sm" type="button" [label]="t('common.close')">
+        <svg lucideX></svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ Badges ============ -->
+  <section class="kit__section">
+    <h2 class="heading-md">
+      Badge & count <code class="caption kit__muted vd-ltr">.vd-badge · .vd-count</code>
+    </h2>
+    <div class="kit__row">
+      <span class="vd-badge">{{ t('status.draft') }}</span>
+      <span class="vd-badge vd-badge--success vd-badge--dot">{{ t('status.active') }}</span>
+      <span class="vd-badge vd-badge--warning">{{ t('status.lowStock') }}</span>
+      <span class="vd-badge vd-badge--danger">{{ t('status.failed') }}</span>
+      <span class="vd-badge vd-badge--info">{{ t('status.pending') }}</span>
+      <span class="vd-badge vd-badge--brand">Pro</span>
+      <span class="vd-badge vd-badge--outline">SKU-1042</span>
+      <span class="vd-count">3</span>
+      <span class="vd-count">99+</span>
+    </div>
+  </section>
+
+  <!-- ============ Cards ============ -->
+  <section class="kit__section">
+    <h2 class="heading-md">
+      Card & stat <code class="caption kit__muted vd-ltr">.vd-card · .vd-stat</code>
+    </h2>
+    <div class="kit__grid">
+      <article class="vd-card">
+        <h3 class="vd-card__title">{{ t('devUi.branch') }}</h3>
+        <p class="vd-card__meta">{{ t('devUi.branchMeta') }}</p>
+      </article>
+      <button type="button" class="vd-card vd-card--interactive">
+        <h3 class="vd-card__title">{{ t('devUi.branch') }}</h3>
+        <p class="vd-card__meta">{{ t('devUi.clickable') }}</p>
+      </button>
+      <div class="vd-card vd-stat">
+        <span class="vd-stat__label">{{ t('devUi.salesToday') }}</span>
+        <vd-money class="vd-stat__value" [amount]="12480" />
+        <span class="vd-stat__delta vd-stat__delta--up">+12%</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Banners ============ -->
+  <section class="kit__section">
+    <h2 class="heading-md">Banner <code class="caption kit__muted vd-ltr">.vd-banner</code></h2>
+    <div class="kit__stack">
+      <div class="vd-banner vd-banner--info" role="status">
+        <svg lucideInfo></svg>
+        <div class="vd-banner__body">{{ t('devUi.bannerInfo') }}</div>
+      </div>
+      <div class="vd-banner vd-banner--success" role="status">
+        <svg lucideCircleCheck></svg>
+        <div class="vd-banner__body">{{ t('devUi.bannerSuccess') }}</div>
+      </div>
+      <div class="vd-banner vd-banner--warning" role="status">
+        <svg lucideTriangleExclamationPoint></svg>
+        <div class="vd-banner__body">
+          <strong>{{ t('devUi.bannerWarningTitle') }}</strong> {{ t('devUi.bannerWarning') }}
+        </div>
+      </div>
+      <div class="vd-banner vd-banner--danger" role="alert">
+        <svg lucideCircleExclamationPoint></svg>
+        <div class="vd-banner__body">
+          <strong>{{ t('devUi.bannerDangerTitle') }}</strong> {{ t('devUi.bannerDanger') }}
+        </div>
+        <div class="vd-banner__actions">
+          <button vdButton size="sm" type="button">{{ t('common.retry') }}</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Money ============ -->
+  <section class="kit__section">
+    <h2 class="heading-md">Money <code class="caption kit__muted vd-ltr">vd-money</code></h2>
+    <div class="kit__row kit__row--baseline">
+      <vd-money [amount]="245" />
+      <vd-money class="figure" [amount]="1284.5" />
+      <vd-money class="figure-lg" [amount]="12480" />
+      <vd-money [amount]="-50" />
+      <vd-money [amount]="3" [fractionDigits]="0" />
+    </div>
+    <p class="body-ui">{{ t('devUi.moneyInText') }} <vd-money [amount]="650" />.</p>
+  </section>
+
+  <!-- ============ Wordmark ============ -->
+  <section class="kit__section">
+    <h2 class="heading-md">Wordmark <code class="caption kit__muted vd-ltr">vd-wordmark</code></h2>
+    <div class="kit__row kit__row--baseline">
+      <a href="#" aria-label="Vendora home"><vd-wordmark intro size="lg" /></a>
+      <vd-wordmark />
+      <vd-wordmark size="sm" />
+    </div>
+    <div class="kit__dark vd-inverse">
+      <vd-wordmark />
+    </div>
+  </section>
+</main>
