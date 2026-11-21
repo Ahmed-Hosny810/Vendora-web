@@ -70,3 +70,22 @@
   border-radius: var(--radius-md);
   background: var(--ink-900);
 }
+
+.kit__form {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--space-5);
+  align-items: start;
+}
+
+.kit__wide {
+  grid-column: 1 / -1;
+}
+
+.kit__model {
+  margin: 0;
+  padding: var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--paper-100);
+  white-space: pre-wrap;
+}

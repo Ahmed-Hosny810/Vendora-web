@@ -1,0 +1,391 @@
+@use '../abstracts' as *;
+
+// ============================================================
+// Form styles: CSS classes only. Each page wires its own labels,
+// errors and ids (see the forms section of /dev/ui for the pattern).
+//   Field layout:   .vd-field (+ __top, __label, __optional, __counter, __hint, __error)
+//   Text controls:  .vd-input on <input>, <textarea>, <select>
+//   Choices:        .vd-choice around a native checkbox/radio
+//   Groups:         .vd-inputgroup, .vd-fieldset
+// ============================================================
+
+// ---------- Field: label + control + hint/error ----------
+// <div class="vd-field">
+//   <div class="vd-field__top">
+//     <label class="vd-field__label" for="product-name">Name</label>
+//     <span class="vd-field__counter">12 / 40</span>
+//   </div>
+//   <input id="product-name" class="vd-input" … />
+//   <p class="vd-field__hint" id="product-name-hint">Shown on receipts</p>
+// </div>
+.vd-field {
+  display: grid;
+  gap: 6px;
+  min-width: 0; // lets it shrink inside grids and flex rows
+
+  &__top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+
+  &__label {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    color: var(--ink-900);
+  }
+
+  // <span class="vd-field__optional">(Optional)</span> inside the label
+  &__optional {
+    font-weight: 400;
+    color: var(--ink-500);
+  }
+
+  &__counter {
+    font-size: 12px;
+    color: var(--ink-500);
+    font-variant-numeric: tabular-nums;
+    direction: ltr; // "12 / 40" must not flip in Arabic
+    unicode-bidi: isolate;
+  }
+
+  &__hint,
+  &__error {
+    margin: 0;
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  &__hint {
+    color: var(--ink-500);
+  }
+
+  &__error {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    color: var(--danger-fg);
+    font-weight: 500;
+
+    svg {
+      flex: none;
+      width: 14px;
+      height: 14px;
+      margin-top: 1px;
+    }
+  }
+}
+
+// ---------- Text input, textarea, select ----------
+.vd-input {
+  width: 100%;
+  min-height: 40px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--paper-0);
+  color: var(--ink-900);
+  font-size: 14px;
+  line-height: 20px;
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+
+  &::placeholder {
+    color: var(--ink-500);
+    opacity: 1; // Firefox fades placeholders by default
+  }
+
+  @include hover {
+    border-color: var(--ink-700);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 0;
+    border-color: var(--pine-600);
+  }
+
+  &[aria-invalid='true'] {
+    border-color: var(--danger-fg);
+    box-shadow: inset 0 0 0 1px var(--danger-fg); // looks like a 2px border without changing size
+  }
+
+  &:disabled,
+  &[readonly] {
+    background: var(--paper-100);
+    color: var(--ink-500);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  &--lg {
+    min-height: 52px;
+    padding-inline: var(--space-4);
+    border-radius: var(--radius-md);
+    font-size: 16px;
+  }
+}
+
+textarea.vd-input {
+  min-height: 88px;
+  resize: vertical;
+  field-sizing: content; // grows with the text (where supported)
+}
+
+// Native select with our own arrow.
+select.vd-input {
+  appearance: none;
+  padding-inline-end: 36px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23013e37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center; // background-position has no "logical" version…
+  cursor: pointer;
+}
+
+:root[dir='rtl'] select.vd-input {
+  background-position: left 12px center; // …so Arabic moves the arrow by hand.
+}
+
+// Phone, email, numbers and links are always typed left-to-right,
+// even on Arabic pages; keep them on the reading side.
+:root[dir='rtl'] .vd-input:is([type='tel'], [type='email'], [type='number'], [type='url']) {
+  direction: ltr;
+  text-align: right;
+}
+
+// Hide the number spinner arrows: they're tiny and useless on a tablet.
+.vd-input[type='number'] {
+  appearance: textfield;
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    appearance: none;
+    margin: 0;
+  }
+}
+
+// ---------- Input group: prefix / suffix ----------
+// <div class="vd-inputgroup">
+//   <span class="vd-inputgroup__affix">+20</span>
+//   <input vdInput type="tel" … />
+// </div>
+.vd-inputgroup {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--paper-0);
+  overflow: hidden;
+
+  // The group draws the border and focus ring, not the input inside it.
+  &:focus-within {
+    outline: 2px solid var(--focus-ring);
+    border-color: var(--pine-600);
+  }
+
+  &:has(.vd-input[aria-invalid='true']) {
+    border-color: var(--danger-fg);
+    box-shadow: inset 0 0 0 1px var(--danger-fg);
+  }
+
+  .vd-input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    border-radius: 0;
+    outline: none;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  &__affix {
+    display: grid;
+    place-items: center;
+    flex: none;
+    padding-inline: var(--space-3);
+    background: var(--paper-100);
+    color: var(--ink-700);
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+
+    &:first-child {
+      border-inline-end: 1px solid var(--line);
+    }
+
+    &:last-child {
+      border-inline-start: 1px solid var(--line);
+    }
+  }
+}
+
+// ---------- Checkbox, radio, switch ----------
+// <label class="vd-choice">
+//   <input type="checkbox" [formField]="form.agree" />
+//   <span>I agree</span>
+// </label>
+// Switch: same, with role="switch" on the input.
+.vd-choice {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-height: 32px;
+  padding-block: 6px;
+  font-size: 14px;
+  line-height: 20px;
+  cursor: pointer;
+
+  input {
+    appearance: none; // remove the browser's own checkbox, draw ours
+    position: relative;
+    flex: none;
+    display: inline-grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    border: 1.5px solid var(--line-strong);
+    background: var(--paper-0);
+    cursor: pointer;
+    transition:
+      background-color var(--duration-instant),
+      border-color var(--duration-instant);
+
+    &:checked,
+    &:indeterminate {
+      background: var(--pine-600);
+      border-color: var(--pine-600);
+    }
+
+    &:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    &[aria-invalid='true'] {
+      border-color: var(--danger-fg);
+    }
+  }
+
+  // Checkbox: a tick made from two borders of a rotated box.
+  // :not([role='switch']) because a switch is also a checkbox and must not get a tick.
+  input[type='checkbox']:not([role='switch']) {
+    border-radius: var(--radius-xs);
+
+    &:checked::after {
+      content: '';
+      width: 10px;
+      height: 6px;
+      border: 2px solid var(--ink-on-dark);
+      border-top: 0;
+      border-right: 0;
+      transform: translateY(-1px) rotate(-45deg);
+    }
+
+    // "Some selected": a short dash.
+    &:indeterminate::after {
+      content: '';
+      width: 10px;
+      height: 2px;
+      background: var(--ink-on-dark);
+    }
+  }
+
+  // Radio: a dot in the middle.
+  input[type='radio'] {
+    border-radius: 50%;
+
+    &:checked::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--ink-on-dark);
+    }
+  }
+
+  // Switch: a pill track with a sliding thumb.
+  input[role='switch'] {
+    width: 40px;
+    height: 24px;
+    border-radius: var(--radius-pill);
+    background: var(--paper-200);
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      inset-inline-start: 2px;
+      width: 17px;
+      height: 17px;
+      border: 0;
+      border-radius: 50%;
+      background: var(--paper-0);
+      box-shadow: var(--shadow-1);
+      transform: none;
+      transition: inset-inline-start var(--duration-base) var(--ease-out);
+    }
+
+    &:checked {
+      background: var(--pine-600);
+
+      &::after {
+        inset-inline-start: 18px; // slides to the end (left in Arabic)
+      }
+    }
+  }
+
+  // The switch is 24px tall; nudge the text to line up with it.
+  &:has(input[role='switch']) {
+    align-items: center;
+  }
+
+  &:has(input:disabled) {
+    color: var(--ink-500);
+    cursor: not-allowed;
+  }
+
+  // Optional second line under the label.
+  &__text {
+    display: grid;
+  }
+
+  &__hint {
+    color: var(--ink-500);
+    font-size: 12px;
+    line-height: 16px;
+  }
+}
+
+// ---------- Fieldset: a labelled group of choices ----------
+// <fieldset class="vd-fieldset">
+//   <legend>Payment methods</legend>
+//   <label class="vd-choice">…</label>
+// </fieldset>
+.vd-fieldset {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+
+  legend {
+    margin-block-end: var(--space-1);
+    padding: 0;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+  }
+
+  &--row {
+    grid-auto-flow: column;
+    justify-content: start;
+    gap: var(--space-5);
+  }
+}

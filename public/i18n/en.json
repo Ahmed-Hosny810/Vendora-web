@@ -31,7 +31,9 @@
     "maxLength": "Use at most {{ max }} characters",
     "min": "Must be {{ min }} or more",
     "max": "Must be {{ max }} or less",
-    "phone": "Enter a valid phone number"
+    "phone": "Enter a valid phone number",
+    "pattern": "Check the format",
+    "parse": "Enter a valid value"
   },
   "currency": {
     "EGP": "EGP"
@@ -58,6 +60,32 @@
     "bannerWarning": "Choose a plan to keep selling.",
     "bannerDangerTitle": "Payment failed.",
     "bannerDanger": "Your card was declined.",
-    "moneyInText": "A latte costs"
+    "moneyInText": "A latte costs",
+    "formsIntro": "A real Signal Form. Each field wires its own label, error and ids: copy this pattern into your pages. Errors appear after you leave a field, or for every field when you press Save.",
+    "businessName": "Business name",
+    "businessNameHint": "Shown on receipts.",
+    "email": "Email",
+    "phone": "Phone",
+    "price": "Price",
+    "category": "Category",
+    "choose": "Choose…",
+    "drinks": "Drinks",
+    "bakery": "Bakery",
+    "sku": "SKU",
+    "skuTaken": "This SKU is already used by another product.",
+    "description": "Description",
+    "branchCode": "Branch code",
+    "branchCodeHint": "Set by the system.",
+    "search": "Search",
+    "searchPlaceholder": "Search products or scan a barcode",
+    "paymentMethod": "Payment method",
+    "cash": "Cash",
+    "card": "Card",
+    "wallet": "Mobile wallet (coming soon)",
+    "trackStock": "Track stock",
+    "trackStockHint": "Warn me when it runs low.",
+    "agree": "I agree to the terms",
+    "disabledChoice": "Always on",
+    "saved": "Saved"
   }
 }

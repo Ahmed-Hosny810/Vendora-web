@@ -23,6 +23,10 @@
   }
 
   &--interactive {
+    // When the card is a <button>, browsers centre its content vertically.
+    // Grid + align-content: start puts it back at the top, like a normal card.
+    display: grid;
+    align-content: start;
     width: 100%;
     cursor: pointer;
     font: inherit;

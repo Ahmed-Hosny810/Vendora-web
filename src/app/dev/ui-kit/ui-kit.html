@@ -100,6 +100,234 @@
     </div>
   </section>
 
+  <!-- ============ Forms ============ -->
+  <section class="kit__section">
+    <h2 class="heading-md">
+      Forms <code class="caption kit__muted vd-ltr">.vd-field · .vd-input · .vd-choice</code>
+    </h2>
+    <p class="body-ui kit__muted">{{ t('devUi.formsIntro') }}</p>
+
+    <!--
+      The pattern for every field:
+      1. label [for] = input [id]
+      2. input [aria-describedby] = id of the error (if any) or the hint
+      3. input [aria-invalid] = true while there is an error
+      4. error replaces the hint
+    -->
+    <form class="kit__form" novalidate (submit)="submitDemo($event)">
+      <!-- Text, with hint and counter -->
+      <div class="vd-field">
+        <div class="vd-field__top">
+          <label class="vd-field__label" for="kit-name">{{ t('devUi.businessName') }}</label>
+          <span class="vd-field__counter">{{ model().name.length }} / 40</span>
+        </div>
+        <input
+          id="kit-name"
+          class="vd-input"
+          autocomplete="organization"
+          [formField]="demoForm.name"
+          [attr.aria-invalid]="nameError() ? true : null"
+          [attr.aria-describedby]="nameError() ? 'kit-name-error' : 'kit-name-hint'"
+        />
+        @if (nameError(); as error) {
+          <p id="kit-name-error" class="vd-field__error" role="alert">
+            <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ error }}
+          </p>
+        } @else {
+          <p id="kit-name-hint" class="vd-field__hint">{{ t('devUi.businessNameHint') }}</p>
+        }
+      </div>
+
+      <!-- Email, no hint -->
+      <div class="vd-field">
+        <label class="vd-field__label" for="kit-email">{{ t('devUi.email') }}</label>
+        <input
+          id="kit-email"
+          type="email"
+          class="vd-input"
+          autocomplete="email"
+          [formField]="demoForm.email"
+          [attr.aria-invalid]="emailError() ? true : null"
+          [attr.aria-describedby]="emailError() ? 'kit-email-error' : null"
+        />
+        @if (emailError(); as error) {
+          <p id="kit-email-error" class="vd-field__error" role="alert">
+            <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ error }}
+          </p>
+        }
+      </div>
+
+      <!-- Optional, with a prefix -->
+      <div class="vd-field">
+        <label class="vd-field__label" for="kit-phone">
+          {{ t('devUi.phone') }}
+          <span class="vd-field__optional">({{ t('common.optional') }})</span>
+        </label>
+        <div class="vd-inputgroup">
+          <span class="vd-inputgroup__affix vd-ltr">+20</span>
+          <input
+            id="kit-phone"
+            type="tel"
+            class="vd-input"
+            placeholder="10 1234 5678"
+            [formField]="demoForm.phone"
+          />
+        </div>
+      </div>
+
+      <!-- Number with a suffix -->
+      <div class="vd-field">
+        <label class="vd-field__label" for="kit-price">{{ t('devUi.price') }}</label>
+        <div class="vd-inputgroup">
+          <input
+            id="kit-price"
+            type="number"
+            inputmode="decimal"
+            class="vd-input"
+            [formField]="demoForm.price"
+            [attr.aria-invalid]="priceError() ? true : null"
+            [attr.aria-describedby]="priceError() ? 'kit-price-error' : null"
+          />
+          <span class="vd-inputgroup__affix">{{ t('currency.EGP') }}</span>
+        </div>
+        @if (priceError(); as error) {
+          <p id="kit-price-error" class="vd-field__error" role="alert">
+            <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ error }}
+          </p>
+        }
+      </div>
+
+      <!-- Select -->
+      <div class="vd-field">
+        <label class="vd-field__label" for="kit-category">{{ t('devUi.category') }}</label>
+        <select
+          id="kit-category"
+          class="vd-input"
+          [formField]="demoForm.category"
+          [attr.aria-invalid]="categoryError() ? true : null"
+          [attr.aria-describedby]="categoryError() ? 'kit-category-error' : null"
+        >
+          <option value="" disabled>{{ t('devUi.choose') }}</option>
+          <option value="drinks">{{ t('devUi.drinks') }}</option>
+          <option value="bakery">{{ t('devUi.bakery') }}</option>
+        </select>
+        @if (categoryError(); as error) {
+          <p id="kit-category-error" class="vd-field__error" role="alert">
+            <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ error }}
+          </p>
+        }
+      </div>
+
+      <!-- An error from the server (appears when you press Save) -->
+      <div class="vd-field">
+        <label class="vd-field__label" for="kit-sku">{{ t('devUi.sku') }}</label>
+        <input
+          id="kit-sku"
+          class="vd-input"
+          value="SKU-1042"
+          [attr.aria-invalid]="skuErrorKey() ? true : null"
+          [attr.aria-describedby]="skuErrorKey() ? 'kit-sku-error' : null"
+        />
+        @if (skuErrorKey(); as key) {
+          <p id="kit-sku-error" class="vd-field__error" role="alert">
+            <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t(key) }}
+          </p>
+        }
+      </div>
+
+      <!-- Textarea, optional, with counter -->
+      <div class="vd-field kit__wide">
+        <div class="vd-field__top">
+          <label class="vd-field__label" for="kit-description">
+            {{ t('devUi.description') }}
+            <span class="vd-field__optional">({{ t('common.optional') }})</span>
+          </label>
+          <span class="vd-field__counter">{{ model().description.length }} / 200</span>
+        </div>
+        <textarea
+          id="kit-description"
+          class="vd-input"
+          [formField]="demoForm.description"
+          [attr.aria-invalid]="descriptionError() ? true : null"
+          [attr.aria-describedby]="descriptionError() ? 'kit-description-error' : null"
+        ></textarea>
+        @if (descriptionError(); as error) {
+          <p id="kit-description-error" class="vd-field__error" role="alert">
+            <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ error }}
+          </p>
+        }
+      </div>
+
+      <!-- Disabled, with hint -->
+      <div class="vd-field">
+        <label class="vd-field__label" for="kit-branch">{{ t('devUi.branchCode') }}</label>
+        <input
+          id="kit-branch"
+          class="vd-input"
+          value="CAI-01"
+          disabled
+          aria-describedby="kit-branch-hint"
+        />
+        <p id="kit-branch-hint" class="vd-field__hint">{{ t('devUi.branchCodeHint') }}</p>
+      </div>
+
+      <!-- Large -->
+      <div class="vd-field kit__wide">
+        <label class="vd-field__label" for="kit-search">{{ t('devUi.search') }}</label>
+        <input
+          id="kit-search"
+          type="search"
+          class="vd-input vd-input--lg"
+          [placeholder]="t('devUi.searchPlaceholder')"
+        />
+      </div>
+
+      <!-- Radio group -->
+      <fieldset class="vd-fieldset">
+        <legend>{{ t('devUi.paymentMethod') }}</legend>
+        <label class="vd-choice">
+          <input type="radio" value="cash" [formField]="demoForm.payment" />
+          <span>{{ t('devUi.cash') }}</span>
+        </label>
+        <label class="vd-choice">
+          <input type="radio" value="card" [formField]="demoForm.payment" />
+          <span>{{ t('devUi.card') }}</span>
+        </label>
+        <label class="vd-choice">
+          <input type="radio" value="wallet" disabled />
+          <span>{{ t('devUi.wallet') }}</span>
+        </label>
+      </fieldset>
+
+      <!-- Switch and checkboxes (the label around the input links them: no ids needed) -->
+      <div class="vd-fieldset">
+        <label class="vd-choice">
+          <input type="checkbox" role="switch" [formField]="demoForm.trackStock" />
+          <span class="vd-choice__text">
+            {{ t('devUi.trackStock') }}
+            <span class="vd-choice__hint">{{ t('devUi.trackStockHint') }}</span>
+          </span>
+        </label>
+        <label class="vd-choice">
+          <input type="checkbox" [formField]="demoForm.agree" />
+          <span>{{ t('devUi.agree') }}</span>
+        </label>
+        <label class="vd-choice">
+          <input type="checkbox" checked disabled />
+          <span>{{ t('devUi.disabledChoice') }}</span>
+        </label>
+      </div>
+
+      <div class="kit__row kit__wide">
+        <button vdButton="primary" type="submit">{{ t('common.save') }}</button>
+        @if (submitted()) {
+          <span class="vd-badge vd-badge--success">{{ t('devUi.saved') }}</span>
+        }
+      </div>
+    </form>
+    <pre class="caption kit__model vd-ltr">{{ model() | json }}</pre>
+  </section>
+
   <!-- ============ Badges ============ -->
   <section class="kit__section">
     <h2 class="heading-md">
