@@ -1,0 +1,78 @@
+@use 'abstracts' as *;
+@use '../../../../styles/home';
+@use '../../../../styles/pos';
+
+:host {
+  @include home.demo-window;
+}
+
+.bar {
+  @include home.demo-window-bar;
+}
+
+.fig {
+  @include home.figure;
+}
+
+// Phone: basket only (as in the design). Tablet+: products | basket.
+.pos {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+
+  @include up(md) {
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  }
+}
+
+.pos__catalog {
+  display: none;
+
+  @include up(md) {
+    display: grid;
+    align-content: start;
+    gap: 10px;
+    padding: 16px;
+    border-inline-end: 1px solid var(--line);
+    background: var(--paper-50);
+  }
+}
+
+.pos__basket {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 16px;
+}
+
+@include pos.parts;
+
+// Three tiles per row here.
+.tiles {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grand .fig {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+// Tiles and lines appear one after another when the tab opens.
+@media (prefers-reduced-motion: no-preference) {
+  .tile,
+  .line {
+    animation: item-in 420ms var(--ease-out) both;
+
+    @for $i from 1 through 6 {
+      &:nth-child(#{$i}) {
+        animation-delay: 60ms + $i * 60ms;
+      }
+    }
+  }
+}
+
+@keyframes item-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}

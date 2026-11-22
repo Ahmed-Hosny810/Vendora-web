@@ -1,0 +1,28 @@
+<ng-container *transloco="let t; read: 'home.pricing'">
+  <h3 id="compare-title">{{ t('compare') }}</h3>
+  <!-- tabindex: keyboard users can focus the box and scroll it sideways. -->
+  <div class="scroll" tabindex="0" role="region" aria-labelledby="compare-title">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">{{ t('limits') }}</th>
+          @for (plan of plans(); track plan.id) {
+            <th scope="col">{{ plan.name }}</th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (limit of limits; track limit) {
+          <tr>
+            <th scope="row">{{ t(limit) }}</th>
+            @for (plan of plans(); track plan.id) {
+              <td [class.num]="plan.limits[limit] !== null">
+                {{ plan.limits[limit] ?? t('unlimited') }}
+              </td>
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</ng-container>

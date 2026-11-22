@@ -1,0 +1,124 @@
+@use 'abstracts' as *;
+
+.ticker {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  border-block-end: 1.5px solid var(--ink-900);
+  background: var(--pine-900);
+  color: var(--butter-300);
+}
+
+.ticker__btn {
+  display: grid;
+  flex: none;
+  place-items: center;
+  position: relative;
+  z-index: 1;
+  width: 44px;
+  height: 44px;
+  margin-inline: 12px;
+  border: 1.5px solid var(--butter-300);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--butter-300);
+  cursor: pointer;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+    stroke: none;
+  }
+
+  @include hover {
+    background: rgb(255 239 179 / 12%);
+  }
+
+  // On dark green the light focus ring is the visible one.
+  &:focus-visible {
+    @include focus-ring;
+    outline-color: var(--focus-ring-inverse);
+  }
+}
+
+.ticker__view {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  padding-block: 16px;
+}
+
+.ticker__track {
+  display: flex;
+  // As wide as its content, so -50% is exactly one copy of the list.
+  width: max-content;
+}
+
+.ticker__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 22px;
+  padding-inline: 22px;
+  font: 600 22px/1 var(--font-display);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  :host-context(:lang(ar)) & {
+    letter-spacing: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ticker__track {
+    animation: slide 48s linear infinite;
+
+    // Arabic reads right to left, so the strip moves the other way.
+    :host-context([dir='rtl']) & {
+      animation-name: slide-rtl;
+    }
+  }
+
+  .ticker:hover,
+  .ticker:focus-within,
+  .ticker.paused {
+    .ticker__track {
+      animation-play-state: paused;
+    }
+  }
+}
+
+// No motion wanted: hide the button, show one copy as a centred list.
+@media (prefers-reduced-motion: reduce) {
+  .ticker__btn {
+    display: none;
+  }
+
+  .ticker__track {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px 0;
+    width: 100%;
+  }
+
+  .ticker__item:nth-child(n + 11) {
+    display: none;
+  }
+}
+
+@keyframes slide {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes slide-rtl {
+  to {
+    transform: translateX(50%);
+  }
+}

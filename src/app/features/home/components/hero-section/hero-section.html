@@ -1,0 +1,54 @@
+<section class="hero" aria-labelledby="hero-title" *transloco="let t; read: 'home.hero'">
+  <div class="vd-container hero__grid">
+    <div class="hero__copy">
+      <p class="kicker rise d1">
+        <span class="kicker__dot" aria-hidden="true"></span>{{ t('kicker') }}
+      </p>
+
+      <!-- Each line slides up from behind its own mask (.ln hides the overflow). -->
+      <h1 class="h1" id="hero-title">
+        <span class="ln"
+          ><span class="ln__in d2">{{ t('titleA') }}</span></span
+        >
+        <span class="ln"
+          ><span class="ln__in d3">{{ t('titleB') }}</span></span
+        >
+        <span class="ln"
+          ><span class="ln__in d4"
+            ><span class="hl">{{ t('titleC') }}</span></span
+          ></span
+        >
+      </h1>
+
+      <p class="lead rise d5">{{ t('lead') }}</p>
+
+      <div class="ctas rise d6">
+        <a class="shine" vdButton="primary" size="lg" stamp routerLink="/sign-up">
+          {{ t('getStarted') }}
+          <svg lucideArrowRight class="nudge" aria-hidden="true"></svg>
+        </a>
+        <a vdButton="secondary" size="lg" stamp routerLink="/" fragment="features">{{
+          t('explore')
+        }}</a>
+      </div>
+
+      <ul class="checks rise d6">
+        @for (check of t('checks'); track $index) {
+          <li><svg lucideCheck aria-hidden="true"></svg>{{ check }}</li>
+        }
+      </ul>
+    </div>
+
+    <div class="hero__visual">
+      @for (run of [demoRun()]; track run) {
+        <app-pos-demo />
+      }
+      <div class="meta">
+        <span class="illus">{{ t('illustrative') }}</span>
+        <button class="replay" type="button" (click)="replay()">
+          <svg lucideRefreshCw aria-hidden="true"></svg>{{ t('replay') }}
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

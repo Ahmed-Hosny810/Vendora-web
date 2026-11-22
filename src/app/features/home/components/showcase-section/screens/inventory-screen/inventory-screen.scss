@@ -1,0 +1,188 @@
+@use 'abstracts' as *;
+@use '../../../../styles/home';
+
+:host {
+  @include home.demo-window;
+}
+
+.bar {
+  @include home.demo-window-bar;
+}
+
+// Filter chips in the bar; the selected one is dark.
+.chip {
+  padding: 4px 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  background: var(--paper-0);
+  font-size: 12px;
+  font-weight: 600;
+
+  &.on {
+    border-color: var(--ink-900);
+    background: var(--ink-900);
+    color: var(--ink-on-dark);
+  }
+}
+
+// Table at full width (so names stay on one line), movements under it.
+.body {
+  display: grid;
+  gap: 16px;
+  padding: 16px;
+}
+
+// Phones: drop this column so the table fits without scrolling.
+.hide-phone {
+  @include down(md) {
+    display: none;
+  }
+}
+
+.table {
+  @include home.demo-table;
+  align-self: start;
+}
+
+// Two things in the same grid cell; one fades out as the other fades in.
+.swap {
+  display: inline-grid;
+
+  > * {
+    grid-area: 1 / 1;
+  }
+}
+
+.moves {
+  overflow: hidden;
+  align-self: start;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+
+  h4 {
+    margin: 0;
+    padding: 10px 12px;
+    border-block-end: 1px solid var(--line);
+    background: var(--paper-100);
+    font: 600 13px/18px var(--font-sans);
+  }
+
+  // Movements in two columns from tablet up.
+  ul {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    @include up(md) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  li {
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr);
+    gap: 10px;
+    padding: 10px 12px;
+    border-block-end: 1px solid var(--line);
+    font-size: 12px;
+    line-height: 16px;
+
+    &:last-child {
+      border-block-end: 0;
+    }
+
+    // Two columns: the last row has no line under it.
+    @include up(md) {
+      &:nth-last-child(2) {
+        border-block-end: 0;
+      }
+
+      &:nth-child(odd) {
+        border-inline-end: 1px solid var(--line);
+      }
+    }
+  }
+
+  small {
+    display: block;
+    color: var(--ink-500);
+    font-size: 11px;
+  }
+}
+
+// Quantity pill: green for stock in, grey for stock out.
+.q {
+  align-self: start;
+  padding: 2px 0;
+  border-radius: 4px;
+  background: var(--paper-100);
+  color: var(--ink-700);
+  font: 600 12px var(--font-mono);
+  text-align: center;
+  direction: ltr;
+
+  &.up {
+    background: var(--success-bg);
+    color: var(--success-fg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .swap .old {
+    animation: tick-out 1.6s linear 600ms both;
+  }
+
+  .swap .new {
+    animation: tick-in 1.6s linear 600ms both;
+  }
+
+  tbody tr,
+  .moves li {
+    animation: item-in 420ms var(--ease-out) both;
+
+    @for $i from 1 through 5 {
+      &:nth-child(#{$i}) {
+        animation-delay: 60ms + $i * 60ms;
+      }
+    }
+  }
+}
+
+// No animation: show only the final state.
+@media (prefers-reduced-motion: reduce) {
+  .swap .old {
+    opacity: 0;
+  }
+}
+
+@keyframes tick-out {
+  0%,
+  40% {
+    opacity: 1;
+  }
+
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes tick-in {
+  0%,
+  45% {
+    opacity: 0;
+  }
+
+  55%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes item-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}

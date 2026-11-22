@@ -1,0 +1,84 @@
+<ng-container *transloco="let t; read: 'home'">
+  <div class="bar">
+    <span class="title">{{ t('showcase.inventory.tab') }}</span>
+    <span class="spacer"></span>
+    <span class="chip on">{{ t('showcase.inventory.allBranches') }}</span>
+    <span class="chip">{{ t('showcase.inventory.lowOnly') }}</span>
+  </div>
+
+  <div class="body">
+    <div class="table">
+      <table>
+        <thead>
+          <tr>
+            <th>{{ t('showcase.inventory.product') }}</th>
+            @for (branch of branches; track branch) {
+              <th class="num">{{ t('branches.' + branch) }}</th>
+            }
+            <th class="hide-phone">{{ t('showcase.inventory.status') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of rows; track row.name) {
+            <tr>
+              <td class="strong">{{ t(row.name) }}</td>
+              @for (qty of row.stock; track $index) {
+                <td class="num">
+                  <!-- The mug at Heliopolis ticks from 6 down to 4. -->
+                  @if (row.status === 'low' && $index === 1) {
+                    <span class="swap"
+                      ><span class="old">6</span><span class="new">{{ qty }}</span></span
+                    >
+                  } @else {
+                    {{ qty }}
+                  }
+                </td>
+              }
+              <td class="hide-phone">
+                @switch (row.status) {
+                  @case ('ok') {
+                    <span class="vd-badge vd-badge--success"
+                      ><svg lucideCheck></svg>{{ t('showcase.inventory.inStock') }}</span
+                    >
+                  }
+                  @case ('low') {
+                    <!-- Changes from "In stock" to "Low stock" with the number. -->
+                    <span class="swap">
+                      <span class="old vd-badge vd-badge--success"
+                        ><svg lucideCheck></svg>{{ t('showcase.inventory.inStock') }}</span
+                      >
+                      <span class="new vd-badge vd-badge--warning">
+                        <svg lucideTriangleExclamationPoint></svg
+                        >{{ t('showcase.inventory.lowStock') }}
+                      </span>
+                    </span>
+                  }
+                  @case ('out') {
+                    <span class="vd-badge vd-badge--danger"
+                      ><svg lucideX></svg>{{ t('showcase.inventory.outAt') }}</span
+                    >
+                  }
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="moves">
+      <h4>{{ t('showcase.inventory.movements') }}</h4>
+      <ul>
+        @for (move of movements; track $index) {
+          <li>
+            <bdi class="q" [class.up]="move.up">{{ move.qty }}</bdi>
+            <div>
+              <b>{{ t('showcase.inventory.' + move.label) }}</b>
+              <small>{{ t(move.product) }} · {{ t('branches.' + move.branch) }}</small>
+            </div>
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+</ng-container>

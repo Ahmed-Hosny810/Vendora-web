@@ -1,0 +1,452 @@
+{
+  "listSeparator": ", ",
+  "branches": {
+    "zamalek": "Zamalek",
+    "heliopolis": "Heliopolis",
+    "newCairo": "New Cairo"
+  },
+  "products": {
+    "coffee": {
+      "name": "Yirgacheffe 250g",
+      "variant": "2 grinds",
+      "line": "Whole bean"
+    },
+    "mug": {
+      "name": "Hand-glazed mug",
+      "variant": "3 colours",
+      "line": "Terracotta"
+    },
+    "dates": {
+      "name": "Siwa dates 500g",
+      "variant": "1 size",
+      "line": "500 g"
+    },
+    "oil": {
+      "name": "Olive oil 1L",
+      "variant": "1 size"
+    },
+    "towel": {
+      "name": "Linen tea towel",
+      "variant": "4 colours"
+    },
+    "wrap": {
+      "name": "Gift wrapping",
+      "variant": "Service"
+    }
+  },
+  "pos": {
+    "counter": "Zamalek · Counter 1",
+    "shiftOpen": "Shift open · Nour",
+    "search": "Search products",
+    "change": "Change",
+    "subtotal": "Subtotal",
+    "discounts": "Discounts",
+    "vat": "Includes VAT 14%",
+    "total": "Total",
+    "cash": "Cash",
+    "card": "Card",
+    "wallet": "Wallet",
+    "changeDue": "Change due",
+    "complete": "Complete sale",
+    "itemDiscount": "Item discount 10%",
+    "customer": "Mariam A.",
+    "initials": "MA"
+  },
+  "hero": {
+    "kicker": "Point of sale + retail management",
+    "titleA": "Every sale,",
+    "titleB": "shelf and shift.",
+    "titleC": "One clear view.",
+    "lead": "Vendora is the point of sale and retail management platform for shops with one counter or many branches. Sell, track stock, organize your team and understand your numbers — in one connected system.",
+    "getStarted": "Get started",
+    "explore": "Explore features",
+    "checks": [
+      "Cash, card and wallet payments recorded",
+      "Stock by branch",
+      "Roles for owners, managers and cashiers"
+    ],
+    "illustrative": "Illustrative data",
+    "replay": "Replay demo",
+    "demoLabel": "Vendora point of sale screen with a branch summary, a printed receipt and a low-stock alert",
+    "cats": ["All", "Coffee", "Kitchen", "Pantry"],
+    "branchesToday": "Today · 3 branches",
+    "receipt": {
+      "store": "BAYT HOME & PANTRY",
+      "number": "Receipt A-10483",
+      "total": "TOTAL",
+      "card": "CARD",
+      "cash": "CASH",
+      "change": "CHANGE",
+      "thanks": "Thank you",
+      "items": {
+        "coffee": "1 × Yirgacheffe",
+        "mug": "2 × Mug −10%",
+        "dates": "1 × Siwa dates"
+      }
+    },
+    "alertTitle": "Low stock · Heliopolis",
+    "alertBody": "Hand-glazed mug · Terracotta — 4 left",
+    "branchTotal": "EGP {{amount}}"
+  },
+  "ticker": {
+    "items": [
+      "Point of sale",
+      "Split payments",
+      "Receipts & reprints",
+      "Stock by branch",
+      "Low-stock alerts",
+      "Returns & refunds",
+      "Cashier shifts",
+      "Roles & permissions",
+      "Daily sales",
+      "CSV export"
+    ],
+    "pause": "Pause the moving feature list",
+    "play": "Play the moving feature list"
+  },
+  "benefits": {
+    "overline": "Why Vendora",
+    "title": "Everything your shop runs on,",
+    "highlight": "in one place.",
+    "lead": "Vendora connects the counter, the stockroom and the office, so the numbers you check at night match what happened during the day.",
+    "illustrative": "Figures shown are illustrative data",
+    "checkout": {
+      "title": "Faster, clearer checkout",
+      "text": "Find products and variants quickly, add a customer by phone only when you need to, and take cash, card, wallet or split payments. Vendora works out the change."
+    },
+    "stock": {
+      "title": "Stock you can see, branch by branch",
+      "text": "Know what is on hand at each location, catch low-stock items before the shelf is empty, and put eligible returns back into stock."
+    },
+    "people": {
+      "title": "Branches and people, properly organized",
+      "text": "Set up each location and its checkout terminals, invite your team, and decide who can do what — and where."
+    },
+    "cash": {
+      "title": "Sales and cash that add up",
+      "text": "Daily sales, top products, cashier performance and payment totals. Every shift closes with expected against counted cash, so a difference is visible straight away."
+    },
+    "proof": {
+      "lowItem": "Heliopolis · Mug Terracotta",
+      "lowStock": "Low stock",
+      "branchList": "Zamalek · Heliopolis · New Cairo",
+      "expected": "Expected",
+      "counted": "Counted",
+      "difference": "Difference"
+    }
+  },
+  "roles": {
+    "owner": "Owner",
+    "manager": "Manager",
+    "cashier": "Cashier"
+  },
+  "showcase": {
+    "overline": "See it work",
+    "title": "One system. Four views of your business.",
+    "lead": "Switch between the screens your team uses every day.",
+    "tabsLabel": "Product areas",
+    "more": "More tabs",
+    "illustrative": "Illustrative data",
+    "pos": {
+      "tab": "Point of sale",
+      "text": "A checkout screen built for the counter: large targets, clear totals and no detours.",
+      "bullets": [
+        "Search products and pick variants in a tap or two",
+        "Attach a customer by phone — or sell to walk-ins without one",
+        "Apply the item or whole-sale discounts each cashier is allowed to give",
+        "Record cash, card, wallet or split payments; change is calculated for you",
+        "Issue receipts, and reprint them later without changing the original sale"
+      ],
+      "note": "Card and wallet payments are taken on your existing terminal or wallet provider. Vendora records the confirmed result.",
+      "screenLabel": "Point of sale screen: product grid, basket with a customer, an item discount, and a split cash and card payment",
+      "search": "Search products or variants",
+      "cats": ["All", "Coffee", "Kitchen", "Pantry", "Home"],
+      "inStock": "{{count}} in stock",
+      "notTracked": "Not tracked",
+      "remove": "Remove",
+      "discount": "10% item discount · authorized",
+      "total": "Total (EGP)"
+    },
+    "inventory": {
+      "tab": "Inventory",
+      "text": "See stock for every branch and stay ahead of empty shelves.",
+      "bullets": [
+        "Stock levels per branch in one view",
+        "Choose which products track inventory — skip it for services",
+        "Stock is held while a checkout is in progress, so it isn’t sold twice",
+        "Low-stock alerts in the app and a low-stock report",
+        "Returns marked as resellable go back into stock"
+      ],
+      "screenLabel": "Inventory screen: stock by branch with a low-stock item and recent stock movements",
+      "allBranches": "All branches",
+      "lowOnly": "Low stock only",
+      "product": "Product",
+      "status": "Status",
+      "inStock": "In stock",
+      "lowStock": "Low stock",
+      "outAt": "Out at New Cairo",
+      "mugRow": "Hand-glazed mug · Terracotta",
+      "towelRow": "Linen tea towel · Sand",
+      "movements": "Recent stock movements",
+      "received": "Received",
+      "sold": "Sold",
+      "returned": "Returned to stock",
+      "damaged": "Adjustment · damaged"
+    },
+    "reports": {
+      "tab": "Reports",
+      "text": "Understand sales and cash without building a spreadsheet.",
+      "bullets": [
+        "Sales dashboard with daily and product sales",
+        "Cashier performance and payment-method totals",
+        "Returns and shift reconciliation reports",
+        "Current inventory and low-stock reports",
+        "Export any report to CSV"
+      ],
+      "screenLabel": "Reports screen: sales for the last seven days, payment method totals and a shift reconciliation with a 40 pound difference",
+      "title": "Sales dashboard",
+      "allBranches": "All branches",
+      "export": "Export CSV",
+      "netSales": "Net sales · today",
+      "netMeta": "EGP · 3 branches",
+      "completed": "Sales completed",
+      "average": "Avg. EGP 154.58",
+      "returns": "Returns",
+      "returnsMeta": "EGP · 6 returns",
+      "daily": "Daily sales",
+      "last7": "EGP, last 7 days",
+      "days": ["Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri"],
+      "payments": "Payment methods",
+      "today": "today",
+      "shift": "Shift reconciliation · Nour · Zamalek Counter 1",
+      "closed": "Closed 22:04",
+      "opening": "Opening cash",
+      "cashSales": "Cash sales",
+      "cashRefunds": "Cash refunds",
+      "expected": "Expected",
+      "counted": "Counted",
+      "difference": "Difference"
+    },
+    "team": {
+      "tab": "Branches & teams",
+      "text": "Every location, counter and employee — organized.",
+      "bullets": [
+        "Add branches and the checkout terminals inside them",
+        "Sales, stock and shifts are tied to the right branch and terminal",
+        "Invite employees by email and assign a role",
+        "Limit each person to the branches they work in"
+      ],
+      "screenLabel": "Branches and team screen: three branches with their checkout terminals, and a team list with roles and branch access",
+      "title": "Branches & team",
+      "invite": "Invite employee",
+      "open": "Open",
+      "counter": "Counter {{n}}",
+      "employee": "Employee",
+      "role": "Role",
+      "access": "Branch access",
+      "status": "Status",
+      "active": "Active",
+      "invited": "Invited",
+      "allBranches": "All branches"
+    }
+  },
+  "features": {
+    "overline": "Features",
+    "title": "Everything you need to run",
+    "highlight": "the shop floor.",
+    "lead": "Five areas, one system — from the first sale of the morning to the last shift report.",
+    "illustrative": "Names and figures are illustrative data",
+    "sell": {
+      "title": "Sell and serve customers",
+      "text": "A fast counter experience that handles real-life sales: walk-ins, regulars, discounts and mixed payments.",
+      "caps": [
+        "Product and variant search",
+        "Customer lookup by phone",
+        "Walk-in sales",
+        "Item and whole-sale discounts, by permission",
+        "Cash, card, wallet and split payments",
+        "Change calculation",
+        "Receipts and reprints",
+        "Cashier shifts"
+      ]
+    },
+    "catalog": {
+      "title": "Manage products and inventory",
+      "text": "Keep the catalog tidy and stock honest.",
+      "caps": [
+        "Products, variants, units and prices",
+        "Organized catalog",
+        "Tracking where you need it",
+        "Stock movements",
+        "Low-stock flags"
+      ],
+      "meterLabel": "Stock levels, illustrative",
+      "oil": "Olive oil 1L · Zamalek",
+      "mug": "Mug Terracotta · Heliopolis"
+    },
+    "team": {
+      "terminal": "1 terminal",
+      "title": "Organize branches and employees",
+      "text": "Each location, counter and person in its place.",
+      "caps": ["Employee invitations", "Owner, manager and cashier roles", "Branch-level access"],
+      "terminals": "{{count}} terminals"
+    },
+    "reports": {
+      "title": "Understand performance and cash",
+      "text": "Reports that answer the questions owners actually ask — and export to CSV when you need them elsewhere.",
+      "caps": [
+        "Sales dashboard",
+        "Daily and product sales",
+        "Cashier performance",
+        "Payment-method totals",
+        "Shift reconciliation",
+        "Inventory and low-stock reports",
+        "CSV export"
+      ],
+      "tableLabel": "Cashier performance, illustrative",
+      "cashier": "Cashier · today",
+      "sales": "Sales",
+      "egp": "EGP"
+    },
+    "returns": {
+      "title": "Handle returns and stay informed",
+      "text": "Returns are tied to the original sale, and the right people hear about what matters.",
+      "caps": [
+        "Returns against the original sale",
+        "Refunds from original prices, discounts and taxes",
+        "Condition and restock eligibility",
+        "In-app notifications",
+        "Account emails"
+      ],
+      "lowTitle": "Low stock · Heliopolis",
+      "lowBody": "Mug Terracotta has 4 left",
+      "returnTitle": "Return recorded · A-10482",
+      "returnBody": "1 item restocked · EGP 256.50 refunded"
+    },
+    "receipt": {
+      "store": "BAYT HOME & PANTRY",
+      "where": "Heliopolis · Counter 2",
+      "walkIn": "Walk-in sale",
+      "item": "3 × Linen towel",
+      "discount": "Sale discount 5%",
+      "total": "TOTAL",
+      "wallet": "WALLET",
+      "reprint": "Reprinted copy"
+    }
+  },
+  "how": {
+    "overline": "How it works",
+    "title": "From sign-up to your first sale.",
+    "lead": "Four steps, in your own time.",
+    "step": "Step {{n}}:",
+    "account": {
+      "title": "Create your account and business",
+      "text": "Sign up, verify your email and tell us about your business.",
+      "chip": "Email verified"
+    },
+    "plan": {
+      "title": "Choose and activate your plan",
+      "text": "Pick the plan that fits, review your invoice and pay it to activate your subscription.",
+      "chip": "Invoice paid · Active"
+    },
+    "setup": {
+      "title": "Set up your store and team",
+      "text": "Add branches and checkout terminals, build your catalog and invite your employees.",
+      "chip": "3 branches · 6 terminals"
+    },
+    "sell": {
+      "title": "Start selling and monitoring",
+      "text": "Open a shift, ring up sales and follow every branch from your dashboard.",
+      "chip": "Shift open"
+    }
+  },
+  "team": {
+    "overline": "For your whole team",
+    "title": "Made for everyone",
+    "highlight": "behind the counter.",
+    "lead": "Each person gets the tools their job needs — and only the access their role allows.",
+    "access": "ACCESS",
+    "owner": {
+      "sub": "Sees the whole business",
+      "items": [
+        "Follow sales across every branch",
+        "Check stock and low-stock items anywhere",
+        "Manage branches, employees and roles",
+        "Review invoices and renew the subscription"
+      ],
+      "scope": "ALL BRANCHES"
+    },
+    "manager": {
+      "sub": "Keeps the day running",
+      "items": [
+        "Supervise sales and cashier shifts",
+        "Manage stock and stock movements",
+        "Handle authorized discounts and returns",
+        "Review reports and cashier performance"
+      ],
+      "scope": "ASSIGNED BRANCHES"
+    },
+    "cashier": {
+      "sub": "Keeps the line moving",
+      "items": [
+        "Open a shift at their terminal",
+        "Ring up sales and find customers by phone",
+        "Take cash, card, wallet or split payments",
+        "Issue and reprint receipts, then close the shift"
+      ],
+      "scope": "OWN TERMINAL"
+    }
+  },
+  "pricing": {
+    "overline": "Pricing",
+    "title": "A plan for the size of your business.",
+    "lead": "Pick a plan, review your invoice and activate. Your plan sets how many branches, terminals and employees you can use.",
+    "billingLabel": "Billing option",
+    "choose": "Choose this plan",
+    "branches": "Branches",
+    "terminals": "Checkout terminals",
+    "employees": "Employees",
+    "unlimited": "Unlimited",
+    "perPeriod": "/ {{period}}",
+    "compare": "Compare plans",
+    "limits": "Plan limits",
+    "loading": "Loading plans",
+    "fine": "Prices are in EGP. You’ll see your invoice before you pay, and your subscription activates once it’s paid."
+  },
+  "faq": {
+    "overline": "FAQ",
+    "title": "Questions, answered.",
+    "lead": "Something else on your mind?",
+    "contact": "Contact support",
+    "branches": {
+      "q": "Can I manage multiple branches?",
+      "a": "Yes. Add each location as a branch, organize its checkout terminals, and see stock, sales and shifts per branch. The number of branches you can add depends on your plan."
+    },
+    "permissions": {
+      "q": "Can employees have different permissions?",
+      "a": "Yes. Invite employees by email, give each one a role — owner, manager or cashier — and choose the branches they can access. People only see the features their role allows."
+    },
+    "walkIn": {
+      "q": "Can I sell without registering a customer?",
+      "a": "Yes. Walk-in sales don’t need a customer. When you want to link a sale to someone, find them by phone number or add their details."
+    },
+    "returns": {
+      "q": "How do returns and refunds work?",
+      "a": "Items are returned against their original sale. Vendora calculates the refund from the original prices, discounts and taxes, records each item’s condition and whether it can be restocked, and records the refund payment made by an authorized employee."
+    },
+    "lowStock": {
+      "q": "Can I monitor low-stock items?",
+      "a": "Yes. Vendora identifies items running low at each branch, sends low-stock alerts in the app and includes them in the low-stock report."
+    },
+    "renewal": {
+      "q": "How does subscription renewal work?",
+      "a": "Your subscription follows the plan you choose. Invoices are available in your account, and you renew by paying your renewal invoice. What you can use — such as branches, terminals and employees — follows your plan’s limits."
+    }
+  },
+  "cta": {
+    "title": "Bring your daily retail operations",
+    "highlight": "together.",
+    "lead": "Create your account, choose your plan and start selling with Vendora.",
+    "button": "Get started"
+  }
+}

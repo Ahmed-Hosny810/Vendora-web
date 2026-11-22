@@ -1,0 +1,129 @@
+@use 'abstracts' as *;
+@use '../../styles/home';
+
+.sec {
+  @include home.section-space;
+  border-block-start: 1px solid var(--line);
+  background: var(--paper-0);
+}
+
+// Heading above; side by side (4 : 7) on desktop, heading sticky.
+.grid {
+  display: grid;
+  gap: 32px;
+  align-items: start;
+
+  @include up(lg) {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+    gap: 64px;
+  }
+}
+
+.head {
+  @include home.reveal;
+
+  @include up(lg) {
+    position: sticky;
+    top: 112px;
+  }
+}
+
+.contact {
+  margin: 0;
+  color: var(--ink-700);
+  font-size: 17px;
+
+  a {
+    color: var(--pine-600);
+    font-weight: 600;
+    text-underline-offset: 3px;
+  }
+}
+
+.list {
+  @include home.reveal;
+  border-block-start: 1.5px solid var(--ink-900);
+}
+
+.item {
+  border-block-end: 1px solid var(--line-strong);
+}
+
+// The clickable question row.
+summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 72px;
+  padding-block: 16px;
+  cursor: pointer;
+  // Hide the browser's own triangle (we draw a + instead).
+  list-style: none;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+    border-radius: var(--radius-sm);
+  }
+
+  h3 {
+    margin: 0;
+    font: 600 18px/25px var(--font-display);
+
+    @include up(md) {
+      font-size: 20px;
+      line-height: 28px;
+    }
+  }
+}
+
+// Round + that turns into × when the answer is open.
+.icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid var(--ink-900);
+  border-radius: 50%;
+  transition:
+    transform var(--duration-base) var(--ease-out),
+    background-color var(--duration-base);
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  [open] & {
+    background: var(--butter-300);
+    transform: rotate(45deg);
+  }
+}
+
+.item p {
+  @include home.arabic-body;
+  max-width: 62ch;
+  margin: 0;
+  padding-block-end: 22px;
+  color: var(--ink-700);
+  font-size: 16px;
+  line-height: 26px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [open] p {
+    animation: open 260ms var(--ease-out) both;
+  }
+}
+
+@keyframes open {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}

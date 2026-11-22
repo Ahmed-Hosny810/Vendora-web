@@ -1,0 +1,97 @@
+<ng-container *transloco="let t; read: 'home'">
+  <div class="bar">
+    <span class="title">{{ t('showcase.reports.title') }}</span>
+    <span class="vd-badge vd-badge--outline">{{ t('showcase.reports.allBranches') }}</span>
+    <span class="spacer"></span>
+    <span class="export"><svg lucideDownload></svg>{{ t('showcase.reports.export') }}</span>
+  </div>
+
+  <div class="body">
+    <div class="kpi">
+      <div class="kpi__label">{{ t('showcase.reports.netSales') }}</div>
+      <bdi class="kpi__value">48,230</bdi>
+      <div class="kpi__meta">{{ t('showcase.reports.netMeta') }}</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi__label">{{ t('showcase.reports.completed') }}</div>
+      <bdi class="kpi__value">312</bdi>
+      <div class="kpi__meta">{{ t('showcase.reports.average') }}</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi__label">{{ t('showcase.reports.returns') }}</div>
+      <bdi class="kpi__value">1,140</bdi>
+      <div class="kpi__meta">{{ t('showcase.reports.returnsMeta') }}</div>
+    </div>
+
+    <div class="box wide">
+      <h4>
+        {{ t('showcase.reports.daily') }} <span>{{ t('showcase.reports.last7') }}</span>
+      </h4>
+      <div class="cols">
+        @for (value of days; track $index) {
+          <div class="col" [class.today]="$last">
+            <b>{{ value.toFixed(1) }}k</b>
+            <!-- Bar height: value as a share of the chart's 100px. -->
+            <i [style.height.px]="(value / chartMax) * 100"></i>
+            <span>{{ t('showcase.reports.days')[$index] }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="box">
+      <h4>
+        {{ t('showcase.reports.payments') }} <span>{{ t('showcase.reports.today') }}</span>
+      </h4>
+      <div class="split">
+        @for (pay of payments; track pay.key) {
+          <i [style.width.%]="pay.share" [style.background]="pay.color"></i>
+        }
+      </div>
+      <div class="legend">
+        @for (pay of payments; track pay.key) {
+          <div>
+            <i [style.background]="pay.color"></i>
+            <span>{{ t('pos.' + pay.key) }}</span>
+            <bdi class="fig">{{ pay.amount }}</bdi>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="rec">
+      <h4>
+        {{ t('showcase.reports.shift') }}
+        <span class="vd-badge vd-badge--outline">{{ t('showcase.reports.closed') }}</span>
+      </h4>
+      <div class="rec__grid">
+        <div class="r">
+          <span>{{ t('showcase.reports.opening') }}</span
+          ><bdi class="fig">1,500.00</bdi>
+        </div>
+        <div class="r">
+          <span>{{ t('showcase.reports.cashSales') }}</span
+          ><bdi class="fig">+5,320.00</bdi>
+        </div>
+        <div class="r">
+          <span>{{ t('showcase.reports.cashRefunds') }}</span
+          ><bdi class="fig">−400.00</bdi>
+        </div>
+        <div class="r total">
+          <span>{{ t('showcase.reports.expected') }}</span
+          ><bdi class="fig">6,420.00</bdi>
+        </div>
+        <div class="r total">
+          <span>{{ t('showcase.reports.counted') }}</span
+          ><bdi class="fig">6,380.00</bdi>
+        </div>
+        <div class="diff">
+          <span
+            ><svg lucideCircleExclamationPoint></svg>{{ t('showcase.reports.difference') }}</span
+          >
+          <bdi class="fig">−40.00</bdi>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

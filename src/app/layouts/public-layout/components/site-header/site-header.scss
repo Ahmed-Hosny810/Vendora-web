@@ -1,0 +1,262 @@
+@use 'abstracts' as *;
+
+// The header stays at the top while the page scrolls (sticky).
+.hdr {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  // Almost solid, so text under it never shows through.
+  background: color-mix(in srgb, var(--paper-50) 94%, transparent);
+  border-block-end: 1px solid var(--line);
+}
+
+.hdr__in {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  height: 64px;
+
+  @include up(md) {
+    height: 72px;
+    gap: var(--space-6);
+  }
+}
+
+.hdr__brand {
+  display: inline-flex;
+  border-radius: var(--radius-sm);
+  color: inherit;
+  // Links are underlined by default; the logo shouldn't be.
+  text-decoration: none;
+}
+
+// ---------- Section links (desktop only) ----------
+.hdr__nav {
+  display: none;
+
+  @include up(lg) {
+    display: flex;
+    gap: var(--space-1);
+    margin-inline-start: var(--space-2);
+  }
+
+  a {
+    padding: 10px 12px;
+    border-radius: var(--radius-pill);
+    color: var(--ink-700);
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition:
+      background-color var(--duration-fast),
+      color var(--duration-fast);
+
+    @include hover {
+      background: var(--paper-100);
+      color: var(--ink-900);
+    }
+  }
+}
+
+// ---------- Right side (left side in Arabic) ----------
+.hdr__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  // Pushes this group to the far end. "inline-start" flips in Arabic.
+  margin-inline-start: auto;
+}
+
+// Language button and "Sign in" are hidden on small screens:
+// they move into the mobile menu.
+.hdr__lang,
+.hdr__signin {
+  display: none;
+
+  @include up(lg) {
+    display: inline-flex;
+  }
+}
+
+.hdr__lang {
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: none;
+  color: var(--ink-700);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  @include hover {
+    background: var(--paper-100);
+    color: var(--ink-900);
+  }
+}
+
+.hdr__signin {
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  color: var(--ink-900);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+
+  @include hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+}
+
+// "Get started" is a little smaller on phones so everything fits.
+.hdr__start {
+  @include down(md) {
+    min-height: 44px;
+    padding-inline: 14px;
+    font-size: 14px;
+  }
+}
+
+// ---------- Menu button (phones and tablets) ----------
+.hdr__menu {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1.5px solid var(--ink-900);
+  border-radius: var(--radius-md);
+  background: var(--paper-0);
+  color: var(--ink-900);
+  cursor: pointer;
+
+  svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  @include up(lg) {
+    display: none;
+  }
+}
+
+// ---------- Mobile menu ----------
+.sheet {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-4) var(--space-4) var(--space-6);
+  border-block-start: 1px solid var(--line);
+  background: var(--paper-50);
+
+  // Never shown on desktop, even if it was left open before resizing.
+  @include up(lg) {
+    display: none;
+  }
+}
+
+.sheet__link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 56px;
+  padding: 0 var(--space-2);
+  border-block-end: 1px solid var(--line);
+  color: var(--ink-900);
+  font: 600 24px/1 var(--font-display);
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  animation: rise var(--duration-slow) var(--ease-out) both;
+
+  // Each link rises a little later than the one before it.
+  @for $i from 2 through 4 {
+    &:nth-child(#{$i}) {
+      animation-delay: ($i - 1) * 50ms;
+    }
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+    color: var(--pine-600);
+  }
+}
+
+.sheet__foot {
+  display: grid;
+  gap: 10px;
+  margin-block-start: var(--space-4);
+  animation: rise var(--duration-slow) var(--ease-out) 200ms both;
+}
+
+.sheet__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  // Inside the menu these two are always visible.
+  .hdr__lang,
+  .hdr__signin {
+    display: inline-flex;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+// ---------- Scroll effects ----------
+// A thin bar under the header grows as you scroll down the page.
+.hdr__progress {
+  position: absolute;
+  inset-inline: 0;
+  bottom: -1.5px;
+  height: 3px;
+  background: var(--pine-900);
+  transform: scaleX(0);
+  transform-origin: left center;
+  pointer-events: none;
+
+  :host-context([dir='rtl']) & {
+    transform-origin: right center;
+  }
+}
+
+// Only browsers that support scroll-driven animations get these.
+// Others simply show the header without the shadow and bar.
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hdr {
+      animation: header-shadow linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 160px;
+    }
+
+    .hdr__progress {
+      animation: grow linear both;
+      animation-timeline: scroll(root);
+    }
+  }
+}
+
+@keyframes header-shadow {
+  to {
+    box-shadow: var(--shadow-2);
+  }
+}
+
+@keyframes grow {
+  to {
+    transform: scaleX(1);
+  }
+}

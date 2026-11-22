@@ -1,0 +1,100 @@
+@use 'abstracts' as *;
+
+:host {
+  display: block;
+}
+
+.plan {
+  display: grid;
+  align-content: start;
+  gap: 20px;
+  height: 100%;
+  padding: 22px;
+  border: 1.5px solid var(--ink-900);
+  border-radius: var(--radius-lg);
+  background: var(--paper-0);
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast);
+
+  @include up(md) {
+    padding: 28px;
+  }
+
+  // Lifts up-left and casts a hard shadow, like a stamp.
+  @include hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-stamp);
+  }
+}
+
+.plan__head {
+  display: grid;
+  gap: 6px;
+}
+
+.plan__name {
+  margin: 0;
+  font: 700 26px/1.1 var(--font-display);
+  letter-spacing: -0.02em;
+
+  :host-context(:lang(ar)) & {
+    letter-spacing: 0;
+  }
+}
+
+.plan__desc {
+  margin: 0;
+  color: var(--ink-700);
+  font-size: 15px;
+}
+
+.price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+// Big number; vd-money draws the currency after it in a small size.
+.price__amount {
+  font: 600 34px/1 var(--font-mono);
+  letter-spacing: -0.03em;
+
+  @include up(md) {
+    font-size: 40px;
+  }
+}
+
+.price__per {
+  color: var(--ink-500);
+  font-size: 14px;
+}
+
+.limits {
+  margin: 0;
+  padding: 0;
+  border-block-start: 1px solid var(--line);
+  list-style: none;
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding-block: 10px;
+    border-block-end: 1px solid var(--line);
+    color: var(--ink-700);
+    font-size: 14px;
+  }
+
+  b {
+    color: var(--ink-900);
+    font-weight: 600;
+  }
+
+  // Numbers only; the word "Unlimited" keeps the normal font.
+  .num {
+    font-family: var(--font-mono);
+  }
+}

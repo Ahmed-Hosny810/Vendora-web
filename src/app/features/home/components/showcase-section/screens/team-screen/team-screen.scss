@@ -1,0 +1,142 @@
+@use 'abstracts' as *;
+@use '../../../../styles/home';
+
+:host {
+  @include home.demo-window;
+}
+
+.bar {
+  @include home.demo-window-bar;
+}
+
+.invite {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--pine-600);
+  color: var(--ink-on-dark);
+  font-size: 12px;
+  font-weight: 600;
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+// Branches above the table; side by side only on wide screens,
+// where the table has room for all its columns.
+.body {
+  display: grid;
+  gap: 16px;
+  padding: 16px;
+
+  @include up(xl) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+  }
+}
+
+// Phones: drop this column so the table fits without scrolling.
+.hide-phone {
+  @include down(md) {
+    display: none;
+  }
+}
+
+.branches {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+}
+
+.branch {
+  display: grid;
+  gap: var(--space-2);
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+
+  &.selected {
+    border-color: var(--pine-600);
+    background: var(--pine-50);
+    box-shadow: inset 0 0 0 1px var(--pine-600);
+  }
+}
+
+.branch__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  b {
+    font: 600 14px/20px var(--font-display);
+  }
+}
+
+.terminals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.terminal {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px var(--space-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--paper-0);
+  color: var(--ink-700);
+  font-size: 11px;
+  font-weight: 600;
+
+  svg {
+    width: 13px;
+    height: 13px;
+  }
+}
+
+.table {
+  @include home.demo-table;
+  align-self: start;
+}
+
+.who {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.av {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .branch,
+  tbody tr {
+    animation: item-in 420ms var(--ease-out) both;
+
+    @for $i from 1 through 4 {
+      &:nth-child(#{$i}) {
+        animation-delay: 60ms + $i * 60ms;
+      }
+    }
+  }
+}
+
+@keyframes item-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}

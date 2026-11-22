@@ -1,0 +1,190 @@
+// ============================================================
+// Mixins shared by the home page sections. Only mixins, so using
+// this file in many components never duplicates CSS.
+//
+//   @use 'abstracts' as *;
+//   @use '../../styles/home';
+//   .card { @include home.reveal; }
+// ============================================================
+@use 'abstracts' as *;
+
+// Space above and below every section. Smaller on smaller screens.
+@mixin section-space {
+  padding-block: 72px;
+
+  @include up(md) {
+    padding-block: 96px;
+  }
+
+  @include up(lg) {
+    padding-block: var(--space-32);
+  }
+}
+
+// Dark green section (showcase, final call to action).
+@mixin inverse-surface {
+  background: var(--pine-900);
+  color: var(--ink-on-dark);
+}
+
+// The element fades and rises in as it scrolls into view.
+// Pure CSS: browsers without scroll timelines show it right away.
+@mixin reveal($range: entry 0% entry 35%) {
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      animation: home-reveal linear both;
+      animation-timeline: view();
+      animation-range: $range;
+    }
+  }
+
+  // Sass moves this to the top level of the component's CSS.
+  @keyframes home-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+  }
+}
+
+// Little "Illustrative data" label with a hollow dot before it.
+@mixin illustrative {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink-500);
+  font: 500 12px/16px var(--font-sans);
+
+  &::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border: 1.5px solid currentColor;
+    border-radius: 50%;
+  }
+}
+
+// Small rounded chip with an icon and a figure ("Cash 520.00").
+@mixin proof-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--paper-0);
+  color: var(--ink-700);
+  font-size: 13px;
+
+  svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  bdi {
+    color: var(--ink-900);
+    font-family: var(--font-mono);
+    font-weight: 500;
+  }
+}
+
+// Body text in Arabic needs more line height to breathe.
+@mixin arabic-body {
+  :host-context(:lang(ar)) & {
+    line-height: 1.9;
+  }
+}
+
+// Numbers inside Arabic text stay left-to-right ("−40.00", not "40.00−").
+@mixin figure {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+// ---------- Demo screens (showcase) ----------
+
+// A white app window with a big soft shadow.
+@mixin demo-window {
+  display: block;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--paper-0);
+  box-shadow: 0 30px 60px -20px rgb(0 0 0 / 50%);
+  color: var(--ink-900);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+// The window's top bar: title on the start side, extras on the end.
+@mixin demo-window-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-block-end: 1px solid var(--line);
+  background: var(--paper-50);
+
+  @include up(md) {
+    flex-wrap: nowrap;
+  }
+
+  .title {
+    font: 600 15px/20px var(--font-display);
+  }
+
+  .spacer {
+    flex: 1;
+  }
+}
+
+// A compact table inside a demo window. It is built to fit its box:
+// text cells may wrap onto two lines; numbers and badges never wrap.
+// overflow-x: auto is only a safety net for very narrow boxes.
+@mixin demo-table {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+  }
+
+  th {
+    padding: 9px 10px;
+    background: var(--paper-100);
+    color: var(--ink-500);
+    font-size: 11.5px;
+    font-weight: 600;
+    text-align: start;
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 9px 10px;
+    border-block-start: 1px solid var(--line);
+    line-height: 18px;
+  }
+
+  // Numbers line up on the end side; only they use the mono font.
+  .num {
+    text-align: end;
+  }
+
+  td.num {
+    font-family: var(--font-mono);
+    white-space: nowrap;
+  }
+
+  .strong {
+    font-weight: 600;
+  }
+
+  .vd-badge {
+    white-space: nowrap;
+  }
+}

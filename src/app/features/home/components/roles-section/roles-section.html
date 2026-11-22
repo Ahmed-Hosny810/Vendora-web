@@ -1,0 +1,36 @@
+<section class="sec" id="roles" aria-labelledby="roles-title" *transloco="let t; read: 'home'">
+  <div class="vd-container">
+    <app-section-heading
+      class="head"
+      headingId="roles-title"
+      [overline]="t('team.overline')"
+      [title]="t('team.title')"
+      [highlight]="t('team.highlight')"
+      [lead]="t('team.lead')"
+    />
+
+    <div class="badges">
+      @for (role of roles; track role) {
+        <article class="badge" [attr.data-role]="role">
+          <div class="badge__top">
+            <!-- The slot a lanyard clip would go through. -->
+            <span class="badge__slot" aria-hidden="true"></span>
+            <h3 class="badge__role">{{ t('roles.' + role) }}</h3>
+            <p class="badge__sub">{{ t('team.' + role + '.sub') }}</p>
+          </div>
+          <ul class="badge__body">
+            @for (item of t('team.' + role + '.items'); track $index) {
+              <li>
+                <svg lucideCheck aria-hidden="true"></svg><span>{{ item }}</span>
+              </li>
+            }
+          </ul>
+          <div class="badge__foot">
+            <span>{{ t('team.access') }}</span>
+            <span>{{ t('team.' + role + '.scope') }}</span>
+          </div>
+        </article>
+      }
+    </div>
+  </div>
+</section>

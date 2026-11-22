@@ -1,0 +1,107 @@
+@use 'abstracts' as *;
+@use '../../../styles/home';
+
+// Text above the screen; side by side (4 : 8) on desktop.
+:host {
+  display: grid;
+  gap: 32px;
+  align-items: center;
+
+  @include up(lg) {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: 56px;
+  }
+}
+
+.copy {
+  display: grid;
+  gap: 18px;
+  max-width: 640px;
+
+  h3 {
+    margin: 0;
+    font: 700 30px/1.05 var(--font-display);
+    letter-spacing: -0.03em;
+
+    @include up(md) {
+      font-size: 40px;
+    }
+  }
+
+  p {
+    @include home.arabic-body;
+    margin: 0;
+    color: var(--ink-on-dark-muted);
+    font-size: 17px;
+    line-height: 28px;
+  }
+}
+
+.ticks {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1fr);
+    gap: 10px;
+    font-size: 15px;
+    line-height: 22px;
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+    margin-block-start: 1px;
+    color: var(--butter-300);
+    stroke-width: 2.2;
+  }
+}
+
+// Note with a yellow line on its start side.
+.copy .note {
+  padding-inline-start: 12px;
+  border-inline-start: 2px solid var(--butter-300);
+}
+
+.illus {
+  @include home.illustrative;
+  color: var(--ink-on-dark-muted);
+}
+
+// Content slides in every time this tab is opened
+// (a hidden element restarts its animation when shown again).
+@media (prefers-reduced-motion: no-preference) {
+  .copy,
+  .screen {
+    animation: panel-in var(--duration-slow) var(--ease-out) both;
+  }
+
+  .screen {
+    animation-delay: 60ms;
+  }
+
+  .ticks li {
+    animation: panel-in 420ms var(--ease-out) both;
+
+    @for $i from 1 through 5 {
+      &:nth-child(#{$i}) {
+        animation-delay: 60ms + $i * 60ms;
+      }
+    }
+  }
+}
+
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+:host-context(:lang(ar)) h3 {
+  letter-spacing: 0;
+}

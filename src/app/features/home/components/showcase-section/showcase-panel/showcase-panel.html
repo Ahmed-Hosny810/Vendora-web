@@ -1,0 +1,19 @@
+<div class="copy">
+  <h3>{{ title() }}</h3>
+  <p>{{ text() }}</p>
+  <ul class="ticks">
+    @for (bullet of bullets(); track $index) {
+      <li>
+        <svg lucideCheck aria-hidden="true"></svg><span>{{ bullet }}</span>
+      </li>
+    }
+  </ul>
+  @if (note(); as note) {
+    <p class="note">{{ note }}</p>
+  }
+  <span class="illus">{{ illustrative() }}</span>
+</div>
+
+<div class="screen">
+  <ng-content />
+</div>

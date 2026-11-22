@@ -1,0 +1,45 @@
+<footer class="ftr" *transloco="let t">
+  <div class="vd-container">
+    <div class="ftr__grid">
+      <div class="ftr__brand">
+        <a routerLink="/" [attr.aria-label]="t('site.homeLabel')"><vd-wordmark /></a>
+        <p>{{ t('site.footer.tagline') }}</p>
+      </div>
+
+      @for (column of columns; track column.title) {
+        <nav class="ftr__col" [attr.aria-labelledby]="'ftr-' + $index">
+          <h2 class="ftr__title" [id]="'ftr-' + $index">{{ t(column.title) }}</h2>
+          <ul>
+            @for (link of column.links; track link.label) {
+              <li>
+                @if (link.route) {
+                  <a [routerLink]="link.route" [fragment]="link.fragment">{{ t(link.label) }}</a>
+                } @else {
+                  <a [href]="link.href" target="_blank" rel="noopener">{{ t(link.label) }}</a>
+                }
+              </li>
+            }
+          </ul>
+        </nav>
+      }
+    </div>
+
+    <div class="ftr__bottom">
+      <span>{{ t('site.footer.copyright', { year }) }}</span>
+
+      <!-- Two buttons; the current language is "pressed". -->
+      <div class="langsw" role="group" [attr.aria-label]="t('site.footer.language')">
+        @for (code of languages; track code) {
+          <button
+            type="button"
+            [attr.lang]="code"
+            [attr.aria-pressed]="code === lang()"
+            (click)="code !== lang() && languageChange.emit(code)"
+          >
+            {{ t('language.' + code) }}
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</footer>

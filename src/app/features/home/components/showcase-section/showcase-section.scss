@@ -1,0 +1,175 @@
+@use 'abstracts' as *;
+@use '../../styles/home';
+
+.sec {
+  @include home.section-space;
+  @include home.inverse-surface;
+}
+
+.head {
+  @include home.reveal;
+  margin-block-end: 36px;
+
+  @include up(md) {
+    margin-block-end: 56px;
+  }
+}
+
+// Row of half-circles hanging under the section.
+.awning {
+  height: 14px;
+  background: radial-gradient(circle at 14px 0, var(--pine-900) 13.5px, transparent 14px) 0 0 / 28px
+    14px repeat-x;
+}
+
+// ---------- Tabs ----------
+.tabs-wrap {
+  position: relative;
+  margin-block-end: 28px;
+
+  @include up(md) {
+    margin-block-end: 40px;
+  }
+}
+
+// Four equal columns in a pill. On phones it scrolls sideways
+// and runs edge to edge.
+.tabs {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+  overflow-x: auto;
+  margin-inline: calc(var(--space-4) * -1);
+  padding: 6px var(--space-4);
+  border-block: 1px solid rgb(247 245 239 / 18%);
+  background: rgb(247 245 239 / 7%);
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @include up(md) {
+    width: min(760px, 100%);
+    margin-inline: 0;
+    padding: 6px;
+    border: 1px solid rgb(247 245 239 / 18%);
+    border-radius: var(--radius-pill);
+  }
+}
+
+// Slides to the selected tab: --i is the tab's position (0–3).
+.tabs__pill {
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  inset-inline-start: var(--space-4);
+  width: 150px;
+  border-radius: var(--radius-pill);
+  background: var(--butter-300);
+  transform: translateX(calc(var(--i, 0) * 100%));
+  transition: transform var(--duration-slow) var(--ease-in-out);
+  pointer-events: none;
+
+  // In Arabic, "next" is to the left.
+  :host-context([dir='rtl']) & {
+    transform: translateX(calc(var(--i, 0) * -100%));
+  }
+
+  @include up(md) {
+    inset-inline-start: 6px;
+    width: calc((100% - 12px) / 4);
+  }
+}
+
+.tab {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--ink-on-dark-muted);
+  font: 600 14px/1 var(--font-sans);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color var(--duration-base) var(--ease-out);
+
+  @include up(md) {
+    min-height: 46px;
+    padding: 0 16px;
+    font-size: 15px;
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  @include hover {
+    color: var(--ink-on-dark);
+  }
+
+  &[aria-selected='true'] {
+    color: var(--ink-900);
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+    outline-color: var(--focus-ring-inverse);
+  }
+}
+
+// Phones: a fading arrow at the end of the tab row.
+.tabs__more {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  inset-inline-end: calc(var(--space-4) * -1);
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 72px;
+  padding-inline-start: 18px;
+  border: 0;
+  background: linear-gradient(to right, rgb(1 62 55 / 0%), var(--pine-900) 55%);
+  color: var(--butter-300);
+  cursor: pointer;
+  transition: opacity var(--duration-base) var(--ease-out);
+
+  :host-context([dir='rtl']) & {
+    background: linear-gradient(to left, rgb(1 62 55 / 0%), var(--pine-900) 55%);
+  }
+
+  svg {
+    width: 26px;
+    height: 26px;
+    stroke-width: 2.4;
+  }
+
+  .scrolled & {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  @include up(md) {
+    display: none;
+  }
+}
+
+// [hidden] must win over the panel's own display: grid.
+app-showcase-panel[hidden] {
+  display: none;
+}
+
+app-showcase-panel:focus-visible {
+  @include focus-ring(6px);
+  outline-color: var(--focus-ring-inverse);
+  border-radius: var(--radius-md);
+}

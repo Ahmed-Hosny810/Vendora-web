@@ -1,0 +1,33 @@
+<section
+  class="sec"
+  id="how-it-works"
+  aria-labelledby="how-title"
+  *transloco="let t; read: 'home.how'"
+>
+  <div class="vd-container">
+    <app-section-heading
+      class="head"
+      headingId="how-title"
+      [overline]="t('overline')"
+      [title]="t('title')"
+      [lead]="t('lead')"
+    />
+
+    <ol class="steps">
+      @for (step of steps; track step.key; let n = $index) {
+        <li class="step">
+          <span class="step__n" aria-hidden="true">{{ n + 1 }}</span>
+          <!-- Screen readers hear "Step 1:" since the big number is hidden from them. -->
+          <h3>
+            <span class="vd-sr">{{ t('step', { n: n + 1 }) }} </span>{{ t(step.key + '.title') }}
+          </h3>
+          <p>{{ t(step.key + '.text') }}</p>
+          <span class="chip"
+            ><svg [lucideIcon]="step.icon" aria-hidden="true"></svg
+            >{{ t(step.key + '.chip') }}</span
+          >
+        </li>
+      }
+    </ol>
+  </div>
+</section>

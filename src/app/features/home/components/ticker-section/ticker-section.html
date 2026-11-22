@@ -1,0 +1,28 @@
+<div class="ticker" [class.paused]="paused()" *transloco="let t; read: 'home.ticker'">
+  <button
+    class="ticker__btn"
+    type="button"
+    [attr.aria-pressed]="paused()"
+    [attr.aria-label]="t(paused() ? 'play' : 'pause')"
+    (click)="togglePause()"
+  >
+    @if (paused()) {
+      <svg lucidePlay aria-hidden="true"></svg>
+    } @else {
+      <svg lucidePause aria-hidden="true"></svg>
+    }
+  </button>
+
+  <!-- Screen readers skip the moving copy; the features are listed in the sections below. -->
+  <div class="ticker__view" aria-hidden="true">
+    <!-- The list is drawn twice, back to back. The track moves by exactly
+         half its width, then jumps back: the jump can't be seen. -->
+    <div class="ticker__track">
+      @for (copy of [1, 2]; track copy) {
+        @for (item of t('items'); track $index) {
+          <span class="ticker__item"><svg lucideTag></svg>{{ item }}</span>
+        }
+      }
+    </div>
+  </div>
+</div>
