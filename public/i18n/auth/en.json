@@ -1,0 +1,227 @@
+{
+  "homeLabel": "Vendora home",
+  "backHome": "Back to home",
+  "copyright": "© {{year}} Vendora",
+  "language": "Language",
+  "side": {
+    "signIn": {
+      "overline": "Welcome back",
+      "title": "Open your",
+      "highlight": "shift.",
+      "lead": "Sign in to sell, check stock and follow every branch."
+    },
+    "register": {
+      "overline": "New here?",
+      "title": "Your account starts with a",
+      "highlight": "receipt.",
+      "lead": "Create your Vendora account. You’ll set up your business right after you verify your email."
+    },
+    "verify": {
+      "overline": "Almost there",
+      "title": "One more",
+      "highlight": "stamp.",
+      "lead": "Verify your email to activate your account, then set up your business."
+    },
+    "forgot": {
+      "overline": "Password help",
+      "title": "It happens at every",
+      "highlight": "counter.",
+      "lead": "Enter your email and we’ll send a reset link if there’s an account for it."
+    },
+    "reset": {
+      "overline": "Password help",
+      "title": "Fresh start, same",
+      "highlight": "shop.",
+      "lead": "Choose a new password for your Vendora account."
+    },
+    "external": {
+      "overline": "{{provider}} sign-in",
+      "title": "Hold on, we’re",
+      "highlight": "connecting.",
+      "lead": "You’ll come straight back to Vendora after {{provider}} confirms it’s you."
+    }
+  },
+  "providers": {
+    "google": "Google",
+    "facebook": "Facebook"
+  },
+  "social": {
+    "or": "or continue with",
+    "google": "Continue with Google",
+    "facebook": "Continue with Facebook"
+  },
+  "password": {
+    "show": "Show password",
+    "hide": "Hide password"
+  },
+  "signIn": {
+    "title": "Sign in",
+    "sub": "Use the email you registered with.",
+    "legend": "Sign-in details",
+    "email": "Email address",
+    "emailPlaceholder": "name@example.com",
+    "password": "Password",
+    "forgot": "Forgot password?",
+    "submit": "Sign in",
+    "submitting": "Signing you in…",
+    "noAccount": "Don’t have an account?",
+    "createAccount": "Create account",
+    "errors": {
+      "emailRequired": "Enter your email address.",
+      "emailInvalid": "Enter an email address like name@example.com.",
+      "passwordRequired": "Enter your password."
+    },
+    "banner": {
+      "wrongTitle": "Email or password is incorrect.",
+      "wrongText": "Check them and try again.",
+      "verifyTitle": "Verify your email to sign in.",
+      "verifyText": "Open the link we sent to {{email}} when you created your account. Check your spam folder too.",
+      "inactiveTitle": "This account is inactive.",
+      "inactiveText": "Ask your business owner to reactivate it, or",
+      "contactSupport": "contact support",
+      "cancelledTitle": "{{provider}} sign-in was cancelled.",
+      "cancelledText": "Try again, or sign in with your email.",
+      "unavailableTitle": "{{provider}} sign-in isn’t available right now.",
+      "unavailableText": "Try again later, or sign in with your email.",
+      "noEmailTitle": "{{provider}} didn’t share your email address.",
+      "noEmailText": "Allow email access in {{provider}} and try again, or sign in with your email.",
+      "conflictTitle": "We couldn’t sign you in with {{provider}}.",
+      "serverMessage": "Message from Vendora: “{{message}}”"
+    },
+    "redirect": {
+      "title": "Taking you to {{provider}}…",
+      "text": "Sign in on {{provider}}’s page. Vendora never sees your {{provider}} password.",
+      "cancel": "Cancel"
+    }
+  },
+  "backToSignIn": "Back to sign in",
+  "forgot": {
+    "title": "Forgot your password?",
+    "sub": "We’ll email you a link to set a new one.",
+    "legend": "Reset request",
+    "email": "Email address",
+    "emailPlaceholder": "name@example.com",
+    "submit": "Send reset link",
+    "sending": "Sending the link…",
+    "sentTitle": "Check your inbox",
+    "sentText": "If an account exists for this email, you’ll receive a password reset link.",
+    "errors": {
+      "emailRequired": "Enter your email address.",
+      "emailInvalid": "Enter an email address like name@example.com."
+    }
+  },
+  "checkEmail": {
+    "printer": "Verification sent",
+    "kind": "VERIFICATION · Sent",
+    "stampWord": "Sent",
+    "stampSub": "Verification link",
+    "title": "Check your email",
+    "sentTo": "We sent a verification link to",
+    "sentEnd": ". Open it to activate your Vendora account.",
+    "sentGeneric": "We sent you a verification link. Open it to activate your Vendora account.",
+    "steps": {
+      "created": "Account created",
+      "open": "Open the link in your email",
+      "setup": "Set up your business"
+    },
+    "spam": "Can’t find it? Check your spam or promotions folder.",
+    "done": "DONE"
+  },
+  "verifyEmail": {
+    "checkingPrinter": "Checking your link…",
+    "checkingKind": "VERIFICATION · Checking",
+    "checkingTitle": "Checking your link",
+    "verifiedPrinter": "Verified",
+    "verifiedKind": "VERIFICATION · Complete",
+    "verifiedStamp": "Verified",
+    "verifiedStampSub": "Account active",
+    "verifiedTitle": "Email verified",
+    "verifiedText": "Your account is active. Sign in to set up your business, choose a plan and add your team.",
+    "continue": "Continue to sign in",
+    "next": "NEXT",
+    "invalidPrinter": "Link not valid",
+    "invalidKind": "VERIFICATION · Not valid",
+    "void": "Void",
+    "voidSub": "Link not valid",
+    "invalidTitle": "This link has expired or isn’t valid",
+    "invalidText": "Verification links work once and expire after a while. Sign in with your email and password to continue.",
+    "return": "RETURN"
+  },
+  "reset": {
+    "printing": "Printing a reset slip…",
+    "saving": "Saving your password…",
+    "kind": "PASSWORD RESET · For {{email}}",
+    "kindGeneric": "PASSWORD RESET",
+    "title": "Set a new password",
+    "legend": "New password",
+    "password": "New password",
+    "confirm": "Confirm new password",
+    "submit": "Save new password",
+    "confirmTag": "CONFIRM",
+    "saveBusy": "Saving",
+    "successPrinter": "Updated",
+    "successKind": "PASSWORD RESET · Complete",
+    "stampWord": "Updated",
+    "stampSub": "New password saved",
+    "successTitle": "Password updated",
+    "successText": "Your new password is ready. Sign in with it to continue.",
+    "invalidPrinter": "Link not valid",
+    "invalidKind": "PASSWORD RESET · Not valid",
+    "invalidTitle": "This reset link has expired or isn’t valid",
+    "invalidText": "Reset links work once and expire after a while. Request a new one to continue.",
+    "requestNew": "Request a new link",
+    "retry": "RETRY"
+  },
+  "register": {
+    "printing": "Printing your account…",
+    "sending": "Sending to Vendora…",
+    "approved": "Approved",
+    "receiptKind": "NEW ACCOUNT · No. 000001",
+    "title": "Create your account",
+    "legend": "Account details",
+    "name": "Full name",
+    "username": "Username",
+    "email": "Email address",
+    "emailPlaceholder": "name@example.com",
+    "password": "Password",
+    "confirm": "Confirm password",
+    "submit": "Create account",
+    "total": "TOTAL · 1 account",
+    "creating": "Creating account",
+    "processing": "PROCESSING",
+    "checkEmail": "Check your email",
+    "nextStep": "NEXT STEP",
+    "stampWord": "Approved",
+    "stampSub": "Account created",
+    "legalStart": "By creating an account you agree to Vendora’s",
+    "terms": "Terms of Service",
+    "legalAnd": "and",
+    "privacy": "Privacy Policy",
+    "legalEnd": ".",
+    "haveAccount": "Already have an account?",
+    "signIn": "Sign in",
+    "errors": {
+      "nameRequired": "Enter your full name.",
+      "usernameRequired": "Choose a username.",
+      "emailRequired": "Enter your email address.",
+      "emailInvalid": "Enter an email address like name@example.com.",
+      "passwordRequired": "Choose a password.",
+      "passwordRules": "This password doesn’t meet the requirements below.",
+      "confirmRequired": "Enter your password again.",
+      "mismatch": "Passwords don’t match.",
+      "usernameTaken": "This username is taken. Try another one.",
+      "emailTaken": "An account already uses this email.",
+      "signInInstead": "Sign in instead"
+    },
+    "rules": {
+      "caption": "Your password still needs",
+      "length": "At least 8 characters",
+      "upper": "One uppercase letter (A–Z)",
+      "lower": "One lowercase letter (a–z)",
+      "number": "One number (0–9)",
+      "special": "Special characters are allowed but not required.",
+      "done": "Done",
+      "missing": "Missing"
+    }
+  }
+}

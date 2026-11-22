@@ -1,0 +1,50 @@
+<app-receipt-printer
+  led="ok"
+  [title]="t('printer')"
+  [stamp]="stamp()"
+  *transloco="let t; read: 'auth.checkEmail'"
+>
+  <div class="lines">
+    <div class="head" aria-hidden="true">
+      <b>vendora</b>
+      <span>{{ t('kind') }}</span>
+    </div>
+
+    <div class="center">
+      <span class="big-icon fly" aria-hidden="true"><svg lucideMail></svg></span>
+      <h2 class="title">{{ t('title') }}</h2>
+      <p>
+        @if (email()) {
+          {{ t('sentTo') }} <strong class="email">{{ email() }}</strong
+          ><span>{{ t('sentEnd') }}</span>
+        } @else {
+          {{ t('sentGeneric') }}
+        }
+      </p>
+    </div>
+
+    <hr class="rule" />
+
+    <ul class="steps">
+      @for (step of steps; track step.key) {
+        <li [class.done]="step.done">
+          <span>{{ t('steps.' + step.key) }}</span>
+          @if (step.done) {
+            <svg lucideCheck aria-hidden="true"></svg>
+          } @else {
+            <svg lucideMinus aria-hidden="true"></svg>
+          }
+        </li>
+      }
+    </ul>
+
+    <p class="hint">{{ t('spam') }}</p>
+
+    <a class="total" routerLink="/sign-in">
+      <span>
+        <ng-container *transloco="let a; read: 'auth'">{{ a('backToSignIn') }}</ng-container>
+      </span>
+      <small>{{ t('done') }}</small>
+    </a>
+  </div>
+</app-receipt-printer>

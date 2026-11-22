@@ -1,91 +1,98 @@
-<section class="sec" id="product" aria-labelledby="showcase-title" *transloco="let t; read: 'home'">
-  <div class="vd-container">
-    <app-section-heading
-      class="head"
-      headingId="showcase-title"
-      inverse
-      [overline]="t('showcase.overline')"
-      [title]="t('showcase.title')"
-      [lead]="t('showcase.lead')"
-    />
+<!-- Everything (awning included) waits for the text to load, so nothing
+     shows up early in the wrong place. -->
+<ng-container *transloco="let t; read: 'home'">
+  <section class="sec" id="product" aria-labelledby="showcase-title">
+    <div class="vd-container">
+      <app-section-heading
+        class="head"
+        headingId="showcase-title"
+        inverse
+        [overline]="t('showcase.overline')"
+        [title]="t('showcase.title')"
+        [lead]="t('showcase.lead')"
+      />
 
-    <div class="tabs-wrap" [class.scrolled]="scrolled()">
-      <div
-        #tabList
-        class="tabs"
-        role="tablist"
-        [attr.aria-label]="t('showcase.tabsLabel')"
-        (keydown)="onKeydown($event)"
-        (scroll)="onTabsScroll()"
-      >
-        <!-- The yellow pill that slides behind the selected tab. -->
-        <span class="tabs__pill" [style.--i]="selectedIndex()" aria-hidden="true"></span>
+      <div class="tabs-wrap" [class.scrolled]="scrolled()">
+        <div
+          #tabList
+          class="tabs"
+          role="tablist"
+          [attr.aria-label]="t('showcase.tabsLabel')"
+          (keydown)="onKeydown($event)"
+          (scroll)="onTabsScroll()"
+        >
+          <!-- The yellow pill that slides behind the selected tab. -->
+          <span class="tabs__pill" [style.--i]="selectedIndex()" aria-hidden="true"></span>
 
-        @for (tab of tabs; track tab.key) {
-          <button
-            class="tab"
-            type="button"
-            role="tab"
-            [id]="'tab-' + tab.key"
-            [attr.aria-controls]="'panel-' + tab.key"
-            [attr.aria-selected]="selected() === tab.key"
-            [tabIndex]="selected() === tab.key ? 0 : -1"
-            (click)="select(tab.key)"
-          >
-            <svg [lucideIcon]="tab.icon" aria-hidden="true"></svg>
-            {{ t('showcase.' + tab.key + '.tab') }}
-          </button>
-        }
+          @for (tab of tabs; track tab.key) {
+            <button
+              class="tab"
+              type="button"
+              role="tab"
+              [id]="'tab-' + tab.key"
+              [attr.aria-controls]="'panel-' + tab.key"
+              [attr.aria-selected]="selected() === tab.key"
+              [tabIndex]="selected() === tab.key ? 0 : -1"
+              (click)="select(tab.key)"
+            >
+              <svg [lucideIcon]="tab.icon" aria-hidden="true"></svg>
+              {{ t('showcase.' + tab.key + '.tab') }}
+            </button>
+          }
+        </div>
+
+        <!-- Phones only: hint that more tabs are hidden to the side. Mouse/touch only. -->
+        <button
+          class="tabs__more"
+          type="button"
+          tabindex="-1"
+          aria-hidden="true"
+          (click)="showMoreTabs()"
+        >
+          <svg lucideChevronRight class="vd-flip-rtl"></svg>
+        </button>
       </div>
 
-      <!-- Phones only: hint that more tabs are hidden to the side. Mouse/touch only. -->
-      <button
-        class="tabs__more"
-        type="button"
-        tabindex="-1"
-        aria-hidden="true"
-        (click)="showMoreTabs()"
-      >
-        <svg lucideChevronRight class="vd-flip-rtl"></svg>
-      </button>
-    </div>
-
-    <!-- All four panels exist; only the selected one is visible.
+      <!-- All four panels exist; only the selected one is visible.
          $any(): t() is typed as returning text, but "bullets" holds a list. -->
-    @for (tab of tabs; track tab.key) {
-      <app-showcase-panel
-        role="tabpanel"
-        tabindex="0"
-        [id]="'panel-' + tab.key"
-        [attr.aria-labelledby]="'tab-' + tab.key"
-        [hidden]="selected() !== tab.key"
-        [title]="t('showcase.' + tab.key + '.tab')"
-        [text]="t('showcase.' + tab.key + '.text')"
-        [bullets]="$any(t('showcase.' + tab.key + '.bullets'))"
-        [note]="tab.key === 'pos' ? t('showcase.pos.note') : undefined"
-        [illustrative]="t('showcase.illustrative')"
-      >
-        @switch (tab.key) {
-          @case ('pos') {
-            <app-pos-screen role="img" [attr.aria-label]="t('showcase.pos.screenLabel')" />
+      @for (tab of tabs; track tab.key) {
+        <app-showcase-panel
+          role="tabpanel"
+          tabindex="0"
+          [id]="'panel-' + tab.key"
+          [attr.aria-labelledby]="'tab-' + tab.key"
+          [hidden]="selected() !== tab.key"
+          [title]="t('showcase.' + tab.key + '.tab')"
+          [text]="t('showcase.' + tab.key + '.text')"
+          [bullets]="$any(t('showcase.' + tab.key + '.bullets'))"
+          [note]="tab.key === 'pos' ? t('showcase.pos.note') : undefined"
+          [illustrative]="t('showcase.illustrative')"
+        >
+          @switch (tab.key) {
+            @case ('pos') {
+              <app-pos-screen role="img" [attr.aria-label]="t('showcase.pos.screenLabel')" />
+            }
+            @case ('inventory') {
+              <app-inventory-screen
+                role="img"
+                [attr.aria-label]="t('showcase.inventory.screenLabel')"
+              />
+            }
+            @case ('reports') {
+              <app-reports-screen
+                role="img"
+                [attr.aria-label]="t('showcase.reports.screenLabel')"
+              />
+            }
+            @case ('team') {
+              <app-team-screen role="img" [attr.aria-label]="t('showcase.team.screenLabel')" />
+            }
           }
-          @case ('inventory') {
-            <app-inventory-screen
-              role="img"
-              [attr.aria-label]="t('showcase.inventory.screenLabel')"
-            />
-          }
-          @case ('reports') {
-            <app-reports-screen role="img" [attr.aria-label]="t('showcase.reports.screenLabel')" />
-          }
-          @case ('team') {
-            <app-team-screen role="img" [attr.aria-label]="t('showcase.team.screenLabel')" />
-          }
-        }
-      </app-showcase-panel>
-    }
-  </div>
-</section>
+        </app-showcase-panel>
+      }
+    </div>
+  </section>
 
-<!-- Scalloped bottom edge, like an awning. -->
-<div class="awning" aria-hidden="true"></div>
+  <!-- Scalloped bottom edge, like an awning. -->
+  <div class="awning" aria-hidden="true"></div>
+</ng-container>

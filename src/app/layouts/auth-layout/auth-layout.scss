@@ -1,0 +1,55 @@
+@use 'abstracts' as *;
+
+// Phone/tablet: panel on top, form below.
+// Desktop (≥1024): panel 5 parts | form 7 parts, side by side.
+.au {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 100dvh;
+  overflow-x: clip;
+  background: var(--paper-50);
+
+  @include up(lg) {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  }
+}
+
+.au__stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  align-items: start;
+  min-width: 0;
+  padding: 36px 14px 48px;
+
+  @include up(md) {
+    padding: 48px 32px 56px;
+  }
+
+  @include up(lg) {
+    align-items: center;
+    padding: 56px 40px;
+  }
+
+  // Faint dot grid behind the form (desktop only), fading to the edges.
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    display: none;
+    background-image: radial-gradient(var(--line-strong) 1px, transparent 1.3px);
+    background-size: 24px 24px;
+    opacity: 0.35;
+    mask-image: radial-gradient(ellipse 60% 60% at 50% 45%, #000 20%, transparent 75%);
+    pointer-events: none;
+
+    @include up(lg) {
+      display: block;
+    }
+  }
+
+  > * {
+    position: relative;
+  }
+}

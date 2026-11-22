@@ -276,17 +276,28 @@ a:hover .nudge {
 }
 
 // ---------- Entrance animation (once, on load) ----------
+// One calm sequence, top to bottom: badge → title lines → text →
+// buttons → checks. Each step starts ~150ms after the one before,
+// so the eye can follow it. The demo on the side waits until the
+// title is in (see pos-demo.scss).
+//
+// $soft starts quickly and slows down gently at the end, with no
+// bounce. Long durations + soft easing = smooth, not "fast".
+$soft: cubic-bezier(0.22, 1, 0.36, 1);
+
 @media (prefers-reduced-motion: no-preference) {
   .rise {
-    animation: rise var(--duration-reveal) var(--ease-out) both;
+    animation: rise 900ms $soft both;
   }
 
+  // Title lines rise a little and fade in (no hard "whip" from below).
   .ln__in {
-    animation: line-up 800ms var(--ease-out) both;
+    animation: line-up 1000ms $soft both;
   }
 
+  // The underline draws once the title has settled.
   .hl {
-    animation: mark 700ms var(--ease-out) 700ms both;
+    animation: mark 900ms $soft 1300ms both;
   }
 
   .kicker__dot::after {
@@ -295,45 +306,50 @@ a:hover .nudge {
     inset: -3px;
     border: 2px solid var(--success-fg);
     border-radius: 50%;
-    animation: ping 2.4s var(--ease-out) 1.2s 3 both;
+    animation: ping 2.4s var(--ease-out) 1.6s 3 both;
   }
 
-  // Staggered start: each step waits a bit longer.
+  // When each piece starts.
   .d1 {
-    animation-delay: 60ms;
+    animation-delay: 100ms; // badge
   }
 
   .d2 {
-    animation-delay: 140ms;
+    animation-delay: 250ms; // title line 1
   }
 
   .d3 {
-    animation-delay: 220ms;
+    animation-delay: 400ms; // title line 2
   }
 
   .d4 {
-    animation-delay: 320ms;
+    animation-delay: 550ms; // title line 3
   }
 
   .d5 {
-    animation-delay: 420ms;
+    animation-delay: 750ms; // paragraph
   }
 
   .d6 {
-    animation-delay: 520ms;
+    animation-delay: 900ms; // buttons
+  }
+
+  .d7 {
+    animation-delay: 1050ms; // checks
   }
 }
 
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(22px);
+    transform: translateY(16px);
   }
 }
 
 @keyframes line-up {
   from {
-    transform: translateY(105%);
+    opacity: 0;
+    transform: translateY(45%);
   }
 }
 

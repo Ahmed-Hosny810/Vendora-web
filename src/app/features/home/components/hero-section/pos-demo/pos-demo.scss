@@ -399,66 +399,72 @@
 }
 
 // ============================================================
-// The animation, step by step (delays are from the start):
-//   0.15s terminal glides in     0.9s branch card pops
-//   1.5s  a product tile is tapped, 1.75s its line appears
-//   1.9s  the total changes       2.5s change due shows
-//   2.6s  "Complete sale" pressed 2.9s receipt prints
-//   3.7s  low-stock alert drops and bounces
+// The animation, step by step (delays are from page open).
+// It starts after the headline is in, and each step has time to
+// be seen before the next one:
+//   0.6s terminal fades up        1.6s branch card fades in
+//   2.6s a product tile is tapped, 2.9s its line appears
+//   3.2s the total changes        3.9s change due shows
+//   4.3s "Complete sale" pressed  4.8s receipt prints
+//   6.0s low-stock alert drops in and bounces
+// $soft = fast start, gentle stop, no bounce.
 // ============================================================
+$soft: cubic-bezier(0.22, 1, 0.36, 1);
+
 @media (prefers-reduced-motion: no-preference) {
   .term {
-    animation: term-in 1200ms cubic-bezier(0.16, 1, 0.3, 1) 150ms both;
+    animation: term-in 1400ms $soft 600ms both;
   }
 
   .branch {
     animation:
-      pop 520ms var(--ease-pop) 900ms both,
-      bob 6s ease-in-out 2.2s 4 alternate;
+      float-in 900ms $soft 1600ms both,
+      bob 6s ease-in-out 2.5s 4 alternate;
   }
 
   .bars i {
-    animation: grow-x 700ms var(--ease-out) 1100ms both;
+    animation: grow-x 900ms $soft 1900ms both;
   }
 
   .tap {
-    animation: tap 360ms var(--ease-out) 1500ms both;
+    animation: tap 500ms ease-in-out 2600ms both;
   }
 
   .line--new {
-    animation: line-in 460ms var(--ease-pop) 1750ms both;
+    animation: line-in 700ms $soft 2900ms both;
   }
 
   .grand__fig .old {
-    animation: fade-out 200ms linear 1850ms both;
+    animation: fade-out 300ms ease-in-out 3150ms both;
   }
 
   .grand__fig .new {
     animation:
-      fade-in 260ms var(--ease-out) 1900ms both,
-      bump 500ms var(--ease-pop) 1900ms both;
+      fade-in 400ms $soft 3200ms both,
+      bump 700ms $soft 3200ms both;
   }
 
   .change-due {
-    animation: fade-in 300ms var(--ease-out) 2500ms both;
+    animation: fade-in 500ms $soft 3900ms both;
   }
 
   .complete {
-    animation: press 380ms var(--ease-out) 2600ms both;
+    animation: press 500ms ease-in-out 4300ms both;
   }
 
   .receipt {
     animation:
-      print 900ms var(--ease-out) 2900ms both,
-      bob 8s ease-in-out 4s 4 alternate;
+      print 1300ms $soft 4800ms both,
+      bob 8s ease-in-out 6.1s 4 alternate;
   }
 
+  // Falls in and bounces lower and lower, like a ball.
   .alert {
-    animation: ball-drop 1500ms linear 3700ms both;
+    animation: ball-drop 1500ms linear 6000ms both;
   }
 
   .alert__icon {
-    animation: alarm 600ms var(--ease-out) 4300ms 2 both;
+    animation: alarm 600ms var(--ease-out) 6600ms 2 both;
   }
 
   // Nothing moves until the picture is on screen.
@@ -474,27 +480,34 @@
   }
 }
 
+// Becomes solid early (by 30%) and keeps gliding up after that,
+// so you never see a half-transparent "ghost" of the terminal.
 @keyframes term-in {
   0% {
     opacity: 0;
-    transform: translateY(56px) scale(0.985);
+    transform: translateY(32px);
   }
 
-  35% {
+  30% {
     opacity: 1;
   }
 }
 
-@keyframes pop {
-  from {
+// Same idea: solid quickly, so the terminal never shows through the card.
+@keyframes float-in {
+  0% {
     opacity: 0;
-    transform: translateY(10px) scale(0.92);
+    transform: translateY(12px);
+  }
+
+  25% {
+    opacity: 1;
   }
 }
 
 @keyframes bob {
   to {
-    translate: 0 -8px;
+    translate: 0 -6px;
   }
 }
 
@@ -504,9 +517,10 @@
   }
 }
 
+// The tile is pressed in a little, then shows a green ring.
 @keyframes tap {
-  45% {
-    transform: scale(0.94);
+  50% {
+    transform: scale(0.96);
     box-shadow: inset 0 0 0 2px var(--pine-600);
   }
 
@@ -518,7 +532,7 @@
 @keyframes line-in {
   from {
     opacity: 0;
-    transform: translateY(-8px);
+    transform: translateY(-6px);
     background: var(--butter-100);
   }
 
@@ -539,19 +553,20 @@
   }
 }
 
+// The new total grows a touch, then settles.
 @keyframes bump {
   0% {
-    transform: scale(0.85);
+    transform: scale(0.94);
   }
 
-  60% {
-    transform: scale(1.08);
+  50% {
+    transform: scale(1.03);
   }
 }
 
 @keyframes press {
-  40% {
-    transform: scale(0.97);
+  50% {
+    transform: scale(0.98);
     background: var(--pine-900);
   }
 }
@@ -560,7 +575,7 @@
 @keyframes print {
   from {
     clip-path: inset(0 0 100% 0);
-    transform: translateY(-14px);
+    transform: translateY(-10px);
   }
 
   to {
@@ -568,13 +583,9 @@
   }
 }
 
-@keyframes alarm {
-  40% {
-    transform: scale(1.22);
-  }
-}
-
+// The alert slides down a little and fades in. No bouncing.
 // Falls in, then bounces lower and lower, like a ball.
+// It is solid almost at once (8%), so it never looks see-through.
 @keyframes ball-drop {
   0% {
     opacity: 0;
@@ -627,5 +638,12 @@
   100% {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+// The red icon pulses twice when the alert lands.
+@keyframes alarm {
+  40% {
+    transform: scale(1.22);
   }
 }

@@ -1,0 +1,131 @@
+<app-card-terminal [led]="led()" [shake]="shakes()" *transloco="let t; read: 'auth'">
+  @if (status() === 'redirecting') {
+    <!-- Leaving for Google/Facebook -->
+    <div class="center" role="status">
+      <span class="spin" aria-hidden="true"></span>
+      <h2 class="center__title">{{ t('signIn.redirect.title', { provider: providerName() }) }}</h2>
+      <p class="center__text">{{ t('signIn.redirect.text', { provider: providerName() }) }}</p>
+      <button vdButton size="lg" block type="button" (click)="cancelRedirect()">
+        {{ t('signIn.redirect.cancel') }}
+      </button>
+    </div>
+  } @else {
+    <form class="form" novalidate (submit)="onSubmit($event)">
+      <div class="head">
+        <h2>{{ t('signIn.title') }}</h2>
+        <p>{{ t('signIn.sub') }}</p>
+      </div>
+
+      @if (banner(); as banner) {
+        <div class="vd-banner vd-banner--{{ banner.tone }}" [attr.role]="banner.role">
+          @switch (banner.icon) {
+            @case ('error') {
+              <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+            }
+            @case ('mail') {
+              <svg lucideMail aria-hidden="true"></svg>
+            }
+            @case ('warning') {
+              <svg lucideTriangleExclamationPoint aria-hidden="true"></svg>
+            }
+            @default {
+              <svg lucideInfo aria-hidden="true"></svg>
+            }
+          }
+          <div class="vd-banner__body">
+            <strong>{{ t('signIn.banner.' + banner.title, { provider: providerName() }) }}</strong>
+            @if (banner.text) {
+              {{
+                t('signIn.banner.' + banner.text, {
+                  provider: providerName(),
+                  email: model().email,
+                })
+              }}
+            }
+            @if (status() === 'inactive') {
+              @if (contactUrl) {
+                <a [href]="contactUrl" target="_blank" rel="noopener">{{
+                  t('signIn.banner.contactSupport')
+                }}</a
+                >.
+              } @else {
+                {{ t('signIn.banner.contactSupport') }}.
+              }
+            }
+          </div>
+        </div>
+        @if (status() === 'externalConflict' && serverMessage()) {
+          <p class="server-note">
+            {{ t('signIn.banner.serverMessage', { message: serverMessage() }) }}
+          </p>
+        }
+      }
+
+      <fieldset [disabled]="busy()">
+        <legend class="vd-sr">{{ t('signIn.legend') }}</legend>
+
+        <div class="vd-field">
+          <label class="vd-field__label" for="signin-email">{{ t('signIn.email') }}</label>
+          <input
+            id="signin-email"
+            type="email"
+            class="vd-input vd-input--lg"
+            autocomplete="email"
+            inputmode="email"
+            [placeholder]="t('signIn.emailPlaceholder')"
+            [formField]="signInForm.email"
+            [attr.aria-invalid]="emailError() ? true : null"
+            [attr.aria-describedby]="emailError() ? 'signin-email-error' : null"
+          />
+          @if (emailError(); as error) {
+            <p id="signin-email-error" class="vd-field__error" role="alert">
+              <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+              >{{ t('signIn.errors.' + error) }}
+            </p>
+          }
+        </div>
+
+        <div class="vd-field">
+          <label class="vd-field__label" for="signin-password">{{ t('signIn.password') }}</label>
+          <app-password-input
+            inputId="signin-password"
+            autocomplete="current-password"
+            [field]="signInForm.password"
+            [invalid]="!!passwordError()"
+            [describedBy]="passwordError() ? 'signin-password-error' : null"
+          />
+          @if (passwordError(); as error) {
+            <p id="signin-password-error" class="vd-field__error" role="alert">
+              <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+              >{{ t('signIn.errors.' + error) }}
+            </p>
+          }
+        </div>
+      </fieldset>
+
+      <div class="row-end">
+        <a class="link" routerLink="/forgot-password">{{ t('signIn.forgot') }}</a>
+      </div>
+
+      <button vdButton="primary" size="lg" block type="submit" [loading]="busy()">
+        {{ t('signIn.submit') }}
+      </button>
+
+      @if (busy()) {
+        <div class="progress" role="status">
+          <div class="progress__bar"><i></i></div>
+          <span>{{ t('signIn.submitting') }}</span>
+        </div>
+      }
+    </form>
+  }
+
+  @if (status() !== 'redirecting') {
+    <div class="keys" terminal-keys>
+      <app-social-buttons variant="key" [disabled]="busy()" (choose)="continueWith($event)" />
+      <p class="foot">
+        {{ t('signIn.noAccount') }} <a routerLink="/sign-up">{{ t('signIn.createAccount') }}</a>
+      </p>
+    </div>
+  }
+</app-card-terminal>

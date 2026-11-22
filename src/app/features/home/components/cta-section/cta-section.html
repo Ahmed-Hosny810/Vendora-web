@@ -1,25 +1,29 @@
-<!-- Scalloped top edge, like an awning. -->
-<div class="awning" aria-hidden="true"></div>
+<!-- Everything (awning included) waits for the text to load, so nothing
+     shows up early in the wrong place. -->
+<ng-container *transloco="let t; read: 'home.cta'">
+  <!-- Scalloped top edge, like an awning. -->
+  <div class="awning" aria-hidden="true"></div>
 
-<section class="cta" aria-labelledby="cta-title" *transloco="let t; read: 'home.cta'">
-  @for (tag of tags; track tag) {
-    <svg class="tag tag--{{ tag }}" viewBox="0 0 28 22" aria-hidden="true">
-      <path
-        class="tag__body"
-        d="M9 1.5h15a2.5 2.5 0 0 1 2.5 2.5v14a2.5 2.5 0 0 1-2.5 2.5H9L1.5 11z"
-      />
-      <circle class="tag__hole" cx="9.5" cy="11" r="2.2" />
-    </svg>
-  }
+  <section class="cta" aria-labelledby="cta-title">
+    @for (tag of tags; track tag) {
+      <svg class="tag tag--{{ tag }}" viewBox="0 0 28 22" aria-hidden="true">
+        <path
+          class="tag__body"
+          d="M9 1.5h15a2.5 2.5 0 0 1 2.5 2.5v14a2.5 2.5 0 0 1-2.5 2.5H9L1.5 11z"
+        />
+        <circle class="tag__hole" cx="9.5" cy="11" r="2.2" />
+      </svg>
+    }
 
-  <div class="vd-container inner">
-    <h2 id="cta-title">
-      {{ t('title') }} <em>{{ t('highlight') }}</em>
-    </h2>
-    <p class="lead">{{ t('lead') }}</p>
-    <a class="button" vdButton="accent" size="lg" stamp routerLink="/sign-up">
-      {{ t('button') }}
-      <svg lucideArrowRight class="vd-flip-rtl" aria-hidden="true"></svg>
-    </a>
-  </div>
-</section>
+    <div class="vd-container inner">
+      <h2 id="cta-title">
+        {{ t('title') }} <em>{{ t('highlight') }}</em>
+      </h2>
+      <p class="lead">{{ t('lead') }}</p>
+      <a class="button" vdButton="accent" size="lg" stamp routerLink="/sign-up">
+        {{ t('button') }}
+        <svg lucideArrowRight class="vd-flip-rtl" aria-hidden="true"></svg>
+      </a>
+    </div>
+  </section>
+</ng-container>

@@ -1,0 +1,13 @@
+<div class="t2" [class.shaking]="shaking()" (animationend)="shaking.set(false)">
+  <div class="top" aria-hidden="true">
+    <span class="slot"></span>
+    <app-status-leds [state]="led()" />
+    <span class="brand">vendora</span>
+  </div>
+
+  <div class="screen">
+    <ng-content />
+  </div>
+
+  <ng-content select="[terminal-keys]" />
+</div>

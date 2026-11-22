@@ -1,0 +1,277 @@
+// ============================================================
+// Pieces of the receipt pages (register, check email, verify,
+// reset). Mixins only, so each page includes just what it uses.
+//
+//   @use '../styles/receipt';
+//   .head { @include receipt.head; }
+// ============================================================
+@use 'abstracts' as *;
+
+// "vendora / NEW ACCOUNT · No. 000001" at the top of a receipt.
+@mixin head {
+  display: grid;
+  gap: 4px;
+  font-family: var(--font-mono);
+  text-align: center;
+
+  b {
+    font: 700 24px/1 var(--font-display);
+    letter-spacing: -0.02em;
+    direction: ltr;
+  }
+
+  span {
+    color: var(--ink-500);
+    font-size: 13px;
+
+    :host-context(:lang(ar)) & {
+      font-family: var(--font-sans);
+    }
+  }
+}
+
+@mixin title {
+  margin: 0;
+  font: 700 24px/1.15 var(--font-display);
+  letter-spacing: -0.02em;
+  text-align: center;
+  text-wrap: balance;
+
+  @include up(sm) {
+    font-size: 28px;
+  }
+
+  :host-context(:lang(ar)) & {
+    letter-spacing: 0;
+    line-height: 1.4;
+  }
+}
+
+// Dashed line across the receipt.
+@mixin rule {
+  width: 100%;
+  margin: 2px 0;
+  border: 0;
+  border-top: 1.5px dashed var(--line-strong);
+}
+
+// Form fields printed on the receipt: typewriter labels, taller boxes.
+// Include once at the page level.
+@mixin fields {
+  fieldset {
+    display: grid;
+    gap: 14px;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+
+    // Faded only while sending.
+    &.busy {
+      opacity: 0.65;
+    }
+  }
+
+  .vd-field {
+    gap: 8px;
+  }
+
+  .vd-field__label {
+    color: var(--ink-700);
+    font: 600 14px/20px var(--font-mono);
+    letter-spacing: 0.02em;
+
+    :host-context(:lang(ar)) & {
+      font-family: var(--font-sans);
+      font-size: 15px;
+      letter-spacing: 0;
+    }
+  }
+
+  .vd-field__error {
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  // Plain inputs. Password boxes get the same look via size="receipt".
+  input.vd-input {
+    min-height: 58px;
+    padding-inline-start: 18px;
+    border-radius: 12px;
+    background: var(--paper-50);
+    font-size: 17px;
+  }
+
+  // Emails are always written left to right, even in Arabic.
+  input[type='email'] {
+    direction: ltr;
+
+    :host-context([dir='rtl']) & {
+      text-align: right;
+    }
+  }
+}
+
+// Underlined green link.
+@mixin link {
+  color: var(--pine-600);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+
+  &:hover {
+    color: var(--pine-700);
+  }
+}
+
+// The big dark "total" button: label on one side, small tag on the other.
+// <button class="total"><span>Create account</span><small>TOTAL · 1 account</small></button>
+@mixin total-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 62px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--pine-900);
+  box-shadow: 4px 4px 0 var(--butter-500);
+  color: var(--butter-300);
+  font: 700 18px/1 var(--font-sans);
+  text-align: start;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform var(--duration-fast),
+    box-shadow var(--duration-fast);
+
+  &:hover:not([aria-busy]) {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--butter-500);
+  }
+
+  &[aria-busy] {
+    cursor: progress;
+  }
+
+  > span {
+    white-space: nowrap;
+  }
+
+  small {
+    color: var(--ink-on-dark-muted);
+    font: 500 12px/1 var(--font-mono);
+    white-space: nowrap;
+
+    :host-context(:lang(ar)) & {
+      font-family: var(--font-sans);
+    }
+  }
+
+  // Phones: smaller so both texts fit on one line.
+  @include down(sm) {
+    min-height: 58px;
+    padding: 0 16px;
+    font-size: 16px;
+  }
+
+  // "Creating account•••" dots.
+  .dots i {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-inline-start: 4px;
+    border-radius: 50%;
+    background: var(--butter-300);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .dots i {
+      animation: dot-pulse 1s ease-in-out infinite;
+    }
+
+    .dots i:nth-child(2) {
+      animation-delay: 0.15s;
+    }
+
+    .dots i:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+  }
+
+  @keyframes dot-pulse {
+    50% {
+      opacity: 0.25;
+      transform: translateY(-2px);
+    }
+  }
+}
+
+// Centred icon + title + text (check email, verified, link expired…).
+@mixin center-box {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  padding: 10px 0;
+  text-align: center;
+
+  p {
+    max-width: 36ch;
+    margin: 0;
+    color: var(--ink-700);
+
+    :host-context(:lang(ar)) & {
+      line-height: 1.8;
+    }
+  }
+}
+
+// Round coloured circle with a big icon. Tones: butter, success, danger.
+@mixin big-icon {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--butter-300);
+  color: var(--ink-900);
+
+  svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  &.success {
+    background: var(--success-bg);
+    color: var(--success-fg);
+  }
+
+  &.danger {
+    background: var(--danger-bg);
+    color: var(--danger-fg);
+  }
+}
+
+// Each direct child appears as the paper comes out of the printer.
+@mixin print-lines($count: 11) {
+  @media (prefers-reduced-motion: no-preference) {
+    > * {
+      animation: print-line 360ms var(--ease-out) both;
+    }
+
+    @for $i from 1 through $count {
+      > :nth-child(#{$i}) {
+        animation-delay: 500ms + $i * 150ms;
+      }
+    }
+  }
+
+  @keyframes print-line {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+}

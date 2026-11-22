@@ -1,0 +1,57 @@
+<app-receipt-printer
+  [title]="printerTitle()"
+  [led]="led()"
+  [stamp]="stamp()"
+  *transloco="let t; read: 'auth.verifyEmail'"
+>
+  <div class="lines">
+    @switch (status()) {
+      @case ('checking') {
+        <div class="head" aria-hidden="true">
+          <b>vendora</b>
+          <span>{{ t('checkingKind') }}</span>
+        </div>
+        <div class="center" role="status">
+          <span class="spin" aria-hidden="true"></span>
+          <h2 class="title">{{ t('checkingTitle') }}</h2>
+        </div>
+      }
+      @case ('verified') {
+        <div class="head" aria-hidden="true">
+          <b>vendora</b>
+          <span>{{ t('verifiedKind') }}</span>
+        </div>
+        <div class="center">
+          <span class="big-icon success" aria-hidden="true"><svg lucideCheck></svg></span>
+          <h2 class="title">{{ t('verifiedTitle') }}</h2>
+          <p>{{ t('verifiedText') }}</p>
+        </div>
+        <hr class="rule" />
+        <a class="total" routerLink="/sign-in">
+          <span>{{ t('continue') }}</span>
+          <small>{{ t('next') }}</small>
+        </a>
+      }
+      @case ('invalid') {
+        <div class="head" aria-hidden="true">
+          <b>vendora</b>
+          <span>{{ t('invalidKind') }}</span>
+        </div>
+        <div class="center">
+          <span class="big-icon danger" aria-hidden="true"
+            ><svg lucideCircleExclamationPoint></svg
+          ></span>
+          <h2 class="title">{{ t('invalidTitle') }}</h2>
+          <p>{{ t('invalidText') }}</p>
+        </div>
+        <hr class="rule" />
+        <a class="total" routerLink="/sign-in">
+          <span>
+            <ng-container *transloco="let a; read: 'auth'">{{ a('backToSignIn') }}</ng-container>
+          </span>
+          <small>{{ t('return') }}</small>
+        </a>
+      }
+    }
+  </div>
+</app-receipt-printer>

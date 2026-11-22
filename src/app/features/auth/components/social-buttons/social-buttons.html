@@ -1,0 +1,12 @@
+<ng-container *transloco="let t; read: 'auth.social'">
+  <p class="or">{{ t('or') }}</p>
+  <div class="buttons">
+    @for (provider of providers; track provider.id) {
+      <button class="btn" type="button" [disabled]="disabled()" (click)="choose.emit(provider.id)">
+        <!-- Placeholder mark until the official logos are added. -->
+        <span class="mark" aria-hidden="true">{{ provider.mark }}</span>
+        {{ t(provider.id) }}
+      </button>
+    }
+  </div>
+</ng-container>

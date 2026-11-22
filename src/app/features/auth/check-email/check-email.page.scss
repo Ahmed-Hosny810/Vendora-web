@@ -1,0 +1,114 @@
+@use 'abstracts' as *;
+@use '../styles/receipt';
+
+:host {
+  display: contents;
+}
+
+.lines {
+  @include receipt.print-lines;
+  display: grid;
+  gap: 20px;
+}
+
+.head {
+  @include receipt.head;
+}
+
+.title {
+  @include receipt.title;
+}
+
+.rule {
+  @include receipt.rule;
+}
+
+.center {
+  @include receipt.center-box;
+}
+
+.big-icon {
+  @include receipt.big-icon;
+}
+
+// Email addresses read left to right, even in Arabic.
+.email {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+// "Step ........ ✓" — dotted leader between the text and the mark.
+.steps {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  color: var(--ink-500);
+  font: 500 12.5px/18px var(--font-mono);
+  list-style: none;
+
+  :host-context(:lang(ar)) & {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 20px;
+  }
+
+  li {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: end;
+    gap: 6px;
+
+    &::after {
+      content: '';
+      order: 1;
+      height: 0;
+      margin-bottom: 5px;
+      border-bottom: 1.5px dotted var(--line-strong);
+    }
+
+    &.done {
+      color: var(--ink-900);
+
+      svg {
+        color: var(--success-fg);
+      }
+    }
+  }
+
+  svg {
+    order: 2;
+    width: 14px;
+    height: 14px;
+    stroke-width: 2.6;
+  }
+}
+
+.hint {
+  margin: 0;
+  color: var(--ink-500);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.total {
+  @include receipt.total-button;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  // The envelope flies in.
+  .fly {
+    animation: fly 1600ms cubic-bezier(0.16, 1, 0.3, 1) 900ms both;
+  }
+}
+
+@keyframes fly {
+  0% {
+    opacity: 0;
+    transform: translate(-40px, 30px) rotate(-20deg);
+  }
+
+  30% {
+    opacity: 1;
+  }
+}

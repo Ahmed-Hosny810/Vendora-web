@@ -1,0 +1,56 @@
+@use 'abstracts' as *;
+@use '../styles/receipt';
+
+:host {
+  display: contents;
+}
+
+.lines {
+  @include receipt.print-lines(5);
+  display: grid;
+  gap: 20px;
+}
+
+.head {
+  @include receipt.head;
+}
+
+.title {
+  @include receipt.title;
+}
+
+.rule {
+  @include receipt.rule;
+}
+
+.center {
+  @include receipt.center-box;
+}
+
+.big-icon {
+  @include receipt.big-icon;
+}
+
+.total {
+  @include receipt.total-button;
+}
+
+.spin {
+  width: 44px;
+  height: 44px;
+  border: 4px solid var(--paper-200);
+  border-top-color: var(--pine-600);
+  border-radius: 50%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .spin {
+    animation: spin 800ms linear infinite;
+  }
+}
+
+@keyframes spin {
+  to {
+    rotate: 1turn;
+  }
+}
