@@ -89,3 +89,15 @@
   background: var(--paper-100);
   white-space: pre-wrap;
 }
+
+.kit__skeleton {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.kit__skeleton-row {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  align-items: center;
+  gap: var(--space-3);
+}

@@ -1,3 +1,4 @@
+import { Directionality } from '@angular/cdk/bidi';
 import { DOCUMENT } from '@angular/common';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { TranslocoService } from '@jsverse/transloco';
@@ -18,6 +19,7 @@ const STORAGE_KEY = 'vendora.lang';
 export class LanguageService {
   private readonly transloco = inject(TranslocoService);
   private readonly document = inject(DOCUMENT);
+  private readonly directionality = inject(Directionality);
 
   private readonly _lang = signal<AppLang>(DEFAULT_LANG);
 
@@ -47,9 +49,13 @@ export class LanguageService {
   }
 
   private applyToDocument(lang: AppLang): void {
+    const dir = RTL_LANGS.includes(lang) ? 'rtl' : 'ltr';
     const html = this.document.documentElement;
     html.lang = lang;
-    html.dir = RTL_LANGS.includes(lang) ? 'rtl' : 'ltr';
+    html.dir = dir;
+    // Angular CDK reads <html dir> only once, at startup. Tell it about the switch,
+    // so dialogs and drawers open on the correct side in Arabic.
+    this.directionality.valueSignal.set(dir);
   }
 
   /** Saved choice → browser language → default. */

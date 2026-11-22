@@ -22,7 +22,8 @@
     "loading": "Loading…",
     "optional": "Optional",
     "notifications": "Notifications",
-    "more": "More actions"
+    "more": "More actions",
+    "confirm": "Confirm"
   },
   "validation": {
     "required": "This field is required",
@@ -86,6 +87,25 @@
     "trackStockHint": "Warn me when it runs low.",
     "agree": "I agree to the terms",
     "disabledChoice": "Always on",
-    "saved": "Saved"
+    "saved": "Saved",
+    "openDialog": "Open dialog",
+    "openDrawer": "Open drawer",
+    "openConfirm": "Delete product…",
+    "dialogTitle": "Add category",
+    "categoryName": "Category name",
+    "drawerTitle": "Edit product",
+    "field": "Field",
+    "confirmTitle": "Delete this product?",
+    "confirmText": "It will be removed from all branches. This can't be undone.",
+    "toast_success": "Product saved",
+    "toast_info": "Receipt sent to the customer",
+    "toast_warning": "Low stock: Latte cups",
+    "toastErrorTitle": "Payment failed",
+    "toastErrorBody": "The card reader is not responding.",
+    "toastRetried": "Retried",
+    "emptyTitle": "No products yet",
+    "emptyText": "Add your first product to start selling.",
+    "noResultsTitle": "No results",
+    "noResultsText": "Try another name or scan the barcode."
   }
 }

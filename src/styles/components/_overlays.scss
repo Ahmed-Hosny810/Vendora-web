@@ -1,0 +1,169 @@
+@use '../abstracts' as *;
+
+// ============================================================
+// Dialogs and drawers. The behaviour comes from Angular CDK
+// (Dialog.open); these classes are only the look.
+//   .vd-backdrop       → set by provideDialogDefaults()
+//   .vd-dialog-pane    → set by provideDialogDefaults()
+//   .vd-drawer-pane    → set by injectDrawer()
+// ============================================================
+
+// The darkened page behind a dialog. CDK fades it in with opacity.
+.vd-backdrop {
+  background: var(--overlay);
+}
+
+// ---------- Dialog ----------
+// <div class="vd-dialog">
+//   <header class="vd-dialog__head">
+//     <h2 class="vd-dialog__title" vdDialogTitle>Add category</h2>
+//     <button vdIconButton size="sm" [label]="t('common.close')" (click)="ref.close()"><svg lucideX></svg></button>
+//   </header>
+//   <div class="vd-dialog__body">…</div>
+//   <footer class="vd-dialog__foot">…buttons…</footer>
+// </div>
+// Sizes: --sm (400px) · default (480px) · --lg (640px)
+.vd-dialog {
+  display: flex;
+  flex-direction: column;
+  width: 480px;
+  max-width: 100%;
+  max-height: calc(100dvh - 32px); // the body scrolls, head and foot stay visible
+  border-radius: var(--radius-lg);
+  background: var(--paper-0);
+  box-shadow: var(--shadow-3);
+  overflow: hidden;
+  animation: vd-dialog-in var(--duration-base) var(--ease-out);
+
+  &--sm {
+    width: 400px;
+  }
+
+  &--lg {
+    width: 640px;
+  }
+
+  &__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-5) var(--space-5) 0;
+
+    // The close button sits a little higher, in line with the title text.
+    .vd-iconbtn {
+      margin-block: -4px;
+      margin-inline-end: -6px;
+    }
+  }
+
+  &__title {
+    @include type(heading-md);
+  }
+
+  &__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-3) var(--space-5) var(--space-5);
+    color: var(--ink-700);
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  // When there is no body (e.g. a confirm with only a title).
+  &__head:has(+ .vd-dialog__foot) {
+    padding-block-end: var(--space-5);
+  }
+
+  &__foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--space-2);
+    padding: 14px var(--space-5);
+    border-block-start: 1px solid var(--line);
+    background: var(--paper-50);
+  }
+
+  // Phones: buttons fill the width, main action on top (last in the HTML).
+  @include down(sm) {
+    &__foot {
+      flex-direction: column-reverse;
+
+      .vd-btn {
+        width: 100%;
+      }
+    }
+  }
+}
+
+// ---------- Drawer ----------
+// Same structure, with vd-drawer classes. Opened with injectDrawer().
+// Sizes: default (420px) · --lg (560px)
+.vd-drawer {
+  --vd-drawer-from: 100%;
+
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  width: 420px;
+  max-width: 100vw;
+  height: 100%;
+  background: var(--paper-0);
+  box-shadow: var(--shadow-3);
+  border-start-start-radius: var(--radius-lg);
+  border-end-start-radius: var(--radius-lg);
+  animation: vd-drawer-in var(--duration-slow) var(--ease-out);
+
+  &--lg {
+    width: 560px;
+  }
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-4) var(--space-5);
+    border-block-end: 1px solid var(--line);
+  }
+
+  &__title {
+    @include type(heading-sm);
+  }
+
+  &__body {
+    overflow-y: auto;
+    padding: var(--space-4) var(--space-5);
+  }
+
+  &__foot {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-2);
+    padding: 14px var(--space-5);
+    border-block-start: 1px solid var(--line);
+  }
+
+  // Full width on phones: no rounded corners needed.
+  @include down(sm) {
+    border-radius: 0;
+  }
+}
+
+// In Arabic the drawer is on the left, so it slides in from the left.
+:root[dir='rtl'] .vd-drawer {
+  --vd-drawer-from: -100%;
+}
+
+@keyframes vd-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
+@keyframes vd-drawer-in {
+  from {
+    transform: translateX(var(--vd-drawer-from));
+  }
+}

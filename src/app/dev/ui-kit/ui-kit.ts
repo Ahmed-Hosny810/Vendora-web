@@ -1,3 +1,4 @@
+import { Dialog } from '@angular/cdk/dialog';
 import { JsonPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import {
@@ -19,6 +20,7 @@ import {
   LucideCircleExclamationPoint,
   LucideEllipsisVertical,
   LucideInfo,
+  LucidePackage,
   LucidePencil,
   LucidePlus,
   LucideSearch,
@@ -28,7 +30,17 @@ import {
 } from '@lucide/angular';
 
 import { LanguageService } from '../../core/i18n';
-import { VdButton, VdIconButton, VdMoney, VdWordmark } from '../../shared/components/ui';
+import {
+  ConfirmDialogData,
+  injectDrawer,
+  ToastService,
+  VdButton,
+  VdConfirmDialog,
+  VdIconButton,
+  VdMoney,
+  VdWordmark,
+} from '../../shared/components/ui';
+import { DemoDialog, DemoDrawer } from './demo-overlays';
 
 /**
  * DEV ONLY (/dev/ui): every shared UI piece in every state, in both languages.
@@ -50,6 +62,7 @@ import { VdButton, VdIconButton, VdMoney, VdWordmark } from '../../shared/compon
     LucideCircleExclamationPoint,
     LucideEllipsisVertical,
     LucideInfo,
+    LucidePackage,
     LucidePencil,
     LucidePlus,
     LucideSearch,
@@ -127,6 +140,47 @@ export class UiKit {
     await submit(this.demoForm, async () => {
       this.submitted.set(true);
     });
+  }
+
+  // ---------- Overlays demo ----------
+  private readonly dialog = inject(Dialog);
+  private readonly openDrawerFn = injectDrawer();
+  private readonly toast = inject(ToastService);
+  protected readonly dialogResult = signal('—');
+  protected readonly confirmResult = signal('—');
+
+  protected openDialog(): void {
+    const ref = this.dialog.open<string>(DemoDialog, { data: { suggestion: 'Drinks' } });
+    ref.closed.subscribe((result) => this.dialogResult.set(String(result)));
+  }
+
+  protected openDrawer(): void {
+    this.openDrawerFn(DemoDrawer);
+  }
+
+  protected openConfirm(): void {
+    const ref = this.dialog.open<boolean, ConfirmDialogData>(VdConfirmDialog, {
+      data: {
+        title: this.transloco.translate('devUi.confirmTitle'),
+        message: this.transloco.translate('devUi.confirmText'),
+        confirmText: this.transloco.translate('common.delete'),
+        danger: true,
+      },
+    });
+    ref.closed.subscribe((confirmed) => this.confirmResult.set(String(confirmed)));
+  }
+
+  protected showToast(type: 'success' | 'info' | 'warning' | 'error'): void {
+    const t = (key: string) => this.transloco.translate(key);
+    if (type === 'error') {
+      this.toast.error(t('devUi.toastErrorTitle'), {
+        body: t('devUi.toastErrorBody'),
+        action: t('common.retry'),
+        onAction: () => this.toast.success(t('devUi.toastRetried')),
+      });
+    } else {
+      this.toast.show(type, t(`devUi.toast_${type}`));
+    }
   }
 
   protected save(): void {

@@ -1,0 +1,139 @@
+@use 'abstracts' as *;
+
+// The stack: top centre on phones (the bottom is under the thumb),
+// bottom end on bigger screens (bottom-right in English, bottom-left in Arabic).
+:host {
+  position: fixed;
+  z-index: 1100; // above CDK dialogs (1000), so a toast is visible over an open dialog
+  inset-block-start: var(--space-4);
+  inset-inline: var(--space-4);
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  pointer-events: none; // clicks pass through the empty space around toasts
+
+  @include up(md) {
+    inset-block: auto var(--space-6);
+    inset-inline: auto var(--space-6);
+    justify-items: end;
+  }
+}
+
+.toast {
+  pointer-events: auto;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: start;
+  gap: var(--space-3);
+  width: min(380px, 100%);
+  padding: var(--space-3) var(--space-3) var(--space-3) 14px;
+  border-radius: var(--radius-sm);
+  background: var(--pine-900);
+  color: var(--ink-on-dark);
+  box-shadow: var(--shadow-2);
+  font-size: 14px;
+  line-height: 20px;
+  animation: toast-in var(--duration-base) var(--ease-out);
+  transition:
+    opacity var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+
+  &.leaving {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+.icon {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--info-bg);
+  color: var(--info-fg);
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .toast--success & {
+    background: var(--pine-300);
+    color: var(--ink-900);
+  }
+
+  .toast--warning & {
+    background: var(--butter-300);
+    color: var(--ink-900);
+  }
+
+  .toast--error & {
+    background: var(--danger-bg);
+    color: var(--danger-fg);
+  }
+}
+
+.text {
+  min-width: 0;
+  padding-block-start: 2px;
+}
+
+.title {
+  font-weight: 600;
+}
+
+.body {
+  color: var(--ink-on-dark-muted);
+  font-size: 13px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.action {
+  padding: 2px var(--space-1);
+  border: 0;
+  background: none;
+  color: var(--butter-300);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.close {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: var(--radius-xs);
+  background: none;
+  color: var(--ink-on-dark-muted);
+  cursor: pointer;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  @include hover {
+    background: rgb(255 251 234 / 0.1);
+    color: var(--ink-on-dark);
+  }
+}
+
+.action:focus-visible,
+.close:focus-visible {
+  outline-color: var(--focus-ring-inverse);
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}

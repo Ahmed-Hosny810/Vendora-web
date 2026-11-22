@@ -328,6 +328,92 @@
     <pre class="caption kit__model vd-ltr">{{ model() | json }}</pre>
   </section>
 
+  <!-- ============ Overlays ============ -->
+  <section class="kit__section">
+    <h2 class="heading-md">
+      Dialog, drawer, confirm
+      <code class="caption kit__muted vd-ltr">CDK Dialog · .vd-dialog · .vd-drawer</code>
+    </h2>
+    <div class="kit__row">
+      <button vdButton type="button" (click)="openDialog()">{{ t('devUi.openDialog') }}</button>
+      <button vdButton type="button" (click)="openDrawer()">{{ t('devUi.openDrawer') }}</button>
+      <button vdButton="danger" type="button" (click)="openConfirm()">
+        <svg lucideTrash></svg>
+        {{ t('devUi.openConfirm') }}
+      </button>
+    </div>
+    <p class="caption kit__muted vd-ltr">
+      dialog → {{ dialogResult() }} · confirm → {{ confirmResult() }}
+    </p>
+
+    <h2 class="heading-md">Toast <code class="caption kit__muted vd-ltr">ToastService</code></h2>
+    <div class="kit__row">
+      <button vdButton type="button" (click)="showToast('success')">success</button>
+      <button vdButton type="button" (click)="showToast('info')">info</button>
+      <button vdButton type="button" (click)="showToast('warning')">warning</button>
+      <button vdButton type="button" (click)="showToast('error')">error + action</button>
+    </div>
+  </section>
+
+  <!-- ============ Loading & empty ============ -->
+  <section class="kit__section">
+    <h2 class="heading-md">
+      Spinner, skeleton, empty
+      <code class="caption kit__muted vd-ltr">.vd-spinner · .vd-skeleton · .vd-empty</code>
+    </h2>
+    <div class="kit__row">
+      <span
+        class="vd-spinner vd-spinner--sm"
+        role="status"
+        [attr.aria-label]="t('common.loading')"
+      ></span>
+      <span class="vd-spinner" role="status" [attr.aria-label]="t('common.loading')"></span>
+      <span
+        class="vd-spinner vd-spinner--lg"
+        role="status"
+        [attr.aria-label]="t('common.loading')"
+      ></span>
+      <span class="body-ui kit__muted">{{ t('common.loading') }}</span>
+    </div>
+
+    <div class="kit__grid">
+      <!-- A loading product card: shapes where the content will be -->
+      <div class="vd-card kit__skeleton" role="status" [attr.aria-label]="t('common.loading')">
+        <div class="vd-skeleton" style="height: 96px" aria-hidden="true"></div>
+        <div class="vd-skeleton vd-skeleton--text" style="width: 70%" aria-hidden="true"></div>
+        <div class="vd-skeleton vd-skeleton--text" style="width: 40%" aria-hidden="true"></div>
+      </div>
+      <div class="vd-card kit__skeleton-row" role="status" [attr.aria-label]="t('common.loading')">
+        <div class="vd-skeleton vd-skeleton--circle" style="width: 40px" aria-hidden="true"></div>
+        <div aria-hidden="true">
+          <div class="vd-skeleton vd-skeleton--text" style="width: 80%"></div>
+          <div class="vd-skeleton vd-skeleton--text" style="width: 50%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="kit__grid">
+      <div class="vd-card">
+        <div class="vd-empty">
+          <span class="vd-empty__art"><svg lucidePackage></svg></span>
+          <h3 class="vd-empty__title">{{ t('devUi.emptyTitle') }}</h3>
+          <p class="vd-empty__text">{{ t('devUi.emptyText') }}</p>
+          <button vdButton="primary" type="button">
+            <svg lucidePlus></svg>
+            {{ t('devUi.addProduct') }}
+          </button>
+        </div>
+      </div>
+      <div class="vd-card">
+        <div class="vd-empty vd-empty--compact">
+          <span class="vd-empty__art"><svg lucideSearch></svg></span>
+          <h3 class="vd-empty__title">{{ t('devUi.noResultsTitle') }}</h3>
+          <p class="vd-empty__text">{{ t('devUi.noResultsText') }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ Badges ============ -->
   <section class="kit__section">
     <h2 class="heading-md">

@@ -22,7 +22,8 @@
     "loading": "جارٍ التحميل…",
     "optional": "اختياري",
     "notifications": "الإشعارات",
-    "more": "إجراءات أخرى"
+    "more": "إجراءات أخرى",
+    "confirm": "تأكيد"
   },
   "validation": {
     "required": "هذا الحقل مطلوب",
@@ -86,6 +87,25 @@
     "trackStockHint": "نبّهني عندما يقترب من النفاد.",
     "agree": "أوافق على الشروط",
     "disabledChoice": "مفعّل دائمًا",
-    "saved": "تم الحفظ"
+    "saved": "تم الحفظ",
+    "openDialog": "فتح نافذة",
+    "openDrawer": "فتح لوحة جانبية",
+    "openConfirm": "حذف المنتج…",
+    "dialogTitle": "إضافة تصنيف",
+    "categoryName": "اسم التصنيف",
+    "drawerTitle": "تعديل المنتج",
+    "field": "حقل",
+    "confirmTitle": "حذف هذا المنتج؟",
+    "confirmText": "سيُحذف من كل الفروع. لا يمكن التراجع عن ذلك.",
+    "toast_success": "تم حفظ المنتج",
+    "toast_info": "تم إرسال الإيصال للعميل",
+    "toast_warning": "مخزون منخفض: أكواب اللاتيه",
+    "toastErrorTitle": "فشل الدفع",
+    "toastErrorBody": "جهاز قراءة البطاقات لا يستجيب.",
+    "toastRetried": "تمت إعادة المحاولة",
+    "emptyTitle": "لا توجد منتجات بعد",
+    "emptyText": "أضف أول منتج لتبدأ البيع.",
+    "noResultsTitle": "لا نتائج",
+    "noResultsText": "جرّب اسمًا آخر أو امسح الباركود."
   }
 }
