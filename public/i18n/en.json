@@ -8,6 +8,35 @@
     "ar": "العربية",
     "switchTo": "عربي"
   },
+  "site": {
+    "homeLabel": "Vendora home",
+    "mainNav": "Main",
+    "skip": "Skip to content",
+    "nav": {
+      "features": "Features",
+      "how": "How it works",
+      "pricing": "Pricing",
+      "faq": "FAQ"
+    },
+    "signIn": "Sign in",
+    "getStarted": "Get started",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "switchLanguage": "Switch language",
+    "footer": {
+      "tagline": "Point of sale and retail management for shops with one counter or many branches.",
+      "product": "Product",
+      "account": "Account",
+      "support": "Support",
+      "legal": "Legal",
+      "help": "Help center",
+      "contact": "Contact support",
+      "terms": "Terms of service",
+      "privacy": "Privacy policy",
+      "copyright": "© {{year}} Vendora",
+      "language": "Language"
+    }
+  },
   "common": {
     "save": "Save",
     "cancel": "Cancel",

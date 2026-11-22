@@ -7,6 +7,9 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  // When a link jumps to a section, stop below the sticky header (72px)
+  // instead of hiding the section's title under it.
+  scroll-padding-top: 88px;
 }
 
 body {
