@@ -1,0 +1,63 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+ol {
+  display: grid;
+  margin: 0;
+  gap: 10px;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--paper-0);
+}
+
+li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--ink-700);
+  font-size: 14px;
+  list-style: none;
+}
+
+i {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 50%;
+
+  svg {
+    width: 13px;
+    height: 13px;
+  }
+}
+
+.done i {
+  border-color: var(--pine-600);
+  background: var(--pine-600);
+  color: var(--butter-300);
+}
+
+.now {
+  color: var(--ink-900);
+  font-weight: 600;
+
+  i {
+    border-color: var(--pine-600);
+    border-top-color: transparent;
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

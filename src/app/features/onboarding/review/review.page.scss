@@ -1,0 +1,143 @@
+@use '../styles/onb';
+
+:host {
+  @include onb.page;
+  @include onb.primary-shadow;
+}
+
+.rev {
+  @include onb.paper-card;
+}
+
+.rev__sec {
+  display: grid;
+  gap: 12px;
+  padding: 18px 22px;
+
+  & + & {
+    border-top: 1px dashed var(--line-strong);
+  }
+}
+
+.rev__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  h2 {
+    margin: 0;
+    color: var(--pine-700);
+    font: 700 13px/16px var(--font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    :host-context(:lang(ar)) & {
+      font-family: 'IBM Plex Sans Arabic', var(--font-sans);
+      letter-spacing: 0;
+      text-transform: none;
+    }
+  }
+}
+
+.edit {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-pill);
+  color: var(--pine-600);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--pine-600);
+    background: var(--pine-50);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  &[aria-disabled='true'] {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  svg {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+dl {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 10px 16px;
+  margin: 0;
+  font-size: 15px;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+}
+
+dt {
+  color: var(--ink-500);
+}
+
+dd {
+  margin: 0;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+
+  @media (max-width: 640px) {
+    margin-bottom: 10px;
+  }
+}
+
+.none {
+  color: var(--ink-500);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.rev__total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 16px 22px;
+  background: var(--pine-600);
+  color: var(--butter-300);
+
+  span {
+    font-weight: 600;
+  }
+
+  b {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1;
+
+    @include onb.display-font;
+  }
+}
+
+.actions {
+  @include onb.actions;
+
+  .locked {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+.calm {
+  @include onb.calm;
+}

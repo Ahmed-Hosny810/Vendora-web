@@ -1,0 +1,85 @@
+@use '../styles/onb';
+
+:host {
+  @include onb.page;
+}
+
+.prog {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  &__bar {
+    flex: 1;
+    max-width: 320px;
+    height: 10px;
+    overflow: hidden;
+    border-radius: 10px;
+    background: var(--paper-200);
+
+    i {
+      display: block;
+      height: 100%;
+      border-radius: 10px;
+      background: var(--pine-600);
+      transition: width var(--duration-slow, 400ms) var(--ease-out);
+    }
+  }
+
+  b {
+    font: 600 14px/1 var(--font-mono);
+  }
+}
+
+.check {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  // Rows drop in one after another.
+  li {
+    animation: row-in 500ms var(--ease-out) both;
+
+    @for $i from 2 through 7 {
+      &:nth-child(#{$i}) {
+        animation-delay: #{($i - 1) * 60}ms;
+      }
+    }
+  }
+}
+
+.skip__link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--pine-600);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--pine-700);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+}
+
+@keyframes row-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .check li {
+    animation: none;
+  }
+}

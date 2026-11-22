@@ -63,6 +63,52 @@ export const routes: Routes = [
     ],
   },
   {
+    // Business onboarding, after sign-up: details → plan → review → invoice
+    // → payment status → welcome checklist. The layout draws the top bar
+    // with the stepper and the shop preview; each child route is one step.
+    // TODO(you): guard these routes (signed in, business not active yet).
+    path: 'onboarding',
+    loadComponent: () =>
+      import('./layouts/onboarding-layout/onboarding-layout').then((m) => m.OnboardingLayout),
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () =>
+          import('./features/onboarding/business-details/business-details.page').then(
+            (m) => m.BusinessDetailsPage,
+          ),
+      },
+      {
+        path: 'plan',
+        loadComponent: () => import('./features/onboarding/plan/plan.page').then((m) => m.PlanPage),
+      },
+      {
+        path: 'review',
+        loadComponent: () =>
+          import('./features/onboarding/review/review.page').then((m) => m.ReviewPage),
+      },
+      {
+        path: 'invoice',
+        loadComponent: () =>
+          import('./features/onboarding/invoice/invoice.page').then((m) => m.InvoicePage),
+      },
+      {
+        // Paymob sends the owner back here after checkout.
+        path: 'payment',
+        loadComponent: () =>
+          import('./features/onboarding/payment-status/payment-status.page').then(
+            (m) => m.PaymentStatusPage,
+          ),
+      },
+      {
+        path: 'welcome',
+        loadComponent: () =>
+          import('./features/onboarding/welcome/welcome.page').then((m) => m.WelcomePage),
+      },
+    ],
+  },
+  {
     // Component gallery for development. canMatch hides it in production builds.
     path: 'dev/ui',
     canMatch: [() => isDevMode()],

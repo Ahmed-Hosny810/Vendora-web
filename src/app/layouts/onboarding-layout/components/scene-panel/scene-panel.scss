@@ -1,0 +1,219 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.scene {
+  position: relative;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 22px;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 40px 32px;
+  overflow: hidden;
+  background: var(--butter-300);
+
+  // Dot grid.
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgb(1 62 55 / 22%) 1.2px, transparent 1.5px);
+    background-size: 22px 22px;
+    pointer-events: none;
+  }
+
+  // Scalloped edge against the form.
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    inset-inline-start: -14px;
+    width: 28px;
+    background: radial-gradient(circle at 50% 14px, var(--paper-50) 13.5px, transparent 14px) 0 0 /
+      28px 28px repeat-y;
+  }
+
+  > app-shop-front,
+  > .cap {
+    position: relative;
+    z-index: 1;
+  }
+
+  // Tablets and phones: above the form, no scallop, no caption.
+  @media (max-width: 1100px) {
+    gap: 12px;
+    padding: 28px 16px 24px;
+
+    &::after {
+      display: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    padding: 20px 8px 16px;
+  }
+}
+
+// The shop is drawn 620px wide; zoom shrinks it as a whole.
+app-shop-front {
+  :host(.wide) & {
+    zoom: 0.8;
+  }
+
+  @media (max-width: 1100px) {
+    zoom: 0.82;
+
+    :host(.wide) & {
+      zoom: 0.82;
+    }
+  }
+
+  @media (max-width: 640px) {
+    zoom: 0.54;
+
+    :host(.wide) & {
+      zoom: 0.54;
+    }
+  }
+}
+
+// Steps 2–4 on phones: a smaller shop so the form starts higher.
+@media (max-width: 640px) {
+  :host(.compact) .scene {
+    padding: 14px 8px 10px;
+  }
+
+  :host(.compact) app-shop-front {
+    zoom: 0.36;
+  }
+}
+
+.cap {
+  display: grid;
+  gap: 6px;
+  max-width: 460px;
+  margin: 0;
+  text-align: center;
+
+  b {
+    color: var(--pine-700);
+    font: 700 13px/16px var(--font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    :host-context(:lang(ar)) & {
+      font-family: 'IBM Plex Sans Arabic', var(--font-sans);
+      letter-spacing: 0;
+      text-transform: none;
+    }
+  }
+
+  span {
+    color: var(--ink-700);
+    font-size: 15px;
+    line-height: 22px;
+  }
+
+  @media (max-width: 1100px) {
+    display: none;
+  }
+}
+
+// ---------- floating tags ----------
+.floaty {
+  position: absolute;
+  z-index: 0;
+  width: 70px;
+  opacity: 0.9;
+  pointer-events: none;
+
+  &__body {
+    fill: var(--paper-0);
+    stroke: var(--pine-600);
+    stroke-width: 1.4;
+  }
+
+  &__hole {
+    fill: var(--pine-600);
+  }
+
+  &--1 {
+    top: 8%;
+    inset-inline-end: 7%;
+    rotate: 16deg;
+    animation: float 7s ease-in-out infinite;
+  }
+
+  &--2 {
+    bottom: 9%;
+    inset-inline-start: 9%;
+    width: 48px;
+    rotate: -20deg;
+    animation: float 8s ease-in-out -3s infinite;
+  }
+
+  @media (max-width: 640px) {
+    display: none;
+  }
+}
+
+// ---------- confetti (subscription active) ----------
+.confetti {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  pointer-events: none;
+
+  svg {
+    position: absolute;
+    top: -40px;
+    animation: fall 3.4s cubic-bezier(0.3, 0.6, 0.4, 1) infinite;
+  }
+
+  &__body {
+    fill: var(--butter-500);
+    stroke: var(--pine-600);
+    stroke-width: 1.6;
+
+    &.alt {
+      fill: var(--paper-0);
+    }
+  }
+
+  &__hole {
+    fill: var(--pine-600);
+  }
+}
+
+@keyframes float {
+  50% {
+    translate: 0 -12px;
+  }
+}
+
+@keyframes fall {
+  0% {
+    opacity: 0;
+    transform: translateY(0) rotate(0);
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(560px) rotate(300deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floaty,
+  .confetti {
+    display: none;
+  }
+}

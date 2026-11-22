@@ -1,0 +1,28 @@
+<span class="box" aria-hidden="true">
+  @if (done()) {
+    <svg lucideCheck></svg>
+  }
+</span>
+<span class="ic" aria-hidden="true"><svg [lucideIcon]="icon()"></svg></span>
+<span class="txt">
+  <b>
+    {{ title() }}
+    @if (tag()) {
+      <span class="tag" [class.tag--optional]="tagTone() === 'optional'">{{ tag() }}</span>
+    }
+  </b>
+  <span>{{ text() }}</span>
+</span>
+@if (done()) {
+  <span class="done-label">{{ doneLabel() }}</span>
+} @else {
+  <button
+    [vdButton]="next() ? 'primary' : 'secondary'"
+    size="sm"
+    type="button"
+    [attr.aria-label]="startLabel() + ': ' + title()"
+    (click)="start.emit()"
+  >
+    {{ startLabel() }}
+  </button>
+}

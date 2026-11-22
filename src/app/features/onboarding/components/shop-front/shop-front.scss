@@ -1,0 +1,588 @@
+@use 'abstracts' as *;
+
+// The storefront is drawn at a fixed 620px width.
+// The scene panel shrinks it with `zoom` on smaller screens.
+
+:host {
+  display: block;
+}
+
+.shop {
+  --w: 620px;
+
+  display: grid;
+  justify-items: center;
+  width: var(--w);
+  margin: 0;
+  filter: drop-shadow(6px 8px 0 rgb(1 62 55 / 14%));
+}
+
+// ---------- sign + bulbs ----------
+.signwrap {
+  position: relative;
+  display: grid;
+  justify-items: center;
+}
+
+.sign {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 2px;
+  min-width: 300px;
+  max-width: 480px;
+  padding: 12px 28px 14px;
+  border: 3px solid var(--pine-600);
+  border-radius: 12px;
+  background: var(--pine-600);
+  box-shadow: inset 0 0 0 3px var(--butter-300);
+  color: var(--butter-300);
+  text-align: center;
+
+  &__en {
+    font: 700 30px/1.1 var(--font-display);
+    letter-spacing: -0.02em;
+    overflow-wrap: anywhere;
+  }
+
+  &__ar {
+    color: var(--butter-500);
+    font:
+      600 18px/1.4 'Alexandria',
+      var(--font-display);
+    letter-spacing: 0;
+  }
+
+  // No English name yet: "Your business name" in a faded italic.
+  &.is-ph .sign__en {
+    font-style: italic;
+    font-weight: 600;
+    opacity: 0.55;
+  }
+}
+
+.bulbs {
+  position: absolute;
+  z-index: 3;
+  inset-inline: 10px;
+  bottom: -6px;
+  display: flex;
+  justify-content: space-between;
+
+  i {
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--pine-600);
+    border-radius: 50%;
+    background: var(--butter-500);
+    box-shadow: 0 0 0 4px rgb(255 215 94 / 35%);
+    animation-delay: calc(var(--i, 0) * 0.15s);
+  }
+}
+
+.posts {
+  display: flex;
+  justify-content: space-between;
+  width: 360px;
+  height: 18px;
+  padding-inline: 40px;
+
+  i {
+    width: 8px;
+    height: 18px;
+    border-radius: 2px;
+    background: var(--pine-600);
+  }
+}
+
+// ---------- awning: stripes + scalloped edge ----------
+.awning {
+  position: relative;
+  z-index: 1;
+  width: var(--w);
+  height: 66px;
+  border: 3px solid var(--pine-600);
+  border-bottom: 0;
+  border-radius: 10px 10px 0 0;
+  background: repeating-linear-gradient(90deg, var(--pine-600) 0 44px, var(--paper-0) 44px 88px);
+  transform-origin: 50% 0;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset-inline: -3px;
+    bottom: -22px;
+    height: 22px;
+    background:
+      radial-gradient(circle at 22px 0, var(--pine-600) 19px, transparent 19.5px) 0 0 / 88px 22px
+        repeat-x,
+      radial-gradient(
+          circle at 66px 0,
+          var(--paper-0) 19px,
+          var(--pine-600) 19.2px,
+          var(--pine-600) 21.5px,
+          transparent 22px
+        )
+        0 0 / 88px 22px repeat-x;
+  }
+}
+
+// ---------- front: window + door ----------
+.front {
+  display: grid;
+  grid-template-columns: 1fr 120px;
+  gap: 20px;
+  align-items: end;
+  width: calc(var(--w) - 36px);
+  padding: 40px 22px 0;
+  border: 3px solid var(--pine-600);
+  border-top: 0;
+  background: var(--paper-0);
+}
+
+.win {
+  position: relative;
+  height: 290px;
+  overflow: hidden;
+  border: 3px solid var(--pine-600);
+  border-bottom-width: 10px;
+  border-radius: 8px 8px 2px 2px;
+  background: var(--pine-50);
+
+  // Glass reflection.
+  &::after {
+    content: '';
+    position: absolute;
+    z-index: 4;
+    inset: 0;
+    background: linear-gradient(
+      115deg,
+      transparent 0 18%,
+      rgb(255 255 255 / 55%) 18% 22%,
+      transparent 22% 27%,
+      rgb(255 255 255 / 40%) 27% 28.5%,
+      transparent 28.5%
+    );
+    pointer-events: none;
+  }
+
+  &__label {
+    position: absolute;
+    z-index: 5;
+    top: 10px;
+    inset-inline-end: 12px;
+    padding-block: 6px;
+    padding-inline: 16px 10px;
+    border: 2px solid var(--pine-600);
+    border-start-start-radius: 3px;
+    border-end-start-radius: 3px;
+    border-start-end-radius: 10px;
+    border-end-end-radius: 10px;
+    background: var(--butter-300);
+    color: var(--pine-600);
+    font: 600 12px/1 var(--font-mono);
+    letter-spacing: 0.04em;
+    transform-origin: 0 50%;
+    animation: label-swing 1.6s cubic-bezier(0.36, 0, 0.2, 1) both;
+
+    // The tag's hole.
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      inset-inline-start: 5px;
+      width: 5px;
+      height: 5px;
+      margin-top: -2.5px;
+      border-radius: 50%;
+      background: var(--pine-600);
+    }
+
+    :host-context([dir='rtl']) & {
+      transform-origin: 100% 50%;
+    }
+
+    :host-context(:lang(ar)) & {
+      font-family: 'IBM Plex Sans Arabic', var(--font-sans);
+      letter-spacing: 0;
+    }
+  }
+}
+
+.scwrap {
+  position: absolute;
+  inset: 0;
+  animation: scene-in 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.door {
+  position: relative;
+  height: 310px;
+  border: 3px solid var(--pine-600);
+  border-bottom: 0;
+  border-radius: 60px 60px 0 0;
+  background: var(--pine-700);
+
+  // Glass.
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 18px 16px auto;
+    height: 110px;
+    border: 3px solid var(--pine-600);
+    border-radius: 44px 44px 6px 6px;
+    background: var(--pine-50);
+  }
+
+  // Knob.
+  &::after {
+    content: '';
+    position: absolute;
+    top: 172px;
+    inset-inline-end: 14px;
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--pine-600);
+    border-radius: 50%;
+    background: var(--butter-500);
+  }
+}
+
+.dsign {
+  position: absolute;
+  z-index: 2;
+  top: 74px;
+  left: 50%;
+  translate: -50% 0;
+  transform-origin: 50% -26px;
+  animation: door-swing 4s ease-in-out infinite;
+
+  // The string it hangs from.
+  &::before {
+    content: '';
+    position: absolute;
+    top: -26px;
+    left: 50%;
+    width: 28px;
+    height: 26px;
+    margin-left: -14px;
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    background:
+      linear-gradient(to bottom right, transparent 48%, var(--pine-600) 48% 52%, transparent 52%)
+        left / 50% 100% no-repeat,
+      linear-gradient(to bottom left, transparent 48%, var(--pine-600) 48% 52%, transparent 52%)
+        right / 50% 100% no-repeat;
+  }
+
+  span {
+    display: block;
+    box-sizing: border-box;
+    width: 76px;
+    padding: 7px 6px;
+    border: 2px solid var(--pine-600);
+    border-radius: 6px;
+    background: var(--paper-0);
+    color: var(--pine-600);
+    font: 700 11px/1.25 var(--font-mono);
+    letter-spacing: 0.06em;
+    text-align: center;
+    text-transform: uppercase;
+
+    :host-context(:lang(ar)) & {
+      font-family: 'IBM Plex Sans Arabic', var(--font-sans);
+      letter-spacing: 0;
+      text-transform: none;
+    }
+  }
+
+  &.is-open span {
+    background: var(--butter-500);
+    animation: flip 900ms var(--ease-out) both;
+  }
+
+  &.is-closed span {
+    border-color: var(--danger-fg);
+    background: var(--danger-bg);
+    color: var(--danger-fg);
+  }
+}
+
+.ground {
+  width: calc(var(--w) + 40px);
+  height: 16px;
+  border-radius: 4px;
+  background: var(--pine-600);
+}
+
+.stockpill {
+  position: absolute;
+  z-index: 5;
+  bottom: 12px;
+  inset-inline-start: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--pine-600);
+  color: var(--butter-300);
+  font: 600 12px/1 var(--font-sans);
+  animation: pill-in 500ms var(--ease-out) both;
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  &--off {
+    border: 1.5px solid var(--pine-600);
+    background: var(--paper-0);
+    color: var(--ink-700);
+  }
+}
+
+// ---------- shutter (business details, before a type is picked) ----------
+.shutter {
+  position: absolute;
+  z-index: 6;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 10px;
+  padding: 24px;
+  background: repeating-linear-gradient(
+    180deg,
+    var(--pine-700) 0 22px,
+    var(--pine-600) 22px 25px,
+    #0d6457 25px 27px
+  );
+  color: var(--butter-300);
+  text-align: center;
+
+  b {
+    max-width: 260px;
+    font: 700 20px/1.2 var(--font-display);
+
+    :host-context(:lang(ar)) & {
+      font-family: 'Alexandria', var(--font-display);
+    }
+  }
+
+  small {
+    max-width: 250px;
+    color: var(--ink-on-dark-muted);
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  // Points at the form (left in English, right in Arabic).
+  &__arrow {
+    width: 34px;
+    height: 34px;
+    animation: nudge 1.8s ease-in-out infinite;
+
+    :host-context([dir='rtl']) & {
+      scale: -1 1;
+    }
+  }
+
+  &--up {
+    animation: shutter-up 1100ms cubic-bezier(0.65, 0, 0.25, 1) both;
+    pointer-events: none;
+  }
+
+  // Phones: the shop is zoomed down to about half, so the text is drawn
+  // twice as big to stay readable, and the arrow points down at the form below.
+  @media (max-width: 640px) {
+    b {
+      max-width: 320px;
+      font-size: 28px;
+    }
+
+    small {
+      max-width: 320px;
+      font-size: 18px;
+      line-height: 24px;
+    }
+
+    &__arrow,
+    :host-context([dir='rtl']) &__arrow {
+      width: 48px;
+      height: 48px;
+      rotate: -90deg;
+      scale: 1;
+      animation: none;
+    }
+  }
+}
+
+// ---------- moods ----------
+.is-off {
+  .scwrap {
+    filter: grayscale(0.85) brightness(0.7);
+  }
+
+  .bulbs i {
+    background: var(--paper-200);
+    box-shadow: none;
+  }
+
+  .awning {
+    filter: saturate(0.4);
+  }
+}
+
+.is-wait .bulbs i {
+  animation: bulb-wait 2.4s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * 0.15s);
+}
+
+.is-light {
+  .bulbs i {
+    animation: bulb-on 600ms var(--ease-out) both;
+    animation-delay: calc(var(--i, 0) * 0.3s);
+  }
+
+  .scwrap {
+    animation: light-up 3.6s ease-in-out infinite alternate;
+  }
+}
+
+.is-open {
+  .bulbs i {
+    animation: twinkle 1.6s ease-in-out infinite;
+    animation-delay: calc(var(--i, 0) * 0.15s);
+  }
+
+  .awning {
+    animation: awning-bounce 900ms var(--ease-out) 300ms both;
+  }
+}
+
+// ---------- keyframes ----------
+@keyframes label-swing {
+  0% {
+    opacity: 0;
+    transform: rotate(40deg);
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  45% {
+    transform: rotate(-12deg);
+  }
+
+  70% {
+    transform: rotate(5deg);
+  }
+
+  100% {
+    transform: rotate(0);
+  }
+}
+
+@keyframes door-swing {
+  0%,
+  100% {
+    rotate: -4deg;
+  }
+
+  50% {
+    rotate: 4deg;
+  }
+}
+
+@keyframes flip {
+  0% {
+    transform: rotateY(90deg);
+  }
+
+  60% {
+    transform: rotateY(-20deg);
+  }
+
+  100% {
+    transform: none;
+  }
+}
+
+@keyframes shutter-up {
+  to {
+    transform: translateY(-104%);
+  }
+}
+
+@keyframes scene-in {
+  from {
+    opacity: 0;
+    transform: translateX(30px) scale(0.96);
+  }
+}
+
+@keyframes pill-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@keyframes nudge {
+  50% {
+    transform: translateX(-6px);
+  }
+}
+
+@keyframes bulb-wait {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes bulb-on {
+  from {
+    background: var(--paper-200);
+    box-shadow: none;
+  }
+}
+
+@keyframes twinkle {
+  50% {
+    box-shadow: 0 0 0 7px rgb(255 215 94 / 50%);
+  }
+}
+
+@keyframes light-up {
+  0% {
+    filter: saturate(0.4) brightness(0.8);
+  }
+
+  100% {
+    filter: none;
+  }
+}
+
+@keyframes awning-bounce {
+  30% {
+    transform: scaleY(1.12);
+  }
+
+  55% {
+    transform: scaleY(0.96);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shop *,
+  .shop *::before {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

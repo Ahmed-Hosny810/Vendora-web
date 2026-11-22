@@ -1,0 +1,40 @@
+:host {
+  display: grid;
+  justify-items: start;
+  gap: 12px;
+  padding: 28px;
+  border: 1.5px solid var(--danger-fg);
+  border-radius: var(--radius-lg);
+  background: var(--paper-0);
+}
+
+.ic {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--danger-bg);
+  color: var(--danger-fg);
+
+  svg {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+h2 {
+  margin: 0;
+  font: 700 20px/1.2 var(--font-display);
+
+  :host-context(:lang(ar)) & {
+    font-family: 'Alexandria', var(--font-display);
+  }
+}
+
+p {
+  margin: 0;
+  color: var(--ink-700);
+  font-size: 14px;
+  line-height: 21px;
+}

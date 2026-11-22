@@ -1,0 +1,36 @@
+<label class="plan" *transloco="let t; read: 'onboarding'">
+  <input
+    type="radio"
+    [name]="name()"
+    [value]="plan().id"
+    [checked]="checked()"
+    [attr.aria-describedby]="'plan-' + plan().id + '-desc'"
+    (change)="pick.emit(plan())"
+  />
+  <span class="plan__name">
+    {{ plan().name }}
+    @if (fromWebsite()) {
+      <span class="fromweb"
+        ><svg lucideGlobe aria-hidden="true"></svg>{{ t('plan.fromWebsite') }}</span
+      >
+    }
+  </span>
+  <span class="plan__price">
+    <b>{{ plan().price.toLocaleString('en-US') }} {{ t('egp') }}</b>
+    <small>{{ t('plan.perMonth') }}</small>
+  </span>
+  <span class="plan__desc" [id]="'plan-' + plan().id + '-desc'">{{ plan().description }}</span>
+  <span class="plan__lims">
+    @for (key of limitKeys; track key) {
+      @let value = plan().limits[key];
+      <span class="lim">
+        <span class="lim__label">{{ t('plan.limits.' + key) }}</span>
+        <b>{{ value === null ? t('plan.unlimited') : value.toLocaleString('en-US') }}</b>
+      </span>
+    }
+    <span class="lim">
+      <span class="lim__label">{{ t('plan.limits.variants') }}</span>
+      <b>{{ plan().limits.variants ? t('plan.yes') : t('plan.no') }}</b>
+    </span>
+  </span>
+</label>

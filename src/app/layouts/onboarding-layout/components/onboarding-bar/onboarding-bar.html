@@ -1,0 +1,64 @@
+<ng-container *transloco="let t; read: 'onboarding'">
+  <header class="bar">
+    <a class="brand" routerLink="/" [attr.aria-label]="t('homeLabel')"><vd-wordmark /></a>
+
+    @let current = step();
+    @if (current !== null) {
+      <nav [attr.aria-label]="t('setupProgress')">
+        <ol class="steps">
+          @for (s of steps; track s.key; let i = $index) {
+            @let state = stateOf(i, current);
+            <li [class]="state" [attr.aria-current]="state === 'cur' ? 'step' : null">
+              <!-- Finished steps link back, until the business is created (step 4).
+                   With a null link, routerLink leaves out href: plain text. -->
+              <a class="step" [routerLink]="state === 'done' && current < 3 ? s.link : null">
+                <span class="step__n" aria-hidden="true">
+                  @if (state === 'done') {
+                    <svg lucideCheck></svg>
+                  } @else {
+                    {{ i + 1 }}
+                  }
+                </span>
+                <span class="step__t">{{ t('steps.' + s.key) }}</span>
+                @if (state === 'done') {
+                  <span class="vd-sr"> ({{ t('completed') }})</span>
+                }
+              </a>
+            </li>
+          }
+        </ol>
+      </nav>
+    } @else {
+      <span></span>
+    }
+
+    <div class="end">
+      <button
+        type="button"
+        class="link"
+        [attr.lang]="other().code"
+        (click)="languageChange.emit(other().code)"
+      >
+        <svg lucideGlobe aria-hidden="true"></svg><span>{{ other().label }}</span>
+      </button>
+      <button type="button" class="link" (click)="signOut.emit()">
+        <svg lucideLogOut class="vd-flip-rtl" aria-hidden="true"></svg
+        ><span>{{ t('signOut') }}</span>
+      </button>
+    </div>
+  </header>
+
+  @if (current !== null) {
+    <!-- Phones: the stepper as four segments (the nav above says the same to screen readers). -->
+    <div class="mprog" aria-hidden="true">
+      <p>
+        {{ t('steps.' + steps[current].key) }}<span>{{ t('stepOf', { n: current + 1 }) }}</span>
+      </p>
+      <ol>
+        @for (s of steps; track s.key; let i = $index) {
+          <li [class]="stateOf(i, current)"></li>
+        }
+      </ol>
+    </div>
+  }
+</ng-container>

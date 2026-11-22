@@ -1,0 +1,45 @@
+<ng-container *transloco="let t; read: 'onboarding'">
+  <app-onb-head
+    [kicker]="t('welcome.kicker')"
+    [title]="t('welcome.title', { name: businessName() })"
+    [lead]="t('welcome.lead')"
+  />
+
+  @let total = rows().length;
+  <div class="prog">
+    <div
+      class="prog__bar"
+      role="progressbar"
+      aria-valuemin="0"
+      [attr.aria-valuemax]="total"
+      [attr.aria-valuenow]="doneCount()"
+      [attr.aria-label]="t('welcome.checklist')"
+    >
+      <i [style.width.%]="(doneCount() / total) * 100 || 4"></i>
+    </div>
+    <b>{{ t('welcome.progress', { done: doneCount(), total }) }}</b>
+  </div>
+
+  <ol class="check" [attr.aria-label]="t('welcome.checklist')">
+    @for (row of rows(); track row.key) {
+      <li>
+        <app-checklist-item
+          [icon]="row.icon"
+          [title]="t('welcome.items.' + row.key + '.title')"
+          [text]="t('welcome.items.' + row.key + '.text')"
+          [tag]="row.tag ? t('welcome.tags.' + row.tag) : ''"
+          [tagTone]="row.tag === 'ifNeeded' ? 'optional' : 'info'"
+          [startLabel]="t('welcome.start')"
+          [doneLabel]="t('welcome.done')"
+          [next]="row.key === nextKey()"
+          [done]="done().has(row.key)"
+          (start)="start(row.key)"
+        />
+      </li>
+    }
+  </ol>
+
+  <div class="skip">
+    <button type="button" class="skip__link" (click)="skip()">{{ t('welcome.skip') }}</button>
+  </div>
+</ng-container>
