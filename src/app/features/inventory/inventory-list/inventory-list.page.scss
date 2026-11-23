@@ -1,0 +1,59 @@
+@use 'abstracts' as *;
+
+:host {
+  display: contents;
+}
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+
+  @include down(md) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+// Count inside a filter chip.
+.n {
+  margin-inline-start: 4px;
+  font-family: var(--font-mono);
+  opacity: 0.7;
+}
+
+.sub {
+  display: block;
+  color: var(--ink-500);
+  font-size: 12px;
+}
+
+// "6 pc" stays on one line.
+td.num {
+  white-space: nowrap;
+}
+
+.unit {
+  margin-inline-start: 3px;
+  color: var(--ink-500);
+  font-size: 11px;
+}
+
+.neg {
+  color: var(--danger-fg);
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.muted {
+  color: var(--ink-500);
+  font-size: 13px;
+}
+
+.no-match {
+  margin: 0;
+  padding: 32px 16px;
+  color: var(--ink-500);
+  text-align: center;
+}

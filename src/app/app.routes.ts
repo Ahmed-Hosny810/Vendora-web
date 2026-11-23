@@ -200,12 +200,42 @@ export const routes: Routes = [
         ],
       },
       {
-        // A past receipt and "Print copy". TODO(you): the Sales list at '' later.
-        path: 'sales/:id/receipt',
-        loadComponent: () =>
-          import('./features/pos/receipt-reprint/receipt-reprint.page').then(
-            (m) => m.ReceiptReprintPage,
-          ),
+        // Sales: the list, and one receipt with "Print copy".
+        path: 'sales',
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./features/sales/sales-list/sales-list.page').then((m) => m.SalesListPage),
+          },
+          {
+            path: ':id/receipt',
+            loadComponent: () =>
+              import('./features/pos/receipt-reprint/receipt-reprint.page').then(
+                (m) => m.ReceiptReprintPage,
+              ),
+          },
+        ],
+      },
+      {
+        // Customers attached to sales.
+        path: 'customers',
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./features/customers/customers-list/customers-list.page').then(
+                (m) => m.CustomersListPage,
+              ),
+          },
+          {
+            path: ':id',
+            loadComponent: () =>
+              import('./features/customers/customer-details/customer-details.page').then(
+                (m) => m.CustomerDetailsPage,
+              ),
+          },
+        ],
       },
       {
         // People who can sign in, and inviting new ones.
@@ -236,10 +266,16 @@ export const routes: Routes = [
           ),
       },
       {
-        // Inventory. TODO(you): '' becomes the inventory list once it's designed.
+        // Inventory: what's on hand, adjustments, and opening stock.
         path: 'inventory',
         children: [
-          { path: '', pathMatch: 'full', redirectTo: 'opening' },
+          {
+            path: '',
+            loadComponent: () =>
+              import('./features/inventory/inventory-list/inventory-list.page').then(
+                (m) => m.InventoryListPage,
+              ),
+          },
           {
             path: 'opening',
             loadComponent: () =>

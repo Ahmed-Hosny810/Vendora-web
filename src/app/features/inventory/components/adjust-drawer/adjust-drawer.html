@@ -1,0 +1,146 @@
+<form
+  class="vd-drawer"
+  novalidate
+  *transloco="let t; read: 'inventory.adjust'"
+  (submit)="onSubmit($event)"
+>
+  <header class="vd-drawer__head">
+    <h2 class="vd-drawer__title" vdDialogTitle>{{ t('title') }}</h2>
+    <button vdIconButton type="button" [label]="t('close')" (click)="ref.close()">
+      <svg lucideX></svg>
+    </button>
+  </header>
+
+  <fieldset class="vd-drawer__body body" [disabled]="saving()">
+    <legend class="vd-sr">{{ t('title') }}</legend>
+
+    <div class="item">
+      <b
+        >{{ item.name }}
+        @if (item.variantName) {
+          · {{ item.variantName }}
+        }
+      </b>
+      <span
+        >{{ t('onHandAt', { branch: data.branchName }) }}
+        <bdi dir="ltr" class="mono">{{ qty(item.onHand) }} {{ item.unitSymbol }}</bdi></span
+      >
+    </div>
+
+    @if (status() === 'failed') {
+      <div class="vd-banner vd-banner--danger" role="alert">
+        <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+        <span class="vd-banner__body">{{ t('errors.failed') }}</span>
+      </div>
+    } @else if (status() === 'belowZero') {
+      <div class="vd-banner vd-banner--danger" role="alert">
+        <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+        <span class="vd-banner__body">{{ t('errors.belowZero') }}</span>
+      </div>
+    }
+
+    <fieldset class="kinds">
+      <legend class="vd-field__label">{{ t('what') }}</legend>
+      @for (k of kinds; track k) {
+        <label class="kind">
+          <input type="radio" name="kind" [checked]="model().kind === k" (change)="setKind(k)" />
+          @switch (k) {
+            @case ('add') {
+              <svg lucidePlus aria-hidden="true"></svg>
+            }
+            @case ('remove') {
+              <svg lucideMinus aria-hidden="true"></svg>
+            }
+            @default {
+              <svg lucideEqual aria-hidden="true"></svg>
+            }
+          }
+          <b>{{ t('kinds.' + k) }}</b>
+          <small>{{ t('kinds.' + k + 'Text') }}</small>
+        </label>
+      }
+    </fieldset>
+
+    <div class="stack">
+      <div class="vd-field">
+        <label class="vd-field__label" for="ad-qty"
+          >{{ model().kind === 'set' ? t('counted') : t('quantity')
+          }}<span class="req" aria-hidden="true">*</span></label
+        >
+        <div class="vd-inputgroup">
+          <input
+            id="ad-qty"
+            class="vd-input mono"
+            type="number"
+            dir="ltr"
+            [attr.inputmode]="item.allowFractions ? 'decimal' : 'numeric'"
+            [formField]="adjustForm.quantity"
+            [attr.aria-invalid]="qtyError() ? true : null"
+            [attr.aria-describedby]="qtyError() ? 'ad-qty-error' : null"
+          />
+          <span class="vd-inputgroup__affix">{{ item.unitSymbol }}</span>
+        </div>
+        @if (qtyError(); as e) {
+          <p id="ad-qty-error" class="vd-field__error">
+            <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('errors.' + e) }}
+          </p>
+        }
+      </div>
+      <div class="vd-field">
+        <label class="vd-field__label" for="ad-reason"
+          >{{ t('reason') }}<span class="req" aria-hidden="true">*</span></label
+        >
+        <select id="ad-reason" class="vd-input" [formField]="adjustForm.reason">
+          @for (r of reasons(); track r) {
+            <option [value]="r">{{ t('reasons.' + r) }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <div class="vd-field">
+      <label class="vd-field__label" for="ad-note"
+        >{{ t('note') }}
+        @if (model().reason === 'other') {
+          <span class="req" aria-hidden="true">*</span>
+        } @else {
+          <span class="opt">{{ t('optional') }}</span>
+        }
+      </label>
+      <input
+        id="ad-note"
+        class="vd-input"
+        type="text"
+        dir="auto"
+        [placeholder]="t('notePlaceholder')"
+        [formField]="adjustForm.note"
+        [attr.aria-invalid]="noteError() ? true : null"
+      />
+      @if (noteError()) {
+        <p class="vd-field__error">
+          <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('errors.note') }}
+        </p>
+      }
+    </div>
+
+    <!-- 12 pc → 15 pc -->
+    <div class="prev" aria-live="polite" [class.prev--neg]="after() < 0">
+      <span>{{ t('result') }}</span>
+      <bdi dir="ltr" class="mono">{{ qty(item.onHand) }} {{ item.unitSymbol }}</bdi>
+      <svg lucideArrowRight class="dir" aria-hidden="true"></svg>
+      <b dir="ltr" class="mono">{{ qty(after()) }} {{ item.unitSymbol }}</b>
+    </div>
+    @if (after() < 0) {
+      <p class="warn">{{ t('negative') }}</p>
+    }
+  </fieldset>
+
+  <footer class="vd-drawer__foot">
+    <button vdButton type="button" [disabled]="saving()" (click)="ref.close()">
+      {{ t('cancel') }}
+    </button>
+    <button vdButton="primary" type="submit" [loading]="saving()">
+      <svg lucideCheck aria-hidden="true"></svg>{{ t('save') }}
+    </button>
+  </footer>
+</form>

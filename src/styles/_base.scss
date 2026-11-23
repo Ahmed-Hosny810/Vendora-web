@@ -10,6 +10,10 @@ html {
   // When a link jumps to a section, stop below the sticky header (72px)
   // instead of hiding the section's title under it.
   scroll-padding-top: 88px;
+  // The page never scrolls sideways. A closed phone menu sits just off
+  // screen, and without this you could swipe over to it (an empty strip in
+  // Arabic). Wide tables still scroll inside their own box.
+  overflow-x: clip;
 }
 
 body {

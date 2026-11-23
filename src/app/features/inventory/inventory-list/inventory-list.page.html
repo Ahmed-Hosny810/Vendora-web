@@ -1,0 +1,141 @@
+<ng-container *transloco="let t; read: 'inventory.list'">
+  <app-page-head [title]="t('title')" [text]="t('text', { branch: session.branch()?.name ?? '' })">
+    <a vdButton routerLink="/inventory/opening"
+      ><svg lucidePackagePlus aria-hidden="true"></svg>{{ t('opening') }}</a
+    >
+  </app-page-head>
+
+  @if (status() === 'ready' && items().length) {
+    <div class="kpis">
+      <app-kpi-card
+        [label]="t('kpi.tracked')"
+        [value]="counts().all"
+        [hint]="t('kpi.trackedHint')"
+      />
+      <app-kpi-card [label]="t('kpi.low')" [value]="counts().low" [hint]="t('kpi.lowHint')" />
+      <app-kpi-card [label]="t('kpi.out')" [value]="counts().out" [hint]="t('kpi.outHint')" />
+    </div>
+  }
+
+  <div class="vd-tablewrap">
+    @switch (status()) {
+      @case ('loading') {
+        <app-skeleton-rows [label]="t('loading')" [rows]="5" [columns]="5" />
+      }
+      @case ('error') {
+        <app-load-error
+          [title]="t('errorTitle')"
+          [text]="t('errorText')"
+          [retryLabel]="t('tryAgain')"
+          (retry)="load()"
+        />
+      }
+      @default {
+        @if (!items().length) {
+          <div class="vd-empty">
+            <span class="vd-empty__art"><svg lucidePackage></svg></span>
+            <h2 class="vd-empty__title">{{ t('emptyTitle') }}</h2>
+            <p class="vd-empty__text">{{ t('emptyText') }}</p>
+            <a vdButton="primary" routerLink="/inventory/opening"
+              ><svg lucidePackagePlus aria-hidden="true"></svg>{{ t('opening') }}</a
+            >
+          </div>
+        } @else {
+          <div class="vd-toolbar">
+            <label class="vd-search">
+              <svg lucideSearch aria-hidden="true"></svg>
+              <input
+                type="search"
+                [placeholder]="t('search')"
+                [attr.aria-label]="t('searchLabel')"
+                [value]="query()"
+                (input)="query.set($any($event.target).value)"
+              />
+            </label>
+            @for (f of filters; track f) {
+              <button
+                type="button"
+                class="vd-chip"
+                [attr.aria-pressed]="filter() === f"
+                (click)="filter.set(f)"
+              >
+                {{ t('filters.' + f) }} <span class="n">{{ counts()[f] }}</span>
+              </button>
+            }
+          </div>
+
+          @if (visible().length) {
+            <div class="vd-tablescroll">
+              <table class="vd-table">
+                <thead>
+                  <tr>
+                    <th scope="col">{{ t('cols.item') }}</th>
+                    <th scope="col">{{ t('cols.sku') }}</th>
+                    <th scope="col" class="num">{{ t('cols.onHand') }}</th>
+                    <th scope="col" class="num">{{ t('cols.lowAt') }}</th>
+                    <th scope="col">{{ t('cols.status') }}</th>
+                    <th scope="col">{{ t('cols.updated') }}</th>
+                    <th scope="col">
+                      <span class="vd-sr">{{ t('adjust') }}</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (x of visible(); track x.key) {
+                    @let lv = level(x);
+                    <tr [class.is-new]="x.key === newKey()">
+                      <td>
+                        <b>{{ x.name }}</b>
+                        @if (x.variantName) {
+                          <small class="sub">{{ x.variantName }}</small>
+                        }
+                      </td>
+                      <td class="mono">
+                        <bdi>{{ x.sku || '—' }}</bdi>
+                      </td>
+                      <td class="num" [class.neg]="x.onHand < 0">
+                        <b>{{ qty(x.onHand) }}</b> <span class="unit">{{ x.unitSymbol }}</span>
+                      </td>
+                      <td class="num">
+                        {{ x.lowStockThreshold ? qty(x.lowStockThreshold) : '—' }}
+                      </td>
+                      <td>
+                        <span
+                          class="vd-badge vd-badge--pill vd-badge--dot"
+                          [class.vd-badge--success]="lv === 'in'"
+                          [class.vd-badge--warning]="lv === 'low'"
+                          [class.vd-badge--danger]="lv === 'out'"
+                          >{{ t('levels.' + lv) }}</span
+                        >
+                      </td>
+                      <td class="nowrap muted">
+                        {{ x.updatedAt ? dateTime(x.updatedAt, lang()) : '—' }}
+                      </td>
+                      <td class="actions">
+                        <button
+                          vdButton="ghost"
+                          size="sm"
+                          type="button"
+                          [attr.aria-label]="
+                            t('adjustLabel', {
+                              name: x.name + (x.variantName ? ' ' + x.variantName : ''),
+                            })
+                          "
+                          (click)="adjust(x)"
+                        >
+                          <svg lucideSlidersHorizontal aria-hidden="true"></svg>{{ t('adjust') }}
+                        </button>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          } @else {
+            <p class="no-match" role="status">{{ t('noMatch') }}</p>
+          }
+        }
+      }
+    }
+  </div>
+</ng-container>

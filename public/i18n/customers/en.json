@@ -1,0 +1,82 @@
+{
+  "list": {
+    "title": "Customers",
+    "text": "People you attach to sales, found by phone at the POS.",
+    "add": "Add customer",
+    "loading": "Loading customers…",
+    "errorTitle": "We couldn’t load the customers",
+    "errorText": "Check your connection and try again.",
+    "tryAgain": "Try again",
+    "emptyTitle": "No customers yet",
+    "emptyText": "Add them here, or from the POS when you ring up a sale. Walk-in sales don’t need one.",
+    "search": "Name or phone",
+    "searchLabel": "Search customers",
+    "count": "{{count}} customers",
+    "cols": {
+      "name": "Name",
+      "phone": "Phone",
+      "place": "Area",
+      "sales": "Sales",
+      "spent": "Total spent",
+      "lastVisit": "Last visit"
+    },
+    "never": "No sales yet",
+    "view": "View",
+    "viewLabel": "View {{name}}",
+    "noMatch": "No customers match your search."
+  },
+  "details": {
+    "loading": "Loading the customer…",
+    "errorTitle": "We couldn’t load this customer",
+    "errorText": "Check your connection and try again.",
+    "tryAgain": "Try again",
+    "edit": "Edit",
+    "kpi": {
+      "sales": "Sales",
+      "since": "Customer since {{date}}",
+      "spent": "Total spent",
+      "average": "Average sale",
+      "lastVisit": "Last visit"
+    },
+    "egp": "EGP",
+    "never": "No sales yet",
+    "info": "Contact details",
+    "phone": "Phone",
+    "area": "Area",
+    "city": "City",
+    "address": "Address",
+    "notes": "Notes",
+    "sales": "Sales",
+    "cols": {
+      "receipt": "Receipt",
+      "date": "Date",
+      "branch": "Branch",
+      "items": "Items",
+      "total": "Total"
+    },
+    "receipt": "Receipt",
+    "receiptLabel": "Receipt {{number}}",
+    "noSales": "No sales with this customer yet."
+  },
+  "drawer": {
+    "addTitle": "Add customer",
+    "editTitle": "Edit customer",
+    "close": "Close",
+    "failed": "We couldn’t save the customer. Check your connection and try again.",
+    "fullName": "Full name",
+    "phone": "Phone",
+    "phoneHint": "Cashiers find the customer with it.",
+    "area": "Area",
+    "city": "City",
+    "address": "Address",
+    "notes": "Notes",
+    "optional": "Optional",
+    "cancel": "Cancel",
+    "save": "Save customer",
+    "errors": {
+      "nameRequired": "Enter their full name.",
+      "phoneRequired": "Enter a phone number.",
+      "phoneTaken": "Another customer already has this phone number."
+    }
+  }
+}

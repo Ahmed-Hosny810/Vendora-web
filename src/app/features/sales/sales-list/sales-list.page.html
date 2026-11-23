@@ -1,0 +1,180 @@
+<ng-container *transloco="let t; read: 'sales.list'">
+  <app-page-head [title]="t('title')" [text]="t('text', { branch: session.branch()?.name ?? '' })">
+    <a vdButton routerLink="/pos"><svg lucideMonitor aria-hidden="true"></svg>{{ t('openPos') }}</a>
+  </app-page-head>
+
+  <div class="periods" role="group" [attr.aria-label]="t('period')">
+    @for (p of periods; track p) {
+      <button
+        type="button"
+        class="vd-chip"
+        [attr.aria-pressed]="period() === p"
+        (click)="period.set(p)"
+      >
+        {{ t('periods.' + p) }}
+      </button>
+    }
+  </div>
+
+  @if (status() === 'ready') {
+    <div class="kpis">
+      <app-kpi-card [label]="t('kpi.count')" [value]="kpis().count" [hint]="t('kpi.countHint')" />
+      <app-kpi-card
+        [label]="t('kpi.revenue')"
+        [value]="money(kpis().revenue)"
+        [hint]="t('kpi.egp')"
+      />
+      <app-kpi-card
+        [label]="t('kpi.average')"
+        [value]="kpis().average === null ? null : money(kpis().average!)"
+        [hint]="t('kpi.egp')"
+      />
+      <app-kpi-card
+        [label]="t('kpi.attention')"
+        [value]="kpis().attention"
+        [hint]="t('kpi.attentionHint')"
+      />
+    </div>
+  }
+
+  <div class="vd-tablewrap">
+    @switch (status()) {
+      @case ('loading') {
+        <app-skeleton-rows [label]="t('loading')" [rows]="5" [columns]="6" />
+      }
+      @case ('error') {
+        <app-load-error
+          [title]="t('errorTitle')"
+          [text]="t('errorText')"
+          [retryLabel]="t('tryAgain')"
+          (retry)="load()"
+        />
+      }
+      @default {
+        @if (!sales().length) {
+          <div class="vd-empty">
+            <span class="vd-empty__art"><svg lucideReceiptText></svg></span>
+            <h2 class="vd-empty__title">{{ t('emptyTitle') }}</h2>
+            <p class="vd-empty__text">{{ t('emptyText') }}</p>
+            <a vdButton="primary" routerLink="/pos"
+              ><svg lucideMonitor aria-hidden="true"></svg>{{ t('openPos') }}</a
+            >
+          </div>
+        } @else {
+          <div class="vd-toolbar">
+            <label class="vd-search">
+              <svg lucideSearch aria-hidden="true"></svg>
+              <input
+                type="search"
+                [placeholder]="t('search')"
+                [attr.aria-label]="t('searchLabel')"
+                [value]="query()"
+                (input)="query.set($any($event.target).value)"
+              />
+            </label>
+            @for (s of statuses; track s) {
+              <button
+                type="button"
+                class="vd-chip"
+                [attr.aria-pressed]="statusFilter() === s"
+                (click)="statusFilter.set(s)"
+              >
+                {{ t('statuses.' + s) }}
+              </button>
+            }
+          </div>
+
+          @if (visible().length) {
+            <div class="vd-tablescroll">
+              <table class="vd-table">
+                <thead>
+                  <tr>
+                    <th scope="col">{{ t('cols.receipt') }}</th>
+                    <th scope="col">{{ t('cols.date') }}</th>
+                    <th scope="col">{{ t('cols.customer') }}</th>
+                    <th scope="col">{{ t('cols.cashier') }}</th>
+                    <th scope="col">{{ t('cols.payment') }}</th>
+                    <th scope="col" class="num">{{ t('cols.total') }}</th>
+                    <th scope="col">{{ t('cols.status') }}</th>
+                    <th scope="col">
+                      <span class="vd-sr">{{ t('cols.actions') }}</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (s of visible(); track s.id) {
+                    <tr [class.attn]="s.status === 'attention'">
+                      <td class="mono">
+                        <bdi>{{ s.receiptNumber || '—' }}</bdi>
+                      </td>
+                      <td class="nowrap">
+                        <bdi>{{ dateTime(s.createdAt, lang()) }}</bdi>
+                      </td>
+                      <td>{{ s.customerName || t('walkIn') }}</td>
+                      <td>
+                        {{ s.cashierName }}
+                        <small class="sub">{{ s.terminalName }}</small>
+                      </td>
+                      <td>{{ s.paymentSummary || '—' }}</td>
+                      <td class="num">{{ money(s.total) }}</td>
+                      <td>
+                        @switch (s.status) {
+                          @case ('completed') {
+                            <span class="vd-badge vd-badge--pill vd-badge--dot vd-badge--success">{{
+                              t('statuses.completed')
+                            }}</span>
+                          }
+                          @case ('attention') {
+                            <span class="vd-badge vd-badge--pill vd-badge--danger">
+                              <svg lucideTriangleAlert aria-hidden="true"></svg
+                              >{{ t('statuses.attention') }}
+                            </span>
+                          }
+                          @default {
+                            <span class="vd-badge vd-badge--pill vd-badge--dot vd-badge--warning">{{
+                              t('statuses.held')
+                            }}</span>
+                          }
+                        }
+                      </td>
+                      <td class="actions">
+                        @switch (s.status) {
+                          @case ('completed') {
+                            <a
+                              vdButton="ghost"
+                              size="sm"
+                              [routerLink]="['/sales', s.id, 'receipt']"
+                              [attr.aria-label]="t('receiptLabel', { number: s.receiptNumber })"
+                            >
+                              <svg lucideReceiptText aria-hidden="true"></svg>{{ t('receipt') }}
+                            </a>
+                          }
+                          @case ('attention') {
+                            <button
+                              vdButton="primary"
+                              size="sm"
+                              type="button"
+                              [loading]="isBusy(s.id)"
+                              (click)="finish(s)"
+                            >
+                              {{ t('finish') }}
+                            </button>
+                          }
+                          @default {
+                            <span class="muted">{{ t('heldHint') }}</span>
+                          }
+                        }
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          } @else {
+            <p class="no-match" role="status">{{ t('noMatch') }}</p>
+          }
+        }
+      }
+    }
+  </div>
+</ng-container>

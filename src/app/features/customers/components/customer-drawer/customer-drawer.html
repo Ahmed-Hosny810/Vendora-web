@@ -1,0 +1,140 @@
+<form
+  class="vd-drawer"
+  novalidate
+  *transloco="let t; read: 'customers.drawer'"
+  (submit)="onSubmit($event)"
+>
+  <header class="vd-drawer__head">
+    <h2 class="vd-drawer__title" vdDialogTitle>
+      {{ data.customer ? t('editTitle') : t('addTitle') }}
+    </h2>
+    <button vdIconButton type="button" [label]="t('close')" (click)="ref.close()">
+      <svg lucideX></svg>
+    </button>
+  </header>
+
+  <fieldset class="vd-drawer__body body" [disabled]="saving()">
+    <legend class="vd-sr">{{ data.customer ? t('editTitle') : t('addTitle') }}</legend>
+
+    @if (status() === 'failed') {
+      <div class="vd-banner vd-banner--danger" role="alert">
+        <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+        <span class="vd-banner__body">{{ t('failed') }}</span>
+      </div>
+    }
+
+    <div class="two">
+      <div class="vd-field">
+        <div class="vd-field__top">
+          <label class="vd-field__label" for="cd-name"
+            >{{ t('fullName') }}<span class="req" aria-hidden="true">*</span></label
+          >
+          <span class="vd-field__counter" aria-hidden="true"
+            >{{ model().fullName.length }}/{{ limits.fullName }}</span
+          >
+        </div>
+        <input
+          id="cd-name"
+          class="vd-input"
+          type="text"
+          dir="auto"
+          [formField]="customerForm.fullName"
+          [attr.aria-invalid]="nameError() ? true : null"
+          [attr.aria-describedby]="nameError() ? 'cd-name-error' : null"
+        />
+        @if (nameError()) {
+          <p id="cd-name-error" class="vd-field__error">
+            <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+            >{{ t('errors.nameRequired') }}
+          </p>
+        }
+      </div>
+      <div class="vd-field">
+        <label class="vd-field__label" for="cd-phone"
+          >{{ t('phone') }}<span class="req" aria-hidden="true">*</span></label
+        >
+        <input
+          id="cd-phone"
+          class="vd-input"
+          type="tel"
+          dir="ltr"
+          [formField]="customerForm.phone"
+          [attr.aria-invalid]="phoneError() ? true : null"
+          [attr.aria-describedby]="phoneError() ? 'cd-phone-error' : 'cd-phone-hint'"
+        />
+        @if (phoneError(); as e) {
+          <p id="cd-phone-error" class="vd-field__error">
+            <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('errors.' + e) }}
+          </p>
+        } @else {
+          <p id="cd-phone-hint" class="vd-field__hint">{{ t('phoneHint') }}</p>
+        }
+      </div>
+    </div>
+
+    <div class="two">
+      <div class="vd-field">
+        <label class="vd-field__label" for="cd-area"
+          >{{ t('area') }}<span class="opt">{{ t('optional') }}</span></label
+        >
+        <input
+          id="cd-area"
+          class="vd-input"
+          type="text"
+          dir="auto"
+          [formField]="customerForm.area"
+        />
+      </div>
+      <div class="vd-field">
+        <label class="vd-field__label" for="cd-city"
+          >{{ t('city') }}<span class="opt">{{ t('optional') }}</span></label
+        >
+        <input
+          id="cd-city"
+          class="vd-input"
+          type="text"
+          dir="auto"
+          [formField]="customerForm.city"
+        />
+      </div>
+    </div>
+    <div class="vd-field">
+      <label class="vd-field__label" for="cd-address"
+        >{{ t('address') }}<span class="opt">{{ t('optional') }}</span></label
+      >
+      <input
+        id="cd-address"
+        class="vd-input"
+        type="text"
+        dir="auto"
+        [formField]="customerForm.address"
+      />
+    </div>
+    <div class="vd-field">
+      <div class="vd-field__top">
+        <label class="vd-field__label" for="cd-notes"
+          >{{ t('notes') }}<span class="opt">{{ t('optional') }}</span></label
+        >
+        <span class="vd-field__counter" aria-hidden="true"
+          >{{ model().notes.length }}/{{ limits.notes }}</span
+        >
+      </div>
+      <textarea
+        id="cd-notes"
+        class="vd-input notes"
+        rows="3"
+        dir="auto"
+        [formField]="customerForm.notes"
+      ></textarea>
+    </div>
+  </fieldset>
+
+  <footer class="vd-drawer__foot">
+    <button vdButton type="button" [disabled]="saving()" (click)="ref.close()">
+      {{ t('cancel') }}
+    </button>
+    <button vdButton="primary" type="submit" [loading]="saving()">
+      <svg lucideCheck aria-hidden="true"></svg>{{ t('save') }}
+    </button>
+  </footer>
+</form>

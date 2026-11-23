@@ -4,9 +4,9 @@ import { provideTranslocoScope, TranslocoDirective } from '@jsverse/transloco';
 import { LucideMonitor } from '@lucide/angular';
 
 import { AppSession, SetupTask } from '../../core/session';
+import { KpiCard } from '../../shared/components/app';
 import { AppShell } from '../../layouts/app-layout/app-shell';
 import { VdButton } from '../../shared/components/ui';
-import { KpiCard } from './components/kpi-card/kpi-card';
 import { SetupChecklist } from './components/setup-checklist/setup-checklist';
 
 /**

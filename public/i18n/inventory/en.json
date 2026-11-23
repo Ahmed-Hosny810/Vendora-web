@@ -57,5 +57,89 @@
     "savedText": "{{quantity}} {{unit}} of {{item}} are now on hand at {{branch}}.",
     "addAnother": "Add another item",
     "viewInventory": "View inventory"
+  },
+  "list": {
+    "title": "Inventory",
+    "text": "What’s on hand at {{branch}}. Only products that track inventory are listed.",
+    "opening": "Opening stock",
+    "kpi": {
+      "tracked": "Tracked items",
+      "trackedHint": "Products and variants",
+      "low": "Low stock",
+      "lowHint": "At or under their threshold",
+      "out": "Out of stock",
+      "outHint": "Can’t be sold until restocked"
+    },
+    "loading": "Loading inventory…",
+    "errorTitle": "We couldn’t load the inventory",
+    "errorText": "Check your connection and try again.",
+    "tryAgain": "Try again",
+    "emptyTitle": "Nothing counted yet",
+    "emptyText": "Record your opening stock to see what’s on hand here.",
+    "search": "Product, variant or SKU",
+    "searchLabel": "Search inventory",
+    "filters": {
+      "all": "All",
+      "low": "Low stock",
+      "out": "Out of stock"
+    },
+    "cols": {
+      "item": "Item",
+      "sku": "SKU",
+      "onHand": "On hand",
+      "lowAt": "Low at",
+      "status": "Status",
+      "updated": "Last change"
+    },
+    "levels": {
+      "in": "In stock",
+      "low": "Low",
+      "out": "Out"
+    },
+    "adjust": "Adjust",
+    "adjustLabel": "Adjust stock of {{name}}",
+    "noMatch": "No items match."
+  },
+  "adjust": {
+    "title": "Adjust stock",
+    "close": "Close",
+    "onHandAt": "On hand at {{branch}}:",
+    "what": "What happened?",
+    "kinds": {
+      "add": "Add",
+      "addText": "Received or found",
+      "remove": "Remove",
+      "removeText": "Damaged, lost, returned",
+      "set": "Set count",
+      "setText": "After counting"
+    },
+    "quantity": "Quantity",
+    "counted": "Counted quantity",
+    "reason": "Reason",
+    "reasons": {
+      "received": "Received from supplier",
+      "returned": "Customer return",
+      "found": "Found in store",
+      "damaged": "Damaged",
+      "lost": "Lost or stolen",
+      "supplierReturn": "Returned to supplier",
+      "count": "Stock count",
+      "other": "Other"
+    },
+    "note": "Note",
+    "notePlaceholder": "Invoice number, what happened…",
+    "optional": "Optional",
+    "result": "After this change",
+    "negative": "This takes stock below zero.",
+    "cancel": "Cancel",
+    "save": "Save adjustment",
+    "errors": {
+      "min": "Enter more than 0.",
+      "minSet": "Enter 0 or more.",
+      "whole": "Use a whole number — this unit can’t be split.",
+      "note": "Say what happened.",
+      "belowZero": "There isn’t that much on hand. Lower the quantity, or set the counted amount instead.",
+      "failed": "We couldn’t save the adjustment. Check your connection and try again."
+    }
   }
 }
