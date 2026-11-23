@@ -1,0 +1,17 @@
+{
+  "bar": {
+    "home": "Vendora POS home",
+    "branch": "Branch",
+    "terminal": "Terminal",
+    "shiftOpen": "Shift open · {{time}}",
+    "shiftClosed": "Shift closed",
+    "findSale": "Find a sale",
+    "currentShift": "Current shift",
+    "roles": {
+      "owner": "Owner",
+      "admin": "Admin",
+      "cashier": "Cashier",
+      "inventoryStaff": "Inventory staff"
+    }
+  }
+}

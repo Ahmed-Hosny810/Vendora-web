@@ -1,0 +1,17 @@
+{
+  "bar": {
+    "home": "الصفحة الرئيسية للكاشير",
+    "branch": "الفرع",
+    "terminal": "الجهاز",
+    "shiftOpen": "الوردية مفتوحة · {{time}}",
+    "shiftClosed": "الوردية اتقفلت",
+    "findSale": "دوّر على بيعة",
+    "currentShift": "الوردية الحالية",
+    "roles": {
+      "owner": "المالك",
+      "admin": "مدير",
+      "cashier": "الكاشير",
+      "inventoryStaff": "موظف مخزون"
+    }
+  }
+}

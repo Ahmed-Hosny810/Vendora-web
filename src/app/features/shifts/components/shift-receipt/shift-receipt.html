@@ -1,0 +1,51 @@
+<div class="paper" *transloco="let t; read: 'shifts.receipt'">
+  <div class="c">
+    <b>{{ t('title') }}</b>
+    <span>{{ summary().branchName }} · {{ summary().terminalName }}</span>
+    <span>{{ summary().cashierName }}</span>
+  </div>
+  <hr />
+  <div class="row">
+    <span>{{ t('opened') }}</span
+    ><span>{{ dayTime(summary().openedAt) }}</span>
+  </div>
+  <div class="row">
+    <span>{{ t('closed') }}</span
+    ><span>{{ dayTime(closedAt()) }}</span>
+  </div>
+  <hr />
+  <div class="row">
+    <span>{{ t('openingCash') }}</span
+    ><span>{{ cash(summary().openingCash) }}</span>
+  </div>
+  <div class="row">
+    <span>{{ t('cashReceipts') }}</span
+    ><span>{{ cash(summary().cashReceipts) }}</span>
+  </div>
+  <div class="row">
+    <span>{{ t('cashRefunds') }}</span
+    ><span>{{ signed(-summary().cashRefunds) }}</span>
+  </div>
+  <div class="row big">
+    <span>{{ t('expected') }}</span
+    ><span>{{ cash(expected()) }}</span>
+  </div>
+  <div class="row big">
+    <span>{{ t('counted') }}</span
+    ><span>{{ cash(counted()) }}</span>
+  </div>
+  <div class="row">
+    <span>{{ t(kind()) }}</span
+    ><span>{{ signed(diff()) }}</span>
+  </div>
+  @if (summary().nonCash.length) {
+    <hr />
+    @for (n of summary().nonCash; track n.name) {
+      <div class="row muted">
+        <span>{{ n.name }}</span
+        ><span>{{ cash(n.amount) }}</span>
+      </div>
+    }
+  }
+  <span class="stamp" aria-hidden="true">{{ t('stamp') }}</span>
+</div>

@@ -70,6 +70,26 @@ export const routes: Routes = [
       import('./features/auth/first-sign-in/first-sign-in.page').then((m) => m.FirstSignInPage),
   },
   {
+    // The cashier's screens: dark POS bar, no sidebar.
+    // TODO(you): guard it (signed in, role that can sell).
+    path: 'pos',
+    loadComponent: () => import('./layouts/pos-layout/pos-layout').then((m) => m.PosLayout),
+    children: [
+      // TODO(you): '' becomes the selling screen once it's built.
+      { path: '', pathMatch: 'full', redirectTo: 'shift/open' },
+      {
+        path: 'shift/open',
+        loadComponent: () =>
+          import('./features/shifts/shift-open/shift-open.page').then((m) => m.ShiftOpenPage),
+      },
+      {
+        path: 'shift/close',
+        loadComponent: () =>
+          import('./features/shifts/shift-close/shift-close.page').then((m) => m.ShiftClosePage),
+      },
+    ],
+  },
+  {
     // Business onboarding, after sign-up: details → plan → review → invoice
     // → payment status → welcome checklist. The layout draws the top bar
     // with the stepper and the shop preview; each child route is one step.
