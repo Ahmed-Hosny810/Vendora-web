@@ -402,69 +402,69 @@
 // The animation, step by step (delays are from page open).
 // It starts after the headline is in, and each step has time to
 // be seen before the next one:
-//   0.6s terminal fades up        1.6s branch card fades in
-//   2.6s a product tile is tapped, 2.9s its line appears
-//   3.2s the total changes        3.9s change due shows
-//   4.3s "Complete sale" pressed  4.8s receipt prints
-//   6.0s low-stock alert drops in and bounces
+//   0.4s terminal fades up        1.1s branch card fades in
+//   1.7s a product tile is tapped, 1.9s its line appears
+//   2.15s the total changes       2.5s change due shows
+//   2.7s "Complete sale" pressed  3.0s receipt prints
+//   3.8s low-stock alert drops in and bounces
 // $soft = fast start, gentle stop, no bounce.
 // ============================================================
 $soft: cubic-bezier(0.22, 1, 0.36, 1);
 
 @media (prefers-reduced-motion: no-preference) {
   .term {
-    animation: term-in 1400ms $soft 600ms both;
+    animation: term-in 1200ms $soft 400ms both;
   }
 
   .branch {
     animation:
-      float-in 900ms $soft 1600ms both,
-      bob 6s ease-in-out 2.5s 4 alternate;
+      float-in 900ms $soft 1100ms both,
+      bob 6s ease-in-out 2s 4 alternate;
   }
 
   .bars i {
-    animation: grow-x 900ms $soft 1900ms both;
+    animation: grow-x 900ms $soft 1300ms both;
   }
 
   .tap {
-    animation: tap 500ms ease-in-out 2600ms both;
+    animation: tap 500ms ease-in-out 1700ms both;
   }
 
   .line--new {
-    animation: line-in 700ms $soft 2900ms both;
+    animation: line-in 700ms $soft 1900ms both;
   }
 
   .grand__fig .old {
-    animation: fade-out 300ms ease-in-out 3150ms both;
+    animation: fade-out 300ms ease-in-out 2100ms both;
   }
 
   .grand__fig .new {
     animation:
-      fade-in 400ms $soft 3200ms both,
-      bump 700ms $soft 3200ms both;
+      fade-in 400ms $soft 2150ms both,
+      bump 700ms $soft 2150ms both;
   }
 
   .change-due {
-    animation: fade-in 500ms $soft 3900ms both;
+    animation: fade-in 500ms $soft 2500ms both;
   }
 
   .complete {
-    animation: press 500ms ease-in-out 4300ms both;
+    animation: press 500ms ease-in-out 2700ms both;
   }
 
   .receipt {
     animation:
-      print 1300ms $soft 4800ms both,
-      bob 8s ease-in-out 6.1s 4 alternate;
+      print 1300ms $soft 3000ms both,
+      bob 8s ease-in-out 4.3s 4 alternate;
   }
 
   // Falls in and bounces lower and lower, like a ball.
   .alert {
-    animation: ball-drop 1500ms linear 6000ms both;
+    animation: ball-drop 1500ms linear 3800ms both;
   }
 
   .alert__icon {
-    animation: alarm 600ms var(--ease-out) 6600ms 2 both;
+    animation: alarm 600ms var(--ease-out) 4400ms 2 both;
   }
 
   // Nothing moves until the picture is on screen.
