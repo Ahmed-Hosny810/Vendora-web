@@ -1,0 +1,67 @@
+<div class="drop" *transloco="let t; read: 'products.image'">
+  @if (badFile(); as name) {
+    <!-- Not an image -->
+    <span class="box box--err" aria-hidden="true"><svg lucideCircleAlert></svg></span>
+    <div class="txt">
+      <b>{{ t('uploadTitle') }}</b>
+      <p class="vd-field__error" id="img-error" role="alert">
+        <svg lucideCircleAlert aria-hidden="true"></svg>{{ t('notImage', { name }) }}
+      </p>
+      <div class="acts">
+        <label class="vd-btn vd-btn--secondary vd-btn--sm file">
+          <svg lucidePlus aria-hidden="true"></svg><span>{{ t('chooseAnother') }}</span>
+          <input
+            type="file"
+            [accept]="accept"
+            aria-describedby="img-error"
+            (change)="onFile($event)"
+          />
+        </label>
+      </div>
+    </div>
+  } @else if (imageUrl(); as url) {
+    <!-- Image picked (or already saved) -->
+    <span class="box box--img"><img [src]="url" [alt]="t('selectedAlt')" /></span>
+    <div class="txt">
+      <b>{{ t('selected') }}</b>
+      @if (picked(); as file) {
+        <span class="fname"
+          ><svg lucideCircleCheck aria-hidden="true"></svg>{{ file.name }} · {{ file.size }}</span
+        >
+      }
+      <span>{{ t('shownWhere') }}</span>
+      <div class="acts">
+        <label class="vd-btn vd-btn--secondary vd-btn--sm file">
+          <svg lucideRefreshCw aria-hidden="true"></svg><span>{{ t('replace') }}</span>
+          <input
+            type="file"
+            [accept]="accept"
+            [attr.aria-label]="t('replaceLabel')"
+            (change)="onFile($event)"
+          />
+        </label>
+        <button type="button" class="vd-btn vd-btn--ghost vd-btn--sm" (click)="remove()">
+          <svg lucideTrash2 aria-hidden="true"></svg>{{ t('remove') }}
+        </button>
+      </div>
+    </div>
+  } @else {
+    <!-- No image -->
+    <span class="box" aria-hidden="true"><svg lucideShoppingBag></svg></span>
+    <div class="txt">
+      <b>{{ t('none') }}</b>
+      <span>{{ t('noneText') }}</span>
+      <div class="acts">
+        <label class="vd-btn vd-btn--secondary vd-btn--sm file">
+          <svg lucidePlus aria-hidden="true"></svg><span>{{ t('upload') }}</span>
+          <input
+            type="file"
+            [accept]="accept"
+            [attr.aria-label]="t('uploadLabel')"
+            (change)="onFile($event)"
+          />
+        </label>
+      </div>
+    </div>
+  }
+</div>

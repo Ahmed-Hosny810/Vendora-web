@@ -3,7 +3,9 @@
   "breadcrumb": "مسار الصفحة",
   "pages": {
     "addBranch": "أضف فرع",
-    "editBranch": "عدّل الفرع"
+    "editBranch": "عدّل الفرع",
+    "addProduct": "أضف منتج",
+    "editProduct": "عدّل المنتج"
   },
   "mainNav": "القائمة الرئيسية",
   "openMenu": "افتح القائمة",

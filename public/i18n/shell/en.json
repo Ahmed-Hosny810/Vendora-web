@@ -3,7 +3,9 @@
   "breadcrumb": "Breadcrumb",
   "pages": {
     "addBranch": "Add branch",
-    "editBranch": "Edit branch"
+    "editBranch": "Edit branch",
+    "addProduct": "Add product",
+    "editProduct": "Edit product"
   },
   "mainNav": "Main navigation",
   "openMenu": "Open menu",

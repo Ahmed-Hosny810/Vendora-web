@@ -28,6 +28,8 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
+  // Each field keeps its own height (a hint under one doesn't stretch the other).
+  align-items: start;
 
   @include down(md) {
     grid-template-columns: 1fr;

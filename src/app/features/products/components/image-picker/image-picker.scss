@@ -1,0 +1,124 @@
+@use 'abstracts' as *;
+
+:host {
+  display: block;
+}
+
+.drop {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  align-items: center;
+  gap: 18px;
+
+  @include down(sm) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.box {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 120px;
+  height: 120px;
+  overflow: hidden;
+  border: 2px dashed var(--line-strong);
+  border-radius: 16px;
+  background: var(--paper-50);
+  color: var(--ink-500);
+
+  svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  // A picked image lands with a little pop and a butter shadow.
+  &--img {
+    border: 2px solid var(--pine-600);
+    box-shadow: 4px 4px 0 var(--butter-500);
+    animation: img-in 500ms var(--ease-out) both;
+  }
+
+  &--err {
+    border-color: var(--danger-fg);
+    background: var(--danger-bg);
+    color: var(--danger-fg);
+  }
+}
+
+.txt {
+  display: grid;
+  align-content: center;
+  gap: 8px;
+
+  b {
+    font-size: 15px;
+  }
+
+  > span {
+    color: var(--ink-500);
+    font-size: 13px;
+    line-height: 19px;
+  }
+}
+
+.fname {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-wrap: anywhere;
+  color: var(--ink-700);
+  font: 500 12px/1.3 var(--font-mono);
+
+  svg {
+    flex: none;
+    width: 14px;
+    height: 14px;
+    color: var(--success-fg);
+  }
+}
+
+.acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+// The real file input covers its label-button, invisible:
+// keyboard focus and screen readers still reach it.
+.file {
+  position: relative;
+  cursor: pointer;
+
+  input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  &:focus-within {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+}
+
+@keyframes img-in {
+  from {
+    opacity: 0;
+    transform: scale(0.85) rotate(-4deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .box--img {
+    animation: none;
+  }
+}

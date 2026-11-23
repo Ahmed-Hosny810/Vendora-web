@@ -1,0 +1,85 @@
+// The POS product card: a tag shape with a little hole at the top corner.
+:host {
+  position: relative;
+  display: grid;
+  align-content: start;
+  justify-self: center;
+  gap: 4px;
+  width: 190px;
+  box-sizing: border-box;
+  padding-block: 10px 12px;
+  padding-inline: 22px 14px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 6px;
+  border-start-end-radius: 16px;
+  border-end-end-radius: 16px;
+  background: var(--paper-0);
+
+  &::before {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    top: 10px;
+    inset-inline-start: 8px;
+    width: 7px;
+    height: 7px;
+    border: 1.5px solid var(--line-strong);
+    border-radius: 50%;
+    background: var(--paper-0);
+  }
+}
+
+.img {
+  display: grid;
+  place-items: center;
+  height: 84px;
+  margin-bottom: 6px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper-100);
+  color: var(--ink-500);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  svg {
+    width: 22px;
+    height: 22px;
+    opacity: 0.6;
+  }
+
+  &--ph {
+    border-style: dashed;
+    background: repeating-linear-gradient(135deg, var(--paper-50) 0 8px, var(--paper-100) 8px 16px);
+  }
+}
+
+b {
+  overflow-wrap: anywhere;
+  font-size: 15px;
+  line-height: 20px;
+}
+
+.ar {
+  color: var(--ink-500);
+  font:
+    12px 'IBM Plex Sans Arabic',
+    sans-serif;
+}
+
+.pr {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  padding-top: 8px;
+  font: 700 17px/1 var(--font-mono);
+
+  small {
+    color: var(--ink-500);
+    font-size: 11px;
+  }
+}

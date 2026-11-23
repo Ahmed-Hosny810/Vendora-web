@@ -1,0 +1,25 @@
+<ng-container *transloco="let t; read: 'products.form'">
+  <div class="tag">
+    <small>{{ category() || t('categoryPlaceholder') }}</small>
+    <b lang="en" dir="ltr">{{ nameEn().trim() || t('namePlaceholder') }}</b>
+    @if (nameAr().trim()) {
+      <span class="ar" lang="ar" dir="rtl">{{ nameAr() }}</span>
+    }
+    <span class="price" dir="ltr"
+      >{{ priceText() }} <small>{{ t('egp') }}</small></span
+    >
+    <span class="bars"></span>
+    <span class="code" dir="ltr"
+      ><span>{{ sku() }}</span
+      ><span>{{ barcode() }}</span></span
+    >
+  </div>
+  @if (cost() !== null) {
+    <div class="margin">
+      <span
+        >{{ t('margin') }} <small>({{ t('marginWho') }})</small></span
+      >
+      <b dir="ltr">{{ margin() }}</b>
+    </div>
+  }
+</ng-container>

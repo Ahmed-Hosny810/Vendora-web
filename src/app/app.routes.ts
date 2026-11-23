@@ -155,6 +155,40 @@ export const routes: Routes = [
           },
         ],
       },
+      {
+        // Products and their variants.
+        path: 'products',
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./features/products/products-list/products-list.page').then(
+                (m) => m.ProductsListPage,
+              ),
+          },
+          {
+            path: 'new',
+            loadComponent: () =>
+              import('./features/products/product-form/product-form.page').then(
+                (m) => m.ProductFormPage,
+              ),
+          },
+          {
+            path: ':id',
+            loadComponent: () =>
+              import('./features/products/product-details/product-details.page').then(
+                (m) => m.ProductDetailsPage,
+              ),
+          },
+          {
+            path: ':id/edit',
+            loadComponent: () =>
+              import('./features/products/product-form/product-form.page').then(
+                (m) => m.ProductFormPage,
+              ),
+          },
+        ],
+      },
       // Catalog setup: categories, units and tax rates (tabs between them).
       {
         path: 'categories',

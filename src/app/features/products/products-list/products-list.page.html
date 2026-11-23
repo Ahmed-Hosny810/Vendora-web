@@ -1,0 +1,167 @@
+<ng-container *transloco="let t; read: 'products.list'">
+  <app-page-head [title]="t('title')" [text]="t('text')">
+    @if (status() === 'ready' && products().length) {
+      <a vdButton="primary" routerLink="/products/new">
+        <svg lucidePlus aria-hidden="true"></svg>{{ t('add') }}
+      </a>
+    }
+  </app-page-head>
+
+  <div class="vd-tablewrap">
+    @switch (status()) {
+      @case ('loading') {
+        <app-skeleton-rows [label]="t('loading')" [rows]="4" [columns]="5" />
+      }
+      @case ('error') {
+        <app-load-error
+          [title]="t('errorTitle')"
+          [text]="t('errorText')"
+          [retryLabel]="t('tryAgain')"
+          (retry)="load()"
+        />
+      }
+      @default {
+        @if (!products().length) {
+          <div class="vd-empty empty">
+            <app-shelf-tag
+              class="empty__tag"
+              [nameEn]="t('emptyTagName')"
+              [category]="t('emptyTagCategory')"
+              sku="SKU"
+            />
+            <h2 class="vd-empty__title">{{ t('emptyTitle') }}</h2>
+            <p class="vd-empty__text">{{ t('emptyText') }}</p>
+            <div class="empty__acts">
+              <a vdButton routerLink="/categories">{{ t('catalogSetup') }}</a>
+              <a vdButton="primary" routerLink="/products/new">
+                <svg lucidePlus aria-hidden="true"></svg>{{ t('add') }}
+              </a>
+            </div>
+          </div>
+        } @else {
+          <div class="vd-toolbar">
+            <label class="vd-search">
+              <svg lucideSearch aria-hidden="true"></svg>
+              <input
+                type="search"
+                [placeholder]="t('search')"
+                [attr.aria-label]="t('searchLabel')"
+                [value]="query()"
+                (input)="query.set($any($event.target).value)"
+              />
+            </label>
+            @for (f of filters; track f) {
+              <button
+                type="button"
+                class="vd-chip"
+                [attr.aria-pressed]="filter() === f"
+                (click)="filter.set(f)"
+              >
+                {{ t('filters.' + f) }}
+              </button>
+            }
+            @if (session.isManager()) {
+              <span class="cost-note"
+                ><svg lucideLock aria-hidden="true"></svg>{{ t('costNote') }}</span
+              >
+            }
+          </div>
+
+          @if (visible().length) {
+            <div class="vd-tablescroll">
+              <table class="vd-table">
+                <thead>
+                  <tr>
+                    <th scope="col">{{ t('cols.product') }}</th>
+                    <th scope="col">{{ t('cols.code') }}</th>
+                    <th scope="col">{{ t('cols.category') }}</th>
+                    <th scope="col" class="num">{{ t('cols.price') }}</th>
+                    @if (session.isManager()) {
+                      <th scope="col" class="num">{{ t('cols.cost') }}</th>
+                    }
+                    <th scope="col">{{ t('cols.inventory') }}</th>
+                    <th scope="col">{{ t('cols.status') }}</th>
+                    <th scope="col">
+                      <span class="vd-sr">{{ t('view') }}</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (p of visible(); track p.id) {
+                    <tr>
+                      <td>
+                        <span class="prod">
+                          <app-product-thumb [src]="p.imageUrl" [alt]="p.nameEn" />
+                          <span>
+                            <b
+                              ><bdi lang="en">{{ p.nameEn }}</bdi></b
+                            >
+                            @if (p.variantCount) {
+                              <small>{{ t('variants', { count: p.variantCount }) }}</small>
+                            } @else if (p.nameAr) {
+                              <small
+                                ><bdi lang="ar">{{ p.nameAr }}</bdi></small
+                              >
+                            }
+                          </span>
+                        </span>
+                      </td>
+                      <td class="mono">
+                        <bdi>{{ p.sku || p.barcode || '—' }}</bdi>
+                      </td>
+                      <td>{{ p.categoryName }}</td>
+                      <td class="num">{{ money(p.price) }}</td>
+                      @if (session.isManager()) {
+                        <td class="num">{{ p.cost === null ? '—' : money(p.cost) }}</td>
+                      }
+                      <td>
+                        @if (p.trackInventory) {
+                          <span class="vd-badge vd-badge--pill vd-badge--info">
+                            <svg lucidePackage aria-hidden="true"></svg>{{ t('tracked') }}
+                          </span>
+                        } @else {
+                          <span class="vd-badge vd-badge--pill vd-badge--warning">{{
+                            t('notTracked')
+                          }}</span>
+                        }
+                      </td>
+                      <td>
+                        <span
+                          class="vd-badge vd-badge--pill vd-badge--dot"
+                          [class.vd-badge--success]="p.active"
+                          [class.vd-badge--warning]="!p.active"
+                        >
+                          {{ p.active ? t('active') : t('inactive') }}
+                        </span>
+                      </td>
+                      <td class="actions">
+                        <a
+                          vdButton="ghost"
+                          size="sm"
+                          [routerLink]="['/products', p.id]"
+                          [attr.aria-label]="t('viewLabel', { name: p.nameEn })"
+                        >
+                          {{ t('view') }}
+                        </a>
+                        <a
+                          vdButton="ghost"
+                          size="sm"
+                          [routerLink]="['/products', p.id, 'edit']"
+                          [attr.aria-label]="t('editLabel', { name: p.nameEn })"
+                        >
+                          <svg lucidePencil aria-hidden="true"></svg>{{ t('edit') }}
+                        </a>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          } @else {
+            <p class="no-match" role="status">{{ t('noMatch') }}</p>
+          }
+        }
+      }
+    }
+  </div>
+</ng-container>

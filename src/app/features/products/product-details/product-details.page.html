@@ -1,0 +1,261 @@
+<ng-container *transloco="let t; read: 'products.details'">
+  @switch (status()) {
+    @case ('loading') {
+      <div class="loading" aria-busy="true">
+        <span class="vd-skeleton title-sk" aria-hidden="true"></span>
+        <span class="vd-skeleton card-sk" aria-hidden="true"></span>
+      </div>
+    }
+    @case ('error') {
+      <div class="vd-tablewrap">
+        <app-load-error
+          [title]="t('errorTitle')"
+          [text]="t('errorText')"
+          [retryLabel]="t('tryAgain')"
+          (retry)="load()"
+        />
+      </div>
+    }
+    @default {
+      @if (product(); as p) {
+        <div class="head">
+          <app-product-thumb [src]="p.imageUrl" [alt]="p.nameEn" size="lg" />
+          <h1>
+            <bdi lang="en">{{ p.nameEn }}</bdi>
+          </h1>
+          <span
+            class="vd-badge vd-badge--pill vd-badge--dot"
+            [class.vd-badge--success]="p.active"
+            [class.vd-badge--warning]="!p.active"
+          >
+            {{ p.active ? t('active') : t('inactive') }}
+          </span>
+          <span class="grow"></span>
+          <a vdButton [routerLink]="['/products', p.id, 'edit']">
+            <svg lucidePencil aria-hidden="true"></svg>{{ t('edit') }}
+          </a>
+          @if (variantsAllowed()) {
+            <button vdButton="primary" type="button" (click)="openVariant()">
+              <svg lucidePlus aria-hidden="true"></svg>{{ t('addVariant') }}
+            </button>
+          }
+        </div>
+
+        <div class="vd-tabs" role="tablist" [attr.aria-label]="t('tabs')">
+          @for (k of ['details', 'variants', 'stock']; track k) {
+            <button
+              type="button"
+              class="vd-tab"
+              role="tab"
+              [id]="'tab-' + k"
+              [attr.aria-controls]="'panel-' + k"
+              [attr.aria-selected]="tab() === k"
+              (click)="tab.set($any(k))"
+            >
+              {{ t('tab.' + k) }}
+              @if (k === 'variants') {
+                <span class="vd-count">{{ variantsAllowed() ? variants().length : 0 }}</span>
+              }
+            </button>
+          }
+        </div>
+
+        <div
+          role="tabpanel"
+          [id]="'panel-' + tab()"
+          [attr.aria-labelledby]="'tab-' + tab()"
+          class="panel"
+        >
+          @switch (tab()) {
+            @case ('details') {
+              <div class="grid">
+                <section class="card" aria-labelledby="card-title">
+                  <h2 class="card__h" id="card-title">{{ t('card') }}</h2>
+                  <dl class="dl">
+                    <dt>{{ t('nameEn') }}</dt>
+                    <dd>
+                      <bdi lang="en">{{ p.nameEn }}</bdi>
+                    </dd>
+                    <dt>{{ t('nameAr') }}</dt>
+                    <dd>
+                      <bdi lang="ar">{{ p.nameAr || '—' }}</bdi>
+                    </dd>
+                    <dt>{{ t('category') }}</dt>
+                    <dd>{{ p.categoryName }}</dd>
+                    <dt>{{ t('unit') }}</dt>
+                    <dd>{{ p.unitName }}</dd>
+                    <dt>{{ t('sku') }}</dt>
+                    <dd class="mono">
+                      <bdi>{{ p.sku || '—' }}</bdi>
+                    </dd>
+                    <dt>{{ t('barcode') }}</dt>
+                    <dd class="mono">
+                      <bdi>{{ p.barcode || '—' }}</bdi>
+                    </dd>
+                    <dt>{{ t('price') }}</dt>
+                    <dd class="mono">
+                      <bdi>{{ money(p.sellingPrice) }} {{ t('egp') }}</bdi>
+                    </dd>
+                    @if (session.isManager()) {
+                      <dt>{{ t('cost') }}</dt>
+                      <dd class="mono">
+                        <bdi>{{ money(p.costPrice) }} {{ t('egp') }}</bdi>
+                      </dd>
+                    }
+                    <dt>{{ t('taxRate') }}</dt>
+                    <dd>{{ p.taxRateName }}</dd>
+                    <dt>{{ t('inventory') }}</dt>
+                    <dd>{{ p.trackInventory ? t('tracked') : t('notTracked') }}</dd>
+                  </dl>
+                </section>
+                <aside class="side">
+                  <app-shelf-tag
+                    [category]="p.categoryName"
+                    [nameEn]="p.nameEn"
+                    [nameAr]="p.nameAr"
+                    [price]="p.sellingPrice"
+                    [sku]="p.sku"
+                    [barcode]="p.barcode"
+                    [cost]="session.isManager() ? p.costPrice : null"
+                  />
+                </aside>
+              </div>
+            }
+
+            @case ('variants') {
+              @if (!variantsAllowed()) {
+                <!-- The plan doesn't include variants -->
+                <div class="locked" role="status">
+                  <svg lucideLock aria-hidden="true"></svg>
+                  <div>
+                    <b>{{ t('lockedTitle') }}</b>
+                    <span>{{ t('lockedText') }}</span>
+                  </div>
+                  <a vdButton routerLink="/billing">{{ t('comparePlans') }}</a>
+                </div>
+                <div class="vd-tablewrap">
+                  <div class="vd-empty">
+                    <div class="rail rail--ghost" aria-hidden="true">
+                      @for (s of ['White / M', 'White / L', 'Sand / M']; track s) {
+                        <span class="vtag"
+                          ><b>{{ s }}</b
+                          ><span>650.00</span></span
+                        >
+                      }
+                    </div>
+                    <p class="vd-empty__text">{{ t('lockedHint') }}</p>
+                  </div>
+                </div>
+              } @else if (variants().length) {
+                <div class="rail" aria-hidden="true">
+                  @for (v of variants(); track v.id) {
+                    <span class="vtag" [class.vtag--new]="v.id === newVariantId()">
+                      <b>{{ v.name }}</b
+                      ><span>{{ money(v.price) }}</span>
+                    </span>
+                  }
+                </div>
+                <div class="vd-tablewrap">
+                  <div class="vd-tablescroll">
+                    <table class="vd-table">
+                      <thead>
+                        <tr>
+                          <th scope="col">{{ t('cols.variant') }}</th>
+                          <th scope="col">{{ t('cols.options') }}</th>
+                          <th scope="col">{{ t('cols.sku') }}</th>
+                          <th scope="col" class="num">{{ t('cols.price') }}</th>
+                          @if (session.isManager()) {
+                            <th scope="col" class="num">{{ t('cols.cost') }}</th>
+                          }
+                          <th scope="col">{{ t('cols.status') }}</th>
+                          <th scope="col">
+                            <span class="vd-sr">{{ t('editShort') }}</span>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @for (v of variants(); track v.id) {
+                          <tr [class.is-new]="v.id === newVariantId()">
+                            <td class="vname">
+                              <b>{{ v.name }}</b>
+                            </td>
+                            <td>
+                              <span class="opts">
+                                @if (v.option1Name || v.option1Value) {
+                                  <span class="opt-chip"
+                                    >{{ v.option1Name }}: {{ v.option1Value }}</span
+                                  >
+                                }
+                                @if (v.option2Name || v.option2Value) {
+                                  <span class="opt-chip"
+                                    >{{ v.option2Name }}: {{ v.option2Value }}</span
+                                  >
+                                }
+                              </span>
+                            </td>
+                            <td class="mono">
+                              <bdi>{{ v.sku || '—' }}</bdi>
+                            </td>
+                            <td class="num">{{ money(v.price) }}</td>
+                            @if (session.isManager()) {
+                              <td class="num">{{ v.cost === null ? '—' : money(v.cost) }}</td>
+                            }
+                            <td>
+                              <span
+                                class="vd-badge vd-badge--pill vd-badge--dot"
+                                [class.vd-badge--success]="v.active"
+                                [class.vd-badge--warning]="!v.active"
+                              >
+                                {{ v.active ? t('active') : t('inactive') }}
+                              </span>
+                            </td>
+                            <td class="actions">
+                              <button
+                                vdButton="ghost"
+                                size="sm"
+                                type="button"
+                                [attr.aria-label]="t('editLabel', { name: v.name })"
+                                (click)="openVariant(v)"
+                              >
+                                <svg lucidePencil aria-hidden="true"></svg>{{ t('editShort') }}
+                              </button>
+                            </td>
+                          </tr>
+                        }
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <p class="note">{{ t('variantsNote') }}</p>
+              } @else {
+                <div class="vd-tablewrap">
+                  <div class="vd-empty">
+                    <span class="vd-empty__art"><svg lucideLayers></svg></span>
+                    <h2 class="vd-empty__title">{{ t('noVariantsTitle') }}</h2>
+                    <p class="vd-empty__text">{{ t('noVariantsText') }}</p>
+                    <button vdButton="primary" type="button" (click)="openVariant()">
+                      <svg lucidePlus aria-hidden="true"></svg>{{ t('addVariant') }}
+                    </button>
+                  </div>
+                </div>
+              }
+            }
+
+            @case ('stock') {
+              <!-- TODO(you): stock per branch, once the inventory pages exist. -->
+              <div class="vd-tablewrap">
+                <div class="vd-empty">
+                  <span class="vd-empty__art"><svg lucideLayers></svg></span>
+                  <h2 class="vd-empty__title">{{ t('stockTitle') }}</h2>
+                  <p class="vd-empty__text">
+                    {{ p.trackInventory ? t('stockText') : t('stockOff') }}
+                  </p>
+                </div>
+              </div>
+            }
+          }
+        </div>
+      }
+    }
+  }
+</ng-container>

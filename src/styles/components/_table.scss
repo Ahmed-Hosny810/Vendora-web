@@ -82,9 +82,16 @@
     text-align: end;
   }
 
+  // Headers keep the normal font (the mono font breaks up Arabic letters).
+  th.num {
+    font-family: inherit;
+  }
+
   .mono {
     font-family: var(--font-mono);
     letter-spacing: 0.02em;
+    // Codes stay on one line; the table scrolls sideways on small screens.
+    white-space: nowrap;
   }
 
   // Row buttons (View, Edit) on the end side.
