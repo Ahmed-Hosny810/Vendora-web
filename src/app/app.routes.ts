@@ -63,6 +63,13 @@ export const routes: Routes = [
     ],
   },
   {
+    // An invited employee chooses their own password (no layout: one card on the page).
+    // TODO(you): guard it (signed in with temporary details).
+    path: 'first-sign-in',
+    loadComponent: () =>
+      import('./features/auth/first-sign-in/first-sign-in.page').then((m) => m.FirstSignInPage),
+  },
+  {
     // Business onboarding, after sign-up: details → plan → review → invoice
     // → payment status → welcome checklist. The layout draws the top bar
     // with the stepper and the shop preview; each child route is one step.
@@ -154,6 +161,34 @@ export const routes: Routes = [
               ),
           },
         ],
+      },
+      {
+        // People who can sign in, and inviting new ones.
+        path: 'employees',
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./features/employees/employees-list/employees-list.page').then(
+                (m) => m.EmployeesListPage,
+              ),
+          },
+          {
+            path: 'invite',
+            loadComponent: () =>
+              import('./features/employees/employee-invite/employee-invite.page').then(
+                (m) => m.EmployeeInvitePage,
+              ),
+          },
+        ],
+      },
+      {
+        // How customers can pay at checkout.
+        path: 'payment-methods',
+        loadComponent: () =>
+          import('./features/payment-methods/payment-methods/payment-methods.page').then(
+            (m) => m.PaymentMethodsPage,
+          ),
       },
       {
         // Inventory. TODO(you): '' becomes the inventory list once it's designed.

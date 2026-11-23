@@ -1,0 +1,108 @@
+<ng-container *transloco="let t; read: 'paymentMethods.list'">
+  <app-page-head [title]="t('title')" [text]="t('text')">
+    @if (status() === 'ready') {
+      <button vdButton="primary" type="button" (click)="open()">
+        <svg lucidePlus aria-hidden="true"></svg>{{ t('add') }}
+      </button>
+    }
+  </app-page-head>
+
+  @switch (status()) {
+    @case ('loading') {
+      <div class="vd-tablewrap">
+        <app-skeleton-rows [label]="t('loading')" [rows]="3" [columns]="4" />
+      </div>
+    }
+    @case ('error') {
+      <div class="vd-tablewrap">
+        <app-load-error
+          [title]="t('errorTitle')"
+          [text]="t('errorText')"
+          [retryLabel]="t('tryAgain')"
+          (retry)="load()"
+        />
+      </div>
+    }
+    @default {
+      @if (rows().length) {
+        <ul
+          class="slots"
+          cdkDropList
+          [cdkDropListData]="rows()"
+          (cdkDropListDropped)="drop($event)"
+        >
+          @for (m of rows(); track m.id) {
+            <li class="slot" cdkDrag cdkDragLockAxis="y" [class.is-new]="m.id === newId()">
+              <span class="grip" cdkDragHandle [attr.title]="t('drag')" aria-hidden="true">
+                <svg lucideGripVertical></svg>
+              </span>
+              <span class="ic" [class.ic--cash]="m.isCash" aria-hidden="true">
+                @switch (icon(m)) {
+                  @case ('cash') {
+                    <svg lucideBanknote></svg>
+                  }
+                  @case ('wallet') {
+                    <svg lucideWallet></svg>
+                  }
+                  @default {
+                    <svg lucideCreditCard></svg>
+                  }
+                }
+              </span>
+              <span class="name">
+                <b>
+                  <bdi>{{ m.name }}</bdi>
+                  @if (m.isCash) {
+                    <span class="drawer-tag">{{ t('cashDrawer') }}</span>
+                  }
+                </b>
+                <span class="code"
+                  ><bdi>{{ m.code }}</bdi></span
+                >
+              </span>
+              <span>
+                <span
+                  class="vd-badge vd-badge--pill"
+                  [class.vd-badge--info]="m.requiresReference"
+                  [class.vd-badge--warning]="!m.requiresReference"
+                >
+                  {{ m.requiresReference ? t('reference') : t('noReference') }}
+                </span>
+              </span>
+              <span class="order">{{ t('order', { n: m.sortOrder }) }}</span>
+              <span
+                class="vd-badge vd-badge--pill vd-badge--dot"
+                [class.vd-badge--success]="m.active"
+              >
+                {{ m.active ? t('active') : t('inactive') }}
+              </span>
+              <span class="acts">
+                <button
+                  vdButton="ghost"
+                  size="sm"
+                  type="button"
+                  [attr.aria-label]="t('editLabel', { name: m.name })"
+                  (click)="open(m)"
+                >
+                  <svg lucidePencil aria-hidden="true"></svg>{{ t('edit') }}
+                </button>
+              </span>
+            </li>
+          }
+        </ul>
+        <p class="note">{{ t('dragNote') }}</p>
+      } @else {
+        <div class="vd-tablewrap">
+          <div class="vd-empty">
+            <span class="vd-empty__art"><svg lucideCreditCard></svg></span>
+            <h2 class="vd-empty__title">{{ t('emptyTitle') }}</h2>
+            <p class="vd-empty__text">{{ t('emptyText') }}</p>
+            <button vdButton="primary" type="button" (click)="open()">
+              <svg lucidePlus aria-hidden="true"></svg>{{ t('add') }}
+            </button>
+          </div>
+        </div>
+      }
+    }
+  }
+</ng-container>

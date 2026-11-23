@@ -1,0 +1,126 @@
+:host {
+  display: grid;
+  justify-items: center;
+  padding: 0 16px 24px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--paper-100);
+}
+
+// The strap from the top edge down to the card.
+.lanyard {
+  width: 14px;
+  height: 70px;
+  background: repeating-linear-gradient(
+    180deg,
+    var(--pine-600) 0 10px,
+    var(--butter-500) 10px 20px
+  );
+}
+
+.card {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  width: 220px;
+  max-width: 100%;
+  padding-bottom: 16px;
+  overflow: hidden;
+  border: 2px solid var(--pine-600);
+  border-radius: 16px;
+  background: var(--paper-0);
+  box-shadow: 4px 4px 0 var(--pine-600);
+  text-align: center;
+  // Swings from the top of the strap.
+  transform-origin: 50% -70px;
+  animation: sway 4s ease-in-out infinite;
+}
+
+// Striped header with the clip slot.
+.top {
+  position: relative;
+  width: 100%;
+  height: 44px;
+  background: repeating-linear-gradient(90deg, var(--pine-600) 0 18px, var(--butter-300) 18px 36px);
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    width: 30px;
+    height: 8px;
+    margin-left: -15px;
+    border: 1.5px solid var(--pine-600);
+    border-radius: 8px;
+    background: var(--paper-0);
+  }
+}
+
+.av {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin-top: -10px;
+  border: 1.5px solid var(--pine-600);
+  border-radius: 50%;
+  background: var(--butter-300);
+  color: var(--pine-900);
+  font: 700 22px/1 var(--font-sans);
+}
+
+b {
+  max-width: 100%;
+  padding-inline: 12px;
+  font: 700 17px/1.2 var(--font-display);
+  overflow-wrap: anywhere;
+
+  :host-context(:lang(ar)) & {
+    font-family: 'Alexandria', var(--font-display);
+  }
+}
+
+.user {
+  color: var(--ink-500);
+  font: 500 12px/1 var(--font-mono);
+}
+
+.role {
+  padding: 6px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--pine-600);
+  color: var(--butter-300);
+  font: 700 11px/1 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+
+  :host-context(:lang(ar)) & {
+    font-family: 'IBM Plex Sans Arabic', var(--font-sans);
+    letter-spacing: 0;
+  }
+}
+
+.biz {
+  color: var(--ink-700);
+  font-size: 12px;
+}
+
+@keyframes sway {
+  0%,
+  100% {
+    rotate: -1.5deg;
+  }
+
+  50% {
+    rotate: 1.5deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    animation: none;
+  }
+}

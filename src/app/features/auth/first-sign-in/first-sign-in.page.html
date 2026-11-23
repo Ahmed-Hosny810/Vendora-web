@@ -1,0 +1,80 @@
+<main class="page" *transloco="let t; read: 'auth'">
+  <form class="card" novalidate (submit)="onSubmit($event)">
+    <vd-wordmark />
+
+    <div class="head">
+      <span class="vd-badge vd-badge--brand">{{ t('firstSignIn.tag') }}</span>
+      <h1>
+        {{
+          firstName() ? t('firstSignIn.title', { name: firstName() }) : t('firstSignIn.titleNoName')
+        }}
+      </h1>
+      <p>{{ t('firstSignIn.text', { business: businessName() }) }}</p>
+    </div>
+
+    @if (status() === 'failed') {
+      <div class="vd-banner vd-banner--danger" role="alert">
+        <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+        <span class="vd-banner__body">{{ t('firstSignIn.failed') }}</span>
+      </div>
+    }
+
+    <fieldset class="fields" [disabled]="saving()">
+      <legend class="vd-sr">{{ t('firstSignIn.legend') }}</legend>
+
+      <div class="vd-field">
+        <label class="vd-field__label" for="fs-password"
+          >{{ t('firstSignIn.password') }}<span class="req" aria-hidden="true">*</span></label
+        >
+        <app-password-input
+          inputId="fs-password"
+          autocomplete="new-password"
+          size="md"
+          [field]="passwordForm.password"
+          [invalid]="!!errors().password"
+          [describedBy]="
+            errors().password
+              ? 'fs-password-error' + (showRules() ? ' fs-password-rules' : '')
+              : 'fs-password-hint'
+          "
+        />
+        @if (errors().password; as error) {
+          <p id="fs-password-error" class="vd-field__error" role="alert">
+            <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+            >{{ t('register.errors.' + error) }}
+          </p>
+        }
+        @if (showRules()) {
+          <app-password-rules id="fs-password-rules" [checks]="checks()" />
+        } @else {
+          <p id="fs-password-hint" class="vd-field__hint">{{ t('firstSignIn.hint') }}</p>
+        }
+      </div>
+
+      <div class="vd-field">
+        <label class="vd-field__label" for="fs-confirm"
+          >{{ t('firstSignIn.confirm') }}<span class="req" aria-hidden="true">*</span></label
+        >
+        <app-password-input
+          inputId="fs-confirm"
+          autocomplete="new-password"
+          size="md"
+          [field]="passwordForm.confirm"
+          [invalid]="!!errors().confirm"
+          [describedBy]="errors().confirm ? 'fs-confirm-error' : null"
+        />
+        @if (errors().confirm; as error) {
+          <p id="fs-confirm-error" class="vd-field__error" role="alert">
+            <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+            >{{ t('register.errors.' + error) }}
+          </p>
+        }
+      </div>
+    </fieldset>
+
+    <button vdButton="primary" size="lg" block type="submit" [loading]="saving()">
+      {{ t('firstSignIn.save') }}
+    </button>
+    <p class="next">{{ t('firstSignIn.' + nextKey()) }}</p>
+  </form>
+</main>

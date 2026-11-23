@@ -1,0 +1,28 @@
+@use '../../../../shared/styles/app-forms' as forms;
+
+:host {
+  display: contents;
+  @include forms.field-bits;
+}
+
+.vd-drawer {
+  height: 100%;
+  margin: 0;
+}
+
+.body {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+  min-width: 0;
+  margin: 0;
+  border: 0;
+}
+
+.two {
+  @include forms.two;
+}
+
+.toggle {
+  @include forms.toggle-row;
+}

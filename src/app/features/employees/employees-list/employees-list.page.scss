@@ -1,0 +1,75 @@
+@use 'abstracts' as *;
+
+:host {
+  display: contents;
+}
+
+.who {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 150px;
+}
+
+// Round initials.
+.av {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1.5px solid var(--pine-600);
+  border-radius: 50%;
+  background: var(--butter-300);
+  color: var(--pine-900);
+  font: 700 11px/1 var(--font-sans);
+}
+
+.email,
+.nowrap {
+  white-space: nowrap;
+}
+
+.you {
+  color: var(--ink-500);
+  font-size: 12px;
+}
+
+.acts {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+// ---------- "…" menu ----------
+.menu {
+  // top and inset-inline-end are set from the button's place on screen.
+  position: fixed;
+  z-index: 20;
+  display: grid;
+  min-width: 190px;
+  padding: 6px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-md);
+  background: var(--paper-0);
+  box-shadow: var(--shadow-2);
+
+  &__item {
+    padding: 10px 12px;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: none;
+    color: var(--ink-900);
+    font: 600 14px/1.2 var(--font-sans);
+    text-align: start;
+    cursor: pointer;
+
+    &.danger {
+      color: var(--danger-fg);
+    }
+
+    @include hover {
+      background: var(--paper-100);
+    }
+  }
+}

@@ -223,5 +223,20 @@
       "done": "Done",
       "missing": "Missing"
     }
+  },
+  "firstSignIn": {
+    "tag": "First sign-in",
+    "title": "Hi {{name}}, choose your own password",
+    "titleNoName": "Choose your own password",
+    "text": "You signed in with temporary details from {{business}}. Set a password only you know to continue.",
+    "legend": "Your new password",
+    "password": "New password",
+    "hint": "At least 8 characters, with an uppercase letter, a lowercase letter and a number.",
+    "confirm": "Confirm new password",
+    "save": "Save and continue",
+    "failed": "We couldn’t save your password. Check your connection and try again.",
+    "nextPos": "Next you’ll go straight to the POS — that’s the area your role can use.",
+    "nextStock": "Next you’ll go straight to inventory — that’s the area your role can use.",
+    "nextOverview": "Next you’ll go to the overview of the business."
   }
 }
