@@ -69,11 +69,11 @@ export class AppLayout {
   }
 
   protected openProfile(): void {
-    // TODO(you): go to the profile page (Settings → My account).
+    // TODO(you): go to /settings/account (the My account tab).
   }
 
   protected openChangePassword(): void {
-    // TODO(you): go to Settings → Change password.
+    // TODO(you): go to /settings/password (the Password tab).
   }
 
   protected signOut(): void {

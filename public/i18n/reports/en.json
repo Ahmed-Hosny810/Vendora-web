@@ -1,0 +1,56 @@
+{
+  "page": {
+    "title": "Reports",
+    "text": "How {{branch}} is selling.",
+    "export": "Export CSV",
+    "period": "Period",
+    "periods": {
+      "today": "Today",
+      "week": "Last 7 days",
+      "month": "Last 30 days"
+    },
+    "loading": "Loading the report…",
+    "errorTitle": "Couldn't load the report",
+    "errorText": "Check your connection and try again.",
+    "tryAgain": "Try again",
+    "egp": "EGP",
+    "kpi": {
+      "net": "Net sales",
+      "count": "Sales",
+      "countHint": "Completed sales",
+      "average": "Average sale",
+      "items": "Items sold",
+      "discounts": "{{amount}} EGP in discounts"
+    },
+    "emptyTitle": "No sales in this period",
+    "emptyText": "Sales show here as soon as a cashier rings them up.",
+    "openPos": "Open POS",
+    "byHour": "Sales by hour",
+    "byDay": "Sales by day",
+    "netEgp": "Net sales, EGP",
+    "payments": "Payment methods",
+    "paymentNote": "{{share}}% · {{count}} sales",
+    "paymentNoteOne": "{{share}}% · 1 sale",
+    "topProducts": "Best sellers",
+    "byRevenue": "By revenue",
+    "soldQty": "{{qty}} {{unit}} sold",
+    "cashiers": "Cashiers",
+    "cols": {
+      "cashier": "Cashier",
+      "sales": "Sales",
+      "net": "Net sales (EGP)",
+      "average": "Average (EGP)"
+    }
+  },
+  "chart": {
+    "sales": "{{count}} sales",
+    "saleOne": "1 sale",
+    "egp": "EGP",
+    "empty": "No sales in this period",
+    "caption": "Net sales over the period",
+    "hour": "Hour",
+    "day": "Day",
+    "amount": "Net sales (EGP)",
+    "count": "Sales"
+  }
+}

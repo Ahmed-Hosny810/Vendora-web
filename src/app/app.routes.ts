@@ -1,5 +1,7 @@
-import { isDevMode } from '@angular/core';
+import { inject, isDevMode } from '@angular/core';
 import { Routes } from '@angular/router';
+
+import { AppSession } from './core/session';
 
 export const routes: Routes = [
   {
@@ -233,6 +235,67 @@ export const routes: Routes = [
             loadComponent: () =>
               import('./features/customers/customer-details/customer-details.page').then(
                 (m) => m.CustomerDetailsPage,
+              ),
+          },
+        ],
+      },
+      {
+        // Sales totals and charts for a period.
+        path: 'reports',
+        loadComponent: () =>
+          import('./features/reports/reports-page/reports.page').then((m) => m.ReportsPage),
+      },
+      {
+        // The Vendora plan, its limits, and Vendora's invoices to the business.
+        path: 'billing',
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./features/billing/billing-page/billing.page').then((m) => m.BillingPage),
+          },
+          {
+            path: 'invoices/:id',
+            loadComponent: () =>
+              import('./features/billing/invoice-details/invoice-details.page').then(
+                (m) => m.InvoiceDetailsPage,
+              ),
+          },
+        ],
+      },
+      {
+        // Tabs: Business (owners and admins), My account and Password (everyone).
+        path: 'settings',
+        loadComponent: () =>
+          import('./features/settings/settings-layout/settings-layout').then(
+            (m) => m.SettingsLayout,
+          ),
+        children: [
+          {
+            // /settings opens the first tab this person can see.
+            path: '',
+            pathMatch: 'full',
+            redirectTo: () => (inject(AppSession).isManager() ? 'business' : 'account'),
+          },
+          {
+            path: 'business',
+            loadComponent: () =>
+              import('./features/settings/business-settings/business-settings.page').then(
+                (m) => m.BusinessSettingsPage,
+              ),
+          },
+          {
+            path: 'account',
+            loadComponent: () =>
+              import('./features/settings/account-settings/account-settings.page').then(
+                (m) => m.AccountSettingsPage,
+              ),
+          },
+          {
+            path: 'password',
+            loadComponent: () =>
+              import('./features/settings/password-settings/password-settings.page').then(
+                (m) => m.PasswordSettingsPage,
               ),
           },
         ],

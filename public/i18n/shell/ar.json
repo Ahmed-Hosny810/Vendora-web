@@ -8,7 +8,11 @@
     "editProduct": "عدّل المنتج",
     "openingStock": "المخزون الافتتاحي",
     "inviteEmployee": "ادعُ موظف",
-    "receipt": "الإيصال"
+    "receipt": "الإيصال",
+    "settingsBusiness": "النشاط",
+    "settingsAccount": "حسابي",
+    "settingsPassword": "كلمة المرور",
+    "invoice": "الفاتورة"
   },
   "mainNav": "القائمة الرئيسية",
   "openMenu": "افتح القائمة",

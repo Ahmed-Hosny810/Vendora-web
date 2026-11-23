@@ -1,0 +1,261 @@
+@use 'abstracts' as *;
+
+:host {
+  display: contents;
+}
+
+// The unpaid-invoice banner: text on the start, Pay button on the end.
+.due {
+  align-items: center;
+
+  .vd-btn {
+    flex: none;
+  }
+
+  @include down(md) {
+    flex-wrap: wrap;
+
+    .vd-btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
+
+// Plan on the start, usage on the end. Phones: one under the other.
+.top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+
+  @include down(lg) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.card {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--paper-0);
+
+  &__h {
+    margin: 0;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--line);
+    font: 700 16px/1.2 var(--font-display);
+
+    :host-context(:lang(ar)) & {
+      font-family: 'Alexandria', var(--font-display);
+    }
+  }
+}
+
+.kicker {
+  margin: 0;
+  color: var(--ink-500);
+  font: 600 11px/1 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+
+  :host-context(:lang(ar)) & {
+    font-family: 'IBM Plex Sans Arabic', var(--font-sans);
+    font-size: 12px;
+    letter-spacing: 0;
+  }
+}
+
+// ---------- Current plan ----------
+.plan {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  padding: 20px;
+  // A butter band on the start edge, like the plan cards in onboarding.
+  border-inline-start: 6px solid var(--butter-500);
+
+  &__name {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+
+    h2 {
+      margin: 0;
+      font: 700 26px/1.1 var(--font-display);
+      letter-spacing: -0.02em;
+
+      :host-context(:lang(ar)) & {
+        font-family: 'Alexandria', var(--font-display);
+        letter-spacing: 0;
+      }
+    }
+  }
+
+  &__price {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin: 0;
+
+    b {
+      font: 700 22px/1 var(--font-mono);
+      font-variant-numeric: tabular-nums;
+    }
+
+    span {
+      color: var(--ink-500);
+      font-size: 14px;
+    }
+  }
+
+  &__desc {
+    margin: 0;
+    color: var(--ink-700);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  &__dates {
+    display: grid;
+    gap: 6px;
+    margin: 4px 0 0;
+    padding-top: 12px;
+    border-top: 1px dashed var(--line);
+    font-size: 14px;
+
+    div {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    dt {
+      color: var(--ink-500);
+    }
+
+    dd {
+      margin: 0;
+      font-weight: 600;
+      text-align: end;
+    }
+  }
+
+  &__acts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+  }
+}
+
+// ---------- Usage meters ----------
+.meters {
+  display: grid;
+  margin: 0;
+  padding: 0 20px;
+  list-style: none;
+}
+
+.meter {
+  display: grid;
+  gap: 8px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  &__top {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 14px;
+
+    b {
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+  }
+
+  // Thin track, filled from the start side, rounded ends.
+  &__track {
+    display: block;
+    height: 8px;
+    overflow: hidden;
+    border-radius: 4px;
+    background: var(--paper-100);
+
+    i {
+      display: block;
+      height: 100%;
+      border-radius: 4px;
+      background: var(--pine-700);
+      transition: width 400ms var(--ease-out);
+    }
+  }
+
+  &__note {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  // Near the limit: amber bar and note. At the limit: red.
+  &--near {
+    .meter__track i {
+      background: var(--warning-fg);
+    }
+
+    .meter__note {
+      color: var(--warning-fg);
+    }
+  }
+
+  &--full {
+    .meter__track i {
+      background: var(--danger-fg);
+    }
+
+    .meter__note {
+      color: var(--danger-fg);
+    }
+  }
+}
+
+// ---------- Invoices ----------
+.tablehead {
+  margin: 0;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--line);
+  font: 700 16px/1.2 var(--font-display);
+
+  :host-context(:lang(ar)) & {
+    font-family: 'Alexandria', var(--font-display);
+  }
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+// An invoice still to pay: amber edge on the start side.
+.unpaid td:first-child {
+  box-shadow: inset 4px 0 0 var(--warning-fg);
+
+  :host-context([dir='rtl']) & {
+    box-shadow: inset -4px 0 0 var(--warning-fg);
+  }
+}
+
+.actions .vd-btn + .vd-btn {
+  margin-inline-start: 6px;
+}

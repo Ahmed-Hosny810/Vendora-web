@@ -1,0 +1,115 @@
+<ng-container *transloco="let t; read: 'billing.invoice'">
+  <div class="bar">
+    <a vdButton="ghost" routerLink="/billing"
+      ><svg lucideArrowLeft class="vd-flip-rtl" aria-hidden="true"></svg>{{ t('back') }}</a
+    >
+    @if (invoice(); as inv) {
+      <span class="grow"></span>
+      <button vdButton type="button" (click)="print()">
+        <svg lucidePrinter aria-hidden="true"></svg>{{ t('print') }}
+      </button>
+      @if (inv.status !== 'paid') {
+        <button vdButton="primary" type="button" [loading]="paying()" (click)="pay()">
+          <svg lucideExternalLink aria-hidden="true"></svg>{{ t('pay') }}
+        </button>
+      }
+    }
+  </div>
+
+  @switch (status()) {
+    @case ('loading') {
+      <span class="vd-skeleton sheet-sk"></span>
+      <span class="vd-sr" role="status">{{ t('loading') }}</span>
+    }
+    @case ('error') {
+      <div class="vd-tablewrap">
+        <app-load-error
+          [title]="t('errorTitle')"
+          [text]="t('errorText')"
+          [retryLabel]="t('tryAgain')"
+          (retry)="load()"
+        />
+      </div>
+    }
+    @default {
+      @if (invoice(); as inv) {
+        <article class="sheet vd-print" aria-labelledby="inv-title">
+          <header class="sheet__top">
+            <vd-wordmark />
+            <div class="sheet__id">
+              <h2 id="inv-title">{{ t('title') }}</h2>
+              <span class="mono" dir="ltr">{{ inv.number }}</span>
+            </div>
+          </header>
+
+          <div class="sheet__meta">
+            <div>
+              <h3>{{ t('billedTo') }}</h3>
+              <p class="biz">
+                <bdi>{{ inv.businessName }}</bdi>
+              </p>
+            </div>
+            <dl>
+              <dt>{{ t('issued') }}</dt>
+              <dd>{{ date(inv.issuedAt, lang()) }}</dd>
+              @if (inv.status === 'paid') {
+                <dt>{{ t('paidOn') }}</dt>
+                <dd>{{ inv.paidAt ? date(inv.paidAt, lang()) : '—' }}</dd>
+                @if (inv.paidWith) {
+                  <dt>{{ t('paidWith') }}</dt>
+                  <dd>
+                    <bdi dir="ltr">{{ inv.paidWith }}</bdi>
+                  </dd>
+                }
+              } @else {
+                <dt>{{ t('due') }}</dt>
+                <dd>{{ date(inv.dueAt, lang()) }}</dd>
+              }
+              <dt>{{ t('status') }}</dt>
+              <dd>{{ t('statuses.' + inv.status) }}</dd>
+            </dl>
+          </div>
+
+          <table class="lines">
+            <thead>
+              <tr>
+                <th scope="col">{{ t('description') }}</th>
+                <th scope="col" class="num">{{ t('amount') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <b>{{ t('line', { plan: inv.planName }) }}</b>
+                  <small
+                    >{{ date(inv.periodStart, lang()) }} – {{ date(inv.periodEnd, lang()) }}</small
+                  >
+                </td>
+                <td class="num">{{ money(inv.amount) }}</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <th scope="row">{{ t(inv.status === 'paid' ? 'totalPaid' : 'totalDue') }}</th>
+                <td class="num">
+                  <b
+                    ><bdi dir="ltr">{{ money(inv.amount) }}</bdi></b
+                  >
+                  {{ t('egp') }}
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+
+          <p class="sheet__note">{{ t('note') }}</p>
+
+          @if (inv.status === 'paid') {
+            <span class="stamp" aria-hidden="true">{{ t('stamp') }}</span>
+          } @else {
+            <span class="stamp stamp--due" aria-hidden="true">{{ t('stampDue') }}</span>
+          }
+        </article>
+      }
+    }
+  }
+</ng-container>

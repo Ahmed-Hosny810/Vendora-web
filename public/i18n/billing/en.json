@@ -1,0 +1,109 @@
+{
+  "page": {
+    "title": "Billing",
+    "text": "Your Vendora plan, what it allows, and your invoices.",
+    "loading": "Loading billing…",
+    "errorTitle": "Couldn't load billing",
+    "errorText": "Check your connection and try again.",
+    "tryAgain": "Try again",
+    "dueTitle": "Invoice to pay.",
+    "dueText": "{{number}} for {{amount}} EGP is due on {{date}}. Pay it to keep selling without interruption.",
+    "expiredTitle": "Your subscription has ended.",
+    "expiredText": "Pay {{number}} ({{amount}} EGP) to turn selling back on.",
+    "payNow": "Pay on Paymob",
+    "currentPlan": "Current plan",
+    "status": {
+      "active": "Active",
+      "pastDue": "Payment due",
+      "expired": "Ended"
+    },
+    "perMonth": "EGP / month",
+    "period": "This period",
+    "renewsOn": "Renews on",
+    "endedOn": "Ended on",
+    "changePlan": "Change plan",
+    "usage": "What you use",
+    "limits": {
+      "branches": "Branches",
+      "products": "Products",
+      "cashiers": "Cashiers",
+      "variants": "Product variants"
+    },
+    "usedOf": "{{used}} of {{limit}}",
+    "usedUnlimited": "{{used}} · Unlimited",
+    "level": {
+      "near": "Almost at your limit",
+      "full": "Limit reached. Change plan to add more."
+    },
+    "included": "Included",
+    "notIncluded": "Not in this plan",
+    "invoices": "Invoices",
+    "noInvoices": "No invoices yet",
+    "noInvoicesText": "Your invoices from Vendora will show here.",
+    "cols": {
+      "number": "Invoice",
+      "issued": "Issued",
+      "period": "Period",
+      "amount": "Amount (EGP)",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "invoiceStatus": {
+      "paid": "Paid",
+      "unpaid": "Unpaid",
+      "failed": "Payment failed"
+    },
+    "pay": "Pay",
+    "payInvoice": "Pay invoice {{number}}",
+    "view": "View",
+    "viewInvoice": "View invoice {{number}}"
+  },
+  "change": {
+    "title": "Change plan",
+    "close": "Close",
+    "lead": "You're on {{plan}}. Pick the plan you want.",
+    "failed": "Couldn't change your plan. Try again.",
+    "legend": "Plans",
+    "current": "Current plan",
+    "blockedTitle": "{{plan}} is too small for what you use now:",
+    "over": {
+      "branches": "You have {{used}} branches; it allows {{limit}}.",
+      "products": "You have {{used}} products; it allows {{limit}}.",
+      "cashiers": "You have {{used}} cashiers; it allows {{limit}}."
+    },
+    "when": "The new price starts with your next invoice.",
+    "cancel": "Cancel",
+    "pickOther": "Pick a different plan",
+    "switch": "Switch to {{plan}}"
+  },
+  "invoice": {
+    "back": "Billing",
+    "print": "Print",
+    "pay": "Pay on Paymob",
+    "loading": "Loading the invoice…",
+    "errorTitle": "Couldn't load this invoice",
+    "errorText": "Check your connection and try again.",
+    "tryAgain": "Try again",
+    "title": "Invoice",
+    "billedTo": "Billed to",
+    "issued": "Issued",
+    "paidOn": "Paid on",
+    "paidWith": "Paid with",
+    "due": "Due",
+    "status": "Status",
+    "statuses": {
+      "paid": "Paid",
+      "unpaid": "Unpaid",
+      "failed": "Payment failed"
+    },
+    "description": "Description",
+    "amount": "Amount (EGP)",
+    "line": "Vendora {{plan}} plan, monthly",
+    "totalPaid": "Total paid",
+    "totalDue": "Amount due",
+    "egp": "EGP",
+    "note": "Payments are taken by Paymob. Vendora never sees or stores card details.",
+    "stamp": "PAID",
+    "stampDue": "UNPAID"
+  }
+}

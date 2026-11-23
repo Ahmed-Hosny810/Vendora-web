@@ -8,7 +8,11 @@
     "editProduct": "Edit product",
     "openingStock": "Opening stock",
     "inviteEmployee": "Invite employee",
-    "receipt": "Receipt"
+    "receipt": "Receipt",
+    "settingsBusiness": "Business",
+    "settingsAccount": "My account",
+    "settingsPassword": "Password",
+    "invoice": "Invoice"
   },
   "mainNav": "Main navigation",
   "openMenu": "Open menu",

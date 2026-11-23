@@ -1,0 +1,62 @@
+:host {
+  display: contents;
+}
+
+// Wider than the usual drawer: the plan cards need room for their four limits.
+.vd-drawer {
+  width: 560px;
+}
+
+.body {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+
+.lead {
+  margin: 0;
+  color: var(--ink-700);
+  font-size: 14px;
+}
+
+.plans {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+// "Current plan" sits on the card's top edge.
+.plan {
+  position: relative;
+
+  .current {
+    position: absolute;
+    z-index: 1;
+    top: -9px;
+    inset-inline-end: 16px;
+  }
+}
+
+.over {
+  display: block;
+}
+
+.note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0;
+  color: var(--ink-700);
+  font-size: 13px;
+  line-height: 19px;
+
+  svg {
+    flex: none;
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    color: var(--info-fg);
+  }
+}

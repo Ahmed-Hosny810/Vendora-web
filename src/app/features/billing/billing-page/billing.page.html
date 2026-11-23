@@ -1,0 +1,207 @@
+<ng-container *transloco="let t; read: 'billing.page'">
+  <app-page-head [title]="t('title')" [text]="t('text')" />
+
+  @switch (status()) {
+    @case ('loading') {
+      <div class="top" aria-hidden="true">
+        <span class="vd-skeleton" style="height: 220px"></span>
+        <span class="vd-skeleton" style="height: 220px"></span>
+      </div>
+      <div class="vd-tablewrap">
+        <app-skeleton-rows [label]="t('loading')" [rows]="3" [columns]="6" />
+      </div>
+    }
+    @case ('error') {
+      <div class="vd-tablewrap">
+        <app-load-error
+          [title]="t('errorTitle')"
+          [text]="t('errorText')"
+          [retryLabel]="t('tryAgain')"
+          (retry)="load()"
+        />
+      </div>
+    }
+    @default {
+      @let sub = subscription();
+
+      <!-- An invoice to pay -->
+      @if (due(); as inv) {
+        <div
+          class="vd-banner due"
+          [class.vd-banner--danger]="sub?.status === 'expired'"
+          [class.vd-banner--warning]="sub?.status !== 'expired'"
+          role="status"
+        >
+          <svg lucideTriangleAlert aria-hidden="true"></svg>
+          <span class="vd-banner__body">
+            <b>{{ t(sub?.status === 'expired' ? 'expiredTitle' : 'dueTitle') }}</b>
+            {{
+              t(sub?.status === 'expired' ? 'expiredText' : 'dueText', {
+                number: inv.number,
+                amount: money(inv.amount),
+                date: date(inv.dueAt, lang()),
+              })
+            }}
+          </span>
+          <button
+            vdButton="primary"
+            size="sm"
+            type="button"
+            [loading]="payingId() === inv.id"
+            (click)="pay(inv)"
+          >
+            <svg lucideExternalLink aria-hidden="true"></svg>{{ t('payNow') }}
+          </button>
+        </div>
+      }
+
+      @if (sub) {
+        <div class="top">
+          <!-- Current plan -->
+          <section class="card plan" aria-labelledby="bl-plan">
+            <p class="kicker" id="bl-plan">{{ t('currentPlan') }}</p>
+            <div class="plan__name">
+              <h2>{{ sub.plan.name }}</h2>
+              <span
+                class="vd-badge vd-badge--dot"
+                [class.vd-badge--success]="sub.status === 'active'"
+                [class.vd-badge--warning]="sub.status === 'pastDue'"
+                [class.vd-badge--danger]="sub.status === 'expired'"
+                >{{ t('status.' + sub.status) }}</span
+              >
+            </div>
+            <p class="plan__price">
+              <b
+                ><bdi dir="ltr">{{ money(sub.plan.price) }}</bdi></b
+              >
+              <span>{{ t('perMonth') }}</span>
+            </p>
+            <p class="plan__desc">{{ sub.plan.description }}</p>
+            <dl class="plan__dates">
+              <div>
+                <dt>{{ t('period') }}</dt>
+                <dd>{{ date(sub.periodStart, lang()) }} – {{ date(sub.periodEnd, lang()) }}</dd>
+              </div>
+              <div>
+                <dt>{{ t(sub.status === 'expired' ? 'endedOn' : 'renewsOn') }}</dt>
+                <dd>{{ date(sub.periodEnd, lang()) }}</dd>
+              </div>
+            </dl>
+            <div class="plan__acts">
+              <button vdButton type="button" [disabled]="!plans().length" (click)="changePlan()">
+                <svg lucideArrowLeftRight aria-hidden="true"></svg>{{ t('changePlan') }}
+              </button>
+            </div>
+          </section>
+
+          <!-- Usage against the limits -->
+          <section class="card usage" aria-labelledby="bl-usage">
+            <h2 class="card__h" id="bl-usage">{{ t('usage') }}</h2>
+            <ul class="meters">
+              @for (m of meters(); track m.key) {
+                <li [class]="'meter meter--' + m.level">
+                  <div class="meter__top">
+                    <span>{{ t('limits.' + m.key) }}</span>
+                    @if (m.limit === null) {
+                      <b>{{ t('usedUnlimited', { used: qty(m.used) }) }}</b>
+                    } @else {
+                      <b>{{ t('usedOf', { used: qty(m.used), limit: qty(m.limit) }) }}</b>
+                    }
+                  </div>
+                  @if (m.limit !== null) {
+                    <span class="meter__track" aria-hidden="true"
+                      ><i [style.width.%]="m.share"></i
+                    ></span>
+                  }
+                  @if (m.level !== 'ok') {
+                    <small class="meter__note">
+                      <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+                      >{{ t('level.' + m.level) }}
+                    </small>
+                  }
+                </li>
+              }
+              <li class="meter meter--plain">
+                <div class="meter__top">
+                  <span>{{ t('limits.variants') }}</span>
+                  <b>{{ t(sub.plan.limits.variants ? 'included' : 'notIncluded') }}</b>
+                </div>
+              </li>
+            </ul>
+          </section>
+        </div>
+      }
+
+      <!-- Invoices -->
+      <section class="vd-tablewrap" aria-labelledby="bl-invoices">
+        <h2 class="tablehead" id="bl-invoices">{{ t('invoices') }}</h2>
+        @if (!invoices().length) {
+          <div class="vd-empty">
+            <span class="vd-empty__art"><svg lucideFileText></svg></span>
+            <h3 class="vd-empty__title">{{ t('noInvoices') }}</h3>
+            <p class="vd-empty__text">{{ t('noInvoicesText') }}</p>
+          </div>
+        } @else {
+          <div class="vd-tablescroll">
+            <table class="vd-table">
+              <thead>
+                <tr>
+                  <th scope="col">{{ t('cols.number') }}</th>
+                  <th scope="col">{{ t('cols.issued') }}</th>
+                  <th scope="col">{{ t('cols.period') }}</th>
+                  <th scope="col" class="num">{{ t('cols.amount') }}</th>
+                  <th scope="col">{{ t('cols.status') }}</th>
+                  <th scope="col">
+                    <span class="vd-sr">{{ t('cols.actions') }}</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (inv of invoices(); track inv.id) {
+                  <tr [class.unpaid]="inv.status !== 'paid'">
+                    <td class="mono">{{ inv.number }}</td>
+                    <td class="nowrap">{{ date(inv.issuedAt, lang()) }}</td>
+                    <td class="nowrap">
+                      {{ date(inv.periodStart, lang()) }} – {{ date(inv.periodEnd, lang()) }}
+                    </td>
+                    <td class="num">{{ money(inv.amount) }}</td>
+                    <td>
+                      <span
+                        class="vd-badge vd-badge--dot"
+                        [class.vd-badge--success]="inv.status === 'paid'"
+                        [class.vd-badge--warning]="inv.status === 'unpaid'"
+                        [class.vd-badge--danger]="inv.status === 'failed'"
+                        >{{ t('invoiceStatus.' + inv.status) }}</span
+                      >
+                    </td>
+                    <td class="actions">
+                      @if (inv.status !== 'paid') {
+                        <button
+                          vdButton="primary"
+                          size="sm"
+                          type="button"
+                          [loading]="payingId() === inv.id"
+                          [attr.aria-label]="t('payInvoice', { number: inv.number })"
+                          (click)="pay(inv)"
+                        >
+                          {{ t('pay') }}
+                        </button>
+                      }
+                      <a
+                        vdButton="ghost"
+                        size="sm"
+                        [routerLink]="['/billing/invoices', inv.id]"
+                        [attr.aria-label]="t('viewInvoice', { number: inv.number })"
+                        >{{ t('view') }}</a
+                      >
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </section>
+    }
+  }
+</ng-container>
