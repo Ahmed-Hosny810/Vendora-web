@@ -1,9 +1,9 @@
-// Bits shared by the branch pages.
-//   @use '../styles/branches';
-//   .main-tag { @include branches.main-tag; }
+// Small labels shared by app pages.
+//   @use '../../../shared/styles/tags';
+//   .main-tag { @include tags.price-tag; }
 
-// "• MAIN" as a little butter price tag.
-@mixin main-tag {
+// "• MAIN" / "• DEFAULT" as a little butter price tag with a hole.
+@mixin price-tag {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -18,6 +18,7 @@
   font: 700 11px/1 var(--font-mono);
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  white-space: nowrap;
 
   // The tag's hole.
   &::before {

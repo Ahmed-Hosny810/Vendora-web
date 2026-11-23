@@ -5,7 +5,9 @@
   [attr.aria-label]="t('label')"
 >
   <div class="rc__top">
-    <b lang="en" dir="ltr">{{ businessName() | uppercase }}</b>
+    <b
+      ><bdi lang="en">{{ businessName() | uppercase }}</bdi></b
+    >
     @if (address()) {
       <span dir="auto">{{ address() }}</span>
     }

@@ -1,0 +1,44 @@
+// A short receipt with zig-zag edges (same paper as the branch receipt).
+.rc {
+  padding: 18px;
+  background: var(--paper-0);
+  font: 500 12px/1.7 var(--font-mono);
+  filter: drop-shadow(0 2px 0 var(--line)) drop-shadow(0 8px 14px rgb(1 62 55 / 8%));
+  mask:
+    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 16px 100%,
+    conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) 50% / 16px 100%;
+  mask-composite: intersect;
+
+  :host-context(:lang(ar)) & {
+    font-family: 'IBM Plex Sans Arabic', var(--font-mono);
+  }
+
+  hr {
+    margin: 8px 0;
+    border: 0;
+    border-top: 1.5px dashed var(--line-strong);
+  }
+
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+
+    span:last-child {
+      font-variant-numeric: tabular-nums;
+    }
+  }
+
+  // The tax line being edited.
+  &__hl {
+    border-radius: 2px;
+    background: var(--butter-300);
+    outline: 2px dashed var(--pine-600);
+    outline-offset: 2px;
+  }
+
+  &__big {
+    font-size: 15px;
+    font-weight: 700;
+  }
+}

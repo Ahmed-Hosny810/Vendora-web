@@ -1,12 +1,12 @@
 @use 'abstracts' as *;
-@use '../styles/branches';
+@use '../../../shared/styles/tags';
 
 :host {
   display: contents;
 }
 
 .main-tag {
-  @include branches.main-tag;
+  @include tags.price-tag;
 }
 
 // Plan limit reached: dashed warning strip.

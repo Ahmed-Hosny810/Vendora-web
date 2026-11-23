@@ -1,0 +1,59 @@
+.scale {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  padding: 18px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--pine-50);
+
+  svg {
+    width: 200px;
+    height: 140px;
+  }
+
+  &__lcd {
+    fill: var(--pine-900);
+    font: 700 10px var(--font-mono);
+  }
+
+  // The pan settles with a little bounce when the reading changes.
+  &__pan {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+    animation: settle 700ms cubic-bezier(0.3, 1.6, 0.5, 1) both;
+
+    &.whole {
+      animation-name: settle-whole;
+    }
+  }
+
+  &__big {
+    font: 700 22px/1 var(--font-mono);
+  }
+
+  p {
+    margin: 0;
+    color: var(--ink-700);
+    font-size: 13px;
+    text-align: center;
+  }
+}
+
+@keyframes settle {
+  from {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes settle-whole {
+  from {
+    transform: translateY(-8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scale__pan {
+    animation: none;
+  }
+}

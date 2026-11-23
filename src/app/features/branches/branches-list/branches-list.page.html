@@ -107,9 +107,13 @@
                   @for (b of visible(); track b.id) {
                     <tr>
                       <td>
-                        <b lang="en" dir="ltr">{{ b.nameEn }}</b>
+                        <b
+                          ><bdi lang="en">{{ b.nameEn }}</bdi></b
+                        >
                         @if (b.nameAr) {
-                          <small lang="ar" dir="rtl">{{ b.nameAr }}</small>
+                          <small
+                            ><bdi lang="ar">{{ b.nameAr }}</bdi></small
+                          >
                         }
                       </td>
                       <td class="mono" dir="ltr">{{ b.code }}</td>

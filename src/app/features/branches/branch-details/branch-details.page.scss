@@ -1,13 +1,13 @@
 @use 'abstracts' as *;
 @use '../../../shared/styles/app-forms' as forms;
-@use '../styles/branches';
+@use '../../../shared/styles/tags';
 
 :host {
   display: contents;
 }
 
 .main-tag {
-  @include branches.main-tag;
+  @include tags.price-tag;
 }
 
 .grid {

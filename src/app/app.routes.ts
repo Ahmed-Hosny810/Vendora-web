@@ -155,6 +155,21 @@ export const routes: Routes = [
           },
         ],
       },
+      // Catalog setup: categories, units and tax rates (tabs between them).
+      {
+        path: 'categories',
+        loadComponent: () =>
+          import('./features/catalog/categories/categories.page').then((m) => m.CategoriesPage),
+      },
+      {
+        path: 'units',
+        loadComponent: () => import('./features/catalog/units/units.page').then((m) => m.UnitsPage),
+      },
+      {
+        path: 'tax-rates',
+        loadComponent: () =>
+          import('./features/catalog/tax-rates/tax-rates.page').then((m) => m.TaxRatesPage),
+      },
       {
         path: 'access-denied',
         loadComponent: () =>

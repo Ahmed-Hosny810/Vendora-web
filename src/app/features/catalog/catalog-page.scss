@@ -1,0 +1,5 @@
+// Shared by the three catalog setup pages: their blocks sit straight
+// in the app layout's content grid.
+:host {
+  display: contents;
+}

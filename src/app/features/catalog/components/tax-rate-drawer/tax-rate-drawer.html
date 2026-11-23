@@ -1,0 +1,124 @@
+<form class="vd-drawer" novalidate *transloco="let t; read: 'catalog'" (submit)="onSubmit($event)">
+  <header class="vd-drawer__head">
+    <h2 class="vd-drawer__title" vdDialogTitle>
+      {{ data.taxRate ? t('taxRates.editTitle') : t('taxRates.addTitle') }}
+    </h2>
+    <button vdIconButton type="button" [label]="t('close')" (click)="ref.close()">
+      <svg lucideX></svg>
+    </button>
+  </header>
+
+  <fieldset class="vd-drawer__body body" [disabled]="saving()">
+    <legend class="vd-sr">
+      {{ data.taxRate ? t('taxRates.editTitle') : t('taxRates.addTitle') }}
+    </legend>
+    @if (status() === 'failed') {
+      <div class="vd-banner vd-banner--danger" role="alert">
+        <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+        <span class="vd-banner__body">{{ t('taxRates.failed') }}</span>
+      </div>
+    }
+
+    <div class="vd-field">
+      <div class="vd-field__top">
+        <label class="vd-field__label" for="x-name"
+          >{{ t('taxRates.name') }}<span class="req" aria-hidden="true">*</span></label
+        >
+        <span class="vd-field__counter" aria-hidden="true"
+          >{{ model().name.length }}/{{ maxName }}</span
+        >
+      </div>
+      <input
+        id="x-name"
+        class="vd-input"
+        type="text"
+        dir="auto"
+        [formField]="taxForm.name"
+        [attr.aria-invalid]="nameError() ? true : null"
+        [attr.aria-describedby]="nameError() ? 'x-name-error' : 'x-name-hint'"
+      />
+      @if (nameError(); as error) {
+        <p id="x-name-error" class="vd-field__error">
+          <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('taxRates.' + error) }}
+        </p>
+      } @else {
+        <p class="vd-field__hint" id="x-name-hint">{{ t('taxRates.nameHint') }}</p>
+      }
+    </div>
+
+    <div class="vd-field">
+      <label class="vd-field__label" for="x-rate"
+        >{{ t('taxRates.rate') }}<span class="req" aria-hidden="true">*</span></label
+      >
+      <div class="vd-inputgroup">
+        <input
+          id="x-rate"
+          class="vd-input mono"
+          type="number"
+          inputmode="decimal"
+          step="0.01"
+          dir="ltr"
+          [formField]="taxForm.rate"
+          [attr.aria-invalid]="rateError() ? true : null"
+          aria-describedby="x-rate-hint"
+        />
+        <span class="vd-inputgroup__affix" aria-hidden="true">%</span>
+      </div>
+      @if (rateError()) {
+        <p class="vd-field__error" id="x-rate-hint">
+          <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('taxRates.rateHint') }}
+        </p>
+      } @else {
+        <p class="vd-field__hint" id="x-rate-hint">{{ t('taxRates.rateHint') }}</p>
+      }
+    </div>
+
+    <label class="vd-choice toggle">
+      <b id="x-def-label">{{ t('taxRates.default') }}</b>
+      <span id="x-def-text">{{ t('taxRates.defaultText') }}</span>
+      <input
+        type="checkbox"
+        role="switch"
+        aria-labelledby="x-def-label"
+        aria-describedby="x-def-text"
+        [formField]="taxForm.isDefault"
+      />
+    </label>
+    @if (replacesDefault()) {
+      <div class="vd-banner vd-banner--info" role="status">
+        <span class="vd-banner__body">{{
+          t('taxRates.replacesDefault', { name: data.currentDefault })
+        }}</span>
+      </div>
+    }
+
+    @let p = preview();
+    <p class="cap">{{ t('taxRates.previewCap') }}</p>
+    <div class="rc" role="img" [attr.aria-label]="t('taxRates.previewCap')">
+      <div class="rc__row">
+        <span>{{ t('taxRates.subtotal') }}</span
+        ><span dir="ltr">{{ p.subtotal }}</span>
+      </div>
+      <div class="rc__row">
+        <span class="rc__hl"
+          ><bdi>{{ model().name.trim() || t('taxRates.name') }}</bdi> ({{ p.rate }}%)</span
+        >
+        <span dir="ltr">{{ p.tax }}</span>
+      </div>
+      <hr />
+      <div class="rc__row rc__big">
+        <span>{{ t('taxRates.total') }}</span
+        ><span dir="ltr">{{ p.total }}</span>
+      </div>
+    </div>
+  </fieldset>
+
+  <footer class="vd-drawer__foot">
+    <button vdButton type="button" [disabled]="saving()" (click)="ref.close()">
+      {{ t('cancel') }}
+    </button>
+    <button vdButton="primary" type="submit" [loading]="saving()">
+      <svg lucideCheck aria-hidden="true"></svg>{{ t('taxRates.save') }}
+    </button>
+  </footer>
+</form>
