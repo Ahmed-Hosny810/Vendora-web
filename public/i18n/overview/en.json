@@ -76,6 +76,16 @@
     "openShift": "Open your shift on {{terminal}} at {{branch}} to start selling.",
     "openShiftPlain": "Open your shift to start selling.",
     "lastShift": "Your last shift",
-    "noShifts": "No shifts yet."
+    "noShifts": "No shifts yet.",
+    "when": "Shift",
+    "sales": "Sales",
+    "drawer": "Cash drawer",
+    "stillOpen": "Still open",
+    "diff": {
+      "balanced": "Balanced",
+      "shortage": "Short",
+      "overage": "Over"
+    },
+    "viewShift": "View shift summary"
   }
 }

@@ -100,3 +100,52 @@ export function formatDayTime(date: Date): string {
   const day = date.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit' });
   return `${day} ${formatTime(date)}`;
 }
+
+// ---------- Shift history ----------
+
+/** The periods the shift history can show. */
+export type ShiftPeriod = 'today' | 'week' | 'month';
+
+/** One row of the shift history. An open shift has no closedAt or counted cash yet. */
+export interface ShiftListItem {
+  id: string;
+  branchName: string;
+  terminalName: string;
+  cashierName: string;
+  openedAt: Date;
+  closedAt: Date | null;
+  salesCount: number;
+  /** In EGP, all payment methods. */
+  netSales: number;
+  /** Cash that should be in the drawer at close. null while open. */
+  expectedCash: number | null;
+  /** Cash counted at close. null while open. */
+  countedCash: number | null;
+}
+
+/** One shift's page (/shifts/:id). */
+export interface ShiftDetails extends ShiftSummary {
+  closedAt: Date | null;
+  countedCash: number | null;
+  /** What the cashier wrote when closing ('' = nothing). */
+  note: string;
+  salesCount: number;
+  netSales: number;
+}
+
+/** Counted − expected, or null while the shift is open. */
+export function shiftDiff(s: {
+  expectedCash: number | null;
+  countedCash: number | null;
+}): number | null {
+  if (s.expectedCash === null || s.countedCash === null) return null;
+  return round2(s.countedCash - s.expectedCash);
+}
+
+/** 8 hours 10 minutes → "8:10". Same in both languages (letters between numbers jumble in Arabic). */
+export function formatDuration(from: Date, to: Date): string {
+  const minutes = Math.max(0, Math.round((to.getTime() - from.getTime()) / 60_000));
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  return `${h}:${String(m).padStart(2, '0')}`;
+}

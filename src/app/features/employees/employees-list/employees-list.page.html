@@ -150,6 +150,14 @@
                           }
                         </span>
                       }
+                      <a
+                        vdButton="ghost"
+                        size="sm"
+                        class="view"
+                        [routerLink]="['/employees', e.id]"
+                        [attr.aria-label]="t('viewLabel', { name: e.fullName })"
+                        >{{ t('view') }}</a
+                      >
                     </td>
                   </tr>
                 }

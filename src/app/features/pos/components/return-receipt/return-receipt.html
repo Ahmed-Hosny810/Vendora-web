@@ -1,0 +1,58 @@
+<div class="paper" *transloco="let t; read: 'pos.returnReceipt'">
+  @let r = receipt();
+  <div class="c">
+    <b>{{ r.businessName }}</b>
+    <span class="tag">{{ t('title') }}</span>
+  </div>
+  <hr />
+  <div class="row">
+    <span>{{ t('number') }}</span
+    ><span>{{ r.number }}</span>
+  </div>
+  <div class="row">
+    <span>{{ t('original') }}</span
+    ><span>{{ r.originalNumber }}</span>
+  </div>
+  <div class="row">
+    <span>{{ t('date') }}</span
+    ><span>{{ date(r.issuedAt) }}</span>
+  </div>
+  <div class="row">
+    <span>{{ t('cashier') }}</span
+    ><span>{{ r.cashierName }}</span>
+  </div>
+  <div class="row">
+    <span>{{ t('terminal') }}</span
+    ><span>{{ r.terminalName }}</span>
+  </div>
+  <hr />
+  @for (l of r.lines; track $index) {
+    <div class="row">
+      <span>{{ l.qty }} × {{ l.name }}</span
+      ><span>−{{ money(l.amount) }}</span>
+    </div>
+    @if (l.variantName) {
+      <div class="row sub">
+        <span>{{ l.variantName }}</span>
+      </div>
+    }
+  }
+  <hr />
+  <div class="row big">
+    <span>{{ t('refund') }}</span
+    ><span>−{{ money(r.total) }}</span>
+  </div>
+  <div class="row">
+    <span>{{ t('method') }}</span
+    ><span>{{ r.refundMethod }}</span>
+  </div>
+  <div class="row">
+    <span>{{ t('reason') }}</span
+    ><span>{{ t('reasons.' + r.reason) }}</span>
+  </div>
+  <hr />
+  <div class="c muted">
+    <span>{{ t('keep') }}</span>
+  </div>
+  <span class="stamp" aria-hidden="true">{{ t('stamp') }}</span>
+</div>

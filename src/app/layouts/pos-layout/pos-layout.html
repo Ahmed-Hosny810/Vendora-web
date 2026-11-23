@@ -27,8 +27,22 @@
       }
     </div>
 
+    <span class="held">
+      <button
+        vdIconButton
+        type="button"
+        class="ibtn"
+        [label]="shell.heldCount() ? t('heldCount', { count: shell.heldCount() }) : t('held')"
+        (click)="openHeld()"
+      >
+        <svg lucideClock></svg>
+      </button>
+      @if (shell.heldCount()) {
+        <span class="held__n" aria-hidden="true">{{ shell.heldCount() }}</span>
+      }
+    </span>
     <button vdIconButton type="button" class="ibtn" [label]="t('findSale')" (click)="findSale()">
-      <svg lucideHistory></svg>
+      <svg lucideSearch></svg>
     </button>
     <a vdIconButton class="ibtn" routerLink="/pos/shift/close" [label]="t('currentShift')">
       <svg lucideArchive></svg>

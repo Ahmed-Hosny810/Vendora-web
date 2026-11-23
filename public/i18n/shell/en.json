@@ -12,7 +12,13 @@
     "settingsBusiness": "Business",
     "settingsAccount": "My account",
     "settingsPassword": "Password",
-    "invoice": "Invoice"
+    "invoice": "Invoice",
+    "shift": "Shift summary",
+    "employee": "Employee",
+    "paymentMethod": "Payment method",
+    "notifications": "Notifications",
+    "stockHistory": "Stock history",
+    "payment": "Payment"
   },
   "mainNav": "Main navigation",
   "openMenu": "Open menu",
@@ -22,6 +28,7 @@
     "pos": "Point of sale",
     "sales": "Sales",
     "customers": "Customers",
+    "shifts": "Shifts",
     "products": "Products",
     "categories": "Categories",
     "units": "Units",

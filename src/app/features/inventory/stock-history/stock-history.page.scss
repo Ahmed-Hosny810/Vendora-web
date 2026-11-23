@@ -1,0 +1,116 @@
+@use 'abstracts' as *;
+
+:host {
+  display: contents;
+}
+
+// Item name, variant, SKU and branch; Adjust on the end.
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+
+  &__t {
+    display: grid;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  h1 {
+    margin: 0;
+    font: 700 30px/1.1 var(--font-display);
+    letter-spacing: -0.02em;
+    overflow-wrap: anywhere;
+
+    :host-context(:lang(ar)) & {
+      font-family: 'Alexandria', var(--font-display);
+      letter-spacing: 0;
+    }
+
+    @include down(md) {
+      font-size: 24px;
+    }
+  }
+
+  p {
+    margin: 0;
+    color: var(--ink-700);
+    font-size: 15px;
+  }
+
+  .mono {
+    font-family: var(--font-mono);
+    font-size: 14px;
+  }
+}
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+
+  @include down(md) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+// Reason or receipt beside the kind badge; the note under them.
+.why {
+  margin-inline-start: 8px;
+  color: var(--ink-700);
+  font-size: 13px;
+}
+
+.link {
+  color: var(--pine-700);
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+// +12 in green, −3 in red. The sign says it too.
+.change {
+  font-weight: 700;
+
+  &.up {
+    color: var(--success-fg);
+  }
+
+  &.down {
+    color: var(--danger-fg);
+  }
+}
+
+.unit {
+  margin-inline-start: 3px;
+  color: var(--ink-500);
+  font-family: var(--font-sans);
+  font-size: 12px;
+}
+
+.no-match {
+  margin: 0;
+  padding: 32px 16px;
+  color: var(--ink-500);
+  text-align: center;
+}
+
+.more {
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+  border-top: 1px solid var(--line);
+}

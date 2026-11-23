@@ -105,5 +105,16 @@
     "note": "الدفع بيتم عن طريق Paymob. Vendora مابتشوفش ولا بتحفظ بيانات الكارت.",
     "stamp": "مدفوعة",
     "stampDue": "غير مدفوعة"
+  },
+  "result": {
+    "checkingTitle": "بنتأكد من الدفع…",
+    "checkingText": "Paymob بيأكّد الدفع. ده بياخد ثواني عادةً؛ خلّي الصفحة مفتوحة.",
+    "paidTitle": "الدفع وصل",
+    "paidText": "الفاتورة {{number}} ({{amount}} ج.م) اتدفعت. باقتك شغالة لحد {{date}}.",
+    "failedTitle": "الدفع ماتمّش",
+    "failedText": "مفيش فلوس اتخصمت. جرّب تاني، أو استخدم كارت تاني.",
+    "tryAgain": "جرّب تاني على Paymob",
+    "backToBilling": "ارجع للفوترة",
+    "viewInvoice": "اعرض الفاتورة"
   }
 }

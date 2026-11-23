@@ -77,6 +77,13 @@
                 {{ m.active ? t('active') : t('inactive') }}
               </span>
               <span class="acts">
+                <a
+                  vdButton="ghost"
+                  size="sm"
+                  [routerLink]="['/payment-methods', m.id]"
+                  [attr.aria-label]="t('viewLabel', { name: m.name })"
+                  >{{ t('view') }}</a
+                >
                 <button
                   vdButton="ghost"
                   size="sm"

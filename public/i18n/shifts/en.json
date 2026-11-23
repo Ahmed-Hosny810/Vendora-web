@@ -110,5 +110,92 @@
     "shortage": "Shortage",
     "overage": "Overage",
     "stamp": "CLOSED"
+  },
+  "table": {
+    "shift": "Terminal",
+    "cashier": "Cashier",
+    "opened": "Opened",
+    "closed": "Closed",
+    "sales": "Sales",
+    "net": "Net sales (EGP)",
+    "difference": "Cash difference",
+    "actions": "Actions",
+    "openNow": "Open now",
+    "balanced": "Balanced",
+    "shortage": "Short",
+    "overage": "Over",
+    "view": "View",
+    "viewLabel": "View the {{terminal}} shift of {{cashier}}",
+    "length": "{{time}} h long"
+  },
+  "history": {
+    "title": "Shift history",
+    "text": "Every shift at {{branch}}, with its cash count.",
+    "openPos": "Open POS",
+    "period": "Period",
+    "periods": {
+      "today": "Today",
+      "week": "Last 7 days",
+      "month": "Last 30 days"
+    },
+    "kpi": {
+      "count": "Shifts",
+      "countHint": "In this period",
+      "open": "Open now",
+      "openHint": "Not counted yet",
+      "net": "Net sales",
+      "egp": "EGP",
+      "short": "Short shifts",
+      "shortHint": "{{amount}} EGP missing in total",
+      "shortNone": "Every drawer matched"
+    },
+    "loading": "Loading shifts…",
+    "errorTitle": "Couldn't load the shifts",
+    "errorText": "Check your connection and try again.",
+    "tryAgain": "Try again",
+    "emptyTitle": "No shifts in this period",
+    "emptyText": "Shifts show here once a cashier opens one on the POS.",
+    "search": "Cashier or terminal",
+    "searchLabel": "Search shifts by cashier or terminal",
+    "states": {
+      "all": "All",
+      "open": "Open",
+      "closed": "Closed",
+      "short": "With shortage"
+    },
+    "noMatch": "No shifts match."
+  },
+  "details": {
+    "loading": "Loading the shift…",
+    "errorTitle": "Couldn't load this shift",
+    "errorText": "Check your connection and try again.",
+    "tryAgain": "Try again",
+    "closed": "Closed",
+    "openNow": "Open now",
+    "print": "Print summary",
+    "openText": "This shift is still open. Its cash is counted and its summary printed when the cashier closes it.",
+    "sales": "Sales",
+    "salesHint": "Completed sales",
+    "net": "Net sales",
+    "egp": "EGP",
+    "duration": "Length",
+    "openFor": "Open for",
+    "durationHint": "Hours and minutes",
+    "drawer": "Cash drawer",
+    "openingCash": "Opening cash",
+    "cashReceipts": "Cash sales kept",
+    "cashRefunds": "Cash refunds",
+    "expected": "Expected cash",
+    "counted": "Counted cash",
+    "kind": {
+      "balanced": "Balanced",
+      "shortage": "Cash shortage",
+      "overage": "Cash overage"
+    },
+    "note": "Note: “{{note}}”",
+    "noNote": "Closed without a note.",
+    "other": "Other payment methods",
+    "noOther": "Only cash was taken on this shift.",
+    "printed": "Printed summary"
   }
 }

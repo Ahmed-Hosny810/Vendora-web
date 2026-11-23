@@ -300,3 +300,98 @@ export function formatLongDate(date: Date, lang: string): string {
   const t = date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
   return `${d}, ${t}`;
 }
+
+// ---------- Held sales ----------
+
+/** A sale parked with "Hold", waiting to be resumed. */
+export interface HeldSale {
+  id: string;
+  heldAt: Date;
+  cashierName: string;
+  customerName: string | null;
+  itemCount: number;
+  total: number;
+}
+
+// ---------- Finding a sale ----------
+
+/** A result of "Find a sale" (by receipt number or customer phone). */
+export interface FoundSale {
+  id: string;
+  receiptNumber: string;
+  createdAt: Date;
+  customerName: string | null;
+  itemCount: number;
+  total: number;
+  /** Some items were already returned. */
+  hasReturns: boolean;
+}
+
+// ---------- Returns ----------
+
+/** One line of the original sale, as the return screen needs it. */
+export interface ReturnableLine {
+  id: string;
+  name: string;
+  variantName: string;
+  unitSymbol: string;
+  allowFractions: boolean;
+  qtySold: number;
+  /** Already returned on earlier returns. */
+  qtyReturned: number;
+  /** What the customer paid for one unit, after discounts and tax (the server's number). */
+  unitRefund: number;
+}
+
+/** A payment of the original sale; the refund goes back the same way by default. */
+export interface ReturnablePayment {
+  methodId: string;
+  name: string;
+  amount: number;
+  isCash: boolean;
+}
+
+export interface ReturnableSale {
+  id: string;
+  receiptNumber: string;
+  issuedAt: Date;
+  customerName: string | null;
+  lines: ReturnableLine[];
+  payments: ReturnablePayment[];
+}
+
+export const RETURN_REASONS = ['damaged', 'wrongSize', 'changedMind', 'other'] as const;
+export type ReturnReason = (typeof RETURN_REASONS)[number];
+
+/** What the return form sends. */
+export interface ReturnForm {
+  /** Only lines with qty > 0. */
+  lines: { lineId: string; qty: number }[];
+  reason: ReturnReason;
+  note: string;
+  /** Where the money goes back. */
+  refundMethodId: string;
+  /** Put the items back in stock (off for damaged goods you'll throw away). */
+  restock: boolean;
+}
+
+/**
+ * - 'done'
+ * - 'noShift': refunds need an open shift on this terminal (cash comes out of its drawer)
+ * - 'failed'
+ */
+export type ReturnStatus = 'done' | 'noShift' | 'failed';
+
+/** The printed return slip. */
+export interface ReturnReceipt {
+  number: string;
+  issuedAt: Date;
+  originalNumber: string;
+  businessName: string;
+  terminalName: string;
+  cashierName: string;
+  lines: { qty: number; name: string; variantName: string; amount: number }[];
+  total: number;
+  refundMethod: string;
+  reason: ReturnReason;
+}

@@ -1,0 +1,45 @@
+<ng-container *transloco="let t; read: 'billing.result'">
+  <section class="card" [class]="'is-' + status()" aria-live="polite">
+    @switch (status()) {
+      @case ('checking') {
+        <span class="ic" aria-hidden="true"><svg lucideLoaderCircle class="spin"></svg></span>
+        <h1>{{ t('checkingTitle') }}</h1>
+        <p>{{ t('checkingText') }}</p>
+      }
+      @case ('paid') {
+        <span class="ic" aria-hidden="true"><svg lucideCircleCheck></svg></span>
+        <h1>{{ t('paidTitle') }}</h1>
+        @if (invoice(); as inv) {
+          <p>
+            {{
+              t('paidText', {
+                number: inv.number,
+                amount: money(inv.amount),
+                date: date(inv.paidUntil, lang()),
+              })
+            }}
+          </p>
+          <div class="acts">
+            <a vdButton="primary" routerLink="/billing">{{ t('backToBilling') }}</a>
+            <a vdButton [routerLink]="['/billing/invoices', inv.id]"
+              ><svg lucideFileText aria-hidden="true"></svg>{{ t('viewInvoice') }}</a
+            >
+          </div>
+        }
+      }
+      @case ('failed') {
+        <span class="ic" aria-hidden="true"><svg lucideCircleX></svg></span>
+        <h1>{{ t('failedTitle') }}</h1>
+        <p>{{ t('failedText') }}</p>
+        <div class="acts">
+          @if (invoice()) {
+            <button vdButton="primary" type="button" [loading]="retrying()" (click)="retry()">
+              <svg lucideExternalLink aria-hidden="true"></svg>{{ t('tryAgain') }}
+            </button>
+          }
+          <a vdButton routerLink="/billing">{{ t('backToBilling') }}</a>
+        </div>
+      }
+    }
+  </section>
+</ng-container>

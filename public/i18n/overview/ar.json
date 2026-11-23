@@ -76,6 +76,16 @@
     "openShift": "افتح ورديتك على {{terminal}} في {{branch}} علشان تبدأ تبيع.",
     "openShiftPlain": "افتح ورديتك علشان تبدأ تبيع.",
     "lastShift": "آخر وردية ليك",
-    "noShifts": "مفيش ورديات لسه."
+    "noShifts": "مفيش ورديات لسه.",
+    "when": "الوردية",
+    "sales": "المبيعات",
+    "drawer": "درج الكاش",
+    "stillOpen": "لسه مفتوحة",
+    "diff": {
+      "balanced": "مظبوط",
+      "shortage": "عجز",
+      "overage": "زيادة"
+    },
+    "viewShift": "اعرض ملخص الوردية"
   }
 }

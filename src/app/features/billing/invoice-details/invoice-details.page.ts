@@ -70,6 +70,7 @@ export class InvoiceDetailsPage {
     if (this.paying()) return;
     // TODO(you): get the Paymob checkout link for this.invoiceId and open it
     //  (window.location.href = url).
+    //  Paymob's return address for these payments: /billing/payment
     //  - before: this.paying.set(true)
     //  - failure: this.paying.set(false) and toast the error
   }

@@ -1,0 +1,253 @@
+<ng-container *transloco="let t; read: 'pos.return'">
+  @switch (status()) {
+    @case ('loading') {
+      <div class="pad">
+        <span class="vd-skeleton" style="height: 48px; width: 40%"></span>
+        <span class="vd-skeleton" style="height: 320px"></span>
+        <span class="vd-sr" role="status">{{ t('loading') }}</span>
+      </div>
+    }
+    @case ('error') {
+      <div class="pad">
+        <div class="vd-tablewrap">
+          <app-load-error
+            [title]="t('errorTitle')"
+            [text]="t('errorText')"
+            [retryLabel]="t('tryAgain')"
+            (retry)="load()"
+          />
+        </div>
+      </div>
+    }
+    @default {
+      @if (slip(); as r) {
+        <!-- ========== Done ========== -->
+        <div class="done">
+          <div class="done__t">
+            <span class="tick" aria-hidden="true"><svg lucideCircleCheck></svg></span>
+            <h1>{{ t('doneTitle') }}</h1>
+            <p role="status">
+              {{ t('doneText', { amount: money(r.total), method: r.refundMethod }) }}
+            </p>
+            <div class="done__acts">
+              <button vdButton="primary" size="lg" type="button" (click)="print()">
+                <svg lucidePrinter aria-hidden="true"></svg>{{ t('print') }}
+              </button>
+              <a vdButton size="lg" routerLink="/pos">{{ t('newSale') }}</a>
+            </div>
+          </div>
+          <app-return-receipt [receipt]="r" />
+        </div>
+      } @else if (sale(); as s) {
+        <!-- ========== The form ========== -->
+        <div class="ret">
+          <section class="lines" aria-labelledby="rt-title">
+            <a class="back" routerLink="/pos"
+              ><svg lucideArrowLeft class="dir" aria-hidden="true"></svg>{{ t('back') }}</a
+            >
+            <div class="head">
+              <h1 id="rt-title">{{ t('title') }}</h1>
+              <p>
+                <span class="mono">{{ s.receiptNumber }}</span> ·
+                <bdi>{{ longDate(s.issuedAt, lang()) }}</bdi> ·
+                <bdi>{{ s.customerName || t('walkIn') }}</bdi>
+              </p>
+            </div>
+
+            <div class="lines__bar">
+              <h2>{{ t('pick') }}</h2>
+              <button
+                vdButton="ghost"
+                size="sm"
+                type="button"
+                [disabled]="!anyLeft()"
+                (click)="all()"
+              >
+                {{ t('all') }}
+              </button>
+            </div>
+
+            @if (errors().items) {
+              <p class="err" role="alert">
+                <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('errors.items') }}
+              </p>
+            }
+
+            <ul class="list">
+              @for (l of s.lines; track l.id) {
+                @let n = qty()[l.id] ?? 0;
+                @let rest = left(l);
+                <li class="line" [class.on]="n > 0" [class.off]="rest === 0">
+                  <div class="line__t">
+                    <b dir="auto">{{ l.name }}</b>
+                    @if (l.variantName) {
+                      <small dir="auto">{{ l.variantName }}</small>
+                    }
+                    <small>
+                      {{ t('sold', { qty: l.qtySold, unit: l.unitSymbol }) }}
+                      @if (l.qtyReturned) {
+                        · {{ t('returned', { qty: l.qtyReturned, unit: l.unitSymbol }) }}
+                      }
+                      · <bdi dir="ltr">{{ money(l.unitRefund) }}</bdi> {{ t('each') }}
+                    </small>
+                  </div>
+                  @if (rest > 0) {
+                    <span
+                      class="step"
+                      role="group"
+                      dir="ltr"
+                      [attr.aria-label]="t('qtyLabel', { name: l.name })"
+                    >
+                      <button
+                        type="button"
+                        [attr.aria-label]="t('less')"
+                        [disabled]="n === 0"
+                        (click)="step(l, -1)"
+                      >
+                        <svg lucideMinus></svg>
+                      </button>
+                      <output aria-live="polite">{{ n }}</output>
+                      <button
+                        type="button"
+                        [attr.aria-label]="t('more')"
+                        [disabled]="n >= rest"
+                        (click)="step(l, 1)"
+                      >
+                        <svg lucidePlus></svg>
+                      </button>
+                    </span>
+                    <b class="line__amt" dir="ltr">{{ n ? '−' + money(n * l.unitRefund) : '' }}</b>
+                  } @else {
+                    <span class="vd-badge vd-badge--pill">{{ t('allReturned') }}</span>
+                  }
+                </li>
+              }
+            </ul>
+          </section>
+
+          <!-- ========== Why, and the refund ========== -->
+          <aside class="side">
+            @switch (submitStatus()) {
+              @case ('noShift') {
+                <div class="vd-banner vd-banner--warning" role="alert">
+                  <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+                  <span class="vd-banner__body"
+                    >{{ t('noShift') }}
+                    <a routerLink="/pos/shift/open">{{ t('openShift') }}</a></span
+                  >
+                </div>
+              }
+              @case ('failed') {
+                <div class="vd-banner vd-banner--danger" role="alert">
+                  <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+                  <span class="vd-banner__body">{{ t('failed') }}</span>
+                </div>
+              }
+            }
+
+            <fieldset class="group" [attr.aria-invalid]="errors().reason || null">
+              <legend>{{ t('reason') }}<span class="req" aria-hidden="true">*</span></legend>
+              <div class="chips">
+                @for (r of reasons; track r) {
+                  <button
+                    type="button"
+                    class="vd-chip"
+                    [attr.aria-pressed]="reason() === r"
+                    (click)="reason.set(r); restock.set(r !== 'damaged')"
+                  >
+                    {{ t('reasons.' + r) }}
+                  </button>
+                }
+              </div>
+              @if (errors().reason) {
+                <p class="err" role="alert">
+                  <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+                  >{{ t('errors.reason') }}
+                </p>
+              }
+            </fieldset>
+
+            <div class="vd-field">
+              <label class="vd-field__label" for="rt-note">
+                {{ t('note') }}
+                @if (reason() === 'other') {
+                  <span class="req" aria-hidden="true">*</span>
+                } @else {
+                  <span class="opt">{{ t('optional') }}</span>
+                }
+              </label>
+              <textarea
+                id="rt-note"
+                class="vd-input"
+                rows="2"
+                dir="auto"
+                maxlength="250"
+                [value]="note()"
+                [attr.aria-invalid]="errors().note || null"
+                [attr.aria-describedby]="errors().note ? 'rt-note-error' : null"
+                (input)="note.set($any($event.target).value)"
+              ></textarea>
+              @if (errors().note) {
+                <p id="rt-note-error" class="err">
+                  <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('errors.note') }}
+                </p>
+              }
+            </div>
+
+            <fieldset class="group">
+              <legend>{{ t('refundTo') }}</legend>
+              <div class="methods">
+                @for (m of methods(); track m.methodId) {
+                  <label class="method" [class.on]="methodId() === m.methodId">
+                    <input
+                      type="radio"
+                      name="rt-method"
+                      [value]="m.methodId"
+                      [checked]="methodId() === m.methodId"
+                      (change)="methodId.set(m.methodId)"
+                    />
+                    <span
+                      ><bdi>{{ m.name }}</bdi></span
+                    >
+                    <small>{{ t('paidWith', { amount: money(m.paid) }) }}</small>
+                  </label>
+                }
+              </div>
+            </fieldset>
+
+            <label class="vd-choice restock">
+              <input
+                type="checkbox"
+                role="switch"
+                [checked]="restock()"
+                (change)="restock.set($any($event.target).checked)"
+              />
+              <span class="vd-choice__text">
+                {{ t('restock') }}
+                <span class="vd-choice__hint">{{ t('restockHint') }}</span>
+              </span>
+            </label>
+
+            <div class="total">
+              <span>{{ t('items', { count: itemCount() }) }}</span>
+              <b dir="ltr"
+                >{{ money(refund()) }} <small>{{ t('egp') }}</small></b
+              >
+            </div>
+            <button
+              vdButton="primary"
+              size="lg"
+              type="button"
+              class="go"
+              [loading]="submitStatus() === 'saving'"
+              (click)="submit()"
+            >
+              <svg lucideUndo2 aria-hidden="true"></svg
+              >{{ refund() ? t('refund', { amount: money(refund()) }) : t('refundNone') }}
+            </button>
+          </aside>
+        </div>
+      }
+    }
+  }
+</ng-container>

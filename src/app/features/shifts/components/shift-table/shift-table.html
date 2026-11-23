@@ -1,0 +1,79 @@
+<div class="vd-tablescroll" *transloco="let t; read: 'shifts.table'">
+  <table class="vd-table">
+    <thead>
+      <tr>
+        <th scope="col">{{ t('shift') }}</th>
+        @if (!hideCashier()) {
+          <th scope="col">{{ t('cashier') }}</th>
+        }
+        <th scope="col">{{ t('opened') }}</th>
+        <th scope="col">{{ t('closed') }}</th>
+        <th scope="col" class="num">{{ t('sales') }}</th>
+        <th scope="col" class="num">{{ t('net') }}</th>
+        <th scope="col">{{ t('difference') }}</th>
+        <th scope="col">
+          <span class="vd-sr">{{ t('actions') }}</span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (s of rows(); track s.id) {
+        <tr [class.short]="s.kind === 'shortage'">
+          <td>
+            <b dir="auto">{{ s.terminalName }}</b>
+            <small dir="auto">{{ s.branchName }}</small>
+          </td>
+          @if (!hideCashier()) {
+            <td>
+              <bdi>{{ s.cashierName }}</bdi>
+            </td>
+          }
+          <td class="nowrap">{{ dateTime(s.openedAt, lang()) }}</td>
+          <td class="nowrap">
+            @if (s.closedAt) {
+              {{ dateTime(s.closedAt, lang()) }}
+              <small>{{ t('length', { time: s.duration }) }}</small>
+            } @else {
+              <span class="vd-badge vd-badge--pill vd-badge--dot vd-badge--info">{{
+                t('openNow')
+              }}</span>
+            }
+          </td>
+          <td class="num">{{ s.salesCount }}</td>
+          <td class="num">{{ cash(s.netSales) }}</td>
+          <td>
+            @switch (s.kind) {
+              @case ('balanced') {
+                <span class="vd-badge vd-badge--pill vd-badge--success">{{ t('balanced') }}</span>
+              }
+              @case ('shortage') {
+                <span class="vd-badge vd-badge--pill vd-badge--danger"
+                  >{{ t('shortage') }} <bdi dir="ltr">{{ s.signed }}</bdi></span
+                >
+              }
+              @case ('overage') {
+                <span class="vd-badge vd-badge--pill vd-badge--warning"
+                  >{{ t('overage') }} <bdi dir="ltr">{{ s.signed }}</bdi></span
+                >
+              }
+              @default {
+                <span class="muted">—</span>
+              }
+            }
+          </td>
+          <td class="actions">
+            <a
+              vdButton="ghost"
+              size="sm"
+              [routerLink]="['/shifts', s.id]"
+              [attr.aria-label]="
+                t('viewLabel', { terminal: s.terminalName, cashier: s.cashierName })
+              "
+              >{{ t('view') }}</a
+            >
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

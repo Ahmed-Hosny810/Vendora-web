@@ -3,10 +3,19 @@ import { RouterLink } from '@angular/router';
 import { provideTranslocoScope, TranslocoDirective } from '@jsverse/transloco';
 import { LucideMonitor } from '@lucide/angular';
 
+import { LanguageService } from '../../core/i18n';
 import { AppSession, SetupTask } from '../../core/session';
 import { KpiCard } from '../../shared/components/app';
 import { AppShell } from '../../layouts/app-layout/app-shell';
 import { VdButton } from '../../shared/components/ui';
+import { formatDateTime } from '../../shared/utils/format';
+import {
+  diffKind,
+  formatCash,
+  formatSigned,
+  shiftDiff,
+  ShiftListItem,
+} from '../shifts/shifts.models';
 import { SetupChecklist } from './components/setup-checklist/setup-checklist';
 
 /**
@@ -24,6 +33,9 @@ import { SetupChecklist } from './components/setup-checklist/setup-checklist';
 })
 export class OverviewPage {
   protected readonly session = inject(AppSession);
+  protected readonly lang = inject(LanguageService).lang;
+  protected readonly cash = formatCash;
+  protected readonly dateTime = formatDateTime;
 
   // ---------- Set by your logic ----------
   /** Today's sales, already formatted (e.g. "1,250.00 EGP"), or null before the first sale. */
@@ -37,6 +49,15 @@ export class OverviewPage {
   protected readonly justDone = signal<SetupTask | null>(null);
   /** Cashier: the terminal they'll open a shift on. */
   protected readonly terminalName = signal<string | null>(null);
+  /** Cashier: their most recent shift, or null before their first one. */
+  protected readonly lastShift = signal<ShiftListItem | null>(null);
+
+  /** The last shift's cash difference: kind and "+20.00" / "−40.00". */
+  protected readonly lastDiff = computed(() => {
+    const s = this.lastShift();
+    const diff = s ? shiftDiff(s) : null;
+    return diff === null ? null : { kind: diffKind(diff), signed: formatSigned(diff) };
+  });
 
   protected readonly firstName = computed(() => this.session.user()?.name.split(/\s+/)[0] ?? '');
   protected readonly anyDone = computed(() => this.session.setupDone().size > 0);
@@ -54,5 +75,6 @@ export class OverviewPage {
     inject(AppShell).setTitle('overview');
     // TODO(you): load the overview numbers (sales today, open shifts, low stock),
     //  the plan name, and the finished setup tasks (this.session.setupDone.set(...)).
+    //  Cashiers: their terminal (this.terminalName) and last shift (this.lastShift).
   }
 }

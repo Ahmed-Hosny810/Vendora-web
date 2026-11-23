@@ -15,7 +15,7 @@ import { SetupTask } from '../../core/session';
 export interface SetupTaskView {
   key: SetupTask;
   icon: LucideIcon;
-  /** Where Start goes. TODO(you): adjust when those pages exist. */
+  /** Where Start goes. */
   link: string;
   /** Key under overview.setup.tags. */
   tag?: 'tracked' | 'optional';

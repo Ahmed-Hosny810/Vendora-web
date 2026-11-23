@@ -90,6 +90,6 @@ export class AppLayout {
   }
 
   protected seeAllNotifications(): void {
-    // TODO(you): go to the notifications page.
+    // TODO(you): go to /notifications.
   }
 }

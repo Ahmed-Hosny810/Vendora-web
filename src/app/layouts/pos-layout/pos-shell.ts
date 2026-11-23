@@ -17,4 +17,6 @@ export class PosShell {
   readonly terminalName = signal<string | null>(null);
   /** null: no shift open on this terminal. */
   readonly shift = signal<PosBarShift | null>(null);
+  /** Sales on hold on this terminal: the number on the "Held sales" button. */
+  readonly heldCount = signal(0);
 }

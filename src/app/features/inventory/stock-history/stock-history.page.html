@@ -1,0 +1,151 @@
+<ng-container *transloco="let t; read: 'inventory.history'">
+  @switch (status()) {
+    @case ('loading') {
+      <span class="vd-skeleton" style="height: 64px; width: 50%"></span>
+      <div class="vd-tablewrap">
+        <app-skeleton-rows [label]="t('loading')" [rows]="6" [columns]="5" />
+      </div>
+    }
+    @case ('error') {
+      <div class="vd-tablewrap">
+        <app-load-error
+          [title]="t('errorTitle')"
+          [text]="t('errorText')"
+          [retryLabel]="t('tryAgain')"
+          (retry)="load()"
+        />
+      </div>
+    }
+    @default {
+      @if (item(); as x) {
+        @let lv = level(x);
+        <div class="head">
+          <div class="head__t">
+            <h1>
+              <bdi>{{ x.name }}</bdi>
+            </h1>
+            <p>
+              @if (x.variantName) {
+                <bdi>{{ x.variantName }}</bdi> ·
+              }
+              <span class="mono">{{ x.sku }}</span> ·
+              {{ t('at', { branch: session.branch()?.name ?? '' }) }}
+            </p>
+          </div>
+          <button vdButton type="button" (click)="adjust()">
+            <svg lucideSlidersHorizontal aria-hidden="true"></svg>{{ t('adjust') }}
+          </button>
+        </div>
+
+        <div class="kpis">
+          <app-kpi-card
+            [label]="t('onHand')"
+            [value]="qty(x.onHand) + ' ' + x.unitSymbol"
+            [hint]="t('levels.' + lv)"
+          />
+          <app-kpi-card
+            [label]="t('added')"
+            [value]="'+' + qty(totals().added)"
+            [hint]="t('inList')"
+          />
+          <app-kpi-card
+            [label]="t('removed')"
+            [value]="'−' + qty(totals().removed)"
+            [hint]="t('inList')"
+          />
+        </div>
+
+        <div class="vd-tablewrap">
+          <div class="vd-toolbar">
+            <button
+              type="button"
+              class="vd-chip"
+              [attr.aria-pressed]="kind() === 'all'"
+              (click)="kind.set('all')"
+            >
+              {{ t('kinds.all') }}
+            </button>
+            @for (k of kinds; track k) {
+              <button
+                type="button"
+                class="vd-chip"
+                [attr.aria-pressed]="kind() === k"
+                (click)="kind.set(k)"
+              >
+                {{ t('kinds.' + k) }}
+              </button>
+            }
+          </div>
+
+          @if (!movements().length) {
+            <div class="vd-empty">
+              <span class="vd-empty__art"><svg lucideHistory></svg></span>
+              <h2 class="vd-empty__title">{{ t('emptyTitle') }}</h2>
+              <p class="vd-empty__text">{{ t('emptyText') }}</p>
+            </div>
+          } @else if (!visible().length) {
+            <p class="no-match">{{ t('noMatch') }}</p>
+          } @else {
+            <div class="vd-tablescroll">
+              <table class="vd-table">
+                <thead>
+                  <tr>
+                    <th scope="col">{{ t('cols.when') }}</th>
+                    <th scope="col">{{ t('cols.what') }}</th>
+                    <th scope="col">{{ t('cols.by') }}</th>
+                    <th scope="col" class="num">{{ t('cols.change') }}</th>
+                    <th scope="col" class="num">{{ t('cols.after') }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (m of visible(); track m.id) {
+                    <tr>
+                      <td class="nowrap">{{ dateTime(m.at, lang()) }}</td>
+                      <td>
+                        <span
+                          class="vd-badge vd-badge--pill"
+                          [class.vd-badge--info]="m.kind === 'sale'"
+                          [class.vd-badge--success]="m.kind === 'return'"
+                          [class.vd-badge--brand]="m.kind === 'opening'"
+                          [class.vd-badge--warning]="m.kind === 'adjustment'"
+                          >{{ t('kinds.' + m.kind) }}</span
+                        >
+                        @if (m.reason) {
+                          <span class="why">{{ t('reasons.' + m.reason) }}</span>
+                        }
+                        @if (m.receiptNumber && m.saleId) {
+                          <a class="why link mono" [routerLink]="['/sales', m.saleId, 'receipt']">{{
+                            m.receiptNumber
+                          }}</a>
+                        }
+                        @if (m.note) {
+                          <small dir="auto">“{{ m.note }}”</small>
+                        }
+                      </td>
+                      <td>
+                        <bdi>{{ m.userName }}</bdi>
+                      </td>
+                      <td class="num change" [class.up]="m.change > 0" [class.down]="m.change < 0">
+                        <bdi dir="ltr">{{ signed(m.change) }}</bdi>
+                      </td>
+                      <td class="num nowrap">
+                        {{ qty(m.balanceAfter) }}<span class="unit">{{ x.unitSymbol }}</span>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+            @if (hasMore()) {
+              <div class="more">
+                <button vdButton type="button" [loading]="loadingMore()" (click)="loadMore()">
+                  {{ t('loadMore') }}
+                </button>
+              </div>
+            }
+          }
+        </div>
+      }
+    }
+  }
+</ng-container>

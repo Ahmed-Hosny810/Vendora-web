@@ -11,6 +11,7 @@ import {
 import { RouterLink } from '@angular/router';
 import { provideTranslocoScope, TranslocoDirective } from '@jsverse/transloco';
 import {
+  LucideHistory,
   LucidePackage,
   LucidePackagePlus,
   LucideSearch,
@@ -46,6 +47,7 @@ type Filter = 'all' | 'low' | 'out';
     LucidePackage,
     LucidePackagePlus,
     LucideSearch,
+    LucideHistory,
     LucideSlidersHorizontal,
   ],
   templateUrl: './inventory-list.page.html',

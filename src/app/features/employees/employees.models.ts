@@ -60,3 +60,25 @@ export function suggestUsername(name: string): string {
   if (!parts.length) return '';
   return parts.length > 1 ? `${parts[0]}.${parts.at(-1)![0]}` : parts[0];
 }
+
+/** One employee's page (/employees/:id). */
+export interface EmployeeDetails extends Employee {
+  invitedAt: Date;
+  /** When they accepted the invitation; null while invited. */
+  joinedAt: Date | null;
+  /** Last time they used Vendora; null if never. */
+  lastActiveAt: Date | null;
+}
+
+/** Their selling in the last 30 days. null for people who don't sell (inventory staff). */
+export interface EmployeeStats {
+  shifts: number;
+  sales: number;
+  /** In EGP. */
+  netSales: number;
+  /** Shifts that closed short. */
+  shortages: number;
+}
+
+/** Result of changing someone's role, returned by your logic. */
+export type RoleChangeResult = 'saved' | 'failed';

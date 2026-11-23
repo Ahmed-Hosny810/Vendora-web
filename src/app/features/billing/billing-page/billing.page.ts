@@ -121,6 +121,7 @@ export class BillingPage {
     if (this.payingId()) return;
     // TODO(you): ask the API for the Paymob checkout link of this invoice, then open it
     //  (window.location.href = url). Same flow as the onboarding invoice.
+    //  Paymob's return address for these payments: /billing/payment
     //  - before: this.payingId.set(invoice.id)
     //  - failure: this.payingId.set(null) and toast the error
     void invoice;

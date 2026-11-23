@@ -33,3 +33,34 @@ export const PAYMENT_CODE_PATTERN = /^[A-Za-z0-9_-]+$/;
  * - 'failed': anything else
  */
 export type PaymentSaveResult = 'saved' | 'codeTaken' | 'failed';
+
+/** Which picture a method gets: banknote, wallet or card. */
+export function paymentIcon(
+  m: Pick<PaymentMethod, 'isCash' | 'name' | 'code'>,
+): 'cash' | 'wallet' | 'card' {
+  if (m.isCash) return 'cash';
+  return /wallet/i.test(`${m.name} ${m.code}`) ? 'wallet' : 'card';
+}
+
+/** How much a method was used in the last 30 days. */
+export interface PaymentMethodStats {
+  /** Payments taken with it. */
+  count: number;
+  /** In EGP. */
+  amount: number;
+  /** Its share of all payments' amount, 0–100. */
+  share: number;
+}
+
+/** One payment taken with the method, for the "Recent payments" table. */
+export interface PaymentRecord {
+  id: string;
+  saleId: string;
+  receiptNumber: string;
+  at: Date;
+  amount: number;
+  /** The transaction reference the cashier typed, when the method requires one. */
+  reference: string | null;
+  cashierName: string;
+  branchName: string;
+}

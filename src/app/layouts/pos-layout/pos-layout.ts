@@ -1,16 +1,27 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, Injector } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { provideTranslocoScope, TranslocoDirective } from '@jsverse/transloco';
 import {
   LucideArchive,
-  LucideHistory,
+  LucideClock,
   LucideLock,
   LucideMonitor,
+  LucideSearch,
   LucideStore,
 } from '@lucide/angular';
 
 import { AppSession } from '../../core/session';
-import { VdIconButton, VdWordmark } from '../../shared/components/ui';
+import {
+  FindSaleData,
+  FindSaleDrawer,
+} from '../../features/pos/components/find-sale-drawer/find-sale-drawer';
+import {
+  HeldSalesData,
+  HeldSalesDrawer,
+} from '../../features/pos/components/held-sales-drawer/held-sales-drawer';
+import { PosCart } from '../../features/pos/pos-cart';
+import { FoundSale, HeldSale } from '../../features/pos/pos.models';
+import { injectDrawer, VdIconButton, VdWordmark } from '../../shared/components/ui';
 import { PosShell } from './pos-shell';
 
 /**
@@ -28,9 +39,10 @@ import { PosShell } from './pos-shell';
     VdIconButton,
     VdWordmark,
     LucideArchive,
-    LucideHistory,
+    LucideClock,
     LucideLock,
     LucideMonitor,
+    LucideSearch,
     LucideStore,
   ],
   templateUrl: './pos-layout.html',
@@ -45,6 +57,9 @@ import { PosShell } from './pos-shell';
 export class PosLayout {
   protected readonly session = inject(AppSession);
   protected readonly shell = inject(PosShell);
+  private readonly cart = inject(PosCart);
+  private readonly injector = inject(Injector);
+  private readonly openDrawer = injectDrawer();
 
   protected readonly closed = computed(() => this.shell.shift()?.closed ?? false);
 
@@ -60,6 +75,50 @@ export class PosLayout {
   }
 
   protected findSale(): void {
-    // TODO(you): open the "Find a sale" search once the POS sales pages exist.
+    this.openDrawer<void, FindSaleData, FindSaleDrawer>(FindSaleDrawer, {
+      data: { search: (query) => this.searchSales(query) },
+      injector: this.injector,
+    });
+  }
+
+  protected openHeld(): void {
+    this.openDrawer<void, HeldSalesData, HeldSalesDrawer>(HeldSalesDrawer, {
+      data: {
+        basketHasItems: !this.cart.isEmpty(),
+        load: () => this.loadHeld(),
+        resume: (sale) => this.resumeHeld(sale),
+        discard: (sale) => this.discardHeld(sale),
+      },
+      injector: this.injector,
+    });
+  }
+
+  private async searchSales(query: string): Promise<FoundSale[] | 'failed'> {
+    // TODO(you): find sales at this branch by receipt number or customer phone (query),
+    //  newest first. Return the list, or 'failed'.
+    void query;
+    return 'failed';
+  }
+
+  private async loadHeld(): Promise<HeldSale[] | 'failed'> {
+    // TODO(you): load the sales on hold on this terminal (oldest first).
+    //  Return the list (and keep this.shell.heldCount in step), or 'failed'.
+    return 'failed';
+  }
+
+  private async resumeHeld(sale: HeldSale): Promise<'resumed' | 'failed'> {
+    // TODO(you): load the held sale and put it in the basket:
+    //  this.cart.lines.set(lines); this.cart.saleDiscount.set(d); this.cart.customer.set(c)
+    //  then remove it from the held list on the server, lower this.shell.heldCount,
+    //  go to /pos, and return 'resumed'. On failure return 'failed'.
+    void sale;
+    return 'failed';
+  }
+
+  private async discardHeld(sale: HeldSale): Promise<'discarded' | 'failed'> {
+    // TODO(you): delete the held sale, lower this.shell.heldCount, and return 'discarded'
+    //  (or 'failed').
+    void sale;
+    return 'failed';
   }
 }

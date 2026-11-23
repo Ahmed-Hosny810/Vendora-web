@@ -102,6 +102,12 @@ export const routes: Routes = [
           import('./features/shifts/shift-open/shift-open.page').then((m) => m.ShiftOpenPage),
       },
       {
+        // Return items from a sale (refund). Opened from "Find a sale" or a receipt.
+        path: 'return/:id',
+        loadComponent: () =>
+          import('./features/pos/sale-return/sale-return.page').then((m) => m.SaleReturnPage),
+      },
+      {
         path: 'shift/close',
         loadComponent: () =>
           import('./features/shifts/shift-close/shift-close.page').then((m) => m.ShiftClosePage),
@@ -255,6 +261,14 @@ export const routes: Routes = [
               import('./features/billing/billing-page/billing.page').then((m) => m.BillingPage),
           },
           {
+            // Paymob sends the owner back here after paying an invoice from Billing.
+            path: 'payment',
+            loadComponent: () =>
+              import('./features/billing/payment-result/payment-result.page').then(
+                (m) => m.PaymentResultPage,
+              ),
+          },
+          {
             path: 'invoices/:id',
             loadComponent: () =>
               import('./features/billing/invoice-details/invoice-details.page').then(
@@ -318,15 +332,55 @@ export const routes: Routes = [
                 (m) => m.EmployeeInvitePage,
               ),
           },
+          {
+            // After "invite", so /employees/invite isn't read as an id.
+            path: ':id',
+            loadComponent: () =>
+              import('./features/employees/employee-details/employee-details.page').then(
+                (m) => m.EmployeeDetailsPage,
+              ),
+          },
         ],
       },
       {
         // How customers can pay at checkout.
         path: 'payment-methods',
-        loadComponent: () =>
-          import('./features/payment-methods/payment-methods/payment-methods.page').then(
-            (m) => m.PaymentMethodsPage,
-          ),
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./features/payment-methods/payment-methods/payment-methods.page').then(
+                (m) => m.PaymentMethodsPage,
+              ),
+          },
+          {
+            path: ':id',
+            loadComponent: () =>
+              import('./features/payment-methods/payment-method-details/payment-method-details.page').then(
+                (m) => m.PaymentMethodDetailsPage,
+              ),
+          },
+        ],
+      },
+      {
+        // Past and open shifts, and one shift's summary.
+        path: 'shifts',
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./features/shifts/shift-history/shift-history.page').then(
+                (m) => m.ShiftHistoryPage,
+              ),
+          },
+          {
+            path: ':id',
+            loadComponent: () =>
+              import('./features/shifts/shift-details/shift-details.page').then(
+                (m) => m.ShiftDetailsPage,
+              ),
+          },
+        ],
       },
       {
         // Inventory: what's on hand, adjustments, and opening stock.
@@ -344,6 +398,14 @@ export const routes: Routes = [
             loadComponent: () =>
               import('./features/inventory/opening-stock/opening-stock.page').then(
                 (m) => m.OpeningStockPage,
+              ),
+          },
+          {
+            // One item's stock changes (?variant=<id> for a variant).
+            path: ':productId/history',
+            loadComponent: () =>
+              import('./features/inventory/stock-history/stock-history.page').then(
+                (m) => m.StockHistoryPage,
               ),
           },
         ],
@@ -398,6 +460,12 @@ export const routes: Routes = [
           import('./features/catalog/tax-rates/tax-rates.page').then((m) => m.TaxRatesPage),
       },
       {
+        // Every notification, from "See all" in the bell panel.
+        path: 'notifications',
+        loadComponent: () =>
+          import('./features/notifications/notifications.page').then((m) => m.NotificationsPage),
+      },
+      {
         path: 'access-denied',
         loadComponent: () =>
           import('./features/access-denied/access-denied.page').then((m) => m.AccessDeniedPage),
@@ -409,5 +477,10 @@ export const routes: Routes = [
     path: 'dev/ui',
     canMatch: [() => isDevMode()],
     loadComponent: () => import('./dev/ui-kit/ui-kit').then((m) => m.UiKit),
+  },
+  {
+    // Any other address: the 404 page. Must stay last.
+    path: '**',
+    loadComponent: () => import('./features/not-found/not-found.page').then((m) => m.NotFoundPage),
   },
 ];

@@ -93,3 +93,33 @@ export function afterAdjust(onHand: number, kind: AdjustKind, quantity: number):
  * - 'failed': anything else
  */
 export type AdjustResult = 'saved' | 'belowZero' | 'failed';
+
+// ---------- Stock change history ----------
+
+/**
+ * Why the count changed: the opening count, a sale, a customer return,
+ * or a manual adjustment (with its reason).
+ */
+export type MovementKind = 'opening' | 'sale' | 'return' | 'adjustment';
+
+export const MOVEMENT_KINDS: readonly MovementKind[] = ['sale', 'return', 'adjustment', 'opening'];
+
+/** One change to an item's count at a branch. */
+export interface StockMovement {
+  id: string;
+  at: Date;
+  kind: MovementKind;
+  /** +12 (in) or −3 (out). For a "set" count: the difference it made. */
+  change: number;
+  /** On hand right after this change. */
+  balanceAfter: number;
+  /** Adjustments only. */
+  reason: AdjustReason | null;
+  /** What was typed with an adjustment ('' = nothing). */
+  note: string;
+  /** Who did it. */
+  userName: string;
+  /** Sales and returns: the sale, to open its receipt. */
+  saleId: string | null;
+  receiptNumber: string | null;
+}

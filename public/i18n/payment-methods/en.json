@@ -18,7 +18,9 @@
     "drag": "Drag to reorder",
     "dragNote": "Drag the handle to change the order, or edit a method’s sort order.",
     "emptyTitle": "No payment methods yet",
-    "emptyText": "Add at least one so cashiers can take payments."
+    "emptyText": "Add at least one so cashiers can take payments.",
+    "view": "View",
+    "viewLabel": "View {{name}}"
   },
   "drawer": {
     "addTitle": "Add payment method",
@@ -46,5 +48,49 @@
       "sortOrder": "Enter 0 or more.",
       "failed": "We couldn’t save the payment method. Check your connection and try again."
     }
+  },
+  "details": {
+    "loading": "Loading the payment method…",
+    "errorTitle": "Couldn't load this payment method",
+    "errorText": "Check your connection and try again.",
+    "tryAgain": "Try again",
+    "active": "Active",
+    "inactive": "Turned off",
+    "edit": "Edit",
+    "turnOff": "Turn off",
+    "turnOn": "Turn on",
+    "offNote": "Cashiers don't see this method at checkout. Past payments stay in reports.",
+    "offTitle": "Turn off {{name}}?",
+    "offText": "Cashiers won't be able to take {{name}} payments. You can turn it back on any time.",
+    "offConfirm": "Turn off",
+    "kpi": {
+      "count": "Payments",
+      "days": "Last 30 days",
+      "amount": "Amount",
+      "egp": "EGP · last 30 days",
+      "share": "Share of payments",
+      "shareHint": "By amount",
+      "average": "Average payment"
+    },
+    "settings": "At checkout",
+    "cashDrawer": "Cash drawer",
+    "cashYes": "Counts toward the drawer and gives change",
+    "cashNo": "Not counted in the drawer",
+    "reference": "Reference number",
+    "referenceYes": "Cashiers must type it",
+    "referenceNo": "Not asked for",
+    "order": "Checkout order",
+    "orderValue": "{{n}}",
+    "note": "Vendora only records the payment. Card and wallet payments are confirmed on their own machine or app.",
+    "recent": "Recent payments",
+    "cols": {
+      "receipt": "Receipt",
+      "date": "Date",
+      "cashier": "Cashier",
+      "reference": "Reference",
+      "amount": "Amount (EGP)"
+    },
+    "noPayments": "No payments yet",
+    "noPaymentsText": "Payments taken with this method show here."
   }
 }

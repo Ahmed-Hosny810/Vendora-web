@@ -1,0 +1,142 @@
+<ng-container *transloco="let t; read: 'shifts.details'">
+  @switch (status()) {
+    @case ('loading') {
+      <span class="vd-skeleton" style="height: 64px; width: 50%"></span>
+      <span class="vd-skeleton" style="height: 320px"></span>
+      <span class="vd-sr" role="status">{{ t('loading') }}</span>
+    }
+    @case ('error') {
+      <div class="vd-tablewrap">
+        <app-load-error
+          [title]="t('errorTitle')"
+          [text]="t('errorText')"
+          [retryLabel]="t('tryAgain')"
+          (retry)="load()"
+        />
+      </div>
+    }
+    @default {
+      @if (shift(); as s) {
+        <div class="head">
+          <div class="head__t">
+            <h1>
+              <bdi>{{ s.terminalName }}</bdi>
+              @if (s.closedAt) {
+                <span class="vd-badge vd-badge--pill">{{ t('closed') }}</span>
+              } @else {
+                <span class="vd-badge vd-badge--pill vd-badge--dot vd-badge--info">{{
+                  t('openNow')
+                }}</span>
+              }
+            </h1>
+            <p>
+              <bdi>{{ s.branchName }}</bdi> · <bdi>{{ s.cashierName }}</bdi> ·
+              <bdi>{{ dateTime(s.openedAt, lang()) }}</bdi>
+              @if (s.closedAt) {
+                – <bdi>{{ dateTime(s.closedAt, lang()) }}</bdi>
+              }
+            </p>
+          </div>
+          @if (s.closedAt) {
+            <button vdButton type="button" (click)="print()">
+              <svg lucidePrinter aria-hidden="true"></svg>{{ t('print') }}
+            </button>
+          }
+        </div>
+
+        @if (!s.closedAt) {
+          <div class="vd-banner vd-banner--info" role="status">
+            <svg lucideInfo aria-hidden="true"></svg>
+            <span class="vd-banner__body">{{ t('openText') }}</span>
+          </div>
+        }
+
+        <div class="kpis">
+          <app-kpi-card [label]="t('sales')" [value]="s.salesCount" [hint]="t('salesHint')" />
+          <app-kpi-card [label]="t('net')" [value]="cash(s.netSales)" [hint]="t('egp')" />
+          <app-kpi-card
+            [label]="t(s.closedAt ? 'duration' : 'openFor')"
+            [value]="duration()"
+            [hint]="t('durationHint')"
+          />
+        </div>
+
+        <div class="grid">
+          <div class="col">
+            <!-- Cash drawer -->
+            <section class="card" aria-labelledby="sd-cash">
+              <h2 class="card__h" id="sd-cash">{{ t('drawer') }}</h2>
+              <dl class="lines">
+                <div>
+                  <dt>{{ t('openingCash') }}</dt>
+                  <dd>{{ cash(s.openingCash) }}</dd>
+                </div>
+                <div>
+                  <dt>{{ t('cashReceipts') }}</dt>
+                  <dd>
+                    <bdi dir="ltr">+{{ cash(s.cashReceipts) }}</bdi>
+                  </dd>
+                </div>
+                <div>
+                  <dt>{{ t('cashRefunds') }}</dt>
+                  <dd>
+                    <bdi dir="ltr">−{{ cash(s.cashRefunds) }}</bdi>
+                  </dd>
+                </div>
+                <div class="total">
+                  <dt>{{ t('expected') }}</dt>
+                  <dd>{{ cash(expected()) }}</dd>
+                </div>
+                @if (s.countedCash !== null) {
+                  <div class="total">
+                    <dt>{{ t('counted') }}</dt>
+                    <dd>{{ cash(s.countedCash) }}</dd>
+                  </div>
+                }
+              </dl>
+              @if (kind(); as k) {
+                <app-cash-diff
+                  class="diff"
+                  [kind]="k"
+                  [diff]="diff()!"
+                  [label]="t('kind.' + k)"
+                  [text]="s.note ? t('note', { note: s.note }) : t('noNote')"
+                />
+              }
+            </section>
+
+            <!-- Card, wallet… -->
+            <section class="card" aria-labelledby="sd-other">
+              <h2 class="card__h" id="sd-other">{{ t('other') }}</h2>
+              @if (s.nonCash.length) {
+                <dl class="lines">
+                  @for (n of s.nonCash; track n.name) {
+                    <div>
+                      <dt>
+                        <bdi>{{ n.name }}</bdi>
+                      </dt>
+                      <dd>{{ cash(n.amount) }}</dd>
+                    </div>
+                  }
+                </dl>
+              } @else {
+                <p class="none">{{ t('noOther') }}</p>
+              }
+            </section>
+          </div>
+
+          @if (s.closedAt) {
+            <aside class="paper">
+              <p class="paper__cap">{{ t('printed') }}</p>
+              <app-shift-receipt
+                [summary]="s"
+                [closedAt]="s.closedAt"
+                [counted]="s.countedCash ?? 0"
+              />
+            </aside>
+          }
+        </div>
+      }
+    }
+  }
+</ng-container>

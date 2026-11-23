@@ -98,7 +98,9 @@
     },
     "adjust": "Adjust",
     "adjustLabel": "Adjust stock of {{name}}",
-    "noMatch": "No items match."
+    "noMatch": "No items match.",
+    "history": "History",
+    "historyLabel": "Stock history of {{name}}"
   },
   "adjust": {
     "title": "Adjust stock",
@@ -140,6 +142,51 @@
       "note": "Say what happened.",
       "belowZero": "There isn’t that much on hand. Lower the quantity, or set the counted amount instead.",
       "failed": "We couldn’t save the adjustment. Check your connection and try again."
+    }
+  },
+  "history": {
+    "loading": "Loading stock history…",
+    "errorTitle": "Couldn't load the history",
+    "errorText": "Check your connection and try again.",
+    "tryAgain": "Try again",
+    "at": "at {{branch}}",
+    "adjust": "Adjust stock",
+    "onHand": "On hand",
+    "levels": {
+      "in": "In stock",
+      "low": "Low stock",
+      "out": "Out of stock"
+    },
+    "added": "Added",
+    "removed": "Removed",
+    "inList": "In the changes below",
+    "kinds": {
+      "all": "All",
+      "sale": "Sale",
+      "return": "Return",
+      "adjustment": "Adjustment",
+      "opening": "Opening count"
+    },
+    "emptyTitle": "No changes yet",
+    "emptyText": "Sales, returns and adjustments of this item show here.",
+    "noMatch": "No changes of this kind.",
+    "cols": {
+      "when": "When",
+      "what": "What happened",
+      "by": "By",
+      "change": "Change",
+      "after": "On hand after"
+    },
+    "loadMore": "Show older",
+    "reasons": {
+      "received": "Received from supplier",
+      "returned": "Customer return",
+      "found": "Found in store",
+      "damaged": "Damaged",
+      "lost": "Lost or stolen",
+      "supplierReturn": "Returned to supplier",
+      "count": "Stock count",
+      "other": "Other"
     }
   }
 }

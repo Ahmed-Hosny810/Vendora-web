@@ -1,0 +1,81 @@
+<div class="vd-drawer" *transloco="let t; read: 'pos.find'">
+  <header class="vd-drawer__head">
+    <h2 class="vd-drawer__title" vdDialogTitle>{{ t('title') }}</h2>
+    <button vdIconButton type="button" [label]="t('close')" (click)="ref.close()">
+      <svg lucideX></svg>
+    </button>
+  </header>
+
+  <div class="vd-drawer__body body">
+    <form class="search" role="search" (submit)="search($event)">
+      <label class="vd-field__label" for="fs-q">{{ t('label') }}</label>
+      <div class="search__row">
+        <input
+          id="fs-q"
+          class="vd-input"
+          type="search"
+          dir="ltr"
+          autocomplete="off"
+          cdkFocusInitial
+          [placeholder]="t('placeholder')"
+          [value]="query()"
+          (input)="query.set($any($event.target).value)"
+        />
+        <button
+          vdButton="primary"
+          type="submit"
+          [disabled]="!query().trim()"
+          [loading]="status() === 'searching'"
+          [attr.aria-label]="t('search')"
+        >
+          <svg lucideSearch aria-hidden="true"></svg>
+        </button>
+      </div>
+      <p class="vd-field__hint">{{ t('hint') }}</p>
+    </form>
+
+    @switch (status()) {
+      @case ('failed') {
+        <div class="vd-banner vd-banner--danger" role="alert">
+          <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+          <span class="vd-banner__body">{{ t('failed') }}</span>
+        </div>
+      }
+      @case ('done') {
+        <p class="count" role="status">
+          {{ results().length ? t('found', { count: results().length }) : t('none') }}
+        </p>
+        <ul class="list">
+          @for (s of results(); track s.id) {
+            <li class="sale">
+              <div class="sale__top">
+                <b class="mono">{{ s.receiptNumber }}</b>
+                <b class="sale__total" dir="ltr">{{ money(s.total) }}</b>
+              </div>
+              <p class="sale__meta">
+                <bdi>{{ dateTime(s.createdAt, lang()) }}</bdi> ·
+                <bdi>{{ s.customerName || t('walkIn') }}</bdi> ·
+                {{ t('items', { count: s.itemCount }) }}
+                @if (s.hasReturns) {
+                  <span class="vd-badge vd-badge--pill vd-badge--info">{{ t('hasReturns') }}</span>
+                }
+              </p>
+              <div class="sale__acts">
+                <a
+                  vdButton
+                  size="sm"
+                  [routerLink]="['/sales', s.id, 'receipt']"
+                  (click)="ref.close()"
+                  ><svg lucideReceiptText aria-hidden="true"></svg>{{ t('receipt') }}</a
+                >
+                <a vdButton size="sm" [routerLink]="['/pos/return', s.id]" (click)="ref.close()"
+                  ><svg lucideUndo2 aria-hidden="true"></svg>{{ t('return') }}</a
+                >
+              </div>
+            </li>
+          }
+        </ul>
+      }
+    }
+  </div>
+</div>

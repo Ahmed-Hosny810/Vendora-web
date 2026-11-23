@@ -1,0 +1,10 @@
+{
+  "notFound": {
+    "tagKicker": "Scanned",
+    "tagLine": "Item not found",
+    "title": "This page isn't on the shelf",
+    "text": "The address may be mistyped, or the page was moved. Head back and pick up where you left off.",
+    "overview": "Go to overview",
+    "home": "Vendora home"
+  }
+}

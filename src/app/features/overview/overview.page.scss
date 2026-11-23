@@ -151,3 +151,27 @@
     grid-template-columns: 1fr 1fr;
   }
 }
+
+// Cashier's last shift: three label / value rows.
+.last {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  font-size: 13px;
+
+  div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 4px 12px;
+  }
+
+  dt {
+    color: var(--ink-500);
+  }
+
+  dd {
+    margin: 0;
+    font-weight: 600;
+  }
+}

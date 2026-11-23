@@ -1,0 +1,210 @@
+<ng-container *transloco="let t; read: 'employees'">
+  @switch (status()) {
+    @case ('loading') {
+      <span class="vd-skeleton" style="height: 72px; width: 50%"></span>
+      <span class="vd-skeleton" style="height: 300px"></span>
+      <span class="vd-sr" role="status">{{ t('details.loading') }}</span>
+    }
+    @case ('error') {
+      <div class="vd-tablewrap">
+        <app-load-error
+          [title]="t('details.errorTitle')"
+          [text]="t('details.errorText')"
+          [retryLabel]="t('details.tryAgain')"
+          (retry)="load()"
+        />
+      </div>
+    }
+    @default {
+      @if (employee(); as e) {
+        <!-- Who -->
+        <div class="head">
+          <span class="av" aria-hidden="true">{{ initials(e.fullName) }}</span>
+          <div class="head__t">
+            <h1>
+              <bdi>{{ e.fullName }}</bdi>
+              @if (e.isYou) {
+                <span class="vd-badge vd-badge--pill vd-badge--brand">{{ t('list.you') }}</span>
+              }
+            </h1>
+            <p>
+              {{ t('list.roles.' + e.role) }} ·
+              @switch (e.status) {
+                @case ('active') {
+                  <span class="vd-badge vd-badge--pill vd-badge--dot vd-badge--success">{{
+                    t('list.status.active')
+                  }}</span>
+                }
+                @case ('invited') {
+                  <span class="vd-badge vd-badge--pill vd-badge--dot vd-badge--warning">{{
+                    t('list.status.invited')
+                  }}</span>
+                }
+                @default {
+                  <span class="vd-badge vd-badge--pill vd-badge--dot">{{
+                    t('list.status.inactive')
+                  }}</span>
+                }
+              }
+            </p>
+          </div>
+
+          @if (!locked()) {
+            <div class="acts">
+              @switch (e.status) {
+                @case ('invited') {
+                  <button vdButton type="button" [loading]="busy()" (click)="resend()">
+                    <svg lucideSend aria-hidden="true"></svg>{{ t('list.resend') }}
+                  </button>
+                  <button vdButton type="button" [disabled]="busy()" (click)="cancelInvite()">
+                    {{ t('list.cancelInvite') }}
+                  </button>
+                }
+                @case ('active') {
+                  <button vdButton type="button" [loading]="busy()" (click)="deactivate()">
+                    {{ t('list.deactivate') }}
+                  </button>
+                }
+                @default {
+                  <button
+                    vdButton="primary"
+                    type="button"
+                    [loading]="busy()"
+                    (click)="reactivate()"
+                  >
+                    {{ t('list.reactivate') }}
+                  </button>
+                }
+              }
+            </div>
+          }
+        </div>
+
+        @if (e.status === 'invited') {
+          <div class="vd-banner vd-banner--warning" role="status">
+            <svg lucideMail aria-hidden="true"></svg>
+            <span class="vd-banner__body">{{
+              t('details.invitedText', { email: e.email, date: date(e.invitedAt, lang()) })
+            }}</span>
+          </div>
+        }
+
+        <!-- Selling, last 30 days -->
+        @if (stats(); as st) {
+          <div class="kpis">
+            <app-kpi-card
+              [label]="t('details.kpi.shifts')"
+              [value]="st.shifts"
+              [hint]="t('details.kpi.days')"
+            />
+            <app-kpi-card
+              [label]="t('details.kpi.sales')"
+              [value]="st.sales"
+              [hint]="t('details.kpi.days')"
+            />
+            <app-kpi-card
+              [label]="t('details.kpi.net')"
+              [value]="money(st.netSales)"
+              [hint]="t('details.kpi.egp')"
+            />
+            <app-kpi-card
+              [label]="t('details.kpi.short')"
+              [value]="st.shortages"
+              [hint]="t('details.kpi.shortHint')"
+            />
+          </div>
+        }
+
+        <div class="grid">
+          <!-- Details -->
+          <section class="card" aria-labelledby="ed-info">
+            <h2 class="card__h" id="ed-info">{{ t('details.info') }}</h2>
+            <dl class="dl">
+              <dt>{{ t('details.username') }}</dt>
+              <dd class="mono">
+                <bdi>{{ e.username }}</bdi>
+              </dd>
+              <dt>{{ t('details.email') }}</dt>
+              <dd>
+                <bdi>{{ e.email }}</bdi>
+              </dd>
+              <dt>{{ t('details.invited') }}</dt>
+              <dd>{{ date(e.invitedAt, lang()) }}</dd>
+              <dt>{{ t('details.joined') }}</dt>
+              <dd>{{ e.joinedAt ? date(e.joinedAt, lang()) : t('details.notYet') }}</dd>
+              <dt>{{ t('details.lastActive') }}</dt>
+              <dd>{{ e.lastActiveAt ? dateTime(e.lastActiveAt, lang()) : t('details.never') }}</dd>
+            </dl>
+          </section>
+
+          <!-- Role -->
+          <section class="card" aria-labelledby="ed-role">
+            <h2 class="card__h" id="ed-role">{{ t('details.role') }}</h2>
+            <div class="role">
+              @if (locked()) {
+                <p class="role__locked">
+                  <b>{{ t('list.roles.' + e.role) }}</b>
+                  {{ t(e.isYou ? 'details.roleYou' : 'details.roleOwner') }}
+                </p>
+              } @else {
+                @if (roleStatus() === 'failed') {
+                  <div class="vd-banner vd-banner--danger" role="alert">
+                    <span class="vd-banner__body">{{ t('details.roleFailed') }}</span>
+                  </div>
+                }
+                <div class="vd-field">
+                  <label class="vd-field__label" for="ed-role-select">{{
+                    t('details.roleLabel')
+                  }}</label>
+                  <select
+                    id="ed-role-select"
+                    class="vd-input"
+                    aria-describedby="ed-role-hint"
+                    [disabled]="roleStatus() === 'saving'"
+                    (change)="role.set($any($event.target).value); roleStatus.set('idle')"
+                  >
+                    @for (r of roles; track r) {
+                      <option [value]="r" [selected]="r === role()">
+                        {{ t('list.roles.' + r) }}
+                      </option>
+                    }
+                  </select>
+                  <p id="ed-role-hint" class="vd-field__hint">
+                    {{ t('details.roleHints.' + (role() || e.role)) }}
+                  </p>
+                </div>
+                <div class="role__foot">
+                  <button
+                    vdButton="primary"
+                    type="button"
+                    [disabled]="!roleChanged()"
+                    [loading]="roleStatus() === 'saving'"
+                    (click)="saveRole()"
+                  >
+                    <svg lucideCheck aria-hidden="true"></svg>{{ t('details.saveRole') }}
+                  </button>
+                </div>
+              }
+            </div>
+          </section>
+        </div>
+
+        <!-- Recent shifts -->
+        @if (stats()) {
+          <section class="vd-tablewrap" aria-labelledby="ed-shifts">
+            <h2 class="card__h" id="ed-shifts">{{ t('details.shifts') }}</h2>
+            @if (shifts().length) {
+              <app-shift-table [shifts]="shifts()" [lang]="lang()" hideCashier />
+            } @else {
+              <div class="vd-empty">
+                <span class="vd-empty__art"><svg lucideHistory></svg></span>
+                <h3 class="vd-empty__title">{{ t('details.noShifts') }}</h3>
+                <p class="vd-empty__text">{{ t('details.noShiftsText') }}</p>
+              </div>
+            }
+          </section>
+        }
+      }
+    }
+  }
+</ng-container>

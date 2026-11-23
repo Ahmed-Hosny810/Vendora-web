@@ -1,0 +1,63 @@
+:host {
+  display: contents;
+}
+
+.body {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+
+.list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+// One held sale: a ticket with a dashed edge, like a slip on a spike.
+.held {
+  display: grid;
+  gap: 8px;
+  padding: 14px 16px;
+  border: 1.5px dashed var(--line-strong);
+  border-radius: var(--radius-md);
+  background: var(--butter-100);
+
+  &__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    b {
+      font: 700 17px/1.2 var(--font-mono);
+    }
+  }
+
+  &__ago {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--warning-fg);
+    font-size: 13px;
+    font-weight: 600;
+
+    svg {
+      width: 15px;
+      height: 15px;
+    }
+  }
+
+  &__meta {
+    margin: 0;
+    color: var(--ink-700);
+    font-size: 13px;
+  }
+
+  &__acts {
+    display: flex;
+    gap: 8px;
+  }
+}

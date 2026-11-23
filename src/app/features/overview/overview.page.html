@@ -81,8 +81,48 @@
       </section>
       <section class="card" aria-labelledby="last-title">
         <h2 id="last-title">{{ t('cashier.lastShift') }}</h2>
-        <!-- TODO(you): show the last shift's summary here once it exists. -->
-        <p>{{ t('cashier.noShifts') }}</p>
+        @if (lastShift(); as s) {
+          <dl class="last">
+            <div>
+              <dt>{{ t('cashier.when') }}</dt>
+              <dd>
+                <bdi>{{ s.terminalName }}</bdi> · <bdi>{{ dateTime(s.openedAt, lang()) }}</bdi>
+              </dd>
+            </div>
+            <div>
+              <dt>{{ t('cashier.sales') }}</dt>
+              <dd>
+                {{ s.salesCount }} · <bdi dir="ltr">{{ cash(s.netSales) }}</bdi>
+              </dd>
+            </div>
+            <div>
+              <dt>{{ t('cashier.drawer') }}</dt>
+              <dd>
+                @if (lastDiff(); as d) {
+                  <span
+                    class="vd-badge vd-badge--pill"
+                    [class.vd-badge--success]="d.kind === 'balanced'"
+                    [class.vd-badge--danger]="d.kind === 'shortage'"
+                    [class.vd-badge--warning]="d.kind === 'overage'"
+                    >{{ t('cashier.diff.' + d.kind) }}
+                    @if (d.kind !== 'balanced') {
+                      <bdi dir="ltr">{{ d.signed }}</bdi>
+                    }
+                  </span>
+                } @else {
+                  <span class="vd-badge vd-badge--pill vd-badge--info">{{
+                    t('cashier.stillOpen')
+                  }}</span>
+                }
+              </dd>
+            </div>
+          </dl>
+          <div>
+            <a vdButton size="sm" [routerLink]="['/shifts', s.id]">{{ t('cashier.viewShift') }}</a>
+          </div>
+        } @else {
+          <p>{{ t('cashier.noShifts') }}</p>
+        }
       </section>
     </div>
   }

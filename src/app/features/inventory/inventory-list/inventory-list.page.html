@@ -112,6 +112,18 @@
                         {{ x.updatedAt ? dateTime(x.updatedAt, lang()) : '—' }}
                       </td>
                       <td class="actions">
+                        <a
+                          vdButton="ghost"
+                          size="sm"
+                          [routerLink]="['/inventory', x.productId, 'history']"
+                          [queryParams]="x.variantId ? { variant: x.variantId } : null"
+                          [attr.aria-label]="
+                            t('historyLabel', {
+                              name: x.name + (x.variantName ? ' ' + x.variantName : ''),
+                            })
+                          "
+                          ><svg lucideHistory aria-hidden="true"></svg>{{ t('history') }}</a
+                        >
                         <button
                           vdButton="ghost"
                           size="sm"

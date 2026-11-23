@@ -2,6 +2,7 @@ import {
   LucideChartColumn,
   LucideCreditCard,
   LucideFolder,
+  LucideHistory,
   LucideHouse,
   LucideIcon,
   LucideMonitor,
@@ -55,6 +56,7 @@ export const APP_NAV: NavGroup[] = [
     items: [
       { key: 'sales', icon: LucideReceiptText, link: '/sales', roles: SELLERS },
       { key: 'customers', icon: LucideUsers, link: '/customers', roles: SELLERS },
+      { key: 'shifts', icon: LucideHistory, link: '/shifts', roles: SELLERS },
     ],
   },
   {

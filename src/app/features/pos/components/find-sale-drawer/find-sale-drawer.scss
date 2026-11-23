@@ -1,0 +1,78 @@
+:host {
+  display: contents;
+}
+
+.body {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+
+.search {
+  display: grid;
+  gap: 6px;
+
+  &__row {
+    display: flex;
+    gap: 8px;
+
+    .vd-input {
+      flex: 1;
+      min-width: 0;
+    }
+  }
+}
+
+.count {
+  margin: 0;
+  color: var(--ink-500);
+  font-size: 13px;
+}
+
+.list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+// One sale: receipt number and total, then when / who, then the two actions.
+.sale {
+  display: grid;
+  gap: 8px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--paper-0);
+
+  &__top {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .mono {
+    font: 600 14px/1.2 var(--font-mono);
+    letter-spacing: 0.02em;
+  }
+
+  &__total {
+    font: 600 15px/1.2 var(--font-mono);
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 6px;
+    margin: 0;
+    color: var(--ink-700);
+    font-size: 13px;
+  }
+
+  &__acts {
+    display: flex;
+    gap: 8px;
+  }
+}

@@ -12,7 +12,9 @@
       "admin": "Admin",
       "cashier": "Cashier",
       "inventoryStaff": "Inventory staff"
-    }
+    },
+    "held": "Held sales",
+    "heldCount": "Held sales: {{count}}"
   },
   "sale": {
     "products": "Products",
@@ -253,6 +255,110 @@
     "walkIn": "Walk-in",
     "cashier": "Cashier",
     "payment": "Payment",
-    "change": "change {{amount}}"
+    "change": "change {{amount}}",
+    "return": "Return items"
+  },
+  "find": {
+    "title": "Find a sale",
+    "close": "Close",
+    "label": "Receipt number or customer phone",
+    "placeholder": "R-NASR-000130 or 0100…",
+    "hint": "Part of the number works too.",
+    "search": "Search",
+    "failed": "Couldn't search. Check your connection and try again.",
+    "found": "Sales found: {{count}}",
+    "none": "No sale matches. Check the number and try again.",
+    "walkIn": "Walk-in",
+    "items": "Items: {{count}}",
+    "hasReturns": "Has returns",
+    "receipt": "Receipt",
+    "return": "Return items"
+  },
+  "held": {
+    "title": "Held sales",
+    "close": "Close",
+    "replaceWarning": "Resuming a sale replaces what is in the basket now.",
+    "failed": "That didn't work. Try again.",
+    "loading": "Loading held sales…",
+    "errorTitle": "Couldn't load held sales",
+    "errorText": "Check your connection and try again.",
+    "tryAgain": "Try again",
+    "emptyTitle": "No sales on hold",
+    "emptyText": "Use the clock button in the basket to park a sale and serve the next customer.",
+    "ago": {
+      "min": "Held {{n}} min ago",
+      "h": "Held {{n}} h ago"
+    },
+    "walkIn": "Walk-in",
+    "items": "Items: {{count}}",
+    "resume": "Resume",
+    "discard": "Discard",
+    "discardSure": "Tap again to discard"
+  },
+  "return": {
+    "loading": "Loading the sale…",
+    "errorTitle": "Couldn't load this sale",
+    "errorText": "Check your connection and try again.",
+    "tryAgain": "Try again",
+    "back": "Back to selling",
+    "title": "Return items",
+    "walkIn": "Walk-in",
+    "pick": "What is coming back?",
+    "all": "Return everything",
+    "sold": "Sold {{qty}} {{unit}}",
+    "returned": "{{qty}} {{unit}} already returned",
+    "each": "each",
+    "qtyLabel": "Quantity of {{name}} to return",
+    "less": "One less",
+    "more": "One more",
+    "allReturned": "All returned",
+    "errors": {
+      "items": "Pick at least one item to return.",
+      "reason": "Choose why it is coming back.",
+      "note": "Write what happened."
+    },
+    "noShift": "Refunds come out of the cash drawer, so a shift must be open on this terminal.",
+    "openShift": "Open a shift",
+    "failed": "Couldn't save the return. Nothing was refunded. Try again.",
+    "reason": "Why is it coming back?",
+    "reasons": {
+      "damaged": "Damaged or faulty",
+      "wrongSize": "Wrong size or colour",
+      "changedMind": "Changed their mind",
+      "other": "Other"
+    },
+    "note": "Note",
+    "optional": "Optional",
+    "refundTo": "Refund to",
+    "paidWith": "{{amount}} paid",
+    "restock": "Put the items back in stock",
+    "restockHint": "Turn off for damaged items you won’t sell again.",
+    "items": "Items coming back: {{count}}",
+    "egp": "EGP",
+    "refund": "Refund {{amount}} EGP",
+    "refundNone": "Refund",
+    "doneTitle": "Return done",
+    "doneText": "Give the customer {{amount}} EGP back by {{method}}, with the return slip.",
+    "print": "Print slip",
+    "newSale": "New sale"
+  },
+  "returnReceipt": {
+    "title": "Return slip",
+    "number": "Return",
+    "original": "Original receipt",
+    "date": "Date",
+    "cashier": "Cashier",
+    "terminal": "Terminal",
+    "refund": "Refund",
+    "method": "Refunded by",
+    "reason": "Reason",
+    "reasons": {
+      "damaged": "Damaged or faulty",
+      "wrongSize": "Wrong size or colour",
+      "changedMind": "Changed their mind",
+      "other": "Other"
+    },
+    "keep": "Keep this slip with the original receipt.",
+    "stamp": "REFUNDED"
   }
 }

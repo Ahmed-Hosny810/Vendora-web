@@ -13,6 +13,7 @@ import {
   Injector,
   signal,
 } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { provideTranslocoScope, TranslocoDirective } from '@jsverse/transloco';
 import {
   LucideBanknote,
@@ -40,6 +41,7 @@ import { PaymentMethod, PaymentMethodForm, PaymentSaveResult } from '../payment-
 @Component({
   selector: 'app-payment-methods-page',
   imports: [
+    RouterLink,
     TranslocoDirective,
     CdkDropList,
     CdkDrag,

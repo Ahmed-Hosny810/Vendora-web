@@ -6,9 +6,9 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { provideTranslocoScope, TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { LucidePrinter } from '@lucide/angular';
+import { LucidePrinter, LucideUndo2 } from '@lucide/angular';
 
 import { LanguageService } from '../../../core/i18n';
 import { AppShell } from '../../../layouts/app-layout/app-shell';
@@ -23,7 +23,16 @@ import { formatLongDate, formatMoney, Receipt } from '../pos.models';
  */
 @Component({
   selector: 'app-receipt-reprint-page',
-  imports: [TranslocoDirective, VdButton, LoadError, PageHead, SaleReceipt, LucidePrinter],
+  imports: [
+    RouterLink,
+    TranslocoDirective,
+    VdButton,
+    LoadError,
+    PageHead,
+    SaleReceipt,
+    LucidePrinter,
+    LucideUndo2,
+  ],
   templateUrl: './receipt-reprint.page.html',
   styleUrl: './receipt-reprint.page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

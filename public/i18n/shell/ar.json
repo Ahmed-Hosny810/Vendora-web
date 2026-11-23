@@ -12,7 +12,13 @@
     "settingsBusiness": "النشاط",
     "settingsAccount": "حسابي",
     "settingsPassword": "كلمة المرور",
-    "invoice": "الفاتورة"
+    "invoice": "الفاتورة",
+    "shift": "ملخص الوردية",
+    "employee": "الموظف",
+    "paymentMethod": "طريقة الدفع",
+    "notifications": "الإشعارات",
+    "stockHistory": "سجل المخزون",
+    "payment": "الدفع"
   },
   "mainNav": "القائمة الرئيسية",
   "openMenu": "افتح القائمة",
@@ -22,6 +28,7 @@
     "pos": "نقطة البيع",
     "sales": "المبيعات",
     "customers": "العملاء",
+    "shifts": "الورديات",
     "products": "المنتجات",
     "categories": "الأقسام",
     "units": "الوحدات",

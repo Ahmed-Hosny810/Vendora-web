@@ -105,5 +105,16 @@
     "note": "Payments are taken by Paymob. Vendora never sees or stores card details.",
     "stamp": "PAID",
     "stampDue": "UNPAID"
+  },
+  "result": {
+    "checkingTitle": "Checking your payment…",
+    "checkingText": "Paymob is confirming it. This usually takes a few seconds; keep this page open.",
+    "paidTitle": "Payment received",
+    "paidText": "Invoice {{number}} ({{amount}} EGP) is paid. Your plan runs until {{date}}.",
+    "failedTitle": "The payment didn't go through",
+    "failedText": "No money was taken. Try again, or use another card.",
+    "tryAgain": "Try again on Paymob",
+    "backToBilling": "Back to billing",
+    "viewInvoice": "View invoice"
   }
 }

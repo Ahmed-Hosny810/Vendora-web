@@ -129,6 +129,28 @@ router-outlet {
   }
 }
 
+// "Held sales" with a small butter count on its corner.
+.held {
+  position: relative;
+  display: inline-flex;
+
+  &__n {
+    position: absolute;
+    top: -2px;
+    inset-inline-end: -2px;
+    display: grid;
+    place-items: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    border-radius: 9px;
+    background: var(--butter-500);
+    color: var(--ink-900);
+    font: 700 11px/1 var(--font-sans);
+    pointer-events: none;
+  }
+}
+
 .who {
   display: flex;
   align-items: center;

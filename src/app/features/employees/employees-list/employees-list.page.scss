@@ -35,6 +35,11 @@
   font-size: 12px;
 }
 
+// "View" comes last, after "You" or the row's actions.
+.view {
+  margin-inline-start: 4px;
+}
+
 .acts {
   display: inline-flex;
   align-items: center;
