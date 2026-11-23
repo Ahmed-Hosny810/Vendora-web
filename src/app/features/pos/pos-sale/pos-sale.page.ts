@@ -9,6 +9,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { provideTranslocoScope, TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import {
   LucideClock,
@@ -43,10 +44,8 @@ import {
   VariantDialogResult,
 } from '../components/variant-dialog/variant-dialog';
 import {
-  CartLine,
   Customer,
   CustomerForm,
-  Discount,
   discountLabel,
   discountOf,
   formatMoney,
@@ -56,9 +55,9 @@ import {
   PosProduct,
   PosVariant,
   round2,
-  saleTotals,
   toLine,
 } from '../pos.models';
+import { PosCart } from '../pos-cart';
 
 /**
  * The selling screen (/pos): products on the left (search, categories, tiles),
@@ -94,6 +93,7 @@ export class PosSalePage {
   private readonly openDrawer = injectDrawer();
   private readonly injector = inject(Injector);
   private readonly transloco = inject(TranslocoService);
+  private readonly router = inject(Router);
   protected readonly session = inject(AppSession);
   protected readonly money = formatMoney;
   protected readonly discountText = discountLabel;
@@ -113,9 +113,11 @@ export class PosSalePage {
   // ---------- The sale on screen ----------
   protected readonly query = signal('');
   protected readonly category = signal<string>('all');
-  protected readonly lines = signal<CartLine[]>([]);
-  protected readonly saleDiscount = signal<Discount | null>(null);
-  protected readonly customer = signal<Customer | null>(null);
+  // The basket lives in PosCart so checkout can read it.
+  private readonly cart = inject(PosCart);
+  protected readonly lines = this.cart.lines;
+  protected readonly saleDiscount = this.cart.saleDiscount;
+  protected readonly customer = this.cart.customer;
   /** Shown under the search when Enter finds nothing. */
   protected readonly notFound = signal(false);
 
@@ -135,7 +137,7 @@ export class PosSalePage {
     });
   });
 
-  protected readonly totals = computed(() => saleTotals(this.lines(), this.saleDiscount()));
+  protected readonly totals = this.cart.totals;
   /** What the sale discount takes off, for its row in the basket. */
   protected readonly saleDiscountCut = computed(() =>
     discountOf(
@@ -256,9 +258,7 @@ export class PosSalePage {
   }
 
   private reset(): void {
-    this.lines.set([]);
-    this.saleDiscount.set(null);
-    this.customer.set(null);
+    this.cart.reset();
   }
 
   protected openDiscount(): void {
@@ -315,13 +315,13 @@ export class PosSalePage {
     if (!this.lines().length || this.holdStatus() === 'holding') return;
     // TODO(you): hold this sale (lines, sale discount, customer).
     //  - before: this.holdStatus.set('holding')
-    //  - success: this.holdStatus.set('idle'); toast "Sale on hold"; then clear the basket:
-    //             this.lines.set([]); this.saleDiscount.set(null); this.customer.set(null)
+    //  - success: this.holdStatus.set('idle'); toast "Sale on hold"; then this.cart.reset()
     //  - failure: this.holdStatus.set('idle'); toast the error
   }
 
   protected charge(): void {
     if (!this.canCharge()) return;
-    // TODO(you): start checkout with this sale (lines, sale discount, customer, totals).
+    // The basket is already in PosCart; checkout reads it from there.
+    this.router.navigate(['/pos/checkout']);
   }
 }

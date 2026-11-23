@@ -17,6 +17,8 @@ import {
   templateUrl: './shift-receipt.html',
   styleUrl: './shift-receipt.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  // Printing the page prints only this.
+  host: { class: 'vd-print' },
 })
 export class ShiftReceipt {
   readonly summary = input.required<ShiftSummary>();

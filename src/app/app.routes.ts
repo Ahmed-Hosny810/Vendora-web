@@ -83,6 +83,18 @@ export const routes: Routes = [
           import('./features/pos/pos-sale/pos-sale.page').then((m) => m.PosSalePage),
       },
       {
+        // Paying for the sale in the basket.
+        path: 'checkout',
+        loadComponent: () =>
+          import('./features/pos/checkout/checkout.page').then((m) => m.CheckoutPage),
+      },
+      {
+        // After checkout: "Sale complete" or "needs attention".
+        path: 'sale/:id',
+        loadComponent: () =>
+          import('./features/pos/sale-done/sale-done.page').then((m) => m.SaleDonePage),
+      },
+      {
         path: 'shift/open',
         loadComponent: () =>
           import('./features/shifts/shift-open/shift-open.page').then((m) => m.ShiftOpenPage),
@@ -186,6 +198,14 @@ export const routes: Routes = [
               ),
           },
         ],
+      },
+      {
+        // A past receipt and "Print copy". TODO(you): the Sales list at '' later.
+        path: 'sales/:id/receipt',
+        loadComponent: () =>
+          import('./features/pos/receipt-reprint/receipt-reprint.page').then(
+            (m) => m.ReceiptReprintPage,
+          ),
       },
       {
         // People who can sign in, and inviting new ones.

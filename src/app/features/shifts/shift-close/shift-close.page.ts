@@ -138,6 +138,7 @@ export class ShiftClosePage {
     if (this.countError()) document.getElementById('sc-count')?.focus();
   }
 
+  /** Prints only the shift receipt (it has class vd-print). */
   protected print(): void {
     window.print();
   }

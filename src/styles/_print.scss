@@ -1,0 +1,27 @@
+// Printing: only what is marked .vd-print goes on paper (receipts, shift summary).
+// Everything else on the page is hidden; the printed part moves to the top-left.
+@media print {
+  @page {
+    margin: 8mm;
+  }
+
+  body:has(.vd-print) {
+    background: #fff;
+
+    * {
+      visibility: hidden;
+    }
+
+    .vd-print,
+    .vd-print * {
+      visibility: visible;
+    }
+
+    .vd-print {
+      position: absolute;
+      top: 0;
+      inset-inline-start: 0;
+      width: 80mm;
+    }
+  }
+}

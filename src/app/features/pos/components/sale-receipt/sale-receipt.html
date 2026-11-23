@@ -1,0 +1,105 @@
+<div class="paper" *transloco="let t; read: 'pos.receipt'">
+  @if (receipt(); as r) {
+    @if (reprintedAt(); as at) {
+      <div class="copy">{{ t('copy') }}</div>
+      <div class="c muted">{{ t('reprinted', { date: longDate(at, lang()) }) }}</div>
+    }
+    <div class="c">
+      <b>{{ r.businessName }}</b>
+      <span>{{ r.branchLine }}</span>
+      @if (r.footer) {
+        <span>{{ r.footer }}</span>
+      }
+    </div>
+    <hr />
+    <div class="row">
+      <span>{{ t('receipt') }}</span
+      ><span>{{ r.number }}</span>
+    </div>
+    <div class="row">
+      <span>{{ t('date') }}</span
+      ><span>{{ date(r.issuedAt) }}</span>
+    </div>
+    <div class="row">
+      <span>{{ t('cashier') }}</span
+      ><span>{{ r.cashierName }}</span>
+    </div>
+    @if (r.customerName) {
+      <div class="row">
+        <span>{{ t('customer') }}</span
+        ><span>{{ r.customerName }}</span>
+      </div>
+    }
+    <hr />
+    @for (l of r.lines; track $index) {
+      <div class="row">
+        <span>{{ l.qty }} × {{ l.name }}</span
+        ><span>{{ money(l.gross) }}</span>
+      </div>
+      @if (l.variantName) {
+        <div class="row sub">
+          <span>{{ l.variantName }}</span>
+        </div>
+      }
+      @if (l.discount) {
+        <div class="row sub">
+          <span>{{ l.discountLabel }}</span
+          ><span>−{{ money(l.discount) }}</span>
+        </div>
+      }
+    }
+    <hr />
+    <div class="row">
+      <span>{{ t('subtotal') }}</span
+      ><span>{{ money(r.subtotal) }}</span>
+    </div>
+    @if (r.discounts) {
+      <div class="row">
+        <span>{{ t('discounts') }}</span
+        ><span>−{{ money(r.discounts) }}</span>
+      </div>
+    }
+    <div class="row">
+      <span>{{ r.taxRate !== null ? t('taxRate', { rate: r.taxRate }) : t('tax') }}</span
+      ><span>{{ money(r.tax) }}</span>
+    </div>
+    <div class="row big">
+      <span>{{ t('total') }}</span
+      ><span>{{ money(r.total) }}</span>
+    </div>
+    <hr />
+    @for (p of r.payments; track $index) {
+      <div class="row">
+        <span>{{ p.name }}</span
+        ><span>{{ money(p.amount) }}</span>
+      </div>
+      @if (p.reference) {
+        <div class="row sub">
+          <span>{{ t('ref', { ref: p.reference }) }}</span>
+        </div>
+      }
+    }
+    @if (r.change) {
+      <div class="row">
+        <span>{{ t('change') }}</span
+        ><span>{{ money(r.change) }}</span>
+      </div>
+    }
+    <span class="bars" aria-hidden="true"></span>
+    <span class="c code">{{ r.number }}</span>
+
+    @if (stamp(); as s) {
+      <span class="stamp" [class.stamp--reprint]="s === 'reprint'" aria-hidden="true">{{
+        t('stamp.' + s)
+      }}</span>
+    }
+  } @else {
+    <!-- Not issued yet -->
+    <div class="c">
+      <b>{{ businessName() }}</b>
+    </div>
+    <hr />
+    <div class="c muted">{{ t('notIssued') }}</div>
+    <span class="stamp stamp--pending" aria-hidden="true">{{ t('stamp.pending') }}</span>
+  }
+</div>

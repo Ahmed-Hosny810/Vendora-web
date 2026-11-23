@@ -1,0 +1,92 @@
+<div class="page" *transloco="let t; read: 'pos.done'">
+  @switch (status()) {
+    @case ('loading') {
+      <div class="msg" aria-busy="true">
+        <span class="vd-skeleton" style="width: 72px; height: 72px"></span>
+        <span class="vd-skeleton" style="height: 44px; width: 60%"></span>
+        <span class="vd-sr">{{ t('loading') }}</span>
+      </div>
+      <span class="vd-skeleton" style="height: 480px"></span>
+    }
+    @case ('error') {
+      <div class="msg">
+        <app-load-error
+          [title]="t('errorTitle')"
+          [text]="t('errorText')"
+          [retryLabel]="t('tryAgain')"
+          (retry)="load()"
+        />
+      </div>
+    }
+    @default {
+      @if (receipt(); as r) {
+        <!-- Done -->
+        <div class="msg">
+          <span class="tick" aria-hidden="true"><svg lucideCheck></svg></span>
+          <h1>{{ t('title') }}</h1>
+          <p>{{ t('receiptLine', { number: r.number, date: longDate(r.issuedAt, lang()) }) }}</p>
+          @if (change() > 0) {
+            <p class="change" role="status">
+              <span>{{ t('giveChange') }}</span>
+              <b dir="ltr"
+                >{{ money(change()) }} <small>{{ t('egp') }}</small></b
+              >
+            </p>
+          }
+          <div class="acts">
+            <button vdButton="primary" size="lg" type="button" (click)="startNew()">
+              {{ t('newSale') }} <kbd aria-hidden="true">Enter</kbd>
+            </button>
+            <button vdButton size="lg" type="button" (click)="print()">
+              <svg lucidePrinter aria-hidden="true"></svg>{{ t('print') }}
+            </button>
+            @if (session.isManager()) {
+              <a vdButton="ghost" size="lg" [routerLink]="['/sales', saleId, 'receipt']">
+                <svg lucideReceiptText aria-hidden="true"></svg>{{ t('view') }}
+              </a>
+            }
+          </div>
+        </div>
+        <app-sale-receipt class="rc" [receipt]="r" stamp="paid" [lang]="lang()" />
+      } @else {
+        <!-- Paid, receipt not issued -->
+        <section class="attn" role="alert" aria-labelledby="attn-h">
+          <h1 id="attn-h">
+            <svg lucideTriangleAlert aria-hidden="true"></svg>{{ t('attentionTitle') }}
+          </h1>
+          <p>{{ t('attentionText') }}</p>
+          <p class="safe">
+            <svg lucideCircleCheck aria-hidden="true"></svg
+            >{{ t('safe', { amount: money(paidTotal()) }) }}
+          </p>
+          <ul class="steps">
+            <li class="ok">
+              <i aria-hidden="true"><svg lucideCheck></svg></i>{{ t('paymentRecorded') }}
+            </li>
+            <li class="wait"><i aria-hidden="true"></i>{{ t('receiptNotIssued') }}</li>
+          </ul>
+          @if (retryStatus() === 'failed') {
+            <p class="fail">{{ t('retryFailed') }}</p>
+          }
+          <div class="acts">
+            <button
+              vdButton="primary"
+              type="button"
+              [loading]="retryStatus() === 'retrying'"
+              (click)="retry()"
+            >
+              <svg lucideRefreshCw aria-hidden="true"></svg>{{ t('tryAgain') }}
+            </button>
+            <button vdButton type="button" (click)="startNew()">{{ t('newSaleShort') }}</button>
+          </div>
+          <p class="note">{{ t('attentionNote') }}</p>
+        </section>
+        <app-sale-receipt
+          class="rc"
+          [receipt]="null"
+          [businessName]="session.business()?.name ?? ''"
+        />
+      }
+    }
+  }
+</div>

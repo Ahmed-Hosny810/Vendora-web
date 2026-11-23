@@ -27,7 +27,9 @@
       </button>
     </span>
     @if (l.discount) {
-      <span class="disc"><bdi dir="ltr">{{ badge() }}</bdi> · {{ l.discount.reason }}</span>
+      <span class="disc"
+        ><bdi dir="ltr">{{ badge() }}</bdi> · {{ l.discount.reason }}</span
+      >
     }
     <button
       vdIconButton

@@ -1,0 +1,61 @@
+@use 'abstracts' as *;
+@use '../../../shared/styles/app-forms' as forms;
+
+:host {
+  display: contents;
+}
+
+.grid {
+  @include forms.grid;
+}
+
+.card {
+  display: grid;
+  gap: 12px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--paper-0);
+
+  h2 {
+    margin: 0;
+    font: 700 18px/1.2 var(--font-display);
+
+    :host-context(:lang(ar)) & {
+      font-family: 'Alexandria', var(--font-display);
+    }
+  }
+
+  p {
+    margin: 0;
+    color: var(--ink-700);
+    font-size: 14px;
+    line-height: 21px;
+  }
+}
+
+dl {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 10px 16px;
+  margin: 0;
+  font-size: 14px;
+
+  dt {
+    color: var(--ink-500);
+  }
+
+  dd {
+    margin: 0;
+    font-weight: 600;
+  }
+
+  @include down(md) {
+    grid-template-columns: 1fr;
+    gap: 2px;
+
+    dd {
+      margin-bottom: 8px;
+    }
+  }
+}

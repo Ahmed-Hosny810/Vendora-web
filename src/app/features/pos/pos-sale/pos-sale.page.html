@@ -133,7 +133,9 @@
           <div class="sd">
             <span
               >{{ t('saleDiscount') }}
-              <span class="disc"><bdi dir="ltr">{{ discountText(d) }}</bdi> · {{ d.reason }}</span></span
+              <span class="disc"
+                ><bdi dir="ltr">{{ discountText(d) }}</bdi> · {{ d.reason }}</span
+              ></span
             >
             <b dir="ltr">−{{ money(saleDiscountCut()) }}</b>
             <button

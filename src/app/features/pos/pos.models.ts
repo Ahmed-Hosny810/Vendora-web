@@ -199,3 +199,104 @@ export function toLine(product: PosProduct, variant: PosVariant | null, qty = 1)
     discount: null,
   };
 }
+
+// ---------- Checkout ----------
+
+/** A payment method as checkout needs it (active ones, in sort order). */
+export interface CheckoutMethod {
+  id: string;
+  name: string;
+  code: string;
+  /** Counts toward the cash drawer and gives change. */
+  isCash: boolean;
+  /** The cashier must type the transaction reference. */
+  requiresReference: boolean;
+}
+
+/** A payment taken during checkout. */
+export interface CheckoutPayment {
+  methodId: string;
+  name: string;
+  /** What it pays off the sale (never more than was left). */
+  amount: number;
+  /** Cash only: what the customer handed over. */
+  received: number | null;
+  /** Cash only: what goes back to the customer. */
+  change: number;
+  reference: string;
+}
+
+/** Which picture a payment method gets: cash, a wallet, or a card for the rest. */
+export function methodKind(m: {
+  isCash: boolean;
+  name: string;
+  code: string;
+}): 'cash' | 'wallet' | 'card' {
+  if (m.isCash) return 'cash';
+  return /wallet/i.test(`${m.name} ${m.code}`) ? 'wallet' : 'card';
+}
+
+/** Round amounts a customer might hand over: 1,760.16 → 1,800 · 2,000 · 2,500. */
+export function cashSuggestions(due: number): number[] {
+  if (due <= 0) return [];
+  const up = (step: number) => Math.ceil(due / step) * step;
+  const list = [up(100), up(500), up(1000), up(500) + 500].filter((v) => v > due);
+  return [...new Set(list)].sort((a, b) => a - b).slice(0, 3);
+}
+
+// ---------- Receipts ----------
+
+export interface ReceiptLine {
+  qty: number;
+  name: string;
+  variantName: string;
+  /** Before the line discount. */
+  gross: number;
+  /** "Discount 10%" or '' */
+  discountLabel: string;
+  discount: number;
+}
+
+export interface ReceiptPayment {
+  name: string;
+  /** What was handed over (cash) or charged. */
+  amount: number;
+  reference: string;
+}
+
+/** A receipt as issued (the server's numbers; never recalculated here). */
+export interface Receipt {
+  number: string;
+  issuedAt: Date;
+  businessName: string;
+  /** "Nasr City · 14 Abbas El Akkad St." */
+  branchLine: string;
+  /** "Thank you for shopping with us!" */
+  footer: string;
+  terminalName: string;
+  cashierName: string;
+  customerName: string | null;
+  lines: ReceiptLine[];
+  subtotal: number;
+  discounts: number;
+  tax: number;
+  taxRate: number | null;
+  total: number;
+  payments: ReceiptPayment[];
+  change: number;
+}
+
+/** "21/11/2026 13:48" */
+export function formatReceiptDate(date: Date): string {
+  const d = date.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  const t = date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+  return `${d} ${t}`;
+}
+
+/** "21 Nov 2026, 13:48" in the page language. */
+export function formatLongDate(date: Date, lang: string): string {
+  const locale = lang === 'ar' ? 'ar-EG-u-nu-latn' : 'en-GB';
+  const d = date.toLocaleDateString(locale, { day: 'numeric', month: 'short', year: 'numeric' });
+  const t = date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+  return `${d}, ${t}`;
+}
