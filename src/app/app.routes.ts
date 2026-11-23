@@ -75,8 +75,13 @@ export const routes: Routes = [
     path: 'pos',
     loadComponent: () => import('./layouts/pos-layout/pos-layout').then((m) => m.PosLayout),
     children: [
-      // TODO(you): '' becomes the selling screen once it's built.
-      { path: '', pathMatch: 'full', redirectTo: 'shift/open' },
+      {
+        // The selling screen. TODO(you): without an open shift, go to shift/open.
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () =>
+          import('./features/pos/pos-sale/pos-sale.page').then((m) => m.PosSalePage),
+      },
       {
         path: 'shift/open',
         loadComponent: () =>

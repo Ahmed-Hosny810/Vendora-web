@@ -1,0 +1,210 @@
+<div class="sale" *transloco="let t; read: 'pos.sale'">
+  <!-- ========== Products ========== -->
+  <section class="cat" [attr.aria-label]="t('products')">
+    <div class="search" [class.search--miss]="notFound()">
+      <svg lucideSearch aria-hidden="true"></svg>
+      <input
+        #search
+        type="search"
+        autocomplete="off"
+        enterkeyhint="search"
+        [placeholder]="t('search')"
+        [attr.aria-label]="t('searchLabel')"
+        [attr.aria-describedby]="notFound() ? 'pos-miss' : null"
+        [value]="query()"
+        (input)="onQuery($any($event.target).value)"
+        (keydown.enter)="onSearchEnter()"
+      />
+      <kbd aria-hidden="true">F2</kbd>
+    </div>
+    @if (notFound()) {
+      <p id="pos-miss" class="miss" role="status">{{ t('noMatch', { query: query() }) }}</p>
+    }
+
+    <div class="chips" role="group" [attr.aria-label]="t('categories')">
+      <button
+        type="button"
+        class="vd-chip"
+        [attr.aria-pressed]="category() === 'all'"
+        (click)="category.set('all')"
+      >
+        {{ t('all') }}
+      </button>
+      @for (c of categories(); track c.id) {
+        <button
+          type="button"
+          class="vd-chip"
+          [attr.aria-pressed]="category() === c.id"
+          (click)="category.set(c.id)"
+        >
+          {{ c.name }}
+        </button>
+      }
+    </div>
+
+    @switch (status()) {
+      @case ('loading') {
+        <div class="grid" aria-busy="true">
+          @for (i of [1, 2, 3, 4, 5, 6, 7, 8]; track i) {
+            <span class="vd-skeleton tile-sk" aria-hidden="true"></span>
+          }
+          <span class="vd-sr">{{ t('loading') }}</span>
+        </div>
+      }
+      @case ('error') {
+        <div class="vd-tablewrap">
+          <app-load-error
+            [title]="t('errorTitle')"
+            [text]="t('errorText')"
+            [retryLabel]="t('tryAgain')"
+            (retry)="load()"
+          />
+        </div>
+      }
+      @default {
+        @if (visible().length) {
+          <div class="grid">
+            @for (p of visible(); track p.id) {
+              <app-product-tile
+                [product]="p"
+                [allowNegative]="allowNegative()"
+                (add)="add(p, $event)"
+                (choose)="choose(p)"
+              />
+            }
+          </div>
+        } @else {
+          <p class="empty">{{ products().length ? t('nothingHere') : t('noProducts') }}</p>
+        }
+      }
+    }
+  </section>
+
+  <!-- ========== Current sale ========== -->
+  <section class="basket" [attr.aria-label]="t('current')">
+    <div class="bk-h">
+      <h2>
+        {{ t('current') }}
+        @if (totals().itemCount) {
+          <span class="vd-count">{{ totals().itemCount }}</span>
+        }
+      </h2>
+      <button
+        vdButton="ghost"
+        size="sm"
+        type="button"
+        [disabled]="!lines().length && !customer()"
+        (click)="clear()"
+      >
+        <svg lucideTrash2 aria-hidden="true"></svg>{{ t('clear') }}
+      </button>
+    </div>
+
+    <button type="button" class="cust" [class.cust--set]="!!customer()" (click)="openCustomer()">
+      @if (customer(); as c) {
+        <svg lucideUserRound aria-hidden="true"></svg>
+        <span
+          ><b dir="auto">{{ c.fullName }}</b> · <bdi dir="ltr">{{ c.phone }}</bdi></span
+        >
+        <span class="end">{{ t('change') }}</span>
+      } @else {
+        <svg lucideUserPlus aria-hidden="true"></svg>
+        <span
+          >{{ t('addCustomer') }} <span class="muted">· {{ t('addCustomerHint') }}</span></span
+        >
+      }
+    </button>
+
+    <div class="lines">
+      @if (lines().length) {
+        <ul aria-live="polite">
+          @for (l of lines(); track l.key) {
+            <li>
+              <app-basket-line
+                [line]="l"
+                [branchName]="session.branch()?.name ?? ''"
+                (qtyChange)="setQty(l.key, $event)"
+                (remove)="removeLine(l.key)"
+              />
+            </li>
+          }
+        </ul>
+        @if (saleDiscount(); as d) {
+          <div class="sd">
+            <span
+              >{{ t('saleDiscount') }}
+              <span class="disc"><bdi dir="ltr">{{ discountText(d) }}</bdi> · {{ d.reason }}</span></span
+            >
+            <b dir="ltr">−{{ money(saleDiscountCut()) }}</b>
+            <button
+              vdIconButton
+              size="sm"
+              type="button"
+              [label]="t('removeDiscount')"
+              (click)="saleDiscount.set(null)"
+            >
+              <svg lucideX></svg>
+            </button>
+          </div>
+        }
+      } @else {
+        <p class="none">{{ t('emptySale') }}</p>
+      }
+    </div>
+
+    <div class="totals">
+      <div class="r">
+        <span>{{ t('subtotal') }}</span
+        ><span>{{ money(totals().subtotal) }}</span>
+      </div>
+      <div class="r disc">
+        <span>{{ t('discounts') }}</span
+        ><span>−{{ money(totals().discounts) }}</span>
+      </div>
+      <div class="r">
+        <span>{{
+          totals().taxRate !== null ? t('taxRate', { rate: totals().taxRate }) : t('tax')
+        }}</span>
+        <span>{{ money(totals().tax) }}</span>
+      </div>
+      <div class="grand">
+        <span>{{ t('total') }}</span>
+        <b dir="ltr"
+          >{{ money(totals().total) }} <small>{{ t('egp') }}</small></b
+        >
+      </div>
+
+      <div class="acts">
+        <button
+          vdButton
+          type="button"
+          class="act"
+          [disabled]="!lines().length"
+          [attr.aria-label]="t('discount')"
+          (click)="openDiscount()"
+        >
+          <svg lucidePercent aria-hidden="true"></svg
+          ><span class="act__t">{{ t('discount') }}</span>
+        </button>
+        <button
+          vdButton
+          type="button"
+          class="act"
+          [disabled]="!lines().length"
+          [loading]="holdStatus() === 'holding'"
+          [attr.aria-label]="t('hold')"
+          (click)="hold()"
+        >
+          <svg lucideClock aria-hidden="true"></svg>
+        </button>
+        <button type="button" class="pay" [attr.aria-disabled]="!canCharge()" (click)="charge()">
+          <span>{{ t('charge') }}</span>
+          <b dir="ltr">{{ money(totals().total) }}</b>
+        </button>
+      </div>
+      @if (hasStockError()) {
+        <p class="block" role="status">{{ t('fixStock') }}</p>
+      }
+    </div>
+  </section>
+</div>

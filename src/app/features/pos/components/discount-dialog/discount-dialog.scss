@@ -1,0 +1,157 @@
+@use '../../../../shared/styles/app-forms' as forms;
+
+:host {
+  display: block;
+  width: 520px;
+  max-width: 100%;
+  @include forms.field-bits;
+}
+
+.body {
+  display: grid;
+  gap: 16px;
+}
+
+.two {
+  @include forms.two;
+}
+
+// "Whole sale" / "One item" cards.
+.targets {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+
+  legend {
+    margin-bottom: 8px;
+    padding: 0;
+  }
+}
+
+.target {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 16px 10px;
+  border: 2px solid var(--line-strong);
+  border-radius: var(--radius-md);
+  background: var(--paper-0);
+  font-size: 15px;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+
+  input {
+    position: absolute;
+    opacity: 0;
+  }
+
+  small {
+    color: var(--ink-500);
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  &:has(input:checked) {
+    border-color: var(--pine-600);
+    background: var(--butter-300);
+    box-shadow: 4px 4px 0 var(--pine-600);
+    transform: translate(-2px, -2px);
+  }
+
+  &:has(input:focus-visible) {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+}
+
+.type {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+
+  legend {
+    margin-bottom: 6px;
+    padding: 0;
+  }
+}
+
+// Amount / Percentage: a pill with the chosen half raised.
+.seg {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  min-height: 44px;
+  padding: 4px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  background: var(--butter-100);
+
+  button {
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--ink-700);
+    font: 600 14px/1 var(--font-sans);
+    cursor: pointer;
+
+    &[aria-checked='true'] {
+      background: var(--paper-0);
+      box-shadow: 0 1px 3px rgba(1, 62, 55, 0.15);
+      color: var(--ink-900);
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--focus-ring);
+      outline-offset: 1px;
+    }
+  }
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+// New total preview.
+.prev {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background: var(--paper-100);
+  font-size: 13px;
+
+  b {
+    margin-inline-start: auto;
+    font-family: var(--font-mono);
+    unicode-bidi: isolate;
+  }
+
+  .chg {
+    color: var(--success-fg);
+    font-family: var(--font-mono);
+    unicode-bidi: isolate;
+  }
+}
+
+.note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--ink-500);
+  font-size: 12px;
+
+  svg {
+    flex: none;
+    width: 16px;
+    height: 16px;
+  }
+}

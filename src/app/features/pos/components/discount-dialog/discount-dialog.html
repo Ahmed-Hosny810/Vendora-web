@@ -1,0 +1,159 @@
+<form
+  class="vd-dialog"
+  novalidate
+  *transloco="let t; read: 'pos.discount'"
+  (submit)="onSubmit($event)"
+>
+  <header class="vd-dialog__head">
+    <h2 class="vd-dialog__title" vdDialogTitle>{{ t('title') }}</h2>
+    <button vdIconButton type="button" [label]="t('close')" (click)="ref.close()">
+      <svg lucideX></svg>
+    </button>
+  </header>
+
+  <div class="vd-dialog__body body">
+    <fieldset class="targets">
+      <legend class="vd-field__label">{{ t('applyTo') }}</legend>
+      <label class="target">
+        <input
+          type="radio"
+          name="target"
+          [checked]="model().target === 'sale'"
+          (change)="setTarget('sale')"
+        />
+        <span>{{ t('wholeSale') }}</span>
+        <small dir="ltr">{{ money(saleBase()) }} {{ t('egp') }}</small>
+      </label>
+      <label class="target">
+        <input
+          type="radio"
+          name="target"
+          [checked]="model().target === 'item'"
+          (change)="setTarget('item')"
+        />
+        <span>{{ t('oneItem') }}</span>
+        <small>{{ t('oneItemText') }}</small>
+      </label>
+    </fieldset>
+
+    @if (model().target === 'item') {
+      <div class="vd-field">
+        <label class="vd-field__label" for="dc-line">{{ t('item') }}</label>
+        <select id="dc-line" class="vd-input" [formField]="discountForm.lineKey">
+          @for (l of data.lines; track l.key) {
+            <option [value]="l.key">
+              {{ l.name }}{{ l.variantName ? ' · ' + l.variantName : '' }}
+            </option>
+          }
+        </select>
+      </div>
+    }
+
+    <div class="two">
+      <fieldset class="type">
+        <legend class="vd-field__label">{{ t('type') }}</legend>
+        <div class="seg" role="radiogroup" [attr.aria-label]="t('type')">
+          <button
+            type="button"
+            role="radio"
+            [attr.aria-checked]="model().type === 'amount'"
+            (click)="setType('amount')"
+          >
+            {{ t('amount') }}
+          </button>
+          <button
+            type="button"
+            role="radio"
+            [attr.aria-checked]="model().type === 'percent'"
+            (click)="setType('percent')"
+          >
+            {{ t('percent') }}
+          </button>
+        </div>
+      </fieldset>
+
+      <div class="vd-field">
+        <label class="vd-field__label" for="dc-value"
+          >{{ t('value') }}<span class="req" aria-hidden="true">*</span></label
+        >
+        <div class="vd-inputgroup">
+          <input
+            id="dc-value"
+            class="vd-input mono"
+            type="number"
+            inputmode="decimal"
+            dir="ltr"
+            [formField]="discountForm.value"
+            [attr.aria-invalid]="valueError() ? true : null"
+            [attr.aria-describedby]="valueError() ? 'dc-value-error' : null"
+          />
+          <span class="vd-inputgroup__affix">{{
+            model().type === 'percent' ? '%' : t('egp')
+          }}</span>
+        </div>
+        @if (valueError(); as e) {
+          <p id="dc-value-error" class="vd-field__error">
+            <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+            {{
+              e === 'max'
+                ? t('errors.max', {
+                    max:
+                      model().type === 'percent'
+                        ? maxValue() + '%'
+                        : money(maxValue()) + ' ' + t('egp'),
+                  })
+                : t('errors.min')
+            }}
+          </p>
+        }
+      </div>
+    </div>
+
+    <div class="vd-field">
+      <label class="vd-field__label" for="dc-reason"
+        >{{ t('reason') }}<span class="req" aria-hidden="true">*</span></label
+      >
+      <input
+        id="dc-reason"
+        class="vd-input"
+        type="text"
+        dir="auto"
+        [placeholder]="t('reasonPlaceholder')"
+        [formField]="discountForm.reason"
+        [attr.aria-invalid]="reasonError() ? true : null"
+        [attr.aria-describedby]="
+          reasonError() ? 'dc-reason-error dc-reason-hint' : 'dc-reason-hint'
+        "
+      />
+      @if (reasonError()) {
+        <p id="dc-reason-error" class="vd-field__error">
+          <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('errors.reason') }}
+        </p>
+      }
+      <p id="dc-reason-hint" class="vd-field__hint">{{ t('reasonHint') }}</p>
+    </div>
+
+    @if (preview(); as p) {
+      <div class="prev" aria-live="polite">
+        <span>{{ t('newTotal') }}</span>
+        <b dir="ltr">{{ money(p.total) }} {{ t('egp') }}</b>
+        <span class="chg" dir="ltr"
+          >{{ p.change < 0 ? '−' : '+' }}{{ money(p.change < 0 ? -p.change : p.change) }}</span
+        >
+      </div>
+    }
+
+    @if (data.maxPercent !== null) {
+      <p class="note">
+        <svg lucideShield aria-hidden="true"></svg>{{ t('limit', { max: data.maxPercent }) }}
+      </p>
+    }
+  </div>
+
+  <footer class="vd-dialog__foot">
+    <button vdButton type="button" (click)="ref.close()">{{ t('cancel') }}</button>
+    <button vdButton="primary" type="submit">
+      <svg lucideCheck aria-hidden="true"></svg>{{ t('apply') }}
+    </button>
+  </footer>
+</form>

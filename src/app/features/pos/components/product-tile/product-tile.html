@@ -1,0 +1,117 @@
+<ng-container *transloco="let t; read: 'pos.sale'">
+  @let p = product();
+  @if (!hasVariants()) {
+    <!-- One button: tap to add -->
+    <button
+      type="button"
+      class="tile"
+      [class.tile--out]="soldOut()"
+      [disabled]="soldOut()"
+      [attr.aria-label]="t('addLabel', { name: p.nameEn, price: money(p.price) })"
+      (click)="add.emit(null)"
+    >
+      <ng-container *ngTemplateOutlet="head" />
+      @if (soldOut()) {
+        <span class="out">{{ t('outOfStock') }}</span>
+      }
+      <span class="pr" dir="ltr"
+        >{{ money(p.price) }} <small>{{ t('egp') }}</small></span
+      >
+    </button>
+  } @else {
+    <!-- Options on the tile -->
+    <div
+      class="tile tile--var"
+      [class.tile--out]="soldOut()"
+      role="group"
+      [attr.aria-label]="p.nameEn"
+    >
+      <button
+        type="button"
+        class="headbtn"
+        [attr.aria-label]="t('chooseLabel', { name: p.nameEn })"
+        (click)="choose.emit()"
+      >
+        <ng-container *ngTemplateOutlet="head" />
+      </button>
+
+      @if (soldOut()) {
+        <span class="out">{{ t('outOfStock') }}</span>
+      } @else {
+        @for (o of pickers(); track o.name; let i = $index) {
+          <div class="sw" role="group" [attr.aria-label]="o.name">
+            <small aria-hidden="true">{{ picked()[i] }}</small>
+            @for (v of o.values; track v.value) {
+              @if (v.swatch) {
+                <button
+                  type="button"
+                  class="swb"
+                  [attr.aria-pressed]="picked()[i] === v.value"
+                  [attr.aria-label]="v.value"
+                  [title]="v.value"
+                  (click)="pick(i, v.value)"
+                >
+                  <span [style.background]="v.swatch"></span>
+                </button>
+              } @else {
+                <button
+                  type="button"
+                  class="txt"
+                  [attr.aria-pressed]="picked()[i] === v.value"
+                  (click)="pick(i, v.value)"
+                >
+                  {{ v.value }}
+                </button>
+              }
+            }
+          </div>
+        }
+
+        @if (last(); as o) {
+          <div class="sz" role="group" [attr.aria-label]="t('tapToAdd', { option: o.name })">
+            @for (v of o.values; track v.value) {
+              @let variant = variantFor(v.value);
+              <button
+                type="button"
+                class="szb"
+                [disabled]="!canAdd(variant)"
+                [attr.aria-label]="
+                  t('addLabel', {
+                    name: p.nameEn + ' ' + (variant?.name ?? v.value),
+                    price: money(variant?.price ?? p.price),
+                  })
+                "
+                (click)="add.emit(variant!)"
+              >
+                <b>{{ v.value }}</b>
+                @if (!variant || (variant.stock !== null && variant.stock <= 0)) {
+                  <small>{{ t('soldOut') }}</small>
+                } @else if (variant.stock !== null) {
+                  <small>{{ t('left', { count: variant.stock }) }}</small>
+                }
+              </button>
+            }
+          </div>
+        }
+      }
+      <span class="pr" dir="ltr"
+        >{{ money(p.price) }} <small>{{ t('egp') }}</small></span
+      >
+    </div>
+  }
+
+  <!-- Picture and names -->
+  <ng-template #head>
+    <span class="img" [class.img--ph]="!p.imageUrl" aria-hidden="true">
+      @if (p.imageUrl) {
+        <img [src]="p.imageUrl" alt="" loading="lazy" />
+      } @else {
+        <svg lucideShoppingBag></svg>
+      }
+    </span>
+    <b class="name" lang="en">{{ p.nameEn }}</b>
+    @if (p.nameAr) {
+      <span class="ar" lang="ar">{{ p.nameAr }}</span>
+    }
+  </ng-template>
+</ng-container>

@@ -1,0 +1,53 @@
+<ng-container *transloco="let t; read: 'pos.sale'">
+  @let l = line();
+  <span class="n">
+    <b>{{ l.name }}</b>
+    <span>
+      @if (l.variantName) {
+        {{ l.variantName }} ·
+      }
+      <bdi dir="ltr">{{ money(l.unitPrice) }} × {{ l.qty }}</bdi>
+    </span>
+  </span>
+  <span class="tot" dir="ltr">
+    {{ money(totals().net) }}
+    @if (totals().discount) {
+      <s>{{ money(totals().gross) }}</s>
+    }
+  </span>
+
+  <span class="ctl">
+    <span class="step" role="group" [attr.aria-label]="t('qtyLabel', { name: l.name })">
+      <button type="button" [attr.aria-label]="t('less')" (click)="step(-1)">
+        <svg lucideMinus></svg>
+      </button>
+      <output aria-live="polite">{{ l.qty }}</output>
+      <button type="button" [attr.aria-label]="t('more')" (click)="step(1)">
+        <svg lucidePlus></svg>
+      </button>
+    </span>
+    @if (l.discount) {
+      <span class="disc"><bdi dir="ltr">{{ badge() }}</bdi> · {{ l.discount.reason }}</span>
+    }
+    <button
+      vdIconButton
+      type="button"
+      class="rm"
+      [label]="t('removeLabel', { name: l.name })"
+      (click)="remove.emit()"
+    >
+      <svg lucideTrash2></svg>
+    </button>
+  </span>
+
+  @if (tooMany()) {
+    <p class="err" role="alert">
+      <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+      {{
+        l.stock! > 0
+          ? t('onlyLeft', { count: l.stock, branch: branchName() })
+          : t('noneLeft', { branch: branchName() })
+      }}
+    </p>
+  }
+</ng-container>

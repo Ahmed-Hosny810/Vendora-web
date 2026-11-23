@@ -1,0 +1,307 @@
+@use 'abstracts' as *;
+
+:host {
+  display: grid;
+}
+
+// ---------- The tag ----------
+.tile {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  min-height: 118px;
+  padding: 10px 14px 12px;
+  padding-inline-start: 22px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 6px;
+  border-start-end-radius: 16px;
+  border-end-end-radius: 16px;
+  background: var(--paper-0);
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  transition:
+    transform 120ms var(--ease-out),
+    box-shadow 120ms,
+    border-color 120ms;
+
+  // The punched hole.
+  &::before {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    top: 10px;
+    inset-inline-start: 8px;
+    width: 7px;
+    height: 7px;
+    border: 1.5px solid var(--line-strong);
+    border-radius: 50%;
+    background: var(--paper-0);
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  // One-button tiles lift on hover and press down on tap.
+  &:not(.tile--var):not(:disabled) {
+    @include hover {
+      border-color: var(--pine-600);
+      box-shadow: 3px 3px 0 var(--butter-500);
+      transform: translateY(-2px);
+    }
+
+    &:active {
+      box-shadow: none;
+      transform: translateY(1px) scale(0.98);
+    }
+  }
+
+  &--var {
+    cursor: default;
+
+    &:focus-within {
+      border-color: var(--pine-600);
+      box-shadow: 3px 3px 0 var(--butter-500);
+    }
+  }
+
+  &--out {
+    border-style: dashed;
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+}
+
+// Picture + names as one button on variant tiles.
+.headbtn {
+  display: grid;
+  gap: 4px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  @include hover {
+    .img {
+      border-color: var(--pine-600);
+    }
+  }
+}
+
+.img {
+  display: grid;
+  place-items: center;
+  height: 84px;
+  margin-bottom: 6px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper-100);
+  color: var(--ink-500);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  svg {
+    width: 22px;
+    height: 22px;
+    opacity: 0.6;
+  }
+
+  // No photo: striped placeholder with a bag.
+  &--ph {
+    border-style: dashed;
+    background: repeating-linear-gradient(135deg, var(--paper-50) 0 8px, var(--paper-100) 8px 16px);
+  }
+}
+
+.name {
+  font-size: 15px;
+  line-height: 20px;
+}
+
+.ar {
+  color: var(--ink-500);
+  font-family: 'IBM Plex Sans Arabic', var(--font-sans);
+  font-size: 12px;
+}
+
+.out {
+  justify-self: start;
+  padding: 4px 7px;
+  border-radius: var(--radius-pill);
+  background: var(--danger-bg);
+  color: var(--danger-fg);
+  font: 600 11px/1 var(--font-sans);
+}
+
+.pr {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-top: auto;
+  padding-top: 8px;
+  font: 700 17px/1 var(--font-mono);
+
+  // In Arabic the price still sits at the start of the tile.
+  :host-context([dir='rtl']) & {
+    justify-content: flex-end;
+  }
+
+  small {
+    color: var(--ink-500);
+    font-size: 11px;
+  }
+}
+
+// ---------- Colour dots ----------
+.sw {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+
+  small {
+    flex-basis: 100%;
+    color: var(--ink-500);
+    font-size: 12px;
+  }
+}
+
+.swb {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 3px;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+
+  span {
+    display: block;
+    width: 24px;
+    height: 24px;
+    border: 1.5px solid var(--pine-900);
+    border-radius: 50%;
+  }
+
+  &[aria-pressed='true'] {
+    border-color: var(--pine-600);
+    box-shadow: 0 0 0 2px var(--butter-300);
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 1px;
+  }
+}
+
+// Text options without a colour.
+.txt {
+  min-height: 32px;
+  padding: 0 10px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  background: var(--paper-0);
+  color: var(--ink-900);
+  font: 600 12px/1 var(--font-sans);
+  cursor: pointer;
+
+  &[aria-pressed='true'] {
+    border-color: var(--pine-600);
+    background: var(--butter-300);
+  }
+}
+
+// ---------- Size buttons (tap to add) ----------
+.sz {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.szb {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 1px;
+  min-height: 48px;
+  padding: 4px 2px;
+  border: 1.5px solid var(--pine-600);
+  border-radius: 10px;
+  background: var(--paper-0);
+  color: var(--ink-900);
+  font-family: inherit;
+  cursor: pointer;
+  transition:
+    transform 100ms var(--ease-out),
+    background 100ms;
+
+  b {
+    font: 700 16px/1 var(--font-mono);
+  }
+
+  small {
+    color: var(--ink-500);
+    font-size: 10px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  &:not(:disabled) {
+    @include hover {
+      background: var(--butter-300);
+    }
+
+    &:active {
+      background: var(--butter-500);
+      transform: scale(0.94);
+    }
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  // Sold out: dashed, striped, crossed out.
+  &:disabled {
+    border-style: dashed;
+    border-color: var(--line-strong);
+    background: repeating-linear-gradient(135deg, var(--paper-50) 0 5px, var(--paper-100) 5px 10px);
+    opacity: 0.7;
+    cursor: not-allowed;
+
+    b {
+      color: var(--ink-500);
+      text-decoration: line-through;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile,
+  .szb {
+    transition: none;
+  }
+}

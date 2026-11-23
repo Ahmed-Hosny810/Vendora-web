@@ -1,0 +1,183 @@
+<form
+  class="vd-drawer"
+  novalidate
+  *transloco="let t; read: 'pos.customer'"
+  (submit)="onSave($event)"
+>
+  <header class="vd-drawer__head">
+    <h2 class="vd-drawer__title" vdDialogTitle>{{ t('title') }}</h2>
+    <button vdIconButton type="button" [label]="t('close')" (click)="ref.close()">
+      <svg lucideX></svg>
+    </button>
+  </header>
+
+  <div class="vd-drawer__body body">
+    <!-- Find by phone (Enter or the button) -->
+    <div class="find">
+      <svg lucidePhone aria-hidden="true"></svg>
+      <input
+        type="tel"
+        inputmode="tel"
+        dir="ltr"
+        autocomplete="off"
+        [attr.aria-label]="t('phoneLabel')"
+        [placeholder]="t('phonePlaceholder')"
+        [value]="phone()"
+        (input)="onPhoneInput($any($event.target).value)"
+        (keydown.enter)="find($event)"
+      />
+      <button
+        vdButton="ghost"
+        size="sm"
+        type="button"
+        [loading]="lookupStatus() === 'searching'"
+        (click)="find()"
+      >
+        <svg lucideSearch aria-hidden="true"></svg>{{ t('find') }}
+      </button>
+    </div>
+
+    @switch (lookupStatus()) {
+      @case ('failed') {
+        <div class="vd-banner vd-banner--danger" role="alert">
+          <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+          <span class="vd-banner__body">{{ t('lookupFailed') }}</span>
+        </div>
+      }
+      @case ('found') {
+        @if (found(); as c) {
+          <div class="card" role="status">
+            <span class="av" aria-hidden="true">{{ c.fullName.charAt(0) }}</span>
+            <span class="card__t">
+              <b dir="auto">{{ c.fullName }}</b>
+              <span dir="ltr">{{ c.phone }}</span>
+            </span>
+            <button vdButton="primary" size="sm" type="button" (click)="attach(c)">
+              <svg lucideUserCheck aria-hidden="true"></svg>{{ t('attach') }}
+            </button>
+          </div>
+        }
+      }
+      @case ('notFound') {
+        <div class="vd-banner vd-banner--info" role="status">
+          <svg lucideInfo aria-hidden="true"></svg>
+          <span class="vd-banner__body">{{ t('notFound') }}</span>
+        </div>
+
+        @if (saveStatus() === 'failed') {
+          <div class="vd-banner vd-banner--danger" role="alert">
+            <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+            <span class="vd-banner__body">{{ t('saveFailed') }}</span>
+          </div>
+        }
+
+        <fieldset class="fields" [disabled]="saving()">
+          <legend class="vd-sr">{{ t('newCustomer') }}</legend>
+          <div class="two">
+            <div class="vd-field">
+              <label class="vd-field__label" for="cu-name"
+                >{{ t('fullName') }}<span class="req" aria-hidden="true">*</span></label
+              >
+              <input
+                id="cu-name"
+                class="vd-input"
+                type="text"
+                dir="auto"
+                [formField]="customerForm.fullName"
+                [attr.aria-invalid]="nameError() ? true : null"
+              />
+              @if (nameError()) {
+                <p class="vd-field__error">
+                  <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+                  >{{ t('errors.nameRequired') }}
+                </p>
+              }
+            </div>
+            <div class="vd-field">
+              <label class="vd-field__label" for="cu-phone"
+                >{{ t('phone') }}<span class="req" aria-hidden="true">*</span></label
+              >
+              <input
+                id="cu-phone"
+                class="vd-input"
+                type="tel"
+                dir="ltr"
+                [formField]="customerForm.phone"
+                [attr.aria-invalid]="phoneError() ? true : null"
+              />
+              @if (phoneError(); as e) {
+                <p class="vd-field__error">
+                  <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('errors.' + e) }}
+                </p>
+              }
+            </div>
+          </div>
+          <div class="two">
+            <div class="vd-field">
+              <label class="vd-field__label" for="cu-area"
+                >{{ t('area') }}<span class="opt">{{ t('optional') }}</span></label
+              >
+              <input
+                id="cu-area"
+                class="vd-input"
+                type="text"
+                dir="auto"
+                [formField]="customerForm.area"
+              />
+            </div>
+            <div class="vd-field">
+              <label class="vd-field__label" for="cu-city"
+                >{{ t('city') }}<span class="opt">{{ t('optional') }}</span></label
+              >
+              <input
+                id="cu-city"
+                class="vd-input"
+                type="text"
+                dir="auto"
+                [formField]="customerForm.city"
+              />
+            </div>
+          </div>
+          <div class="vd-field">
+            <label class="vd-field__label" for="cu-address"
+              >{{ t('address') }}<span class="opt">{{ t('optional') }}</span></label
+            >
+            <input
+              id="cu-address"
+              class="vd-input"
+              type="text"
+              dir="auto"
+              [formField]="customerForm.address"
+            />
+          </div>
+          <div class="vd-field">
+            <label class="vd-field__label" for="cu-notes"
+              >{{ t('notes') }}<span class="opt">{{ t('optional') }}</span></label
+            >
+            <input
+              id="cu-notes"
+              class="vd-input"
+              type="text"
+              dir="auto"
+              [formField]="customerForm.notes"
+            />
+          </div>
+        </fieldset>
+      }
+      @default {
+        <p class="hint">{{ t('hint') }}</p>
+      }
+    }
+  </div>
+
+  <footer class="vd-drawer__foot">
+    <button vdButton type="button" [disabled]="saving()" (click)="ref.close()">
+      {{ t('skip') }}
+    </button>
+    @if (lookupStatus() === 'notFound') {
+      <button vdButton="primary" type="submit" [loading]="saving()">
+        <svg lucideUserCheck aria-hidden="true"></svg>{{ t('save') }}
+      </button>
+    }
+  </footer>
+</form>
