@@ -1,0 +1,61 @@
+{
+  "opening": {
+    "title": "Opening stock",
+    "text": "Record what’s already on your shelves when you start using Vendora.",
+    "steps": {
+      "label": "Opening stock steps",
+      "select": "Select item",
+      "quantities": "Enter quantities",
+      "review": "Review"
+    },
+    "loading": "Loading products…",
+    "errorTitle": "We couldn’t load the products",
+    "errorText": "Check your connection and try again.",
+    "tryAgain": "Try again",
+    "emptyTitle": "No products track inventory yet",
+    "emptyText": "Turn on Track inventory for a product, then come back to count it.",
+    "toProducts": "Go to products",
+    "sections": {
+      "item": "Branch and item",
+      "quantities": "Quantities"
+    },
+    "choose": "Choose…",
+    "branch": "Branch",
+    "product": "Product",
+    "productHint": "Only products that track inventory are listed.",
+    "variant": "Variant",
+    "variantHint": "{{name}} has variants, so pick one.",
+    "quantity": "Opening quantity",
+    "quantityHintWhole": "More than 0. Whole numbers only — this unit can’t be split.",
+    "quantityHintFraction": "More than 0. Decimals like 0.5 are allowed.",
+    "lowStock": "Low-stock threshold",
+    "lowStockHint": "Warn when stock falls to this number. 0 turns warnings off.",
+    "cancel": "Cancel",
+    "review": "Review",
+    "back": "Back",
+    "confirm": "Confirm opening stock",
+    "crateText": "First count for this branch. Later changes are stock adjustments, not opening stock.",
+    "fixOne": "Fix 1 field to continue. Everything you typed is kept.",
+    "fixMany": "Fix {{count}} fields to continue. Everything you typed is kept.",
+    "errors": {
+      "branchId": "Choose a branch.",
+      "productId": "Choose a product.",
+      "variantId": "Choose a variant.",
+      "quantity": "Enter a quantity more than 0.",
+      "lowStockThreshold": "Enter 0 or more.",
+      "whole": "Use a whole number — this unit can’t be split.",
+      "alreadyCounted": "{{item}} already has opening stock at {{branch}}. To change it, use a stock adjustment.",
+      "failed": "We couldn’t save the opening stock. Check your connection and try again."
+    },
+    "slip": {
+      "title": "Opening stock slip",
+      "stamp": "Opening count",
+      "unit": "Unit",
+      "note": "This sets the starting quantity. To correct stock later, use a stock adjustment instead."
+    },
+    "saved": "Opening stock saved",
+    "savedText": "{{quantity}} {{unit}} of {{item}} are now on hand at {{branch}}.",
+    "addAnother": "Add another item",
+    "viewInventory": "View inventory"
+  }
+}

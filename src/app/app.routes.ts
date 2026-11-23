@@ -156,6 +156,20 @@ export const routes: Routes = [
         ],
       },
       {
+        // Inventory. TODO(you): '' becomes the inventory list once it's designed.
+        path: 'inventory',
+        children: [
+          { path: '', pathMatch: 'full', redirectTo: 'opening' },
+          {
+            path: 'opening',
+            loadComponent: () =>
+              import('./features/inventory/opening-stock/opening-stock.page').then(
+                (m) => m.OpeningStockPage,
+              ),
+          },
+        ],
+      },
+      {
         // Products and their variants.
         path: 'products',
         children: [

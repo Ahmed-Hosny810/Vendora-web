@@ -1,0 +1,327 @@
+<ng-container *transloco="let t; read: 'inventory.opening'">
+  <app-page-head [title]="t('title')" [text]="t('text')" />
+
+  <app-step-line
+    [steps]="[t('steps.select'), t('steps.quantities'), t('steps.review')]"
+    [current]="currentStep()"
+    [label]="t('steps.label')"
+  />
+
+  @switch (status()) {
+    @case ('loading') {
+      <div class="grid" aria-busy="true">
+        <span class="vd-skeleton form-sk" aria-hidden="true"></span>
+        <span class="vd-skeleton side-sk" aria-hidden="true"></span>
+        <span class="vd-sr">{{ t('loading') }}</span>
+      </div>
+    }
+    @case ('error') {
+      <div class="vd-tablewrap">
+        <app-load-error
+          [title]="t('errorTitle')"
+          [text]="t('errorText')"
+          [retryLabel]="t('tryAgain')"
+          (retry)="load()"
+        />
+      </div>
+    }
+    @default {
+      @if (!products().length) {
+        <!-- No product tracks inventory yet -->
+        <div class="vd-tablewrap">
+          <div class="vd-empty">
+            <span class="vd-empty__art"><svg lucidePackage></svg></span>
+            <h2 class="vd-empty__title">{{ t('emptyTitle') }}</h2>
+            <p class="vd-empty__text">{{ t('emptyText') }}</p>
+            <a vdButton="primary" routerLink="/products">{{ t('toProducts') }}</a>
+          </div>
+        </div>
+      } @else {
+        @switch (step()) {
+          <!-- ① ② The form -->
+          @case ('form') {
+            <div class="grid">
+              <form class="col" novalidate (submit)="toReview($event)">
+                @if (tried() && errors().length) {
+                  <div class="vd-banner vd-banner--danger" role="alert">
+                    <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+                    <span class="vd-banner__body">
+                      {{
+                        errors().length === 1
+                          ? t('fixOne')
+                          : t('fixMany', { count: errors().length })
+                      }}
+                    </span>
+                  </div>
+                }
+
+                <app-form-section [n]="1" [title]="t('sections.item')">
+                  <div class="two">
+                    <div class="vd-field">
+                      <label class="vd-field__label" for="os-branch"
+                        >{{ t('branch') }}<span class="req" aria-hidden="true">*</span></label
+                      >
+                      <select
+                        id="os-branch"
+                        class="vd-input"
+                        [formField]="stockForm.branchId"
+                        [attr.aria-invalid]="hasError('branchId') ? true : null"
+                        [attr.aria-describedby]="hasError('branchId') ? 'os-branch-error' : null"
+                      >
+                        <option value="" disabled>{{ t('choose') }}</option>
+                        @for (b of session.branches(); track b.id) {
+                          <option [value]="b.id">{{ b.name }}</option>
+                        }
+                      </select>
+                      @if (hasError('branchId')) {
+                        <p id="os-branch-error" class="vd-field__error">
+                          <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+                          >{{ t('errors.branchId') }}
+                        </p>
+                      }
+                    </div>
+                  </div>
+
+                  <div class="two">
+                    <div class="vd-field">
+                      <label class="vd-field__label" for="os-product"
+                        >{{ t('product') }}<span class="req" aria-hidden="true">*</span></label
+                      >
+                      <select
+                        id="os-product"
+                        class="vd-input"
+                        [formField]="stockForm.productId"
+                        [attr.aria-invalid]="hasError('productId') ? true : null"
+                        aria-describedby="os-product-hint"
+                      >
+                        <option value="" disabled>{{ t('choose') }}</option>
+                        @for (p of products(); track p.id) {
+                          <option [value]="p.id">{{ p.name }}</option>
+                        }
+                      </select>
+                      @if (hasError('productId')) {
+                        <p class="vd-field__error">
+                          <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+                          >{{ t('errors.productId') }}
+                        </p>
+                      }
+                      <p id="os-product-hint" class="vd-field__hint">{{ t('productHint') }}</p>
+                    </div>
+
+                    @if (product()?.variants?.length) {
+                      <div class="vd-field">
+                        <label class="vd-field__label" for="os-variant"
+                          >{{ t('variant') }}<span class="req" aria-hidden="true">*</span></label
+                        >
+                        <select
+                          id="os-variant"
+                          class="vd-input"
+                          [formField]="stockForm.variantId"
+                          [attr.aria-invalid]="hasError('variantId') ? true : null"
+                          aria-describedby="os-variant-hint"
+                        >
+                          <option value="" disabled>{{ t('choose') }}</option>
+                          @for (v of product()!.variants; track v.id) {
+                            <option [value]="v.id">{{ v.name }}</option>
+                          }
+                        </select>
+                        @if (hasError('variantId')) {
+                          <p class="vd-field__error">
+                            <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+                            >{{ t('errors.variantId') }}
+                          </p>
+                        }
+                        <p id="os-variant-hint" class="vd-field__hint">
+                          {{ t('variantHint', { name: product()!.name }) }}
+                        </p>
+                      </div>
+                    }
+                  </div>
+                </app-form-section>
+
+                <app-form-section [n]="2" [title]="t('sections.quantities')">
+                  <div class="two">
+                    <div class="vd-field">
+                      <label class="vd-field__label" for="os-qty"
+                        >{{ t('quantity') }}<span class="req" aria-hidden="true">*</span></label
+                      >
+                      <div class="vd-inputgroup qty">
+                        <input
+                          id="os-qty"
+                          class="vd-input"
+                          type="number"
+                          [attr.inputmode]="wholeOnly() ? 'numeric' : 'decimal'"
+                          [attr.step]="wholeOnly() ? 1 : 'any'"
+                          dir="ltr"
+                          [formField]="stockForm.quantity"
+                          [attr.aria-invalid]="hasError('quantity') ? true : null"
+                          aria-describedby="os-qty-hint"
+                        />
+                        @if (product(); as p) {
+                          <span class="vd-inputgroup__affix" aria-hidden="true">{{
+                            p.unitSymbol
+                          }}</span>
+                        }
+                      </div>
+                      @if (hasError('quantity')) {
+                        <p class="vd-field__error">
+                          <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+                          >{{ t('errors.' + errorKind('quantity')) }}
+                        </p>
+                      }
+                      <p id="os-qty-hint" class="vd-field__hint">
+                        {{ wholeOnly() ? t('quantityHintWhole') : t('quantityHintFraction') }}
+                      </p>
+                    </div>
+
+                    <div class="vd-field">
+                      <label class="vd-field__label" for="os-low">{{ t('lowStock') }}</label>
+                      <div class="vd-inputgroup qty">
+                        <input
+                          id="os-low"
+                          class="vd-input"
+                          type="number"
+                          [attr.inputmode]="wholeOnly() ? 'numeric' : 'decimal'"
+                          [attr.step]="wholeOnly() ? 1 : 'any'"
+                          dir="ltr"
+                          [formField]="stockForm.lowStockThreshold"
+                          [attr.aria-invalid]="hasError('lowStockThreshold') ? true : null"
+                          aria-describedby="os-low-hint"
+                        />
+                        @if (product(); as p) {
+                          <span class="vd-inputgroup__affix" aria-hidden="true">{{
+                            p.unitSymbol
+                          }}</span>
+                        }
+                      </div>
+                      @if (hasError('lowStockThreshold')) {
+                        <p class="vd-field__error">
+                          <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+                          >{{ t('errors.' + errorKind('lowStockThreshold')) }}
+                        </p>
+                      }
+                      <p id="os-low-hint" class="vd-field__hint">{{ t('lowStockHint') }}</p>
+                    </div>
+                  </div>
+                </app-form-section>
+
+                <div class="foot">
+                  <a vdButton routerLink="/overview">{{ t('cancel') }}</a>
+                  <button vdButton="primary" type="submit">
+                    {{ t('review') }}<svg lucideArrowRight class="dir" aria-hidden="true"></svg>
+                  </button>
+                </div>
+              </form>
+
+              <aside class="side">
+                <app-stock-crate
+                  [count]="model().quantity > 0 ? model().quantity : '–'"
+                  [text]="t('crateText')"
+                />
+              </aside>
+            </div>
+          }
+
+          <!-- ③ Review -->
+          @case ('review') {
+            @let s = summary();
+            <div class="grid">
+              <div class="col">
+                @if (saveStatus() === 'alreadyCounted') {
+                  <div class="vd-banner vd-banner--danger" role="alert">
+                    <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+                    <span class="vd-banner__body">
+                      {{ t('errors.alreadyCounted', { item: s.item, branch: s.branch }) }}
+                    </span>
+                  </div>
+                } @else if (saveStatus() === 'failed') {
+                  <div class="vd-banner vd-banner--danger" role="alert">
+                    <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+                    <span class="vd-banner__body">{{ t('errors.failed') }}</span>
+                  </div>
+                }
+
+                <article class="slip" aria-labelledby="slip-h">
+                  <div class="slip__h">
+                    <h2 id="slip-h">{{ t('slip.title') }}</h2>
+                    <span>{{ t('slip.stamp') }}</span>
+                  </div>
+                  <dl>
+                    <dt>{{ t('branch') }}</dt>
+                    <dd>{{ s.branch }}</dd>
+                    <dt>{{ t('product') }}</dt>
+                    <dd>{{ s.product }}</dd>
+                    @if (s.variant) {
+                      <dt>{{ t('variant') }}</dt>
+                      <dd>{{ s.variant }}</dd>
+                    }
+                    <dt>{{ t('quantity') }}</dt>
+                    <dd class="mono">{{ s.quantity }}</dd>
+                    <dt>{{ t('slip.unit') }}</dt>
+                    <dd>{{ s.unit }}</dd>
+                    <dt>{{ t('lowStock') }}</dt>
+                    <dd class="mono">{{ s.low }}</dd>
+                  </dl>
+                  <p class="slip__note">
+                    <svg lucideInfo aria-hidden="true"></svg><span>{{ t('slip.note') }}</span>
+                  </p>
+                </article>
+
+                <div class="foot">
+                  <button
+                    vdButton
+                    type="button"
+                    (click)="back()"
+                    [disabled]="saveStatus() === 'saving'"
+                  >
+                    <svg lucideArrowLeft class="dir" aria-hidden="true"></svg>{{ t('back') }}
+                  </button>
+                  <button
+                    vdButton="primary"
+                    type="button"
+                    [loading]="saveStatus() === 'saving'"
+                    (click)="confirm()"
+                  >
+                    <svg lucideCheck aria-hidden="true"></svg>{{ t('confirm') }}
+                  </button>
+                </div>
+              </div>
+
+              <aside class="side">
+                <app-stock-crate [count]="s.quantity" [text]="t('crateText')" />
+              </aside>
+            </div>
+          }
+
+          <!-- Saved -->
+          @case ('done') {
+            @let s = summary();
+            <div class="vd-tablewrap">
+              <div class="success" role="status">
+                <span class="success__ic" aria-hidden="true"><svg lucideCheck></svg></span>
+                <h2>{{ t('saved') }}</h2>
+                <p>
+                  {{
+                    t('savedText', {
+                      quantity: s.quantity,
+                      unit: s.unitSymbol,
+                      item: s.item,
+                      branch: s.branch,
+                    })
+                  }}
+                </p>
+                <div class="success__acts">
+                  <button vdButton="primary" type="button" (click)="addAnother()">
+                    <svg lucidePlus aria-hidden="true"></svg>{{ t('addAnother') }}
+                  </button>
+                  <!-- TODO(you): point this to the inventory list once it exists. -->
+                  <a vdButton routerLink="/inventory">{{ t('viewInventory') }}</a>
+                </div>
+              </div>
+            </div>
+          }
+        }
+      }
+    }
+  }
+</ng-container>
