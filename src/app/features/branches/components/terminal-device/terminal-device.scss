@@ -1,0 +1,103 @@
+:host {
+  display: grid;
+  justify-items: center;
+  padding: 26px 16px 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--pine-50);
+}
+
+.body {
+  display: grid;
+  gap: 10px;
+  width: 230px;
+  padding: 12px;
+  border: 2px solid var(--pine-900);
+  border-radius: 18px 18px 10px 10px;
+  background: var(--pine-700);
+  box-shadow: 0 6px 0 var(--pine-900);
+}
+
+.screen {
+  display: grid;
+  align-content: center;
+  gap: 4px;
+  min-height: 92px;
+  padding: 12px;
+  border: 2px solid var(--pine-900);
+  border-radius: 8px;
+  background: var(--pine-100);
+  text-align: center;
+
+  small {
+    color: var(--pine-700);
+    font: 600 10px/1 var(--font-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  b {
+    overflow-wrap: anywhere;
+    color: var(--pine-900);
+    font: 700 18px/1.2 var(--font-display);
+  }
+
+  span {
+    color: var(--ink-700);
+    font-size: 12px;
+  }
+}
+
+.keys {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+
+  i {
+    height: 14px;
+    border-radius: 4px;
+    background: var(--pine-600);
+    box-shadow: 0 2px 0 var(--pine-900);
+
+    &:nth-child(4n) {
+      background: var(--butter-500);
+    }
+  }
+}
+
+.stand {
+  width: 120px;
+  height: 16px;
+  border-radius: 0 0 10px 10px;
+  background: var(--pine-900);
+}
+
+// The device code, stuck on the corner like a paper label.
+.label {
+  position: relative;
+  top: -48px;
+  inset-inline-start: 70px;
+  margin-top: -4px;
+  margin-bottom: -30px;
+  padding: 7px 10px;
+  border: 1.5px dashed var(--pine-600);
+  border-radius: 4px;
+  background: var(--paper-0);
+  color: var(--pine-900);
+  font: 700 12px/1 var(--font-mono);
+  rotate: -3deg;
+  animation: stick-on 700ms var(--ease-out) 200ms both;
+}
+
+@keyframes stick-on {
+  from {
+    opacity: 0;
+    transform: translateY(-14px) rotate(-14deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .label {
+    animation: none;
+  }
+}

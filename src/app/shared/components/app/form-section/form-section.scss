@@ -1,0 +1,56 @@
+:host {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--paper-0);
+}
+
+// Advanced settings: dashed border over soft diagonal stripes.
+:host(.advanced) {
+  border-style: dashed;
+  border-color: var(--line-strong);
+  background: repeating-linear-gradient(135deg, var(--paper-50) 0 12px, var(--paper-0) 12px 24px);
+
+  .n {
+    border: 1.5px dashed var(--line-strong);
+    background: var(--paper-0);
+    color: var(--ink-700);
+  }
+}
+
+.h {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+
+  h2 {
+    margin: 0;
+    font: 700 16px/1.2 var(--font-display);
+
+    :host-context(:lang(ar)) & {
+      font-family: 'Alexandria', var(--font-display);
+    }
+  }
+
+  p {
+    margin: 0;
+    margin-inline-start: auto;
+    color: var(--ink-500);
+    font-size: 13px;
+  }
+}
+
+.n {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--pine-600);
+  color: var(--butter-300);
+  font: 600 12px/1 var(--font-mono);
+}

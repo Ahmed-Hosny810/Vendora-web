@@ -1,0 +1,18 @@
+<ng-container *transloco="let t; read: 'branches'">
+  <div class="sign" [class.is-ph]="!nameEn().trim()">
+    <b lang="en" dir="ltr">{{ nameEn().trim() || t('shop.placeholder') }}</b>
+    @if (nameAr().trim()) {
+      <span lang="ar" dir="rtl">{{ nameAr() }}</span>
+    }
+  </div>
+  <div class="awning"></div>
+  <div class="front">
+    <div class="win">{{ city() }}</div>
+    <div class="door">
+      @if (main()) {
+        <span class="ribbon">{{ t('shop.main') }}</span>
+      }
+    </div>
+  </div>
+  <div class="ground"></div>
+</ng-container>

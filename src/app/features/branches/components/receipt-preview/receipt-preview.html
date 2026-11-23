@@ -1,0 +1,37 @@
+<div
+  class="rc"
+  *transloco="let t; read: 'branches.receipt'"
+  role="img"
+  [attr.aria-label]="t('label')"
+>
+  <div class="rc__top">
+    <b lang="en" dir="ltr">{{ businessName() | uppercase }}</b>
+    @if (address()) {
+      <span dir="auto">{{ address() }}</span>
+    }
+    @if (headerLines().length) {
+      <span class="rc__hl">
+        @for (line of headerLines(); track $index) {
+          <span dir="auto">{{ line }}</span>
+        }
+      </span>
+    }
+    @if (phone()) {
+      <span dir="ltr">{{ phone() }}</span>
+    }
+  </div>
+  <hr />
+  <div class="rc__row rc__muted">
+    <span>{{ t('item') }}</span
+    ><span>{{ t('total') }}</span>
+  </div>
+  <div class="rc__row">
+    <span>{{ t('sampleItem') }}</span
+    ><span dir="ltr">650.00</span>
+  </div>
+  <hr />
+  <div class="rc__row rc__big">
+    <span>{{ t('grandTotal') }}</span
+    ><span dir="ltr">650.00</span>
+  </div>
+</div>

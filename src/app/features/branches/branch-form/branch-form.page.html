@@ -1,0 +1,247 @@
+<ng-container *transloco="let t; read: 'branches.form'">
+  <app-page-head
+    [title]="branchId ? t('editTitle') : t('addTitle')"
+    [text]="branchId ? t('editText') : t('addText')"
+  />
+
+  <div class="grid">
+    <form class="col" novalidate (submit)="onSubmit($event)">
+      @if (status() === 'failed') {
+        <div class="vd-banner vd-banner--danger" role="alert">
+          <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+          <span class="vd-banner__body">{{ t('errors.failed') }}</span>
+        </div>
+      } @else if (tried() && errorCount()) {
+        <div class="vd-banner vd-banner--danger" role="alert">
+          <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+          <span class="vd-banner__body">
+            {{ errorCount() === 1 ? t('fixOne') : t('fixMany', { count: errorCount() }) }}
+          </span>
+        </div>
+      }
+
+      <fieldset class="col" [disabled]="saving()">
+        <legend class="vd-sr">{{ branchId ? t('editTitle') : t('addTitle') }}</legend>
+
+        <!-- 1 · Branch details -->
+        <app-form-section [n]="1" [title]="t('sections.details')">
+          <div class="two">
+            <div class="vd-field">
+              <div class="vd-field__top">
+                <label class="vd-field__label" for="b-name-en">
+                  {{ t('nameEn') }}<span class="req" aria-hidden="true">*</span>
+                </label>
+                <span class="vd-field__counter" aria-hidden="true"
+                  >{{ model().nameEn.length }}/{{ limits.name }}</span
+                >
+              </div>
+              <input
+                id="b-name-en"
+                class="vd-input"
+                type="text"
+                lang="en"
+                dir="ltr"
+                [formField]="branchForm.nameEn"
+                [attr.aria-invalid]="nameEnError() ? true : null"
+                [attr.aria-describedby]="nameEnError() ? 'b-name-en-error' : null"
+              />
+              @if (nameEnError()) {
+                <p id="b-name-en-error" class="vd-field__error">
+                  <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+                  >{{ t('errors.nameEn') }}
+                </p>
+              }
+            </div>
+
+            <div class="vd-field">
+              <div class="vd-field__top">
+                <label class="vd-field__label" for="b-name-ar">
+                  {{ t('nameAr') }}<span class="opt">{{ t('optional') }}</span>
+                </label>
+                <span class="vd-field__counter" aria-hidden="true"
+                  >{{ model().nameAr.length }}/{{ limits.name }}</span
+                >
+              </div>
+              <input
+                id="b-name-ar"
+                class="vd-input arabic"
+                type="text"
+                lang="ar"
+                dir="rtl"
+                [formField]="branchForm.nameAr"
+              />
+            </div>
+          </div>
+
+          <div class="two">
+            <div class="vd-field">
+              <div class="vd-field__top">
+                <label class="vd-field__label" for="b-code">
+                  {{ t('code') }}<span class="req" aria-hidden="true">*</span>
+                </label>
+                <span class="vd-field__counter" aria-hidden="true"
+                  >{{ model().code.length }}/{{ limits.code }}</span
+                >
+              </div>
+              <input
+                id="b-code"
+                class="vd-input mono"
+                type="text"
+                dir="ltr"
+                autocapitalize="characters"
+                spellcheck="false"
+                [formField]="branchForm.code"
+                [attr.aria-invalid]="codeError() ? true : null"
+                [attr.aria-describedby]="codeError() ? 'b-code-error' : 'b-code-hint'"
+              />
+              @if (codeError(); as error) {
+                <p id="b-code-error" class="vd-field__error">
+                  <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+                  >{{ t('errors.' + error) }}
+                </p>
+              } @else {
+                <p id="b-code-hint" class="vd-field__hint">{{ t('codeHint') }}</p>
+              }
+            </div>
+
+            <div class="vd-field">
+              <div class="vd-field__top">
+                <label class="vd-field__label" for="b-city">
+                  {{ t('city') }}<span class="opt">{{ t('optional') }}</span>
+                </label>
+                <span class="vd-field__counter" aria-hidden="true"
+                  >{{ model().city.length }}/{{ limits.city }}</span
+                >
+              </div>
+              <input
+                id="b-city"
+                class="vd-input"
+                type="text"
+                dir="auto"
+                [formField]="branchForm.city"
+              />
+            </div>
+          </div>
+
+          <div class="vd-field">
+            <div class="vd-field__top">
+              <label class="vd-field__label" for="b-address">
+                {{ t('address') }}<span class="opt">{{ t('optional') }}</span>
+              </label>
+              <span class="vd-field__counter" aria-hidden="true"
+                >{{ model().address.length }}/{{ limits.address }}</span
+              >
+            </div>
+            <input
+              id="b-address"
+              class="vd-input"
+              type="text"
+              dir="auto"
+              autocomplete="street-address"
+              [formField]="branchForm.address"
+            />
+          </div>
+
+          <div class="two">
+            <div class="vd-field">
+              <div class="vd-field__top">
+                <label class="vd-field__label" for="b-phone">
+                  {{ t('phone') }}<span class="opt">{{ t('optional') }}</span>
+                </label>
+                <span class="vd-field__counter" aria-hidden="true"
+                  >{{ model().phone.length }}/{{ limits.phone }}</span
+                >
+              </div>
+              <input
+                id="b-phone"
+                class="vd-input"
+                type="tel"
+                dir="ltr"
+                autocomplete="tel"
+                inputmode="tel"
+                [formField]="branchForm.phone"
+              />
+            </div>
+          </div>
+        </app-form-section>
+
+        <!-- 2 · Receipt -->
+        <app-form-section [n]="2" [title]="t('sections.receipt')">
+          <div class="vd-field">
+            <div class="vd-field__top">
+              <label class="vd-field__label" for="b-header">
+                {{ t('receiptHeader') }}<span class="opt">{{ t('optional') }}</span>
+              </label>
+              <span class="vd-field__counter" aria-hidden="true">
+                {{ model().receiptHeader.length }}/{{ limits.receiptHeader }}
+              </span>
+            </div>
+            <textarea
+              id="b-header"
+              class="vd-input"
+              rows="3"
+              dir="auto"
+              aria-describedby="b-header-hint"
+              [placeholder]="t('receiptHeaderPlaceholder')"
+              [formField]="branchForm.receiptHeader"
+            ></textarea>
+            <p id="b-header-hint" class="vd-field__hint">{{ t('receiptHeaderHint') }}</p>
+          </div>
+        </app-form-section>
+
+        <!-- 3 · Advanced settings -->
+        <app-form-section [n]="3" [title]="t('sections.advanced')" [note]="t('later')" advanced>
+          <label class="vd-choice toggle">
+            <b id="b-main-label">{{ t('main') }}</b>
+            <span id="b-main-text">{{ t('mainText') }}</span>
+            <input
+              type="checkbox"
+              role="switch"
+              aria-labelledby="b-main-label"
+              aria-describedby="b-main-text"
+              [formField]="branchForm.isMain"
+            />
+          </label>
+          <label class="vd-choice toggle">
+            <b id="b-neg-label">{{ t('negative') }}</b>
+            <span id="b-neg-text">{{ t('negativeText') }}</span>
+            <input
+              type="checkbox"
+              role="switch"
+              aria-labelledby="b-neg-label"
+              aria-describedby="b-neg-text"
+              [formField]="branchForm.allowNegativeStock"
+            />
+          </label>
+        </app-form-section>
+      </fieldset>
+
+      <div class="foot">
+        <span class="grow"><span class="req" aria-hidden="true">*</span> {{ t('required') }}</span>
+        <a vdButton [routerLink]="branchId ? ['/branches', branchId] : '/branches'">{{
+          t('cancel')
+        }}</a>
+        <button vdButton="primary" type="submit" [loading]="saving()">
+          <svg lucideCheck aria-hidden="true"></svg>{{ branchId ? t('saveChanges') : t('save') }}
+        </button>
+      </div>
+    </form>
+
+    <aside class="preview">
+      <p class="preview__cap">{{ t('livePreview') }}</p>
+      <app-branch-shop
+        [nameEn]="model().nameEn"
+        [nameAr]="model().nameAr"
+        [city]="model().city"
+        [main]="model().isMain"
+      />
+      <app-receipt-preview
+        [businessName]="session.business()?.name ?? ''"
+        [address]="receiptAddress()"
+        [header]="model().receiptHeader || t('receiptHeaderPlaceholder')"
+        [phone]="model().phone"
+      />
+      <p class="preview__note">{{ t('previewNote') }}</p>
+    </aside>
+  </div>
+</ng-container>

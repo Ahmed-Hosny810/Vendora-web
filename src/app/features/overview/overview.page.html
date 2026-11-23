@@ -1,0 +1,89 @@
+<ng-container *transloco="let t; read: 'overview'">
+  @if (session.isManager()) {
+    <!-- ================= Owner / admin ================= -->
+    <div class="ph">
+      <div class="ph__t">
+        <h1>
+          {{
+            anyDone() ? t('progress', { name: firstName() }) : t('welcome', { name: firstName() })
+          }}
+        </h1>
+        <p>{{ anyDone() ? t('progressText') : t('welcomeText') }}</p>
+      </div>
+      <a vdButton routerLink="/pos" class="ph__btn">
+        <svg lucideMonitor aria-hidden="true"></svg>{{ t('openPos') }}
+      </a>
+    </div>
+
+    <div class="hero">
+      @if (!setupComplete()) {
+        <app-setup-checklist [done]="session.setupDone()" [justDone]="justDone()" />
+      }
+      <div class="side">
+        <section class="card" aria-labelledby="plan-title">
+          <h2 id="plan-title">{{ t('plan.title') }}</h2>
+          @if (planName(); as plan) {
+            <span class="plan-name">{{ plan }}</span>
+          }
+          <p>{{ t('plan.text') }}</p>
+          <a class="link" routerLink="/billing">{{ t('plan.billing') }}</a>
+        </section>
+        <section class="card" aria-labelledby="help-title">
+          <h2 id="help-title">{{ t('help.title') }}</h2>
+          <p>{{ t('help.text') }}</p>
+        </section>
+      </div>
+    </div>
+
+    <div class="kpis">
+      <app-kpi-card
+        [label]="t('kpi.salesToday')"
+        [value]="salesToday()"
+        [hint]="t('kpi.salesTodayEmpty')"
+      />
+      <app-kpi-card
+        [label]="t('kpi.openShifts')"
+        [value]="openShifts()"
+        [hint]="t('kpi.openShiftsEmpty')"
+      />
+      <app-kpi-card
+        [label]="t('kpi.lowStock')"
+        [value]="lowStock()"
+        [hint]="t('kpi.lowStockEmpty')"
+      />
+    </div>
+  } @else {
+    <!-- ================= Cashier ================= -->
+    <div class="ph">
+      <div class="ph__t">
+        <h1>{{ t('cashier.' + dayPart, { name: firstName() }) }}</h1>
+        <p>{{ t('cashier.text') }}</p>
+      </div>
+    </div>
+
+    <div class="hero">
+      <section class="card card--ready" aria-labelledby="ready-title">
+        <h2 id="ready-title">{{ t('cashier.ready') }}</h2>
+        <p>
+          @if (terminalName() && session.branch()) {
+            {{
+              t('cashier.openShift', { terminal: terminalName(), branch: session.branch()?.name })
+            }}
+          } @else {
+            {{ t('cashier.openShiftPlain') }}
+          }
+        </p>
+        <div>
+          <a vdButton="primary" routerLink="/pos">
+            <svg lucideMonitor aria-hidden="true"></svg>{{ t('openPos') }}
+          </a>
+        </div>
+      </section>
+      <section class="card" aria-labelledby="last-title">
+        <h2 id="last-title">{{ t('cashier.lastShift') }}</h2>
+        <!-- TODO(you): show the last shift's summary here once it exists. -->
+        <p>{{ t('cashier.noShifts') }}</p>
+      </section>
+    </div>
+  }
+</ng-container>

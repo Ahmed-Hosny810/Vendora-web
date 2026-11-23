@@ -1,0 +1,197 @@
+<ng-container *transloco="let t; read: 'branches'">
+  @switch (status()) {
+    @case ('loading') {
+      <div class="loading" aria-busy="true">
+        <span class="vd-skeleton title-sk" aria-hidden="true"></span>
+        <span class="vd-skeleton card-sk" aria-hidden="true"></span>
+      </div>
+    }
+
+    @case ('error') {
+      <div class="vd-tablewrap">
+        <div class="vd-empty" role="alert">
+          <span class="vd-empty__art"><svg lucideCircleExclamationPoint></svg></span>
+          <h2 class="vd-empty__title">{{ t('details.errorTitle') }}</h2>
+          <p class="vd-empty__text">{{ t('details.errorText') }}</p>
+          <button vdButton type="button" (click)="load()">
+            <svg lucideRefreshCw aria-hidden="true"></svg>{{ t('details.tryAgain') }}
+          </button>
+        </div>
+      </div>
+    }
+
+    @default {
+      @if (branch(); as b) {
+        <app-page-head [title]="b.nameEn">
+          <ng-container title-extra>
+            @if (b.isMain) {
+              <span class="main-tag">{{ t('mainTag') }}</span>
+            }
+            <span
+              class="vd-badge vd-badge--pill vd-badge--dot"
+              [class.vd-badge--success]="b.active"
+              [class.vd-badge--warning]="!b.active"
+            >
+              {{ b.active ? t('status.active') : t('status.inactive') }}
+            </span>
+          </ng-container>
+          <a vdButton [routerLink]="['/branches', b.id, 'edit']">
+            <svg lucidePencil aria-hidden="true"></svg>{{ t('details.edit') }}
+          </a>
+          <button vdButton="primary" type="button" (click)="openTerminal()">
+            <svg lucidePlus aria-hidden="true"></svg>{{ t('details.addTerminal') }}
+          </button>
+        </app-page-head>
+
+        <div class="vd-tabs" role="tablist" [attr.aria-label]="t('details.tabs')">
+          <button
+            type="button"
+            class="vd-tab"
+            role="tab"
+            id="tab-details"
+            aria-controls="panel-details"
+            [attr.aria-selected]="tab() === 'details'"
+            (click)="tab.set('details')"
+          >
+            {{ t('details.details') }}
+          </button>
+          <button
+            type="button"
+            class="vd-tab"
+            role="tab"
+            id="tab-terminals"
+            aria-controls="panel-terminals"
+            [attr.aria-selected]="tab() === 'terminals'"
+            (click)="tab.set('terminals')"
+          >
+            {{ t('details.terminals') }} <span class="vd-count">{{ terminals().length }}</span>
+          </button>
+        </div>
+
+        @if (tab() === 'details') {
+          <div class="grid" role="tabpanel" id="panel-details" aria-labelledby="tab-details">
+            <div class="col">
+              <section class="card" aria-labelledby="card-title">
+                <h2 class="card__h" id="card-title">{{ t('details.card') }}</h2>
+                <dl class="dl">
+                  <dt>{{ t('details.nameEn') }}</dt>
+                  <dd>
+                    <bdi lang="en">{{ b.nameEn }}</bdi>
+                  </dd>
+                  <dt>{{ t('details.nameAr') }}</dt>
+                  <dd>
+                    <bdi lang="ar">{{ b.nameAr || '—' }}</bdi>
+                  </dd>
+                  <dt>{{ t('details.code') }}</dt>
+                  <dd class="mono">
+                    <bdi>{{ b.code }}</bdi>
+                  </dd>
+                  <dt>{{ t('details.city') }}</dt>
+                  <dd>{{ b.city || '—' }}</dd>
+                  <dt>{{ t('details.address') }}</dt>
+                  <dd>
+                    <bdi>{{ b.address || '—' }}</bdi>
+                  </dd>
+                  <dt>{{ t('details.phone') }}</dt>
+                  <dd>
+                    <bdi dir="ltr">{{ b.phone || '—' }}</bdi>
+                  </dd>
+                  <dt>{{ t('details.negative') }}</dt>
+                  <dd>
+                    {{ b.allowNegativeStock ? t('details.allowed') : t('details.notAllowed') }}
+                  </dd>
+                </dl>
+              </section>
+
+              @if (!terminals().length) {
+                <section class="next" aria-labelledby="next-title">
+                  <span class="next__ic" aria-hidden="true"><svg lucideMonitor></svg></span>
+                  <div>
+                    <h2 id="next-title">{{ t('details.nextTitle') }}</h2>
+                    <p>{{ t('details.nextText') }}</p>
+                  </div>
+                  <button vdButton="primary" type="button" (click)="openTerminal()">
+                    <svg lucidePlus aria-hidden="true"></svg>{{ t('details.addTerminal') }}
+                  </button>
+                </section>
+              }
+            </div>
+            <aside class="side">
+              <app-branch-shop
+                [nameEn]="b.nameEn"
+                [nameAr]="b.nameAr"
+                [city]="b.city"
+                [main]="b.isMain"
+              />
+            </aside>
+          </div>
+        } @else {
+          <div
+            class="vd-tablewrap"
+            role="tabpanel"
+            id="panel-terminals"
+            aria-labelledby="tab-terminals"
+          >
+            @if (terminals().length) {
+              <div class="vd-tablescroll">
+                <table class="vd-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">{{ t('details.cols.terminal') }}</th>
+                      <th scope="col">{{ t('details.cols.code') }}</th>
+                      <th scope="col">{{ t('details.cols.branch') }}</th>
+                      <th scope="col">{{ t('details.cols.status') }}</th>
+                      <th scope="col">
+                        <span class="vd-sr">{{ t('details.edit_') }}</span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (term of terminals(); track term.id) {
+                      <tr [class.is-new]="term.id === newTerminalId()">
+                        <td>
+                          <b>{{ term.name }}</b>
+                        </td>
+                        <td class="mono" dir="ltr">{{ term.deviceCode }}</td>
+                        <td lang="en" dir="ltr">{{ b.nameEn }}</td>
+                        <td>
+                          <span
+                            class="vd-badge vd-badge--pill vd-badge--dot"
+                            [class.vd-badge--success]="term.active"
+                            [class.vd-badge--warning]="!term.active"
+                          >
+                            {{ term.active ? t('status.active') : t('status.inactive') }}
+                          </span>
+                        </td>
+                        <td class="actions">
+                          <button
+                            vdButton="ghost"
+                            size="sm"
+                            type="button"
+                            [attr.aria-label]="t('details.editLabel', { name: term.name })"
+                            (click)="openTerminal(term)"
+                          >
+                            <svg lucidePencil aria-hidden="true"></svg>{{ t('details.edit_') }}
+                          </button>
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            } @else {
+              <div class="vd-empty">
+                <span class="vd-empty__art"><svg lucideMonitor></svg></span>
+                <h2 class="vd-empty__title">{{ t('details.emptyTitle') }}</h2>
+                <p class="vd-empty__text">{{ t('details.emptyText') }}</p>
+                <button vdButton="primary" type="button" (click)="openTerminal()">
+                  <svg lucidePlus aria-hidden="true"></svg>{{ t('details.addTerminalShort') }}
+                </button>
+              </div>
+            }
+          </div>
+        }
+      }
+    }
+  }
+</ng-container>

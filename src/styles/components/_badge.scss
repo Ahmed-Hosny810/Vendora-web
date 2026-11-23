@@ -1,6 +1,7 @@
 // ---------- Badge: short status label ----------
 // <span class="vd-badge vd-badge--success vd-badge--dot">Active</span>
 // Tones: (none) neutral · --success · --warning · --danger · --info · --brand · --outline
+// Shape: --pill (round ends) · --dot (dot before the label)
 
 .vd-badge {
   display: inline-flex;
@@ -49,6 +50,13 @@
   &--outline {
     background: transparent;
     border: 1px solid var(--line-strong);
+  }
+
+  // Round ends, for statuses in tables (Active, Inactive).
+  &--pill {
+    min-height: 24px;
+    padding-inline: 9px;
+    border-radius: var(--radius-pill);
   }
 
   // A small dot in the current text colour, before the label.

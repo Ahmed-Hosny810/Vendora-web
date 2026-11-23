@@ -1,0 +1,62 @@
+@use 'abstracts' as *;
+
+:host {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.t {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  margin-inline-end: auto;
+}
+
+h1 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  font: 700 30px/1.1 var(--font-display);
+  letter-spacing: -0.02em;
+
+  :host-context(:lang(ar)) & {
+    font-family: 'Alexandria', var(--font-display);
+    letter-spacing: 0;
+  }
+
+  @include down(md) {
+    font-size: 26px;
+  }
+}
+
+p {
+  max-width: 640px;
+  margin: 0;
+  color: var(--ink-700);
+  font-size: 15px;
+  line-height: 22px;
+}
+
+.acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  &:empty {
+    display: none;
+  }
+
+  // Phones: buttons share the full width under the text.
+  @include down(md) {
+    width: 100%;
+
+    ::ng-deep > .vd-btn {
+      flex: 1;
+      justify-content: center;
+    }
+  }
+}

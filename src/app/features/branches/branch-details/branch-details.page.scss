@@ -1,0 +1,135 @@
+@use 'abstracts' as *;
+@use '../../../shared/styles/app-forms' as forms;
+@use '../styles/branches';
+
+:host {
+  display: contents;
+}
+
+.main-tag {
+  @include branches.main-tag;
+}
+
+.grid {
+  @include forms.grid;
+}
+
+.col {
+  @include forms.column;
+}
+
+.side {
+  @include forms.preview;
+}
+
+.card {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--paper-0);
+
+  &__h {
+    margin: 0;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--line);
+    font: 700 16px/1.2 var(--font-display);
+
+    :host-context(:lang(ar)) & {
+      font-family: 'Alexandria', var(--font-display);
+    }
+  }
+}
+
+.dl {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 10px 16px;
+  margin: 0;
+  padding: 20px;
+  font-size: 14px;
+
+  dt {
+    color: var(--ink-500);
+  }
+
+  dd {
+    margin: 0;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+
+  .mono {
+    font-family: var(--font-mono);
+  }
+
+  @include down(md) {
+    grid-template-columns: 1fr;
+    gap: 2px;
+
+    dd {
+      margin-bottom: 10px;
+    }
+  }
+}
+
+// "Next: add a terminal": butter card with a thick pine edge.
+.next {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  border: 2px solid var(--pine-600);
+  border-radius: var(--radius-lg);
+  background: var(--butter-100);
+
+  &__ic {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--butter-300);
+    color: var(--pine-600);
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 0;
+    color: var(--ink-700);
+    font-size: 14px;
+  }
+
+  @include down(md) {
+    grid-template-columns: auto 1fr;
+
+    .vd-btn {
+      grid-column: 1 / -1;
+      justify-content: center;
+    }
+  }
+}
+
+.loading {
+  display: grid;
+  gap: 24px;
+
+  .title-sk {
+    width: 240px;
+    height: 32px;
+  }
+
+  .card-sk {
+    height: 280px;
+  }
+}

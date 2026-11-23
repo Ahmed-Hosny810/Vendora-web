@@ -109,6 +109,60 @@ export const routes: Routes = [
     ],
   },
   {
+    // The signed-in app: sidebar + top bar around every business page.
+    // Must come after the public website and sign-in groups (same reason as above).
+    // TODO(you): guard it (signed in, business active), and guard manager-only
+    //  pages by role (send others to /access-denied?area=<nav key>).
+    path: '',
+    loadComponent: () => import('./layouts/app-layout/app-layout').then((m) => m.AppLayout),
+    children: [
+      {
+        path: 'overview',
+        loadComponent: () =>
+          import('./features/overview/overview.page').then((m) => m.OverviewPage),
+      },
+      {
+        // Branches and their terminals.
+        path: 'branches',
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./features/branches/branches-list/branches-list.page').then(
+                (m) => m.BranchesListPage,
+              ),
+          },
+          {
+            path: 'new',
+            loadComponent: () =>
+              import('./features/branches/branch-form/branch-form.page').then(
+                (m) => m.BranchFormPage,
+              ),
+          },
+          {
+            path: ':id',
+            loadComponent: () =>
+              import('./features/branches/branch-details/branch-details.page').then(
+                (m) => m.BranchDetailsPage,
+              ),
+          },
+          {
+            path: ':id/edit',
+            loadComponent: () =>
+              import('./features/branches/branch-form/branch-form.page').then(
+                (m) => m.BranchFormPage,
+              ),
+          },
+        ],
+      },
+      {
+        path: 'access-denied',
+        loadComponent: () =>
+          import('./features/access-denied/access-denied.page').then((m) => m.AccessDeniedPage),
+      },
+    ],
+  },
+  {
     // Component gallery for development. canMatch hides it in production builds.
     path: 'dev/ui',
     canMatch: [() => isDevMode()],

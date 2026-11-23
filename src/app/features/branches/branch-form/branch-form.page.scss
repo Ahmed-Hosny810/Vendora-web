@@ -1,0 +1,46 @@
+@use '../../../shared/styles/app-forms' as forms;
+
+:host {
+  display: contents;
+}
+
+.grid {
+  @include forms.grid;
+  @include forms.field-bits;
+}
+
+.col {
+  @include forms.column;
+
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.two {
+  @include forms.two;
+}
+
+.arabic {
+  font-family: 'IBM Plex Sans Arabic', var(--font-sans);
+}
+
+.toggle {
+  @include forms.toggle-row;
+}
+
+.foot {
+  @include forms.foot;
+}
+
+.preview {
+  @include forms.preview;
+
+  &__cap {
+    @include forms.preview-cap;
+  }
+
+  &__note {
+    @include forms.preview-note;
+  }
+}

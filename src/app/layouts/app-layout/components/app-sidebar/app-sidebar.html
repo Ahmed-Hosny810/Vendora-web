@@ -1,0 +1,57 @@
+<ng-container *transloco="let t; read: 'shell'">
+  <a
+    class="brand"
+    routerLink="/overview"
+    [attr.aria-label]="t('homeLabel')"
+    (click)="navigate.emit()"
+  >
+    <vd-wordmark />
+  </a>
+
+  @if (business(); as biz) {
+    <div class="biz">
+      <span class="biz__awning" aria-hidden="true"></span>
+      <span class="biz__text">
+        <b lang="en" dir="auto">{{ biz.name }}</b>
+        @if (biz.type) {
+          <span>{{ t('types.' + biz.type) }}</span>
+        }
+      </span>
+    </div>
+  }
+
+  <nav [attr.aria-label]="t('mainNav')">
+    <ul class="nav">
+      @for (group of groups(); track group.key) {
+        @if (group.key) {
+          <li class="nav__cap" aria-hidden="true">{{ t('groups.' + group.key) }}</li>
+        }
+        @for (item of group.items; track item.key) {
+          <li>
+            <a
+              class="nav__link"
+              [class.nav__link--pos]="item.key === 'pos'"
+              [routerLink]="item.link"
+              routerLinkActive="is-active"
+              ariaCurrentWhenActive="page"
+              (click)="navigate.emit()"
+            >
+              <svg [lucideIcon]="item.icon" aria-hidden="true"></svg>
+              <span>{{ t('nav.' + item.key) }}</span>
+            </a>
+          </li>
+        }
+      }
+    </ul>
+  </nav>
+
+  @if (setupDone() !== null) {
+    <a class="setup" routerLink="/overview" (click)="navigate.emit()">
+      <span
+        ><b>{{ t('setup') }}</b> ·
+        {{ t('setupCount', { done: setupDone(), total: setupTotal() }) }}</span
+      >
+      <span class="setup__meter" aria-hidden="true"><i [style.width.%]="setupPercent()"></i></span>
+    </a>
+  }
+</ng-container>

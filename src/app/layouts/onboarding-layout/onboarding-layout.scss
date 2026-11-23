@@ -49,3 +49,9 @@
     padding: 28px 20px 40px;
   }
 }
+
+// <router-outlet> is an empty marker element: keep it out of the grid,
+// or the grid gap would add space above the page.
+router-outlet {
+  display: none;
+}

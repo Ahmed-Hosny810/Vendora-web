@@ -1,0 +1,75 @@
+{
+  "homeLabel": "Vendora home",
+  "breadcrumb": "Breadcrumb",
+  "pages": {
+    "addBranch": "Add branch",
+    "editBranch": "Edit branch"
+  },
+  "mainNav": "Main navigation",
+  "openMenu": "Open menu",
+  "closeMenu": "Close menu",
+  "nav": {
+    "overview": "Overview",
+    "pos": "Point of sale",
+    "sales": "Sales",
+    "customers": "Customers",
+    "products": "Products",
+    "categories": "Categories",
+    "units": "Units",
+    "taxRates": "Tax rates",
+    "inventory": "Inventory",
+    "branches": "Branches and terminals",
+    "employees": "Employees",
+    "reports": "Reports",
+    "billing": "Billing",
+    "paymentMethods": "Payment methods",
+    "settings": "Settings"
+  },
+  "groups": {
+    "sell": "Sell",
+    "catalog": "Catalog",
+    "stock": "Stock",
+    "business": "Business"
+  },
+  "setup": "Setup",
+  "setupCount": "{{done}} of {{total}} done",
+  "roles": {
+    "owner": "Owner",
+    "admin": "Admin",
+    "cashier": "Cashier",
+    "inventoryStaff": "Inventory staff"
+  },
+  "branch": "Branch",
+  "switchBranch": "Switch branch",
+  "notifications": "Notifications",
+  "notificationsUnread": "Notifications, {{count}} unread",
+  "markAllRead": "Mark all as read",
+  "caughtUp": "You’re all caught up",
+  "caughtUpText": "New notifications show up here.",
+  "seeAll": "See all notifications",
+  "accountMenu": "Account menu",
+  "profile": "My profile",
+  "changePassword": "Change password",
+  "signOut": "Sign out",
+  "denied": {
+    "badge": "Staff only",
+    "title": "This area is for managers",
+    "text": "Your role doesn’t include {{area}}. If you need it, ask the business owner to change your access.",
+    "thisArea": "This area",
+    "back": "Back to overview"
+  },
+  "types": {
+    "restaurant": "Restaurant",
+    "cafe": "Café",
+    "grocery": "Grocery",
+    "minimarket": "Mini Market",
+    "pharmacy": "Pharmacy",
+    "clothing": "Clothing Store",
+    "furniture": "Furniture Store",
+    "cosmetics": "Cosmetics Store",
+    "accessories": "Accessories Store",
+    "electronics": "Electronics Store",
+    "salon": "Salon",
+    "retail": "General Retail"
+  }
+}

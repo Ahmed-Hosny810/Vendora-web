@@ -1,0 +1,60 @@
+<section class="tape" aria-labelledby="setup-title" *transloco="let t; read: 'overview.setup'">
+  <div class="tape__head">
+    <div class="tape__title">
+      <h2 id="setup-title">{{ t('title') }}</h2>
+      <p>{{ t('text') }}</p>
+    </div>
+    <span
+      class="meter"
+      role="progressbar"
+      aria-valuemin="0"
+      [attr.aria-valuemax]="total"
+      [attr.aria-valuenow]="doneCount()"
+      [attr.aria-label]="t('progress')"
+    >
+      <i [style.width.%]="percent()"></i>
+    </span>
+    <b class="count">{{ doneCount() }}/{{ total }}</b>
+  </div>
+
+  <ol class="tasks">
+    @for (task of tasks; track task.key) {
+      @let isDone = done().has(task.key);
+      @let isNext = task.key === nextKey();
+      <li class="task" [class.task--done]="isDone" [class.task--next]="isNext">
+        <span class="task__ck" aria-hidden="true">
+          @if (isDone) {
+            <svg lucideCheck></svg>
+          }
+        </span>
+        <span class="task__ic" aria-hidden="true"><svg [lucideIcon]="task.icon"></svg></span>
+        <span class="task__t">
+          <b>
+            @if (isDone) {
+              <span class="vd-sr">{{ t('donePrefix') }}</span>
+            }
+            <span class="task__name">{{ t('tasks.' + task.key + '.title') }}</span>
+            @if (task.tag) {
+              <span class="tag" [class.tag--optional]="task.tag === 'optional'">{{
+                t('tags.' + task.tag)
+              }}</span>
+            }
+          </b>
+          <span>{{ t('tasks.' + task.key + '.text') }}</span>
+        </span>
+
+        @if (isDone) {
+          <span class="stamp" [class.stamp--in]="task.key === justDone()" aria-hidden="true">{{
+            t('done')
+          }}</span>
+        } @else if (isNext) {
+          <a vdButton="primary" size="sm" [routerLink]="task.link">
+            {{ t('start') }}<svg lucideArrowRight class="vd-flip-rtl" aria-hidden="true"></svg>
+          </a>
+        } @else {
+          <a vdButton size="sm" [routerLink]="task.link">{{ t('start') }}</a>
+        }
+      </li>
+    }
+  </ol>
+</section>
