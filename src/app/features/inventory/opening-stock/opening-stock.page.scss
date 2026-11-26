@@ -1,0 +1,219 @@
+@use 'abstracts' as *;
+@use '../../../shared/styles/app-forms' as forms;
+
+:host {
+  display: contents;
+}
+
+.grid {
+  @include forms.grid;
+  @include forms.field-bits;
+}
+
+.col {
+  @include forms.column;
+}
+
+.two {
+  @include forms.two;
+}
+
+.foot {
+  @include forms.foot;
+}
+
+.side {
+  @include forms.preview;
+}
+
+// Arrows point the reading direction (flip in Arabic).
+.dir {
+  :host-context([dir='rtl']) & {
+    transform: scaleX(-1);
+  }
+}
+
+// Bigger numbers in the quantity boxes, as on a stock slip.
+.qty .vd-input {
+  min-height: 48px;
+  font: 600 18px/1 var(--font-mono);
+}
+
+// ---------- Review: the stock slip ----------
+.slip {
+  overflow: hidden;
+  border: 1.5px solid var(--pine-600);
+  border-radius: var(--radius-lg);
+  background: var(--paper-0);
+  box-shadow: 5px 5px 0 var(--butter-500);
+
+  :host-context([dir='rtl']) & {
+    box-shadow: -5px 5px 0 var(--butter-500);
+  }
+
+  &__h {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 20px;
+    background: var(--pine-600);
+    color: var(--butter-300);
+
+    h2 {
+      margin: 0;
+      font: 700 16px/1.2 var(--font-display);
+
+      :host-context(:lang(ar)) & {
+        font-family: 'Alexandria', var(--font-display);
+      }
+    }
+
+    // "OPENING COUNT" stamp.
+    span {
+      padding: 5px 8px;
+      border: 1.5px solid var(--butter-300);
+      border-radius: 4px;
+      font: 600 11px/1 var(--font-mono);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+
+      :host-context(:lang(ar)) & {
+        font-family: 'IBM Plex Sans Arabic', var(--font-sans);
+        letter-spacing: 0;
+      }
+    }
+  }
+
+  dl {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 12px 16px;
+    margin: 0;
+    padding: 20px;
+    font-size: 15px;
+
+    @include down(md) {
+      grid-template-columns: 1fr 1fr;
+      font-size: 14px;
+    }
+  }
+
+  dt {
+    color: var(--ink-500);
+  }
+
+  dd {
+    margin: 0;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+
+    &.mono {
+      font-family: var(--font-mono);
+    }
+  }
+
+  &__note {
+    display: flex;
+    gap: 10px;
+    margin: 0 20px 20px;
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    background: var(--info-bg);
+    color: var(--info-fg);
+    font-size: 13px;
+    line-height: 19px;
+
+    svg {
+      flex: none;
+      width: 16px;
+      height: 16px;
+      margin-top: 2px;
+    }
+  }
+}
+
+// ---------- Saved ----------
+.success {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  padding: 48px 24px;
+  text-align: center;
+
+  &__ic {
+    display: grid;
+    place-items: center;
+    width: 72px;
+    height: 72px;
+    border-radius: 22px;
+    background: var(--pine-600);
+    color: var(--butter-300);
+    box-shadow: 5px 5px 0 var(--butter-500);
+    animation: stamp-in 600ms cubic-bezier(0.2, 1.6, 0.4, 1) both;
+
+    svg {
+      width: 34px;
+      height: 34px;
+    }
+  }
+
+  h2 {
+    margin: 0;
+    font: 700 26px/1.2 var(--font-display);
+
+    :host-context(:lang(ar)) & {
+      font-family: 'Alexandria', var(--font-display);
+    }
+  }
+
+  p {
+    max-width: 460px;
+    margin: 0;
+    color: var(--ink-700);
+    line-height: 22px;
+  }
+
+  &__acts {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+
+    @include down(md) {
+      flex-direction: column;
+      align-self: stretch;
+
+      .vd-btn {
+        justify-content: center;
+      }
+    }
+  }
+}
+
+// ---------- Loading ----------
+.form-sk {
+  height: 420px;
+}
+
+.side-sk {
+  height: 240px;
+
+  @include down(lg) {
+    display: none;
+  }
+}
+
+@keyframes stamp-in {
+  from {
+    opacity: 0;
+    transform: scale(1.4) rotate(-6deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .success__ic {
+    animation: none;
+  }
+}

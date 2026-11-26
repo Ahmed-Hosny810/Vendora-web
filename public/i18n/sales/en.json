@@ -1,0 +1,52 @@
+{
+  "list": {
+    "title": "Sales",
+    "text": "Everything sold at {{branch}}.",
+    "openPos": "Open POS",
+    "period": "Period",
+    "periods": {
+      "today": "Today",
+      "week": "Last 7 days",
+      "month": "Last 30 days"
+    },
+    "kpi": {
+      "count": "Sales",
+      "countHint": "Completed sales",
+      "revenue": "Revenue",
+      "average": "Average sale",
+      "egp": "EGP",
+      "attention": "Need attention",
+      "attentionHint": "Paid, receipt not issued"
+    },
+    "loading": "Loading sales…",
+    "errorTitle": "We couldn’t load the sales",
+    "errorText": "Check your connection and try again.",
+    "tryAgain": "Try again",
+    "emptyTitle": "No sales in this period",
+    "emptyText": "Sales show up here as soon as a cashier completes one at the POS.",
+    "search": "Receipt, customer or cashier",
+    "searchLabel": "Search sales",
+    "statuses": {
+      "all": "All",
+      "completed": "Completed",
+      "attention": "Needs attention",
+      "held": "On hold"
+    },
+    "cols": {
+      "receipt": "Receipt",
+      "date": "Date",
+      "customer": "Customer",
+      "cashier": "Cashier",
+      "payment": "Payment",
+      "total": "Total",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "walkIn": "Walk-in",
+    "receipt": "Receipt",
+    "receiptLabel": "Receipt {{number}}",
+    "finish": "Finish sale",
+    "heldHint": "Resume it at the POS",
+    "noMatch": "No sales match your search."
+  }
+}

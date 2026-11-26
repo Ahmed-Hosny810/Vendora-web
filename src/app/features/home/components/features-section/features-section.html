@@ -1,0 +1,169 @@
+<section
+  class="sec"
+  id="features"
+  aria-labelledby="features-title"
+  *transloco="let t; read: 'home'"
+>
+  <div class="vd-container">
+    <app-section-heading
+      class="head"
+      headingId="features-title"
+      [overline]="t('features.overline')"
+      [title]="t('features.title')"
+      [highlight]="t('features.highlight')"
+      [lead]="t('features.lead')"
+    />
+
+    <div class="bento">
+      <!-- A: selling (yellow, with a tilted receipt) -->
+      <article class="card card--sell">
+        <div class="card__text">
+          <h3>{{ t('features.sell.title') }}</h3>
+          <p class="sub">{{ t('features.sell.text') }}</p>
+          <ul class="caps">
+            @for (cap of t('features.sell.caps'); track $index) {
+              <li>{{ cap }}</li>
+            }
+          </ul>
+        </div>
+        <div class="rcpt" aria-hidden="true">
+          <div class="c b">{{ t('features.receipt.store') }}</div>
+          <div class="c">{{ t('features.receipt.where') }}</div>
+          <hr />
+          <div class="r">
+            <span>{{ t('features.receipt.walkIn') }}</span>
+          </div>
+          <div class="r">
+            <span>{{ t('features.receipt.item') }}</span
+            ><bdi>480.00</bdi>
+          </div>
+          <div class="r">
+            <span>{{ t('features.receipt.discount') }}</span
+            ><bdi>−24.00</bdi>
+          </div>
+          <hr />
+          <div class="r b">
+            <span>{{ t('features.receipt.total') }}</span
+            ><bdi>456.00</bdi>
+          </div>
+          <div class="r">
+            <span>{{ t('features.receipt.wallet') }}</span
+            ><bdi>456.00</bdi>
+          </div>
+          <hr />
+          <div class="c">{{ t('features.receipt.reprint') }}</div>
+        </div>
+      </article>
+
+      <!-- B: catalog and stock (stock meters) -->
+      <article class="card card--catalog">
+        <h3>{{ t('features.catalog.title') }}</h3>
+        <p class="sub">{{ t('features.catalog.text') }}</p>
+        <div class="meter" role="img" [attr.aria-label]="t('features.catalog.meterLabel')">
+          <div>
+            <span>{{ t('features.catalog.oil') }}</span
+            ><bdi class="fig">12</bdi>
+            <span class="track"><i style="width: 72%"></i></span>
+          </div>
+          <div class="low">
+            <span>{{ t('features.catalog.mug') }}</span
+            ><bdi class="fig">4</bdi>
+            <span class="track"><i style="width: 18%"></i></span>
+          </div>
+        </div>
+        <ul class="caps">
+          @for (cap of t('features.catalog.caps'); track $index) {
+            <li>{{ cap }}</li>
+          }
+        </ul>
+      </article>
+
+      <!-- C: branches and people (dark green) -->
+      <article class="card card--team">
+        <h3>{{ t('features.team.title') }}</h3>
+        <p class="sub">{{ t('features.team.text') }}</p>
+        <div class="pins">
+          @for (branch of branches; track branch.key) {
+            <span class="pin">
+              <svg lucideStore aria-hidden="true"></svg>
+              {{ t('branches.' + branch.key) }}
+              <small>
+                {{
+                  branch.terminals === 1
+                    ? t('features.team.terminal')
+                    : t('features.team.terminals', { count: branch.terminals })
+                }}
+              </small>
+            </span>
+          }
+        </div>
+        <div class="avatars" aria-hidden="true">
+          @for (person of avatars; track person.initials) {
+            <span [style.background]="person.color">{{ person.initials }}</span>
+          }
+        </div>
+        <ul class="caps">
+          @for (cap of t('features.team.caps'); track $index) {
+            <li>{{ cap }}</li>
+          }
+        </ul>
+      </article>
+
+      <!-- D: reports (cashier table) -->
+      <article class="card card--reports">
+        <div class="card__text">
+          <h3>{{ t('features.reports.title') }}</h3>
+          <p class="sub">{{ t('features.reports.text') }}</p>
+          <ul class="caps">
+            @for (cap of t('features.reports.caps'); track $index) {
+              <li>{{ cap }}</li>
+            }
+          </ul>
+        </div>
+        <div class="mini" role="img" [attr.aria-label]="t('features.reports.tableLabel')">
+          <div class="mini__head">
+            <span>{{ t('features.reports.cashier') }}</span
+            ><span>{{ t('features.reports.sales') }}</span
+            ><span>{{ t('features.reports.egp') }}</span>
+          </div>
+          @for (row of cashiers; track row.name) {
+            <div>
+              <bdi>{{ row.name }}</bdi
+              ><bdi class="fig">{{ row.sales }}</bdi
+              ><bdi class="fig">{{ row.amount }}</bdi>
+            </div>
+          }
+        </div>
+      </article>
+
+      <!-- E: returns and notifications (mint) -->
+      <article class="card card--returns">
+        <h3>{{ t('features.returns.title') }}</h3>
+        <p class="sub">{{ t('features.returns.text') }}</p>
+        <div class="notes" aria-hidden="true">
+          <div class="note">
+            <span class="note__icon note__icon--warn"><svg lucidePackage></svg></span>
+            <div>
+              <strong>{{ t('features.returns.lowTitle') }}</strong>
+              <small>{{ t('features.returns.lowBody') }}</small>
+            </div>
+          </div>
+          <div class="note">
+            <span class="note__icon"><svg lucideRotateCcw></svg></span>
+            <div>
+              <strong>{{ t('features.returns.returnTitle') }}</strong>
+              <small>{{ t('features.returns.returnBody') }}</small>
+            </div>
+          </div>
+        </div>
+        <ul class="caps">
+          @for (cap of t('features.returns.caps'); track $index) {
+            <li>{{ cap }}</li>
+          }
+        </ul>
+      </article>
+    </div>
+
+    <p class="illus">{{ t('features.illustrative') }}</p>
+  </div>
+</section>

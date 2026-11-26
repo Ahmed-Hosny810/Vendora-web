@@ -1,0 +1,165 @@
+<ng-container *transloco="let t; read: 'branches'">
+  <app-page-head [title]="t('list.title')" [text]="t('list.text')">
+    @if (status() === 'ready' && branches().length) {
+      @if (limitReached()) {
+        <button vdButton="primary" type="button" disabled>
+          <svg lucidePlus aria-hidden="true"></svg>{{ t('list.add') }}
+        </button>
+      } @else {
+        <a vdButton="primary" routerLink="/branches/new">
+          <svg lucidePlus aria-hidden="true"></svg>{{ t('list.add') }}
+        </a>
+      }
+    }
+  </app-page-head>
+
+  @switch (status()) {
+    @case ('loading') {
+      <div class="vd-tablewrap" aria-busy="true">
+        <span class="vd-sr" role="status">{{ t('list.loading') }}</span>
+        @for (n of [1, 2, 3]; track n) {
+          <div class="sk-row" aria-hidden="true">
+            <span class="vd-skeleton"></span><span class="vd-skeleton"></span
+            ><span class="vd-skeleton"></span>
+          </div>
+        }
+      </div>
+    }
+
+    @case ('error') {
+      <div class="vd-tablewrap">
+        <div class="vd-empty" role="alert">
+          <span class="vd-empty__art"><svg lucideCircleExclamationPoint></svg></span>
+          <h2 class="vd-empty__title">{{ t('list.errorTitle') }}</h2>
+          <p class="vd-empty__text">{{ t('list.errorText') }}</p>
+          <button vdButton type="button" (click)="load()">
+            <svg lucideRefreshCw aria-hidden="true"></svg>{{ t('list.tryAgain') }}
+          </button>
+        </div>
+      </div>
+    }
+
+    @default {
+      @if (!branches().length) {
+        <!-- No branches yet -->
+        <div class="vd-tablewrap">
+          <div class="vd-empty empty">
+            <app-branch-shop class="empty__shop" />
+            <h2 class="vd-empty__title">{{ t('list.emptyTitle') }}</h2>
+            <p class="vd-empty__text">{{ t('list.emptyText') }}</p>
+            <a vdButton="primary" routerLink="/branches/new">
+              <svg lucidePlus aria-hidden="true"></svg>{{ t('list.add') }}
+            </a>
+          </div>
+        </div>
+      } @else {
+        @if (limitReached()) {
+          <div class="limit" role="status">
+            <svg lucideTriangleAlert aria-hidden="true"></svg>
+            <div>
+              <b>{{ t('list.limitTitle', { count: planLimit() }) }}</b>
+              <span>{{ t('list.limitText') }}</span>
+            </div>
+            <a vdButton routerLink="/billing">{{ t('list.viewPlans') }}</a>
+          </div>
+        }
+
+        <div class="vd-tablewrap">
+          <div class="vd-toolbar">
+            <label class="vd-search">
+              <svg lucideSearch aria-hidden="true"></svg>
+              <input
+                type="search"
+                [placeholder]="t('list.search')"
+                [attr.aria-label]="t('list.search')"
+                [value]="query()"
+                (input)="query.set($any($event.target).value)"
+              />
+            </label>
+            @for (f of filters; track f) {
+              <button
+                type="button"
+                class="vd-chip"
+                [attr.aria-pressed]="filter() === f"
+                (click)="filter.set(f)"
+              >
+                {{ t('list.chip', { label: t('list.' + f), count: counts()[f] }) }}
+              </button>
+            }
+          </div>
+
+          @if (visible().length) {
+            <div class="vd-tablescroll">
+              <table class="vd-table">
+                <thead>
+                  <tr>
+                    <th scope="col">{{ t('list.cols.branch') }}</th>
+                    <th scope="col">{{ t('list.cols.code') }}</th>
+                    <th scope="col">{{ t('list.cols.city') }}</th>
+                    <th scope="col">{{ t('list.cols.main') }}</th>
+                    <th scope="col">{{ t('list.cols.status') }}</th>
+                    <th scope="col">
+                      <span class="vd-sr">{{ t('list.view') }}</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (b of visible(); track b.id) {
+                    <tr>
+                      <td>
+                        <b
+                          ><bdi lang="en">{{ b.nameEn }}</bdi></b
+                        >
+                        @if (b.nameAr) {
+                          <small
+                            ><bdi lang="ar">{{ b.nameAr }}</bdi></small
+                          >
+                        }
+                      </td>
+                      <td class="mono" dir="ltr">{{ b.code }}</td>
+                      <td>{{ b.city }}</td>
+                      <td>
+                        @if (b.isMain) {
+                          <span class="main-tag">{{ t('mainTag') }}</span>
+                        }
+                      </td>
+                      <td>
+                        <span
+                          class="vd-badge vd-badge--pill vd-badge--dot"
+                          [class.vd-badge--success]="b.active"
+                          [class.vd-badge--warning]="!b.active"
+                        >
+                          {{ b.active ? t('list.active') : t('list.inactive') }}
+                        </span>
+                      </td>
+                      <td class="actions">
+                        <a
+                          vdButton="ghost"
+                          size="sm"
+                          [routerLink]="['/branches', b.id]"
+                          [attr.aria-label]="t('list.viewLabel', { name: b.nameEn })"
+                        >
+                          {{ t('list.view') }}
+                        </a>
+                        <a
+                          vdButton="ghost"
+                          size="sm"
+                          [routerLink]="['/branches', b.id, 'edit']"
+                          [attr.aria-label]="t('list.editLabel', { name: b.nameEn })"
+                        >
+                          <svg lucidePencil aria-hidden="true"></svg>{{ t('list.edit') }}
+                        </a>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          } @else {
+            <p class="no-match" role="status">{{ t('list.noMatch') }}</p>
+          }
+        </div>
+      }
+    }
+  }
+</ng-container>

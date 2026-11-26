@@ -1,0 +1,148 @@
+@use 'abstracts' as *;
+@use '../../styles/home';
+
+.sec {
+  @include home.section-space;
+}
+
+// Heading on top; side by side (5 : 7) on desktop.
+.grid {
+  display: grid;
+  gap: 32px;
+  align-items: start;
+
+  @include up(lg) {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 64px;
+  }
+}
+
+.head {
+  @include home.reveal;
+
+  // Desktop: the heading stays visible while the list scrolls.
+  @include up(lg) {
+    position: sticky;
+    top: 112px;
+  }
+}
+
+.illus {
+  @include home.illustrative;
+}
+
+.ledger {
+  margin: 0;
+  padding: 0;
+  border-block-start: 1.5px solid var(--ink-900);
+  list-style: none;
+}
+
+.row {
+  @include home.reveal;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-2) 24px;
+  padding-block: 24px;
+  border-block-end: 1.5px dashed var(--line-strong);
+
+  @include up(md) {
+    grid-template-columns: 64px minmax(0, 1fr);
+    padding-block: 32px;
+  }
+
+  h3 {
+    margin: 0;
+    font: 600 23px/28px var(--font-display);
+    letter-spacing: -0.02em;
+
+    @include up(md) {
+      font-size: 28px;
+      line-height: 34px;
+    }
+  }
+
+  p {
+    @include home.arabic-body;
+    max-width: 54ch;
+    margin: var(--space-2) 0 0;
+    color: var(--ink-700);
+    font-size: 17px;
+    line-height: 28px;
+  }
+}
+
+// Round number badge; each row has its own colour.
+.row__n {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1.5px solid var(--ink-900);
+  border-radius: 50%;
+  background: var(--paper-0);
+  font: 600 14px/1 var(--font-mono);
+
+  @include up(md) {
+    width: 48px;
+    height: 48px;
+  }
+
+  .row:nth-child(1) & {
+    background: var(--butter-300);
+  }
+
+  .row:nth-child(2) & {
+    background: var(--pine-300);
+  }
+
+  .row:nth-child(3) & {
+    background: var(--pine-100);
+  }
+
+  .row:nth-child(4) & {
+    background: var(--butter-100);
+  }
+}
+
+.proof {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-block-start: var(--space-2);
+
+  @include up(md) {
+    grid-column: 2;
+  }
+
+  bdi {
+    @include home.figure;
+  }
+}
+
+.chip {
+  @include home.proof-chip;
+}
+
+// The number spins in as the row scrolls into view.
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .row__n {
+      animation: num-pop linear both;
+      animation-timeline: view();
+      animation-range: entry 10% entry 60%;
+    }
+  }
+}
+
+@keyframes num-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.4) rotate(-30deg);
+  }
+}
+
+:host-context(:lang(ar)) .row h3 {
+  letter-spacing: 0;
+}

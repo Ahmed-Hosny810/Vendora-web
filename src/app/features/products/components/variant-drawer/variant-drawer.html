@@ -1,0 +1,208 @@
+<form
+  class="vd-drawer"
+  novalidate
+  *transloco="let t; read: 'products.variant'"
+  (submit)="onSubmit($event)"
+>
+  <header class="vd-drawer__head">
+    <div class="head">
+      <h2 class="vd-drawer__title" vdDialogTitle>
+        {{ data.variant ? t('editTitle') : t('addTitle') }}
+      </h2>
+      <span class="sub">{{ data.productName }}</span>
+    </div>
+    <button vdIconButton type="button" [label]="t('close')" (click)="ref.close()">
+      <svg lucideX></svg>
+    </button>
+  </header>
+
+  <fieldset class="vd-drawer__body body" [disabled]="saving()">
+    <legend class="vd-sr">{{ data.variant ? t('editTitle') : t('addTitle') }}</legend>
+    @if (status() === 'failed') {
+      <div class="vd-banner vd-banner--danger" role="alert">
+        <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+        <span class="vd-banner__body">{{ t('failed') }}</span>
+      </div>
+    }
+
+    <div class="vd-field">
+      <div class="vd-field__top">
+        <label class="vd-field__label" for="v-name"
+          >{{ t('name') }}<span class="req" aria-hidden="true">*</span></label
+        >
+        <span class="vd-field__counter" aria-hidden="true"
+          >{{ model().name.length }}/{{ limits.name }}</span
+        >
+      </div>
+      <input
+        id="v-name"
+        class="vd-input"
+        type="text"
+        dir="auto"
+        [placeholder]="t('namePlaceholder')"
+        [formField]="variantForm.name"
+        [attr.aria-invalid]="invalid('name') ? true : null"
+        aria-describedby="v-name-hint"
+      />
+      @if (invalid('name')) {
+        <p class="vd-field__error" id="v-name-hint">
+          <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('nameRequired') }}
+        </p>
+      } @else {
+        <p class="vd-field__hint" id="v-name-hint">{{ t('nameHint') }}</p>
+      }
+    </div>
+
+    @for (n of [1, 2]; track n) {
+      <fieldset class="pair">
+        <legend class="pair__n">{{ t('option', { n }) }}</legend>
+        <div class="vd-field">
+          <label class="vd-field__label" [for]="'v-o' + n"
+            >{{ t('optionName') }}<span class="opt">{{ t('optional') }}</span></label
+          >
+          @if (n === 1) {
+            <input
+              id="v-o1"
+              class="vd-input"
+              type="text"
+              dir="auto"
+              [placeholder]="t('option1Placeholder')"
+              [formField]="variantForm.option1Name"
+            />
+          } @else {
+            <input
+              id="v-o2"
+              class="vd-input"
+              type="text"
+              dir="auto"
+              [placeholder]="t('option2Placeholder')"
+              [formField]="variantForm.option2Name"
+            />
+          }
+        </div>
+        <div class="vd-field">
+          <label class="vd-field__label" [for]="'v-v' + n"
+            >{{ t('value') }}<span class="opt">{{ t('optional') }}</span></label
+          >
+          @if (n === 1) {
+            <input
+              id="v-v1"
+              class="vd-input"
+              type="text"
+              dir="auto"
+              [formField]="variantForm.option1Value"
+            />
+          } @else {
+            <input
+              id="v-v2"
+              class="vd-input"
+              type="text"
+              dir="auto"
+              [formField]="variantForm.option2Value"
+            />
+          }
+        </div>
+      </fieldset>
+    }
+
+    <div class="two">
+      <div class="vd-field">
+        <label class="vd-field__label" for="v-price"
+          >{{ t('price') }}<span class="req" aria-hidden="true">*</span></label
+        >
+        <div class="vd-inputgroup">
+          <input
+            id="v-price"
+            class="vd-input mono"
+            type="number"
+            inputmode="decimal"
+            step="0.01"
+            dir="ltr"
+            [formField]="variantForm.price"
+            [attr.aria-invalid]="invalid('price') ? true : null"
+          />
+          <span class="vd-inputgroup__affix" aria-hidden="true">{{ t('egp') }}</span>
+        </div>
+        @if (invalid('price')) {
+          <p class="vd-field__error">
+            <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('priceError') }}
+          </p>
+        }
+      </div>
+      @if (data.showCost) {
+        <div class="vd-field">
+          <label class="vd-field__label" for="v-cost"
+            >{{ t('cost') }}<span class="req" aria-hidden="true">*</span></label
+          >
+          <div class="vd-inputgroup">
+            <input
+              id="v-cost"
+              class="vd-input mono"
+              type="number"
+              inputmode="decimal"
+              step="0.01"
+              dir="ltr"
+              [formField]="variantForm.cost"
+              [attr.aria-invalid]="invalid('cost') ? true : null"
+            />
+            <span class="vd-inputgroup__affix" aria-hidden="true">{{ t('egp') }}</span>
+          </div>
+          @if (invalid('cost')) {
+            <p class="vd-field__error">
+              <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('priceError') }}
+            </p>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="two">
+      <div class="vd-field">
+        <label class="vd-field__label" for="v-sku"
+          >{{ t('sku') }}<span class="opt">{{ t('optional') }}</span></label
+        >
+        <input
+          id="v-sku"
+          class="vd-input mono"
+          type="text"
+          dir="ltr"
+          spellcheck="false"
+          [placeholder]="data.defaults.sku ? data.defaults.sku + '-…' : ''"
+          [formField]="variantForm.sku"
+          [attr.aria-invalid]="duplicate() ? true : null"
+          [attr.aria-describedby]="duplicate() ? 'v-dup' : null"
+        />
+      </div>
+      <div class="vd-field">
+        <label class="vd-field__label" for="v-bc"
+          >{{ t('barcode') }}<span class="opt">{{ t('optional') }}</span></label
+        >
+        <input
+          id="v-bc"
+          class="vd-input mono"
+          type="text"
+          dir="ltr"
+          inputmode="numeric"
+          spellcheck="false"
+          [formField]="variantForm.barcode"
+          [attr.aria-invalid]="duplicate() ? true : null"
+          [attr.aria-describedby]="duplicate() ? 'v-dup' : null"
+        />
+      </div>
+    </div>
+    @if (duplicate()) {
+      <p class="vd-field__error" id="v-dup" role="alert">
+        <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('duplicate') }}
+      </p>
+    }
+  </fieldset>
+
+  <footer class="vd-drawer__foot">
+    <button vdButton type="button" [disabled]="saving()" (click)="ref.close()">
+      {{ t('cancel') }}
+    </button>
+    <button vdButton="primary" type="submit" [loading]="saving()">
+      <svg lucideCheck aria-hidden="true"></svg>{{ t('save') }}
+    </button>
+  </footer>
+</form>

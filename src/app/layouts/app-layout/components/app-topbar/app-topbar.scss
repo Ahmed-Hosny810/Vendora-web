@@ -1,0 +1,376 @@
+@use 'abstracts' as *;
+
+:host {
+  position: relative;
+  z-index: 4;
+  display: block;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 68px;
+  padding: 12px 32px;
+  border-bottom: 1px solid var(--line);
+  background: var(--paper-0);
+
+  @include down(md) {
+    gap: 6px;
+    min-height: 60px;
+    padding: 10px 16px;
+  }
+}
+
+.heading {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  margin-inline-end: auto;
+}
+
+.crumbs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink-500);
+  font-size: 12px;
+
+  a {
+    color: var(--ink-500);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--pine-600);
+      text-decoration: underline;
+    }
+  }
+
+  svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  // Phones: just the title.
+  @include down(md) {
+    display: none;
+  }
+}
+
+.title {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  font: 700 18px/1.2 var(--font-display);
+  letter-spacing: -0.01em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  :host-context(:lang(ar)) & {
+    font-family: 'Alexandria', var(--font-display);
+    letter-spacing: 0;
+  }
+}
+
+// Shared look of the small round buttons.
+@mixin pressable {
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+}
+
+.iconbtn {
+  @include pressable;
+
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  color: var(--ink-700);
+
+  &:hover {
+    background: var(--paper-100);
+    color: var(--ink-900);
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+// Menu button: phones only (the sidebar is a drawer there).
+.hamb {
+  display: none;
+
+  @include down(md) {
+    display: inline-grid;
+  }
+}
+
+.bell .vd-count {
+  position: absolute;
+  top: 2px;
+  inset-inline-end: 0;
+}
+
+.chev {
+  width: 14px;
+  height: 14px;
+}
+
+.branch {
+  @include pressable;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  background: var(--paper-0);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+
+  &:hover {
+    border-color: var(--ink-700);
+  }
+
+  &__name {
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  svg:first-child {
+    width: 16px;
+    height: 16px;
+  }
+
+  small {
+    color: var(--ink-500);
+    font-weight: 500;
+  }
+
+  @include down(md) {
+    padding: 0 10px;
+
+    small {
+      display: none;
+    }
+  }
+}
+
+.lang {
+  @include pressable;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 10px;
+  border-radius: 8px;
+  color: var(--ink-700);
+  font-size: 13px;
+  font-weight: 600;
+
+  &:hover {
+    background: var(--paper-100);
+  }
+
+  &[lang='ar'] {
+    font-family: 'IBM Plex Sans Arabic', var(--font-sans);
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  // Phones: the account menu has the language instead.
+  @include down(md) {
+    display: none;
+  }
+}
+
+.user {
+  @include pressable;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding-block: 4px;
+  padding-inline: 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--paper-0);
+
+  &:hover {
+    border-color: var(--line-strong);
+  }
+
+  &__text {
+    display: grid;
+    text-align: start;
+
+    b {
+      font-size: 13px;
+    }
+
+    small {
+      color: var(--ink-500);
+      font-size: 11px;
+    }
+  }
+
+  // Phones: just the avatar.
+  @include down(md) {
+    padding: 3px;
+
+    .user__text,
+    .chev {
+      display: none;
+    }
+  }
+}
+
+.avatar {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1.5px solid var(--pine-600);
+  border-radius: 50%;
+  background: var(--butter-300);
+  color: var(--pine-900);
+  font: 700 13px/1 var(--font-sans);
+}
+
+// ---------- drop-downs: a panel under its button, lined up with its end edge ----------
+.drop {
+  position: relative;
+
+  &__panel {
+    position: absolute;
+    z-index: 10;
+    top: calc(100% + 8px);
+    inset-inline-end: 0;
+  }
+
+  // Phones: the panels can't hang off the button (it may be near the start
+  // edge), so they span the screen under the top bar.
+  @include down(md) {
+    position: static;
+
+    &__panel {
+      top: calc(100% - 4px);
+      inset-inline: 12px;
+      width: auto;
+    }
+  }
+}
+
+.top {
+  position: relative;
+}
+
+.menu {
+  display: grid;
+  gap: 2px;
+  min-width: 200px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--paper-0);
+  box-shadow: var(--shadow-3);
+  animation: pop 200ms var(--ease-out) both;
+
+  &--user {
+    width: 260px;
+
+    @include down(md) {
+      width: auto;
+    }
+  }
+
+  &__who {
+    display: grid;
+    gap: 2px;
+    margin-bottom: 4px;
+    padding: 10px;
+    border-bottom: 1px solid var(--line);
+    font-size: 13px;
+
+    span {
+      color: var(--ink-500);
+      font-size: 12px;
+    }
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 40px;
+    padding: 0 10px;
+    border: 0;
+    border-radius: 8px;
+    background: none;
+    color: var(--ink-900);
+    font: inherit;
+    font-size: 14px;
+    text-align: start;
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+      outline: none;
+      background: var(--paper-100);
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    &[lang='ar'] {
+      font-family: 'IBM Plex Sans Arabic', var(--font-sans);
+    }
+
+    &--danger {
+      color: var(--danger-fg);
+    }
+  }
+
+  &__check {
+    display: inline-grid;
+    width: 16px;
+    color: var(--pine-600);
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu {
+    animation: none;
+  }
+}

@@ -1,0 +1,258 @@
+{
+  "homeLabel": "Vendora",
+  "setupProgress": "Setup progress",
+  "signOut": "Sign out",
+  "completed": "completed",
+  "stepOf": "Step {{n}} of 4",
+  "steps": {
+    "details": "Business details",
+    "plan": "Plan",
+    "review": "Review",
+    "payment": "Payment"
+  },
+  "types": {
+    "restaurant": "Restaurant",
+    "cafe": "Café",
+    "grocery": "Grocery",
+    "minimarket": "Mini Market",
+    "pharmacy": "Pharmacy",
+    "clothing": "Clothing Store",
+    "furniture": "Furniture Store",
+    "cosmetics": "Cosmetics Store",
+    "accessories": "Accessories Store",
+    "electronics": "Electronics Store",
+    "salon": "Salon",
+    "retail": "General Retail"
+  },
+  "shop": {
+    "preview": "Shop preview",
+    "placeholder": "Your business name",
+    "chooseType": "Choose your business type",
+    "chooseTypeHint": "Your shop window will open up to match it.",
+    "trackingOn": "Stock tracking on",
+    "trackingOff": "Stock tracking off",
+    "door": {
+      "comingSoon": "Coming soon",
+      "openingSoon": "Opening soon",
+      "open": "Open",
+      "closed": "Closed"
+    }
+  },
+  "captions": {
+    "details": {
+      "title": "Your shop window",
+      "text": "It changes with your business type, and your sign shows the names you type."
+    },
+    "plan": {
+      "title": "{{name}} · {{type}}",
+      "text": "Your plan sets how many branches, products and cashiers your shop can have."
+    },
+    "review": {
+      "title": "Almost ready",
+      "text": "Create your business, then pay your first invoice to open the doors."
+    },
+    "invoice": {
+      "title": "One payment away",
+      "text": "The doors open as soon as your payment is confirmed."
+    },
+    "waiting": {
+      "title": "Waiting for confirmation",
+      "text": "The lights come on once Paymob confirms your payment."
+    },
+    "failed": {
+      "title": "Not open yet",
+      "text": "Return to your invoice whenever you’re ready to pay."
+    },
+    "activating": {
+      "title": "Lights coming on",
+      "text": "Your workspace is being activated."
+    },
+    "active": {
+      "title": "{{name}} is open",
+      "text": "Your subscription is active."
+    },
+    "welcome": {
+      "title": "Open for business",
+      "text": "Your shop is ready. Add what it sells and make the first sale."
+    }
+  },
+  "back": "Back",
+  "continue": "Continue",
+  "tryAgain": "Try again",
+  "egp": "EGP",
+  "optional": "Optional",
+  "details": {
+    "kicker": "Step 1 of 4 · Business details",
+    "title": "Let’s set up your *shop.*",
+    "lead": "Just the basics. Pick your business type and watch your shop window come to life.",
+    "required": "Required. Everything else is optional.",
+    "nameEn": "Business name in English",
+    "nameEnPlaceholder": "e.g. Nour Boutique",
+    "nameAr": "Business name in Arabic",
+    "nameArPlaceholder": "مثلاً: بوتيك نور",
+    "type": "Business type",
+    "typePlaceholder": "Choose a business type",
+    "currency": "Currency",
+    "currencyName": "Egyptian Pound",
+    "currencyHelp": "Vendora works in Egyptian pounds for now.",
+    "inventory": "Inventory tracking",
+    "track": "Track inventory",
+    "trackText": "Track product quantities and stock movements.",
+    "noTrack": "Don’t track inventory",
+    "noTrackText": "Manage sales without tracking stock quantities.",
+    "errors": {
+      "nameEn": "Enter your business name in English.",
+      "type": "Choose your business type."
+    }
+  },
+  "plan": {
+    "kicker": "Step 2 of 4 · Plan",
+    "title": "Choose your *plan.*",
+    "lead": "Every plan is billed monthly in Egyptian pounds. Pick the one that fits your branches, products and cashiers.",
+    "picked": "You picked {{plan}} on our website, so it’s selected. You can still change it.",
+    "fromWebsite": "From the website",
+    "legend": "Plans",
+    "perMonth": "per month",
+    "loading": "Loading plans…",
+    "missing": "Choose a plan to continue.",
+    "errorTitle": "We couldn’t load the plans",
+    "errorText": "Check your connection and try again. Your business details are saved.",
+    "unlimited": "Unlimited",
+    "yes": "Yes",
+    "no": "No",
+    "limits": {
+      "branches": "Branches",
+      "terminals": "Checkout terminals",
+      "employees": "Employees",
+      "products": "Products",
+      "cashiers": "Cashiers",
+      "variants": "Product variants"
+    }
+  },
+  "review": {
+    "kicker": "Step 3 of 4 · Review",
+    "title": "Check your *details.*",
+    "lead": "Make sure everything looks right. We’ll create your business when you confirm.",
+    "business": "Business details",
+    "editBusiness": "Edit business details",
+    "edit": "Edit",
+    "nameEn": "Name in English",
+    "nameAr": "Name in Arabic",
+    "type": "Business type",
+    "currency": "Currency",
+    "currencyValue": "EGP — Egyptian Pound",
+    "inventory": "Inventory",
+    "track": "Track inventory",
+    "noTrack": "Don’t track inventory",
+    "none": "Not added",
+    "plan": "Plan",
+    "editPlan": "Edit plan",
+    "limits": "Branches · Products · Cashiers",
+    "monthlyPrice": "Monthly price",
+    "errorTitle": "We couldn’t create your business.",
+    "errorText": "Nothing was lost. Check your connection and try again.",
+    "create": "Create business",
+    "creating": "Creating your business…",
+    "calm": "This only happens once, so please keep this page open."
+  },
+  "invoice": {
+    "kicker": "Step 4 of 4 · Payment",
+    "title": "Your first *invoice.*",
+    "lead": "Your business is created. Pay this invoice on Paymob’s secure checkout to activate your subscription.",
+    "invoice": "Invoice",
+    "number": "No. {{number}}",
+    "unpaid": "Unpaid",
+    "business": "Business",
+    "plan": "Plan",
+    "billing": "Billing",
+    "monthly": "Monthly",
+    "currency": "Currency",
+    "currencyValue": "EGP — Egyptian Pound",
+    "status": "Payment status",
+    "amountDue": "Amount due",
+    "loading": "Loading your invoice…",
+    "secure": "You’ll enter your card details on Paymob’s checkout page, not in Vendora. If you leave before paying, you’ll come back to this invoice.",
+    "pay": "Proceed to payment",
+    "opening": "Opening Paymob checkout…",
+    "didntOpen": "Checkout didn’t open?",
+    "errorTitle": "We couldn’t load your invoice",
+    "errorText": "Your business is saved. Try again in a moment."
+  },
+  "status": {
+    "kicker": "Payment",
+    "steps": {
+      "created": "Business created",
+      "back": "Back from Paymob checkout",
+      "waiting": "Waiting for payment confirmation",
+      "activate": "Activate your workspace",
+      "notCompleted": "Payment not completed",
+      "received": "Payment received",
+      "activating": "Activating your workspace",
+      "active": "Subscription active"
+    },
+    "waiting": {
+      "title": "Checking your *payment…*",
+      "lead": "We’re waiting for Paymob to confirm it. This page updates on its own, so there’s no need to pay again.",
+      "check": "Check again"
+    },
+    "failed": {
+      "title": "Payment wasn’t *completed.*",
+      "lead": "The checkout was closed, or the payment didn’t go through. Your invoice is still open, so you can try again.",
+      "return": "Return to invoice"
+    },
+    "activating": {
+      "title": "Payment received. *Opening your shop…*",
+      "lead": "We’re activating your workspace now. You don’t need to pay again."
+    },
+    "active": {
+      "kicker": "All set",
+      "title": "You’re *open* for business.",
+      "lead": "Your subscription is active. Let’s get your shop ready for its first sale.",
+      "setup": "Set up my business"
+    }
+  },
+  "welcome": {
+    "kicker": "Welcome to Vendora",
+    "title": "{{name}} is *live.* Now let’s make the first sale.",
+    "lead": "A few things to set up, in this order. Do them whenever you’re ready. Each one opens the right screen.",
+    "progress": "{{done}} of {{total}} done",
+    "checklist": "Setup checklist",
+    "start": "Start",
+    "done": "Done",
+    "skip": "Skip for now and go to the dashboard",
+    "tags": {
+      "tracking": "Inventory tracking on",
+      "ifNeeded": "If needed"
+    },
+    "items": {
+      "branch": {
+        "title": "Create your first branch",
+        "text": "Where your shop sells. You need at least one."
+      },
+      "terminal": {
+        "title": "Add a checkout terminal",
+        "text": "The device your cashiers sell on."
+      },
+      "products": {
+        "title": "Add products",
+        "text": "Names and prices of what you sell."
+      },
+      "stock": {
+        "title": "Add opening stock",
+        "text": "How many of each product you have today."
+      },
+      "employees": {
+        "title": "Invite employees",
+        "text": "Give your team their own accounts."
+      },
+      "shift": {
+        "title": "Open the first cashier shift",
+        "text": "Start a shift on your terminal before selling."
+      },
+      "sale": {
+        "title": "Make the first sale",
+        "text": "Ring up your first sale at the checkout."
+      }
+    }
+  }
+}

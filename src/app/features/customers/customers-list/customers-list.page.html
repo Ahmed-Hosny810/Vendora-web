@@ -1,0 +1,103 @@
+<ng-container *transloco="let t; read: 'customers.list'">
+  <app-page-head [title]="t('title')" [text]="t('text')">
+    @if (status() === 'ready') {
+      <button vdButton="primary" type="button" (click)="add()">
+        <svg lucideUserPlus aria-hidden="true"></svg>{{ t('add') }}
+      </button>
+    }
+  </app-page-head>
+
+  <div class="vd-tablewrap">
+    @switch (status()) {
+      @case ('loading') {
+        <app-skeleton-rows [label]="t('loading')" [rows]="5" [columns]="5" />
+      }
+      @case ('error') {
+        <app-load-error
+          [title]="t('errorTitle')"
+          [text]="t('errorText')"
+          [retryLabel]="t('tryAgain')"
+          (retry)="load()"
+        />
+      }
+      @default {
+        @if (!customers().length) {
+          <div class="vd-empty">
+            <span class="vd-empty__art"><svg lucideUsers></svg></span>
+            <h2 class="vd-empty__title">{{ t('emptyTitle') }}</h2>
+            <p class="vd-empty__text">{{ t('emptyText') }}</p>
+            <button vdButton="primary" type="button" (click)="add()">
+              <svg lucideUserPlus aria-hidden="true"></svg>{{ t('add') }}
+            </button>
+          </div>
+        } @else {
+          <div class="vd-toolbar">
+            <label class="vd-search">
+              <svg lucideSearch aria-hidden="true"></svg>
+              <input
+                type="search"
+                [placeholder]="t('search')"
+                [attr.aria-label]="t('searchLabel')"
+                [value]="query()"
+                (input)="query.set($any($event.target).value)"
+              />
+            </label>
+            <span class="count">{{ t('count', { count: visible().length }) }}</span>
+          </div>
+
+          @if (visible().length) {
+            <div class="vd-tablescroll">
+              <table class="vd-table">
+                <thead>
+                  <tr>
+                    <th scope="col">{{ t('cols.name') }}</th>
+                    <th scope="col">{{ t('cols.phone') }}</th>
+                    <th scope="col">{{ t('cols.place') }}</th>
+                    <th scope="col" class="num">{{ t('cols.sales') }}</th>
+                    <th scope="col" class="num">{{ t('cols.spent') }}</th>
+                    <th scope="col">{{ t('cols.lastVisit') }}</th>
+                    <th scope="col">
+                      <span class="vd-sr">{{ t('view') }}</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (c of visible(); track c.id) {
+                    <tr [class.is-new]="c.id === newId()">
+                      <td>
+                        <span class="who">
+                          <span class="av" aria-hidden="true">{{ initials(c.fullName) }}</span>
+                          <b dir="auto">{{ c.fullName }}</b>
+                        </span>
+                      </td>
+                      <td class="mono">
+                        <bdi dir="ltr">{{ c.phone }}</bdi>
+                      </td>
+                      <td>{{ c.place || '—' }}</td>
+                      <td class="num">{{ c.salesCount }}</td>
+                      <td class="num">{{ money(c.totalSpent) }}</td>
+                      <td class="nowrap">
+                        {{ c.lastVisit ? date(c.lastVisit, lang()) : t('never') }}
+                      </td>
+                      <td class="actions">
+                        <a
+                          vdButton="ghost"
+                          size="sm"
+                          [routerLink]="['/customers', c.id]"
+                          [attr.aria-label]="t('viewLabel', { name: c.fullName })"
+                          >{{ t('view') }}</a
+                        >
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          } @else {
+            <p class="no-match" role="status">{{ t('noMatch') }}</p>
+          }
+        }
+      }
+    }
+  </div>
+</ng-container>

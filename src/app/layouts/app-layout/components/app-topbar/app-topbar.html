@@ -1,0 +1,165 @@
+<ng-container *transloco="let t; read: 'shell'">
+  <header class="top">
+    <button
+      type="button"
+      class="iconbtn hamb"
+      [attr.aria-label]="t('openMenu')"
+      (click)="menuClick.emit()"
+    >
+      <svg lucideMenu aria-hidden="true"></svg>
+    </button>
+
+    <div class="heading">
+      @if (crumbs().length) {
+        <nav class="crumbs" [attr.aria-label]="t('breadcrumb')">
+          @for (c of crumbs(); track $index; let last = $last) {
+            @if (c.link && !last) {
+              <a [routerLink]="c.link">{{ c.key ? t(c.key) : c.text }}</a>
+              <svg lucideChevronRight class="vd-flip-rtl" aria-hidden="true"></svg>
+            } @else {
+              <span aria-current="page">{{ c.key ? t(c.key) : c.text }}</span>
+            }
+          }
+        </nav>
+      }
+      <h1 class="title">{{ title().key ? t(title().key!) : title().text }}</h1>
+    </div>
+
+    <!-- Branch switch -->
+    @if (branch(); as current) {
+      <div class="drop">
+        <button
+          type="button"
+          class="branch"
+          data-panel="branch"
+          aria-controls="branch-panel"
+          [attr.aria-expanded]="open() === 'branch'"
+          [attr.aria-label]="t('switchBranch') + ': ' + current.name"
+          (click)="toggle('branch')"
+        >
+          <svg lucideStore aria-hidden="true"></svg>
+          <small>{{ t('branch') }}</small>
+          <span class="branch__name">{{ current.name }}</span>
+          <svg lucideChevronDown class="chev" aria-hidden="true"></svg>
+        </button>
+        @if (open() === 'branch') {
+          <div class="menu drop__panel" id="branch-panel">
+            @for (b of branches(); track b.id) {
+              <button
+                type="button"
+                class="menu__item"
+                [attr.aria-pressed]="b.id === current.id"
+                (click)="close(); branchChange.emit(b.id)"
+              >
+                <span class="menu__check" aria-hidden="true">
+                  @if (b.id === current.id) {
+                    <svg lucideCheck></svg>
+                  }
+                </span>
+                {{ b.name }}
+              </button>
+            }
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Notifications -->
+    <div class="drop">
+      <button
+        type="button"
+        class="iconbtn bell"
+        data-panel="bell"
+        aria-controls="bell-panel"
+        [attr.aria-label]="
+          unreadCount() ? t('notificationsUnread', { count: unreadCount() }) : t('notifications')
+        "
+        [attr.aria-expanded]="open() === 'bell'"
+        (click)="toggle('bell')"
+      >
+        <svg lucideBell aria-hidden="true"></svg>
+        @if (unreadCount()) {
+          <span class="vd-count" aria-hidden="true">{{
+            unreadCount() > 9 ? '9+' : unreadCount()
+          }}</span>
+        }
+      </button>
+      @if (open() === 'bell') {
+        <app-notifications-panel
+          id="bell-panel"
+          class="drop__panel"
+          [notifications]="notifications()"
+          [lang]="lang()"
+          (markAllRead)="markAllRead.emit()"
+          (openItem)="close(); openNotification.emit($event)"
+          (seeAll)="close(); seeAllNotifications.emit()"
+        />
+      }
+    </div>
+
+    <button
+      type="button"
+      class="lang"
+      [attr.lang]="other().code"
+      (click)="languageChange.emit(other().code)"
+    >
+      <svg lucideGlobe aria-hidden="true"></svg><span>{{ other().label }}</span>
+    </button>
+
+    <!-- Account -->
+    @if (user(); as u) {
+      <div class="drop">
+        <button
+          type="button"
+          class="user"
+          data-panel="user"
+          aria-controls="user-panel"
+          [attr.aria-expanded]="open() === 'user'"
+          [attr.aria-label]="t('accountMenu')"
+          (click)="toggle('user')"
+        >
+          <span class="avatar" aria-hidden="true">{{ initials() }}</span>
+          <span class="user__text">
+            <b>{{ u.name }}</b>
+            <small>{{ t('roles.' + u.role) }}</small>
+          </span>
+          <svg lucideChevronDown class="chev" aria-hidden="true"></svg>
+        </button>
+        @if (open() === 'user') {
+          <div class="menu menu--user drop__panel" id="user-panel">
+            <div class="menu__who">
+              <b>{{ u.name }}</b>
+              <span>
+                {{ t('roles.' + u.role) }}
+                @if (businessName()) {
+                  · {{ businessName() }}
+                }
+              </span>
+            </div>
+            <button type="button" class="menu__item" (click)="close(); profile.emit()">
+              <svg lucideUser aria-hidden="true"></svg>{{ t('profile') }}
+            </button>
+            <button type="button" class="menu__item" (click)="close(); changePassword.emit()">
+              <svg lucideKeyRound aria-hidden="true"></svg>{{ t('changePassword') }}
+            </button>
+            <button
+              type="button"
+              class="menu__item"
+              [attr.lang]="other().code"
+              (click)="close(); languageChange.emit(other().code)"
+            >
+              <svg lucideGlobe aria-hidden="true"></svg>{{ other().label }}
+            </button>
+            <button
+              type="button"
+              class="menu__item menu__item--danger"
+              (click)="close(); signOut.emit()"
+            >
+              <svg lucideLogOut class="vd-flip-rtl" aria-hidden="true"></svg>{{ t('signOut') }}
+            </button>
+          </div>
+        }
+      </div>
+    }
+  </header>
+</ng-container>

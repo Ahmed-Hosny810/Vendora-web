@@ -1,0 +1,157 @@
+@use 'abstracts' as *;
+
+:host {
+  display: contents;
+}
+
+.slots {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+// One method per row: grip · icon · name · reference · order · status · edit
+.slot {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto auto auto auto;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--paper-0);
+
+  &.is-new {
+    animation: row-new 2.4s ease-out both;
+  }
+
+  // Phones: icon · name · status, reference under the name, Edit on its own row.
+  @include down(md) {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 10px 12px;
+
+    .grip,
+    .order {
+      display: none;
+    }
+
+    > :nth-child(4) {
+      grid-column: 2;
+    }
+
+    .acts {
+      grid-column: 1 / -1;
+    }
+  }
+}
+
+.grip {
+  display: grid;
+  color: var(--ink-500);
+  cursor: grab;
+  touch-action: none;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.ic {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 1.5px solid var(--pine-600);
+  border-radius: 12px;
+  background: var(--pine-50);
+  color: var(--pine-600);
+
+  svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  &--cash {
+    background: var(--butter-300);
+  }
+}
+
+.name {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+
+  b {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+  }
+}
+
+.code {
+  color: var(--ink-500);
+  font: 500 12px/1 var(--font-mono);
+}
+
+// "Cash drawer" label next to the name.
+.drawer-tag {
+  padding: 3px 7px;
+  border-radius: 4px;
+  background: var(--pine-50);
+  color: var(--pine-700);
+  font: 500 12px/1.2 var(--font-mono);
+}
+
+.order {
+  width: 64px;
+  color: var(--ink-500);
+  font: 600 12px/1 var(--font-mono);
+  text-align: center;
+}
+
+.acts {
+  display: flex;
+  gap: 4px;
+}
+
+.note {
+  margin: 0;
+  color: var(--ink-500);
+  font-size: 12px;
+
+  @include down(md) {
+    display: none;
+  }
+}
+
+// ---------- while dragging (classes added by the CDK) ----------
+.cdk-drag-preview {
+  box-shadow: 4px 4px 0 var(--butter-500);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0.3;
+}
+
+.cdk-drag-animating,
+.slots.cdk-drop-list-dragging .slot:not(.cdk-drag-placeholder) {
+  transition: transform 200ms var(--ease-out);
+}
+
+@keyframes row-new {
+  0%,
+  40% {
+    background: var(--butter-100);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slot.is-new {
+    animation: none;
+  }
+}

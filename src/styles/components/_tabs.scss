@@ -1,0 +1,57 @@
+// ============================================================
+// Tabs with an underline, for sections of one record.
+//   <div class="vd-tabs" role="tablist">
+//     <button class="vd-tab" role="tab" aria-selected="true">Details</button>
+//     <button class="vd-tab" role="tab" aria-selected="false">Terminals <span class="vd-count">2</span></button>
+//   </div>
+// Links between pages work too: <nav class="vd-tabs"><a class="vd-tab" aria-current="page">…
+// ============================================================
+
+.vd-tabs {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--line);
+}
+
+.vd-tab {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 2px;
+  border: 0;
+  background: none;
+  color: var(--ink-700);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none; // when the tab is a link
+  cursor: pointer;
+
+  &:hover {
+    color: var(--ink-900);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: -2px;
+  }
+
+  &[aria-selected='true'],
+  &[aria-current='page'] {
+    color: var(--ink-900);
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset-inline: 0;
+      bottom: 0;
+      height: 3px;
+      border-radius: 3px 3px 0 0;
+      background: var(--pine-600);
+    }
+  }
+}

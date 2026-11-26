@@ -1,0 +1,102 @@
+<ng-container *transloco="let t; read: 'notifications'">
+  <app-page-head [title]="t('title')" [text]="t('text')">
+    <button vdButton type="button" [disabled]="!session.unreadCount()" (click)="markAllRead()">
+      <svg lucideCheckCheck aria-hidden="true"></svg>{{ t('markAllRead') }}
+    </button>
+  </app-page-head>
+
+  <div class="filters" role="group" [attr.aria-label]="t('show')">
+    <button
+      type="button"
+      class="vd-chip"
+      [attr.aria-pressed]="!onlyUnread()"
+      (click)="onlyUnread.set(false)"
+    >
+      {{ t('all') }}
+    </button>
+    <button
+      type="button"
+      class="vd-chip"
+      [attr.aria-pressed]="onlyUnread()"
+      (click)="onlyUnread.set(true)"
+    >
+      {{ t('unread') }}
+      @if (session.unreadCount()) {
+        <span class="vd-count">{{ session.unreadCount() }}</span>
+      }
+    </button>
+  </div>
+
+  <div class="vd-tablewrap">
+    @switch (status()) {
+      @case ('loading') {
+        <app-skeleton-rows [label]="t('loading')" [rows]="6" [columns]="2" />
+      }
+      @case ('error') {
+        <app-load-error
+          [title]="t('errorTitle')"
+          [text]="t('errorText')"
+          [retryLabel]="t('tryAgain')"
+          (retry)="load()"
+        />
+      }
+      @default {
+        @if (!groups().length) {
+          <div class="vd-empty">
+            <span class="vd-empty__art"><svg lucideBellOff></svg></span>
+            <h2 class="vd-empty__title">{{ t('emptyTitle') }}</h2>
+            <p class="vd-empty__text">
+              {{ onlyUnread() ? t('emptyUnread') : t('emptyText') }}
+            </p>
+          </div>
+        } @else {
+          @for (g of groups(); track g.key) {
+            <section class="group" [attr.aria-labelledby]="'nt-' + g.key">
+              <h2 class="group__h" [id]="'nt-' + g.key">{{ t('groups.' + g.key) }}</h2>
+              <ul class="list">
+                @for (n of g.items; track n.id) {
+                  <li>
+                    <button
+                      type="button"
+                      class="item"
+                      [class]="'item--' + n.kind"
+                      [class.unread]="n.unread"
+                      (click)="open(n)"
+                    >
+                      <span class="item__icon" aria-hidden="true"
+                        ><svg [lucideIcon]="icons[n.kind]"></svg
+                      ></span>
+                      <span class="item__text">
+                        <b>
+                          @if (n.unread) {
+                            <span class="dot" aria-hidden="true"></span>
+                            <span class="vd-sr">{{ t('unreadLabel') }}</span>
+                          }
+                          <bdi>{{ n.title }}</bdi>
+                        </b>
+                        <span dir="auto">{{ n.text }}</span>
+                      </span>
+                      <time class="item__time" [attr.datetime]="n.createdAt.toISOString()">
+                        @if (g.key === 'earlier') {
+                          {{ date(n.createdAt, lang()) }} ·
+                        }
+                        {{ time(n.createdAt) }}
+                      </time>
+                    </button>
+                  </li>
+                }
+              </ul>
+            </section>
+          }
+          @if (hasMore()) {
+            <div class="more">
+              <button vdButton type="button" [loading]="loadingMore()" (click)="loadMore()">
+                {{ t('loadMore') }}
+              </button>
+            </div>
+          }
+        }
+      }
+    }
+  </div>
+</ng-container>

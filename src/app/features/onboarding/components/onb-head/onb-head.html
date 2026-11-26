@@ -1,0 +1,12 @@
+<p class="kicker">{{ kicker() }}</p>
+@let p = parts();
+<h1 [id]="titleId()">
+  {{ p.before }}
+  @if (p.highlight) {
+    <em>{{ p.highlight }}</em>
+  }
+  {{ p.after }}
+</h1>
+@if (lead()) {
+  <p class="lead-text">{{ lead() }}</p>
+}

@@ -1,0 +1,22 @@
+{
+  "title": "Notifications",
+  "text": "Payments, invoices, stock warnings and setup news.",
+  "markAllRead": "Mark all as read",
+  "show": "Show",
+  "all": "All",
+  "unread": "Unread",
+  "unreadLabel": "Unread:",
+  "loading": "Loading notifications…",
+  "errorTitle": "Couldn't load notifications",
+  "errorText": "Check your connection and try again.",
+  "tryAgain": "Try again",
+  "emptyTitle": "You're all caught up",
+  "emptyText": "New notifications show here.",
+  "emptyUnread": "No unread notifications.",
+  "groups": {
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "earlier": "Earlier"
+  },
+  "loadMore": "Show older"
+}

@@ -1,0 +1,156 @@
+@use 'abstracts' as *;
+
+:host {
+  display: contents;
+}
+
+// Terminal name + status on the start, Print on the end.
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+
+  &__t {
+    display: grid;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  h1 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    font: 700 30px/1.1 var(--font-display);
+    letter-spacing: -0.02em;
+
+    :host-context(:lang(ar)) & {
+      font-family: 'Alexandria', var(--font-display);
+      letter-spacing: 0;
+    }
+
+    @include down(md) {
+      font-size: 24px;
+    }
+  }
+
+  p {
+    margin: 0;
+    color: var(--ink-700);
+    font-size: 15px;
+  }
+}
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+
+  @include down(md) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+// Cards on the start; the printed summary on the end.
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  align-items: start;
+  gap: 16px;
+
+  @include down(lg) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.col {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+}
+
+.card {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--paper-0);
+
+  &__h {
+    margin: 0;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--line);
+    font: 700 16px/1.2 var(--font-display);
+
+    :host-context(:lang(ar)) & {
+      font-family: 'Alexandria', var(--font-display);
+    }
+  }
+}
+
+// Label on the start, amount on the end. Totals in bold with a line above.
+.lines {
+  display: grid;
+  margin: 0;
+  padding: 8px 20px;
+  font-size: 14px;
+
+  div {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 0;
+  }
+
+  dt {
+    color: var(--ink-700);
+  }
+
+  dd {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .total {
+    border-top: 1px dashed var(--line-strong);
+
+    dt,
+    dd {
+      color: var(--ink-900);
+      font-weight: 700;
+    }
+  }
+}
+
+.diff {
+  margin: 0 20px 20px;
+}
+
+.none {
+  margin: 0;
+  padding: 20px;
+  color: var(--ink-500);
+  font-size: 14px;
+}
+
+.paper {
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+
+  &__cap {
+    margin: 0;
+    color: var(--ink-500);
+    font: 600 11px/1 var(--font-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+
+    :host-context(:lang(ar)) & {
+      font-family: 'IBM Plex Sans Arabic', var(--font-sans);
+      letter-spacing: 0;
+    }
+  }
+}

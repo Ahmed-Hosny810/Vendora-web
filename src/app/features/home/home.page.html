@@ -1,0 +1,17 @@
+<app-hero-section />
+<app-ticker-section />
+<app-benefits-section />
+<app-showcase-section />
+<app-features-section />
+<app-how-it-works-section />
+<app-roles-section />
+<app-pricing-section
+  [plans]="plans()"
+  [loading]="plansLoading()"
+  [billingOptions]="billingOptions()"
+  [selectedBilling]="selectedBilling()"
+  (billingChange)="changeBilling($event)"
+  (planChosen)="choosePlan($event)"
+/>
+<app-faq-section />
+<app-cta-section />

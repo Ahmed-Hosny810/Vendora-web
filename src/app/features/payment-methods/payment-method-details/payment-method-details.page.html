@@ -1,0 +1,168 @@
+<ng-container *transloco="let t; read: 'paymentMethods.details'">
+  @switch (status()) {
+    @case ('loading') {
+      <span class="vd-skeleton" style="height: 72px; width: 50%"></span>
+      <span class="vd-skeleton" style="height: 300px"></span>
+      <span class="vd-sr" role="status">{{ t('loading') }}</span>
+    }
+    @case ('error') {
+      <div class="vd-tablewrap">
+        <app-load-error
+          [title]="t('errorTitle')"
+          [text]="t('errorText')"
+          [retryLabel]="t('tryAgain')"
+          (retry)="load()"
+        />
+      </div>
+    }
+    @default {
+      @if (method(); as m) {
+        <!-- Name, code and status -->
+        <div class="head">
+          <span class="ic" aria-hidden="true">
+            @switch (icon()) {
+              @case ('cash') {
+                <svg lucideBanknote></svg>
+              }
+              @case ('wallet') {
+                <svg lucideWallet></svg>
+              }
+              @default {
+                <svg lucideCreditCard></svg>
+              }
+            }
+          </span>
+          <div class="head__t">
+            <h1>
+              <bdi>{{ m.name }}</bdi>
+            </h1>
+            <p>
+              <span class="code"
+                ><bdi>{{ m.code }}</bdi></span
+              >
+              <span
+                class="vd-badge vd-badge--pill vd-badge--dot"
+                [class.vd-badge--success]="m.active"
+                >{{ m.active ? t('active') : t('inactive') }}</span
+              >
+            </p>
+          </div>
+          <div class="acts">
+            <button vdButton type="button" (click)="edit()">
+              <svg lucidePencil aria-hidden="true"></svg>{{ t('edit') }}
+            </button>
+            @if (m.active) {
+              <button vdButton type="button" [loading]="toggling()" (click)="turnOff()">
+                {{ t('turnOff') }}
+              </button>
+            } @else {
+              <button vdButton="primary" type="button" [loading]="toggling()" (click)="turnOn()">
+                {{ t('turnOn') }}
+              </button>
+            }
+          </div>
+        </div>
+
+        @if (!m.active) {
+          <div class="vd-banner vd-banner--info" role="status">
+            <span class="vd-banner__body">{{ t('offNote') }}</span>
+          </div>
+        }
+
+        <!-- Last 30 days -->
+        @if (stats(); as s) {
+          <div class="kpis">
+            <app-kpi-card [label]="t('kpi.count')" [value]="s.count" [hint]="t('kpi.days')" />
+            <app-kpi-card
+              [label]="t('kpi.amount')"
+              [value]="money(s.amount)"
+              [hint]="t('kpi.egp')"
+            />
+            <app-kpi-card
+              [label]="t('kpi.share')"
+              [value]="s.share + '%'"
+              [hint]="t('kpi.shareHint')"
+            />
+            <app-kpi-card
+              [label]="t('kpi.average')"
+              [value]="average() === null ? null : money(average()!)"
+              [hint]="t('kpi.egp')"
+            />
+          </div>
+        }
+
+        <div class="grid">
+          <!-- How it works at checkout -->
+          <section class="card" aria-labelledby="pm-set">
+            <h2 class="card__h" id="pm-set">{{ t('settings') }}</h2>
+            <dl class="dl">
+              <div>
+                <dt>{{ t('cashDrawer') }}</dt>
+                <dd>{{ m.isCash ? t('cashYes') : t('cashNo') }}</dd>
+              </div>
+              <div>
+                <dt>{{ t('reference') }}</dt>
+                <dd>{{ m.requiresReference ? t('referenceYes') : t('referenceNo') }}</dd>
+              </div>
+              <div>
+                <dt>{{ t('order') }}</dt>
+                <dd>{{ t('orderValue', { n: m.sortOrder }) }}</dd>
+              </div>
+            </dl>
+            <p class="note">{{ t('note') }}</p>
+          </section>
+
+          <!-- Latest payments -->
+          <section class="card recent" aria-labelledby="pm-recent">
+            <h2 class="card__h" id="pm-recent">{{ t('recent') }}</h2>
+            @if (payments().length) {
+              <div class="vd-tablescroll">
+                <table class="vd-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">{{ t('cols.receipt') }}</th>
+                      <th scope="col">{{ t('cols.date') }}</th>
+                      <th scope="col">{{ t('cols.cashier') }}</th>
+                      @if (m.requiresReference) {
+                        <th scope="col">{{ t('cols.reference') }}</th>
+                      }
+                      <th scope="col" class="num">{{ t('cols.amount') }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (p of payments(); track p.id) {
+                      <tr>
+                        <td class="mono">
+                          <a class="link" [routerLink]="['/sales', p.saleId, 'receipt']">{{
+                            p.receiptNumber
+                          }}</a>
+                        </td>
+                        <td class="nowrap">{{ dateTime(p.at, lang()) }}</td>
+                        <td>
+                          <bdi>{{ p.cashierName }}</bdi>
+                          <small
+                            ><bdi>{{ p.branchName }}</bdi></small
+                          >
+                        </td>
+                        @if (m.requiresReference) {
+                          <td class="mono">{{ p.reference || '—' }}</td>
+                        }
+                        <td class="num">{{ money(p.amount) }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            } @else {
+              <div class="vd-empty">
+                <span class="vd-empty__art"><svg lucideReceiptText></svg></span>
+                <h3 class="vd-empty__title">{{ t('noPayments') }}</h3>
+                <p class="vd-empty__text">{{ t('noPaymentsText') }}</p>
+              </div>
+            }
+          </section>
+        </div>
+      }
+    }
+  }
+</ng-container>

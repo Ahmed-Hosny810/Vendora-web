@@ -1,0 +1,201 @@
+@use 'abstracts' as *;
+
+.pos {
+  display: grid;
+  // minmax(0, 1fr): wide content (tables, long numbers) can't make the page wider than the screen.
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  min-height: 100dvh;
+  background: var(--paper-100);
+}
+
+// The router outlet stays in the DOM but takes no grid cell.
+router-outlet {
+  display: none;
+}
+
+.body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
+}
+
+// ---------- The dark bar ----------
+.bar {
+  position: sticky;
+  z-index: 10;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 64px;
+  padding: 10px 20px;
+  background: var(--pine-900);
+  color: var(--ink-on-dark);
+
+  // After the shift closes: light bar, dark text.
+  &--closed {
+    background: var(--paper-200);
+    color: var(--ink-900);
+
+    .pill {
+      border-color: var(--line-strong);
+      background: var(--paper-0);
+      color: var(--ink-900);
+
+      svg {
+        color: var(--ink-700);
+      }
+    }
+
+    .ibtn {
+      color: var(--ink-900);
+    }
+
+    .who small {
+      color: var(--ink-500);
+    }
+  }
+
+  @include down(md) {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px 14px;
+  }
+}
+
+.logo {
+  display: inline-flex;
+  border-radius: var(--radius-sm);
+  color: inherit;
+  text-decoration: none;
+}
+
+// Branch, terminal and shift pills. They push the buttons to the end.
+.ctx {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-inline-end: auto;
+
+  @include down(md) {
+    order: 3;
+    width: 100%;
+  }
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid rgba(255, 239, 179, 0.2);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 239, 179, 0.1);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+
+  svg {
+    width: 15px;
+    height: 15px;
+    color: var(--butter-300);
+  }
+
+  // "Shift open · 09:02": butter with a live green dot.
+  &--shift {
+    border-color: var(--butter-300);
+    background: var(--butter-300);
+    color: var(--pine-900);
+  }
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--success-fg);
+  box-shadow: 0 0 0 3px rgba(42, 106, 31, 0.2);
+  animation: live 2s ease-in-out infinite;
+}
+
+.ibtn {
+  color: var(--ink-on-dark);
+
+  @include hover {
+    background: rgba(255, 239, 179, 0.12);
+  }
+}
+
+// "Held sales" with a small butter count on its corner.
+.held {
+  position: relative;
+  display: inline-flex;
+
+  &__n {
+    position: absolute;
+    top: -2px;
+    inset-inline-end: -2px;
+    display: grid;
+    place-items: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    border-radius: 9px;
+    background: var(--butter-500);
+    color: var(--ink-900);
+    font: 700 11px/1 var(--font-sans);
+    pointer-events: none;
+  }
+}
+
+.who {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+
+  b {
+    display: block;
+  }
+
+  small {
+    display: block;
+    color: var(--ink-on-dark-muted);
+    font-size: 11px;
+  }
+
+  // Tablets and phones: initials only.
+  @include down(lg) {
+    &__t {
+      display: none;
+    }
+  }
+}
+
+.av {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid var(--pine-600);
+  border-radius: 50%;
+  background: var(--butter-300);
+  color: var(--pine-900);
+  font: 700 12px/1 var(--font-sans);
+}
+
+@keyframes live {
+  50% {
+    box-shadow: 0 0 0 6px rgba(42, 106, 31, 0.1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dot {
+    animation: none;
+  }
+}

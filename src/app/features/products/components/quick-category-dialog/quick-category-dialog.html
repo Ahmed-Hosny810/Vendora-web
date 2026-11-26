@@ -1,0 +1,90 @@
+<form
+  class="vd-dialog"
+  novalidate
+  *transloco="let t; read: 'products.quickCategory'"
+  (submit)="onSubmit($event)"
+>
+  <header class="vd-dialog__head">
+    <h2 class="vd-dialog__title" vdDialogTitle>{{ t('title') }}</h2>
+    <button vdIconButton type="button" [label]="t('close')" (click)="ref.close()">
+      <svg lucideX></svg>
+    </button>
+  </header>
+
+  <fieldset class="vd-dialog__body body" [disabled]="saving()">
+    <legend class="vd-sr">{{ t('title') }}</legend>
+    <p class="intro">{{ t('intro') }}</p>
+    @if (status() === 'failed') {
+      <div class="vd-banner vd-banner--danger" role="alert">
+        <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+        <span class="vd-banner__body">{{ t('failed') }}</span>
+      </div>
+    }
+
+    <div class="vd-field">
+      <div class="vd-field__top">
+        <label class="vd-field__label" for="qc-en"
+          >{{ t('nameEn') }}<span class="req" aria-hidden="true">*</span></label
+        >
+        <span class="vd-field__counter" aria-hidden="true"
+          >{{ model().nameEn.length }}/{{ maxName }}</span
+        >
+      </div>
+      <input
+        id="qc-en"
+        class="vd-input"
+        type="text"
+        lang="en"
+        dir="ltr"
+        [formField]="categoryForm.nameEn"
+        [attr.aria-invalid]="nameError() ? true : null"
+        [attr.aria-describedby]="nameError() ? 'qc-en-error' : null"
+      />
+      @if (nameError(); as error) {
+        <p id="qc-en-error" class="vd-field__error">
+          <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t(error) }}
+        </p>
+      }
+    </div>
+
+    <div class="vd-field">
+      <div class="vd-field__top">
+        <label class="vd-field__label" for="qc-ar"
+          >{{ t('nameAr') }}<span class="opt">{{ t('optional') }}</span></label
+        >
+        <span class="vd-field__counter" aria-hidden="true"
+          >{{ model().nameAr.length }}/{{ maxName }}</span
+        >
+      </div>
+      <input
+        id="qc-ar"
+        class="vd-input arabic"
+        type="text"
+        lang="ar"
+        dir="rtl"
+        [formField]="categoryForm.nameAr"
+      />
+    </div>
+
+    <div class="vd-field">
+      <label class="vd-field__label" for="qc-parent"
+        >{{ t('parent') }}<span class="opt">{{ t('optional') }}</span></label
+      >
+      <select id="qc-parent" class="vd-input" [formField]="categoryForm.parentId">
+        <option value="">{{ t('choose') }}</option>
+        @for (c of data.categories; track c.id) {
+          <option [value]="c.id">{{ c.label }}</option>
+        }
+      </select>
+    </div>
+  </fieldset>
+
+  <footer class="vd-dialog__foot">
+    <button vdButton type="button" [disabled]="saving()" (click)="ref.close()">
+      {{ t('cancel') }}
+    </button>
+    <button vdButton="primary" type="submit" [loading]="saving()">
+      <svg lucideCheck aria-hidden="true"></svg>{{ t('create') }}
+    </button>
+  </footer>
+</form>

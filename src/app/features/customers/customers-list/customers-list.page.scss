@@ -1,0 +1,41 @@
+:host {
+  display: contents;
+}
+
+.who {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 160px;
+}
+
+// Round initials.
+.av {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1.5px solid var(--pine-600);
+  border-radius: 50%;
+  background: var(--butter-300);
+  color: var(--pine-900);
+  font: 700 11px/1 var(--font-sans);
+}
+
+.count {
+  margin-inline-start: auto;
+  color: var(--ink-500);
+  font-size: 13px;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.no-match {
+  margin: 0;
+  padding: 32px 16px;
+  color: var(--ink-500);
+  text-align: center;
+}

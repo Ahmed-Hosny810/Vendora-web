@@ -1,0 +1,98 @@
+<form
+  class="vd-dialog"
+  novalidate
+  *transloco="let t; read: 'pos.variant'"
+  (submit)="onSubmit($event)"
+>
+  <header class="vd-dialog__head">
+    <h2 class="vd-dialog__title" vdDialogTitle>{{ t('title', { name: product.nameEn }) }}</h2>
+    <button vdIconButton type="button" [label]="t('close')" (click)="ref.close()">
+      <svg lucideX></svg>
+    </button>
+  </header>
+
+  <div class="vd-dialog__body body">
+    <div class="vhead">
+      <span class="thumb" aria-hidden="true">
+        @if (product.imageUrl) {
+          <img [src]="product.imageUrl" alt="" />
+        } @else {
+          <svg lucideShoppingBag></svg>
+        }
+      </span>
+      <span>
+        <b lang="en">{{ product.nameEn }}</b>
+        <span>{{ t('intro') }}</span>
+      </span>
+    </div>
+
+    @for (o of product.options; track o.name; let i = $index; let isLast = $last) {
+      <fieldset class="group">
+        <legend>
+          {{ o.name }} <span>{{ picked()[i] }}</span>
+        </legend>
+        <div class="chips">
+          @for (v of o.values; track v.value) {
+            <label class="chip" [class.chip--size]="isLast && !v.swatch">
+              <input
+                type="radio"
+                [name]="'opt-' + i"
+                [value]="v.value"
+                [checked]="picked()[i] === v.value"
+                [disabled]="disabled(i, v.value)"
+                (change)="pick(i, v.value)"
+              />
+              @if (v.swatch) {
+                <span class="sw" [style.background]="v.swatch" aria-hidden="true"></span>
+                <span>{{ v.value }}</span>
+              } @else if (isLast) {
+                @let stock = stockOf(v.value);
+                <b>{{ v.value }}</b>
+                @if (disabled(i, v.value)) {
+                  <small>{{ t('soldOut') }}</small>
+                } @else if (stock !== null && stock !== undefined) {
+                  <small>{{ t('left', { count: stock }) }}</small>
+                }
+              } @else {
+                <span>{{ v.value }}</span>
+              }
+            </label>
+          }
+        </div>
+      </fieldset>
+    }
+
+    @if (variant(); as v) {
+      <div class="res" aria-live="polite">
+        <span>
+          <b>{{ v.name }}</b>
+          @if (v.stock !== null) {
+            <span>{{ t('leftAt', { count: v.stock, branch: data.branchName }) }}</span>
+          }
+        </span>
+        <span class="step" role="group" [attr.aria-label]="t('qty')">
+          <button type="button" [attr.aria-label]="t('less')" (click)="step(-1)">
+            <svg lucideMinus></svg>
+          </button>
+          <output>{{ qty() }}</output>
+          <button type="button" [attr.aria-label]="t('more')" (click)="step(1)">
+            <svg lucidePlus></svg>
+          </button>
+        </span>
+        <b class="price" dir="ltr">{{ money(v.price * qty()) }} {{ t('egp') }}</b>
+      </div>
+    }
+
+    <p class="keys" aria-hidden="true">
+      <kbd>Tab</kbd> {{ t('keyGroup') }} <kbd>←</kbd><kbd>→</kbd> {{ t('keyChoose') }}
+      <kbd>Enter</kbd> {{ t('keyAdd') }} <kbd>Esc</kbd> {{ t('keyCancel') }}
+    </p>
+  </div>
+
+  <footer class="vd-dialog__foot">
+    <button vdButton type="button" (click)="ref.close()">{{ t('cancel') }}</button>
+    <button vdButton="primary" type="submit" [disabled]="!canAdd()">
+      <svg lucidePlus aria-hidden="true"></svg>{{ t('add', { count: qty() }) }}
+    </button>
+  </footer>
+</form>

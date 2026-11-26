@@ -1,0 +1,138 @@
+@use '../styles/onb';
+
+:host {
+  @include onb.page;
+  @include onb.primary-shadow;
+}
+
+.inv {
+  @include onb.paper-card;
+
+  &__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px 22px;
+    border-bottom: 1px dashed var(--line-strong);
+  }
+
+  &__id {
+    display: grid;
+    gap: 6px;
+
+    h2 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.2;
+
+      @include onb.display-font;
+    }
+  }
+
+  &__no {
+    color: var(--ink-500);
+    font: 500 13px/1 var(--font-mono);
+  }
+
+  dl {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px 16px;
+    margin: 0;
+    padding: 18px 22px;
+    font-size: 15px;
+  }
+
+  dt {
+    color: var(--ink-500);
+  }
+
+  dd {
+    margin: 0;
+    font-weight: 600;
+    text-align: end;
+  }
+
+  &__due {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 18px 22px;
+    border-top: 1px solid var(--line);
+    background: var(--butter-100);
+
+    span {
+      font-weight: 600;
+    }
+
+    b {
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.02em;
+
+      @include onb.display-font;
+    }
+  }
+}
+
+.secure {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 0;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--paper-0);
+  color: var(--ink-700);
+  font-size: 13px;
+  line-height: 19px;
+
+  svg {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+    color: var(--pine-600);
+  }
+}
+
+.sk {
+  height: 360px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--paper-100);
+  animation: pulse 1.4s ease-in-out infinite alternate;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+@keyframes pulse {
+  to {
+    opacity: 0.55;
+  }
+}
+
+.actions {
+  @include onb.actions;
+}
+
+.calm {
+  @include onb.calm;
+
+  &__link {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--pine-600);
+    font: inherit;
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}

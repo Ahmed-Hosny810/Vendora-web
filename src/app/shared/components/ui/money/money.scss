@@ -1,0 +1,20 @@
+:host {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.3em;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.currency {
+  font-family: var(--font-sans);
+  font-size: 0.72em;
+  font-weight: 600;
+  letter-spacing: 0;
+  opacity: 0.8;
+}
+
+:host(.negative) {
+  color: var(--danger-fg);
+}

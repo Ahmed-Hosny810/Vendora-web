@@ -1,0 +1,67 @@
+<ng-container *transloco="let t; read: 'onboarding'">
+  <app-onb-head [kicker]="t('plan.kicker')" [title]="t('plan.title')" [lead]="t('plan.lead')" />
+
+  @switch (status()) {
+    @case ('loading') {
+      <div class="plans" aria-busy="true">
+        <span class="vd-sr" role="status">{{ t('plan.loading') }}</span>
+        @for (n of [1, 2, 3]; track n) {
+          <div class="sk"></div>
+        }
+      </div>
+    }
+
+    @case ('error') {
+      <app-error-box
+        [title]="t('plan.errorTitle')"
+        [text]="t('plan.errorText')"
+        [retryLabel]="t('tryAgain')"
+        (retry)="loadPlans()"
+      />
+    }
+
+    @default {
+      @if (websitePlan(); as website) {
+        <div class="vd-banner vd-banner--info">
+          <svg lucideInfo aria-hidden="true"></svg>
+          <span class="vd-banner__body">{{ t('plan.picked', { plan: website.name }) }}</span>
+        </div>
+      }
+
+      <fieldset class="plans" [attr.aria-describedby]="missing() ? 'plan-error' : null">
+        <legend class="vd-sr">{{ t('plan.legend') }}</legend>
+        @if (missing()) {
+          <p id="plan-error" class="vd-field__error" role="alert">
+            <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('plan.missing') }}
+          </p>
+        }
+        @for (plan of plans(); track plan.id) {
+          <app-plan-card
+            [plan]="plan"
+            [checked]="plan.id === selectedId()"
+            [fromWebsite]="plan.id === websitePlan()?.id"
+            (pick)="select($event)"
+          />
+        }
+      </fieldset>
+    }
+  }
+
+  <div class="actions">
+    <a vdButton size="lg" routerLink="/onboarding">
+      <svg lucideArrowLeft class="vd-flip-rtl" aria-hidden="true"></svg>{{ t('back') }}
+    </a>
+    @if (status() !== 'error') {
+      <span class="grow"></span>
+      <button
+        vdButton="primary"
+        size="lg"
+        type="button"
+        [disabled]="status() === 'loading'"
+        (click)="onContinue()"
+      >
+        {{ t('continue') }}<svg lucideArrowRight class="vd-flip-rtl" aria-hidden="true"></svg>
+      </button>
+    }
+  </div>
+</ng-container>

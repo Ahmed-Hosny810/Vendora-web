@@ -1,0 +1,30 @@
+<section class="sec" id="faq" aria-labelledby="faq-title" *transloco="let t; read: 'home.faq'">
+  <div class="vd-container grid">
+    <app-section-heading
+      class="head"
+      headingId="faq-title"
+      [overline]="t('overline')"
+      [title]="t('title')"
+    >
+      @if (contactUrl) {
+        <p class="contact">
+          {{ t('lead') }}
+          <a [href]="contactUrl" target="_blank" rel="noopener">{{ t('contact') }}</a>
+        </p>
+      }
+    </app-section-heading>
+
+    <div class="list">
+      @for (key of questions; track key) {
+        <!-- The first answer starts open. -->
+        <details class="item" [open]="$first">
+          <summary>
+            <h3>{{ t(key + '.q') }}</h3>
+            <span class="icon" aria-hidden="true"><svg lucidePlus></svg></span>
+          </summary>
+          <p>{{ t(key + '.a') }}</p>
+        </details>
+      }
+    </div>
+  </div>
+</section>

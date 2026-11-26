@@ -1,0 +1,75 @@
+@use 'abstracts' as *;
+@use '../styles/receipt';
+
+:host {
+  display: contents;
+}
+
+// Every direct child is one "line" of the receipt.
+.lines {
+  @include receipt.print-lines;
+  display: grid;
+  gap: 20px;
+}
+
+.head {
+  @include receipt.head;
+}
+
+.title {
+  @include receipt.title;
+}
+
+.rule {
+  @include receipt.rule;
+}
+
+@include receipt.fields;
+
+.link {
+  @include receipt.link;
+}
+
+.vd-field__error .link {
+  color: inherit;
+}
+
+.total {
+  @include receipt.total-button;
+}
+
+// Note about Terms and Privacy.
+.legal {
+  margin: 0;
+  padding: 8px 10px;
+  border: 1.5px dashed var(--pine-600);
+  border-radius: var(--radius-sm);
+  background: var(--pine-50);
+  color: var(--ink-700);
+  font-size: 13.5px;
+  line-height: 21px;
+}
+
+.foot {
+  margin: 0;
+  color: var(--ink-700);
+  font-size: 15px;
+  text-align: center;
+}
+
+// Decorative barcode made of stripes.
+.barcode {
+  width: 70%;
+  height: 34px;
+  margin: 2px auto 0;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--ink-900) 0 2px,
+    transparent 2px 4px,
+    var(--ink-900) 4px 5px,
+    transparent 5px 8px,
+    var(--ink-900) 8px 11px,
+    transparent 11px 13px
+  );
+  opacity: 0.85;
+}

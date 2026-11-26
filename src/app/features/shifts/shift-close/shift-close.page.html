@@ -1,0 +1,236 @@
+<div class="page" *transloco="let t; read: 'shifts.close'">
+  @switch (status()) {
+    @case ('loading') {
+      <div class="narrow" aria-busy="true">
+        <span class="vd-skeleton" style="height: 40px; width: 40%"></span>
+        <span class="vd-skeleton" style="height: 320px"></span>
+        <span class="vd-sr">{{ t('loading') }}</span>
+      </div>
+    }
+    @case ('error') {
+      <div class="narrow card">
+        <app-load-error
+          [title]="t('errorTitle')"
+          [text]="t('errorText')"
+          [retryLabel]="t('tryAgain')"
+          (retry)="load()"
+        />
+      </div>
+    }
+    @default {
+      @if (summary(); as s) {
+        @if (closedAt(); as closedAt) {
+          <!-- Closed: read-only summary -->
+          <div class="done">
+            <div class="done__msg">
+              <span class="lock" aria-hidden="true"><svg lucideLock></svg></span>
+              <h1>{{ t('closedTitle') }}</h1>
+              <p>{{ t('closedText') }}</p>
+              <app-cash-diff
+                class="done__diff"
+                [kind]="kind()"
+                [diff]="diff()"
+                [label]="t('kind.' + kind())"
+                [scale]="false"
+                [text]="
+                  model().note.trim()
+                    ? t('recordedNote', { note: model().note.trim() })
+                    : t('recorded.' + kind())
+                "
+              />
+              <div class="done__acts">
+                <a vdButton="primary" size="lg" routerLink="/shifts">
+                  <svg lucideHistory aria-hidden="true"></svg>{{ t('history') }}
+                </a>
+                <button vdButton size="lg" type="button" (click)="print()">
+                  <svg lucidePrinter aria-hidden="true"></svg>{{ t('print') }}
+                </button>
+                <button vdButton="ghost" size="lg" type="button" (click)="signOut()">
+                  <svg lucideLogOut class="dir" aria-hidden="true"></svg>{{ t('signOut') }}
+                </button>
+              </div>
+            </div>
+            <app-shift-receipt
+              [summary]="s"
+              [closedAt]="closedAt"
+              [counted]="model().countedCash"
+            />
+          </div>
+        } @else if (blockers().length) {
+          <!-- Something unfinished blocks closing -->
+          <div class="narrow card blocked">
+            <h1>{{ t('blockedTitle') }}</h1>
+            <p class="lead">{{ t('blockedText') }}</p>
+            <ul class="blockers">
+              @for (b of blockers(); track b.id) {
+                <li>
+                  <a [routerLink]="b.link">
+                    @if (b.kind === 'attention') {
+                      <svg lucideTriangleAlert aria-hidden="true"></svg>
+                    } @else {
+                      <svg lucideClock aria-hidden="true"></svg>
+                    }
+                    <span
+                      ><b>{{ b.title }}</b
+                      ><span>{{ b.text }}</span></span
+                    >
+                    <svg lucideChevronRight class="dir" aria-hidden="true"></svg>
+                  </a>
+                </li>
+              }
+            </ul>
+            <div class="acts">
+              <a vdButton routerLink="/pos">
+                <svg lucideArrowLeft class="dir" aria-hidden="true"></svg>{{ t('backToPos') }}
+              </a>
+              <button vdButton="primary" size="lg" type="button" disabled>
+                <svg lucideLock aria-hidden="true"></svg>{{ t('close') }}
+              </button>
+            </div>
+          </div>
+        } @else {
+          <!-- Count the drawer and close -->
+          <div class="wide">
+            <div class="head">
+              <h1>{{ t('title') }}</h1>
+              <p>{{ t('text') }}</p>
+            </div>
+
+            <div class="grid">
+              <form class="col" novalidate (submit)="onSubmit($event)">
+                @if (closeStatus() === 'failed') {
+                  <div class="vd-banner vd-banner--danger" role="alert">
+                    <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+                    <span class="vd-banner__body">{{ t('errors.failed') }}</span>
+                  </div>
+                }
+
+                <fieldset class="card count" [disabled]="closing()">
+                  <legend class="card__h">{{ t('count') }}</legend>
+
+                  <div class="vd-field">
+                    <label class="vd-field__label" for="sc-count"
+                      >{{ t('counted') }}<span class="req" aria-hidden="true">*</span></label
+                    >
+                    <div class="cashin">
+                      <input
+                        id="sc-count"
+                        type="number"
+                        inputmode="decimal"
+                        step="0.01"
+                        dir="ltr"
+                        [formField]="closeForm.countedCash"
+                        [attr.aria-invalid]="countError() ? true : null"
+                        aria-describedby="sc-count-hint"
+                      />
+                      <span aria-hidden="true">{{ t('egp') }}</span>
+                    </div>
+                    @if (countError()) {
+                      <p class="vd-field__error">
+                        <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+                        >{{ t('errors.counted') }}
+                      </p>
+                    }
+                    <p id="sc-count-hint" class="vd-field__hint">{{ t('countedHint') }}</p>
+                  </div>
+
+                  @if (counted() && !countError()) {
+                    <app-cash-diff
+                      [kind]="kind()"
+                      [diff]="diff()"
+                      [label]="t('kind.' + kind())"
+                      [text]="t('diffText.' + kind(), { amount: cash(absDiff()) })"
+                    />
+                  }
+
+                  <div class="vd-field">
+                    <div class="vd-field__top">
+                      <label class="vd-field__label" for="sc-note"
+                        >{{ t('note') }}<span class="opt">{{ t('optional') }}</span></label
+                      >
+                      <span class="vd-field__counter" aria-hidden="true"
+                        >{{ model().note.length }}/500</span
+                      >
+                    </div>
+                    <input
+                      id="sc-note"
+                      class="vd-input"
+                      type="text"
+                      dir="auto"
+                      [formField]="closeForm.note"
+                    />
+                  </div>
+
+                  <div class="legend" aria-hidden="true">
+                    <span class="vd-badge vd-badge--success">{{ t('kind.balanced') }}</span>
+                    <span class="vd-badge vd-badge--danger">{{ t('kind.shortage') }}</span>
+                    <span class="vd-badge vd-badge--info">{{ t('kind.overage') }}</span>
+                  </div>
+                </fieldset>
+
+                <div class="foot">
+                  <a vdButton routerLink="/pos">{{ t('backToPos') }}</a>
+                  <button vdButton="danger" size="lg" type="submit" [loading]="closing()">
+                    <svg lucideLock aria-hidden="true"></svg>{{ t('close') }}
+                  </button>
+                </div>
+              </form>
+
+              <section class="card sum" aria-labelledby="sc-sum">
+                <h2 class="card__h" id="sc-sum">{{ t('summary') }}</h2>
+                <dl class="dl">
+                  <dt>{{ t('cashier') }}</dt>
+                  <dd>{{ s.cashierName }}</dd>
+                  <dt>{{ t('branchTerminal') }}</dt>
+                  <dd>{{ s.branchName }} · {{ s.terminalName }}</dd>
+                  <dt>{{ t('openedAt') }}</dt>
+                  <dd dir="ltr" class="start">{{ time(s.openedAt) }}</dd>
+                </dl>
+
+                <h3>{{ t('drawerCash') }}</h3>
+                <div class="r">
+                  <span>{{ t('openingCash') }}</span
+                  ><span>{{ cash(s.openingCash) }}</span>
+                </div>
+                <div class="r">
+                  <span>{{ t('cashReceipts') }}</span
+                  ><span>{{ signed(s.cashReceipts) }}</span>
+                </div>
+                <div class="r minus">
+                  <span>{{ t('cashRefunds') }}</span
+                  ><span>{{ signed(-s.cashRefunds) }}</span>
+                </div>
+                <div class="r exp">
+                  <span>{{ t('expected') }}</span
+                  ><span>{{ cash(expected()) }}</span>
+                </div>
+
+                @if (s.nonCash.length) {
+                  <h3>{{ t('notInDrawer') }}</h3>
+                  <div class="noncash">
+                    @for (n of s.nonCash; track n.name) {
+                      <div class="r">
+                        <span>{{ n.name }}</span
+                        ><span>{{ cash(n.amount) }}</span>
+                      </div>
+                    }
+                  </div>
+                }
+              </section>
+            </div>
+          </div>
+        }
+      } @else {
+        <!-- No shift open on this terminal -->
+        <div class="narrow card">
+          <div class="vd-empty">
+            <span class="vd-empty__art"><svg lucideLock></svg></span>
+            <h2 class="vd-empty__title">{{ t('noShiftTitle') }}</h2>
+            <p class="vd-empty__text">{{ t('noShiftText') }}</p>
+            <a vdButton="primary" routerLink="/pos/shift/open">{{ t('openShift') }}</a>
+          </div>
+        </div>
+      }
+    }
+  }
+</div>

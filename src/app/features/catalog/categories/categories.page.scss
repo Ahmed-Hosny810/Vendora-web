@@ -1,0 +1,15 @@
+:host {
+  display: contents;
+}
+
+// "└" before a child category's name.
+.branch-line {
+  margin-inline-end: 6px;
+  color: var(--ink-500);
+  font-weight: 400;
+}
+
+:host-context([dir='rtl']) .branch-line {
+  display: inline-block;
+  transform: scaleX(-1);
+}

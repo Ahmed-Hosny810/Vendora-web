@@ -1,0 +1,365 @@
+<div class="co" *transloco="let t; read: 'pos.checkout'">
+  <!-- ========== The sale ========== -->
+  <aside class="sum">
+    @if (payments().length || locked()) {
+      <span class="back back--off">
+        <svg lucideArrowLeft class="dir" aria-hidden="true"></svg>{{ t('back') }}
+      </span>
+    } @else {
+      <a class="back" routerLink="/pos"
+        ><svg lucideArrowLeft class="dir" aria-hidden="true"></svg>{{ t('back') }}</a
+      >
+    }
+    <h1>{{ t('title') }}</h1>
+
+    <ul class="items">
+      @for (l of cart.lines(); track l.key) {
+        <li>
+          <span
+            >{{ l.qty }} × {{ l.name }}
+            @if (l.variantName) {
+              · {{ l.variantName }}
+            }
+          </span>
+          <span>{{ money(lineNet(l)) }}</span>
+        </li>
+      }
+    </ul>
+
+    <div class="due">
+      <div class="r">
+        <span>{{ t('saleTotal') }}</span
+        ><span>{{ money(total()) }}</span>
+      </div>
+      <div class="r">
+        <span>{{ t('paidSoFar') }}</span
+        ><span>{{ money(paid()) }}</span>
+      </div>
+      <div class="r left">
+        <span>{{ t('leftToPay') }}</span
+        ><b>{{ money(left()) }}</b>
+      </div>
+    </div>
+
+    @for (p of payments(); track $index) {
+      <div class="paid">
+        <svg lucideCircleCheck aria-hidden="true"></svg>
+        <span>
+          {{ p.name }}
+          @if (p.reference) {
+            <small>{{ t('ref', { ref: p.reference }) }}</small>
+          } @else if (p.change) {
+            <small>{{ t('changeShort', { amount: money(p.change) }) }}</small>
+          }
+        </span>
+        <b>{{ money(p.amount) }}</b>
+      </div>
+    }
+  </aside>
+
+  <!-- ========== Payment ========== -->
+  <section class="pay" [attr.aria-label]="t('payment')">
+    @if (cart.isEmpty() && !payments().length) {
+      <div class="vd-empty">
+        <h2 class="vd-empty__title">{{ t('emptyTitle') }}</h2>
+        <a vdButton="primary" routerLink="/pos">{{ t('back') }}</a>
+      </div>
+    } @else {
+      @switch (status()) {
+        @case ('loading') {
+          <span class="vd-skeleton" style="height: 120px"></span>
+          <span class="vd-skeleton" style="height: 260px"></span>
+          <span class="vd-sr">{{ t('loading') }}</span>
+        }
+        @case ('error') {
+          <app-load-error
+            [title]="t('errorTitle')"
+            [text]="t('errorText')"
+            [retryLabel]="t('tryAgain')"
+            (retry)="load()"
+          />
+        }
+        @default {
+          @switch (step()) {
+            <!-- Recording: everything waits -->
+            @case ('recording') {
+              <div class="state" role="status" aria-live="polite">
+                <h2>
+                  <span class="spin" aria-hidden="true"></span
+                  >{{ completing() ? t('completing') : t('recording') }}
+                </h2>
+                <ul class="steps">
+                  @for (p of payments(); track $index) {
+                    <li class="ok">
+                      <i aria-hidden="true"><svg lucideCheck></svg></i
+                      >{{ t('recorded', { name: p.name, amount: money(p.amount) }) }}
+                    </li>
+                  }
+                  @if (pending(); as p) {
+                    <li class="wait">
+                      <i aria-hidden="true"></i
+                      >{{ t('paying', { name: p.name, amount: money(p.amount) }) }}
+                    </li>
+                  }
+                  @if (completing()) {
+                    <li class="wait"><i aria-hidden="true"></i>{{ t('issuing') }}</li>
+                  }
+                </ul>
+                <p class="keep">{{ t('keepOpen') }}</p>
+              </div>
+              <div class="foot">
+                <button vdButton="primary" size="lg" type="button" disabled>
+                  <span class="spin spin--btn" aria-hidden="true"></span>{{ t('recordingShort') }}
+                </button>
+              </div>
+            }
+
+            <!-- Paid, but completing failed -->
+            @case ('recovery') {
+              <div class="state state--warn" role="alert">
+                <h2><svg lucideTriangleAlert aria-hidden="true"></svg>{{ t('recoveryTitle') }}</h2>
+                <p>{{ payments().length > 1 ? t('recoveryTextMany') : t('recoveryText') }}</p>
+                <p class="safe">
+                  <svg lucideCircleCheck aria-hidden="true"></svg
+                  >{{ t('dontCollect', { amount: money(paid()) }) }}
+                </p>
+                <ul class="steps">
+                  @for (p of payments(); track $index) {
+                    <li class="ok">
+                      <i aria-hidden="true"><svg lucideCheck></svg></i>
+                      {{ t('recorded', { name: p.name, amount: money(p.amount) }) }}
+                      @if (p.change) {
+                        · {{ t('changeShort', { amount: money(p.change) }) }}
+                      }
+                    </li>
+                  }
+                  <li class="wait"><i aria-hidden="true"></i>{{ t('issuing') }}</li>
+                </ul>
+                <div class="acts">
+                  <button vdButton="primary" type="button" (click)="complete()">
+                    <svg lucideRefreshCw aria-hidden="true"></svg>{{ t('tryAgain') }}
+                  </button>
+                  <button vdButton type="button" (click)="findLater()">
+                    <svg lucideHistory aria-hidden="true"></svg>{{ t('findLater') }}
+                  </button>
+                </div>
+              </div>
+            }
+
+            <!-- Choose how to pay -->
+            @default {
+              @if (payments().length) {
+                <p class="partly" role="status">
+                  <svg lucideInfo aria-hidden="true"></svg>
+                  <span
+                    ><b>{{ t('partly') }}</b>
+                    {{ t('partlyText', { paid: money(paid()), left: money(left()) }) }}</span
+                  >
+                </p>
+              }
+              @if (payFailed()) {
+                <div class="vd-banner vd-banner--danger" role="alert">
+                  <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+                  <span class="vd-banner__body">{{ t('payFailed') }}</span>
+                </div>
+              }
+
+              <fieldset class="methods">
+                <legend>{{ t('method') }}</legend>
+                @for (m of methods(); track m.id) {
+                  <label class="m">
+                    <input
+                      type="radio"
+                      name="method"
+                      [checked]="methodId() === m.id"
+                      (change)="choose(m.id)"
+                    />
+                    @switch (kindOf(m)) {
+                      @case ('cash') {
+                        <svg lucideBanknote aria-hidden="true"></svg>
+                      }
+                      @case ('wallet') {
+                        <svg lucideWallet aria-hidden="true"></svg>
+                      }
+                      @default {
+                        <svg lucideCreditCard aria-hidden="true"></svg>
+                      }
+                    }
+                    <span>{{ m.name }}</span>
+                    <small>{{
+                      m.isCash ? t('givesChange') : m.requiresReference ? t('needsRef') : ''
+                    }}</small>
+                  </label>
+                }
+              </fieldset>
+
+              @if (method(); as m) {
+                @if (m.isCash) {
+                  <!-- Cash: keypad and change -->
+                  <div class="cash">
+                    <div class="cash__main">
+                      <label class="lbl" for="co-cash">{{
+                        payments().length ? t('cashForRest') : t('cashReceived')
+                      }}</label>
+                      <div class="amt">
+                        <input
+                          id="co-cash"
+                          type="text"
+                          inputmode="decimal"
+                          autocomplete="off"
+                          dir="ltr"
+                          placeholder="0.00"
+                          aria-describedby="co-keys"
+                          [value]="amountText()"
+                          (input)="onAmount($any($event.target).value)"
+                          (keydown.enter)="recordCash(true)"
+                        />
+                        <span aria-hidden="true">{{ t('egp') }}</span>
+                      </div>
+                      <p id="co-keys" class="keys">
+                        <kbd>0–9</kbd> {{ t('keyType') }} <kbd>.</kbd> {{ t('keyDecimals') }}
+                        <kbd><svg lucideDelete></svg></kbd> {{ t('keyDelete') }}
+                      </p>
+                      <div class="quick" role="group" [attr.aria-label]="t('quick')">
+                        <button type="button" class="word" (click)="setAmount(left())">{{ t('exact') }}</button>
+                        @for (v of suggestions(); track v) {
+                          <button type="button" (click)="setAmount(v)">
+                            {{ v.toLocaleString('en-US') }}
+                          </button>
+                        }
+                      </div>
+                      @if (cashCovers()) {
+                        <div class="change" aria-live="polite">
+                          <svg lucideBanknote aria-hidden="true"></svg>
+                          <span>{{ t('changeToGive') }}</span>
+                          <b dir="ltr"
+                            >{{ money(change()) }} <small>{{ t('egp') }}</small></b
+                          >
+                        </div>
+                      } @else if (canSplitCash()) {
+                        <p class="short" aria-live="polite">
+                          {{ t('shortBy', { amount: money(left() - amount()) }) }}
+                        </p>
+                      }
+                    </div>
+
+                    <div class="pad" dir="ltr" role="group" [attr.aria-label]="t('keypad')">
+                      @for (k of keys; track k) {
+                        <button
+                          type="button"
+                          [attr.aria-label]="k === 'back' ? t('keyDelete') : null"
+                          (click)="press(k)"
+                        >
+                          @if (k === 'back') {
+                            <svg lucideDelete aria-hidden="true"></svg>
+                          } @else {
+                            {{ k }}
+                          }
+                        </button>
+                      }
+                    </div>
+                  </div>
+
+                  <div class="foot">
+                    <button
+                      vdButton
+                      size="lg"
+                      type="button"
+                      [disabled]="!canSplitCash()"
+                      (click)="recordCash(false)"
+                    >
+                      <svg lucidePlus aria-hidden="true"></svg>{{ t('split') }}
+                    </button>
+                    <button
+                      vdButton="primary"
+                      size="lg"
+                      type="button"
+                      [disabled]="!cashCovers()"
+                      (click)="recordCash(true)"
+                    >
+                      <svg lucideCheck aria-hidden="true"></svg>{{ t('recordCash') }}
+                    </button>
+                  </div>
+                } @else {
+                  <!-- Card / wallet: amount and reference -->
+                  <p class="vd-banner vd-banner--info">
+                    <svg lucideInfo aria-hidden="true"></svg>
+                    <span class="vd-banner__body">{{ t('takeFirst.' + kindOf(m)) }}</span>
+                  </p>
+                  <div class="two">
+                    <div class="vd-field">
+                      <label class="lbl" for="co-amount"
+                        >{{ t('amount') }}<span class="req" aria-hidden="true">*</span></label
+                      >
+                      <div class="amt amt--sm" [class.amt--err]="!!amountError()">
+                        <input
+                          id="co-amount"
+                          type="text"
+                          inputmode="decimal"
+                          autocomplete="off"
+                          dir="ltr"
+                          [value]="amountText()"
+                          [attr.aria-invalid]="amountError() ? true : null"
+                          [attr.aria-describedby]="amountError() ? 'co-amount-error' : null"
+                          (input)="onAmount($any($event.target).value)"
+                        />
+                        <span aria-hidden="true">{{ t('egp') }}</span>
+                      </div>
+                      @if (amountError(); as e) {
+                        <p id="co-amount-error" class="vd-field__error">
+                          <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+                          >{{ t('errors.' + e, { left: money(left()) }) }}
+                        </p>
+                      }
+                    </div>
+                    @if (m.requiresReference) {
+                      <div class="vd-field">
+                        <label class="lbl" for="co-ref"
+                          >{{ t('reference') }}<span class="req" aria-hidden="true">*</span></label
+                        >
+                        <input
+                          id="co-ref"
+                          class="vd-input ref"
+                          type="text"
+                          dir="ltr"
+                          autocomplete="off"
+                          [value]="reference()"
+                          [attr.aria-invalid]="referenceError() ? true : null"
+                          [attr.aria-describedby]="
+                            referenceError() ? 'co-ref-error co-ref-hint' : 'co-ref-hint'
+                          "
+                          (input)="reference.set($any($event.target).value)"
+                          (keydown.enter)="recordOther()"
+                        />
+                        @if (referenceError()) {
+                          <p id="co-ref-error" class="vd-field__error">
+                            <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+                            >{{ t('errors.reference') }}
+                          </p>
+                        }
+                        <p id="co-ref-hint" class="vd-field__hint">
+                          {{ t('refHint.' + kindOf(m)) }}
+                        </p>
+                      </div>
+                    }
+                  </div>
+                  @if (kindOf(m) === 'card') {
+                    <p class="never">
+                      <svg lucideLock aria-hidden="true"></svg>{{ t('neverCard') }}
+                    </p>
+                  }
+                  <div class="foot">
+                    <button vdButton="primary" size="lg" type="button" (click)="recordOther()">
+                      <svg lucideCheck aria-hidden="true"></svg
+                      >{{ t('recordOther', { name: m.name }) }}
+                    </button>
+                  </div>
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  </section>
+</div>

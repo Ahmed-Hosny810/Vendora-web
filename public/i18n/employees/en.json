@@ -1,0 +1,131 @@
+{
+  "list": {
+    "title": "Employees",
+    "text": "Who can sign in to {{business}} and what they can do.",
+    "invite": "Invite employee",
+    "loading": "Loading employees…",
+    "errorTitle": "We couldn’t load the employees",
+    "errorText": "Check your connection and try again.",
+    "tryAgain": "Try again",
+    "cols": {
+      "name": "Name",
+      "username": "Username",
+      "email": "Email",
+      "role": "Role",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "roles": {
+      "owner": "Owner",
+      "admin": "Admin",
+      "cashier": "Cashier",
+      "inventoryStaff": "Inventory staff"
+    },
+    "status": {
+      "active": "Active",
+      "invited": "Invitation sent",
+      "inactive": "Inactive"
+    },
+    "you": "You",
+    "resend": "Resend invitation",
+    "resendLabel": "Resend the invitation to {{name}}",
+    "moreLabel": "More actions for {{name}}",
+    "cancelInvite": "Cancel invitation",
+    "deactivate": "Deactivate",
+    "deactivateLabel": "Deactivate {{name}}",
+    "reactivate": "Reactivate",
+    "reactivateLabel": "Reactivate {{name}}",
+    "cancelTitle": "Cancel {{name}}’s invitation?",
+    "cancelText": "The link in their email stops working. You can invite them again later.",
+    "cancelConfirm": "Cancel invitation",
+    "deactivateTitle": "Deactivate {{name}}?",
+    "deactivateText": "They can’t sign in until you reactivate them. Their past sales and shifts stay as they are.",
+    "deactivateConfirm": "Deactivate",
+    "emptyTitle": "It’s just you for now",
+    "emptyText": "Invite cashiers and staff so every sale and shift is recorded under the right name. It’s optional — you can sell on your own.",
+    "view": "View",
+    "viewLabel": "View {{name}}"
+  },
+  "invite": {
+    "title": "Invite employee",
+    "text": "Give your team their own sign-in so every sale and shift is recorded under the right name.",
+    "sections": {
+      "who": "Who are you inviting?",
+      "role": "Role"
+    },
+    "fullName": "Full name",
+    "username": "Username",
+    "usernameHint": "3–100 characters. They’ll sign in with it.",
+    "email": "Email address",
+    "emailHint": "We send the invitation and temporary sign-in details here.",
+    "roles": {
+      "admin": "Admin",
+      "adminText": "Manages the business, products, stock and employees.",
+      "cashier": "Cashier",
+      "cashierText": "Opens shifts and sells at the POS.",
+      "inventoryStaff": "Inventory staff",
+      "inventoryStaffText": "Counts and adjusts stock. No selling."
+    },
+    "passwordNote": "You don’t set their password. They get temporary sign-in details and choose their own password the first time they sign in.",
+    "required": "Required",
+    "cancel": "Cancel",
+    "send": "Send invitation",
+    "badge": "Staff badge",
+    "badgeName": "Employee name",
+    "optionalNote": "Employee invitations are optional. You can sell on your own and invite staff later.",
+    "comparePlans": "Compare plans",
+    "fixOne": "Fix 1 field to send the invitation. Everything you typed is kept.",
+    "fixMany": "Fix {{count}} fields to send the invitation. Everything you typed is kept.",
+    "errors": {
+      "nameRequired": "Enter their full name.",
+      "usernameRequired": "Enter a username.",
+      "usernameLength": "Use 3–100 characters.",
+      "usernamePattern": "Use letters, numbers, dots, dashes or underscores only.",
+      "usernameTaken": "Someone in your business already uses this username.",
+      "emailRequired": "Enter their email address.",
+      "emailInvalid": "Enter a valid email, like name@example.com.",
+      "emailTaken": "This email already belongs to someone in your business.",
+      "limitReached": "You’ve reached your plan’s employee limit. Deactivate someone or upgrade your plan to invite more.",
+      "failed": "We couldn’t send the invitation. Check your connection and try again."
+    }
+  },
+  "details": {
+    "loading": "Loading the employee…",
+    "errorTitle": "Couldn't load this employee",
+    "errorText": "Check your connection and try again.",
+    "tryAgain": "Try again",
+    "invitedText": "Invitation sent to {{email}} on {{date}}. They join once they accept it.",
+    "kpi": {
+      "shifts": "Shifts",
+      "sales": "Sales",
+      "net": "Net sales",
+      "egp": "EGP · last 30 days",
+      "days": "Last 30 days",
+      "short": "Short shifts",
+      "shortHint": "Last 30 days"
+    },
+    "info": "Details",
+    "username": "Username",
+    "email": "Email",
+    "invited": "Invited",
+    "joined": "Joined",
+    "lastActive": "Last active",
+    "notYet": "Not yet",
+    "never": "Never",
+    "role": "Role",
+    "roleLabel": "What they can do",
+    "roleHints": {
+      "admin": "Manages products, branches, employees and reports.",
+      "cashier": "Sells on the POS, opens and closes shifts, and looks up customers.",
+      "inventoryStaff": "Manages products and stock counts. Can’t sell or see reports.",
+      "owner": "Created the business. Has every permission."
+    },
+    "roleYou": "You can't change your own role.",
+    "roleOwner": "The owner's role can't change.",
+    "roleFailed": "Couldn't change the role. Try again.",
+    "saveRole": "Save role",
+    "shifts": "Recent shifts",
+    "noShifts": "No shifts yet",
+    "noShiftsText": "Their shifts show here once they open one on the POS."
+  }
+}

@@ -1,0 +1,68 @@
+<ng-container *transloco="let t; read: 'pos.reprint'">
+  @switch (status()) {
+    @case ('loading') {
+      <span class="vd-skeleton" style="height: 60px; width: 50%"></span>
+      <span class="vd-skeleton" style="height: 300px"></span>
+      <span class="vd-sr">{{ t('loading') }}</span>
+    }
+    @case ('error') {
+      <div class="vd-tablewrap">
+        <app-load-error
+          [title]="t('errorTitle')"
+          [text]="t('errorText')"
+          [retryLabel]="t('tryAgain')"
+          (retry)="load()"
+        />
+      </div>
+    }
+    @default {
+      @if (receipt(); as r) {
+        <app-page-head
+          [title]="t('title', { number: r.number })"
+          [text]="
+            t('text', {
+              date: longDate(r.issuedAt, lang()),
+              branch: r.branchLine.split(' · ')[0],
+              terminal: r.terminalName,
+            })
+          "
+        >
+          <a vdButton [routerLink]="['/pos/return', saleId]"
+            ><svg lucideUndo2 aria-hidden="true"></svg>{{ t('return') }}</a
+          >
+          <button
+            vdButton="primary"
+            type="button"
+            [loading]="printStatus() === 'saving'"
+            (click)="printCopy()"
+          >
+            <svg lucidePrinter aria-hidden="true"></svg>{{ t('print') }}
+          </button>
+        </app-page-head>
+
+        <div class="grid">
+          <section class="card" aria-labelledby="rp-about">
+            <h2 id="rp-about">{{ t('aboutTitle') }}</h2>
+            <p>{{ t('aboutText') }}</p>
+            <dl>
+              <dt>{{ t('customer') }}</dt>
+              <dd>{{ r.customerName || t('walkIn') }}</dd>
+              <dt>{{ t('cashier') }}</dt>
+              <dd>{{ r.cashierName }}</dd>
+              <dt>{{ t('payment') }}</dt>
+              <dd>
+                <bdi>{{ paymentLine() }}</bdi>
+              </dd>
+            </dl>
+          </section>
+          <app-sale-receipt
+            [receipt]="r"
+            stamp="reprint"
+            [reprintedAt]="reprintedAt()"
+            [lang]="lang()"
+          />
+        </div>
+      }
+    }
+  }
+</ng-container>

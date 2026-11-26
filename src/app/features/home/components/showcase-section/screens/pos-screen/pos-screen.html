@@ -1,0 +1,114 @@
+<ng-container *transloco="let t; read: 'home'">
+  <div class="bar">
+    <span class="title">{{ t('showcase.pos.tab') }}</span>
+    <span class="vd-badge vd-badge--outline">{{ t('pos.counter') }}</span>
+    <span class="spacer"></span>
+    <span class="vd-badge vd-badge--success vd-badge--dot">{{ t('pos.shiftOpen') }}</span>
+  </div>
+
+  <div class="pos">
+    <div class="pos__catalog">
+      <div class="search"><svg lucideSearch></svg>{{ t('showcase.pos.search') }}</div>
+      <div class="cats">
+        @for (cat of t('showcase.pos.cats'); track $index) {
+          <span [class.on]="$first">{{ cat }}</span>
+        }
+      </div>
+      <div class="tiles">
+        @for (product of products; track product.key) {
+          <div class="tile">
+            <div class="tile__img" [attr.data-tone]="product.tone">
+              <svg [lucideIcon]="product.icon"></svg>
+            </div>
+            <b>{{ t('products.' + product.key + '.name') }}</b>
+            <div class="tile__row">
+              <span>{{ t('products.' + product.key + '.variant') }}</span>
+              <bdi class="fig">{{ product.price }}</bdi>
+            </div>
+            <div class="tile__row">
+              <span>
+                @if (product.stock === null) {
+                  {{ t('showcase.pos.notTracked') }}
+                } @else {
+                  {{ t('showcase.pos.inStock', { count: product.stock }) }}
+                }
+              </span>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="pos__basket">
+      <div class="cust">
+        <span class="av">{{ t('pos.initials') }}</span>
+        <span
+          ><b>{{ t('pos.customer') }}</b> · <bdi dir="ltr">010 •••• 4821</bdi></span
+        >
+        <span class="cust__change">{{ t('showcase.pos.remove') }}</span>
+      </div>
+      <div class="lines">
+        <div class="line">
+          <span class="q">1</span>
+          <div>
+            <div class="n">{{ t('products.coffee.name') }}</div>
+            <div class="v">{{ t('products.coffee.line') }}</div>
+          </div>
+          <span class="a"><bdi>420.00</bdi></span>
+        </div>
+        <div class="line">
+          <span class="q">2</span>
+          <div>
+            <div class="n">{{ t('products.mug.name') }}</div>
+            <div class="v">{{ t('products.mug.line') }}</div>
+            <div class="d"><svg lucidePercent></svg>{{ t('showcase.pos.discount') }}</div>
+          </div>
+          <span class="a"
+            ><s><bdi>570.00</bdi></s
+            ><bdi>513.00</bdi></span
+          >
+        </div>
+        <div class="line">
+          <span class="q">1</span>
+          <div>
+            <div class="n">{{ t('products.dates.name') }}</div>
+            <div class="v">{{ t('products.dates.line') }}</div>
+          </div>
+          <span class="a"><bdi>210.00</bdi></span>
+        </div>
+      </div>
+      <div class="tot">
+        <div>
+          <span>{{ t('pos.subtotal') }}</span
+          ><bdi class="fig">1,200.00</bdi>
+        </div>
+        <div>
+          <span>{{ t('pos.discounts') }}</span
+          ><bdi class="fig">−57.00</bdi>
+        </div>
+        <div>
+          <span>{{ t('pos.vat') }}</span
+          ><bdi class="fig">140.37</bdi>
+        </div>
+        <div class="grand">
+          <span>{{ t('showcase.pos.total') }}</span
+          ><bdi class="fig">1,143.00</bdi>
+        </div>
+      </div>
+      <div class="pays">
+        @for (pay of payments; track pay.key) {
+          <div class="pay" [class.on]="pay.amount">
+            <svg [lucideIcon]="pay.icon"></svg>
+            {{ t('pos.' + pay.key) }}
+            <bdi class="fig">{{ pay.amount ?? '—' }}</bdi>
+          </div>
+        }
+      </div>
+      <div class="change-due">
+        <span>{{ t('pos.changeDue') }}</span
+        ><bdi class="fig">20.00</bdi>
+      </div>
+      <div class="complete"><svg lucideCheck></svg>{{ t('pos.complete') }}</div>
+    </div>
+  </div>
+</ng-container>

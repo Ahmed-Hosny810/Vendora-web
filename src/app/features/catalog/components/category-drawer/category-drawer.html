@@ -1,0 +1,128 @@
+<form class="vd-drawer" novalidate *transloco="let t; read: 'catalog'" (submit)="onSubmit($event)">
+  <header class="vd-drawer__head">
+    <h2 class="vd-drawer__title" vdDialogTitle>
+      {{ data.category ? t('categories.editTitle') : t('categories.addTitle') }}
+    </h2>
+    <button vdIconButton type="button" [label]="t('close')" (click)="ref.close()">
+      <svg lucideX></svg>
+    </button>
+  </header>
+
+  <fieldset class="vd-drawer__body body" [disabled]="saving()">
+    <legend class="vd-sr">
+      {{ data.category ? t('categories.editTitle') : t('categories.addTitle') }}
+    </legend>
+    @if (status() === 'failed') {
+      <div class="vd-banner vd-banner--danger" role="alert">
+        <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+        <span class="vd-banner__body">{{ t('categories.failed') }}</span>
+      </div>
+    }
+
+    <div class="vd-field">
+      <div class="vd-field__top">
+        <label class="vd-field__label" for="c-en"
+          >{{ t('categories.nameEn') }}<span class="req" aria-hidden="true">*</span></label
+        >
+        <span class="vd-field__counter" aria-hidden="true"
+          >{{ model().nameEn.length }}/{{ maxName }}</span
+        >
+      </div>
+      <input
+        id="c-en"
+        class="vd-input"
+        type="text"
+        lang="en"
+        dir="ltr"
+        [formField]="categoryForm.nameEn"
+        [attr.aria-invalid]="nameError() ? true : null"
+        [attr.aria-describedby]="nameError() ? 'c-en-error' : null"
+      />
+      @if (nameError(); as error) {
+        <p id="c-en-error" class="vd-field__error">
+          <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('categories.' + error) }}
+        </p>
+      }
+    </div>
+
+    <div class="vd-field">
+      <div class="vd-field__top">
+        <label class="vd-field__label" for="c-ar"
+          >{{ t('categories.nameAr') }}<span class="opt">{{ t('optional') }}</span></label
+        >
+        <span class="vd-field__counter" aria-hidden="true"
+          >{{ model().nameAr.length }}/{{ maxName }}</span
+        >
+      </div>
+      <input
+        id="c-ar"
+        class="vd-input arabic"
+        type="text"
+        lang="ar"
+        dir="rtl"
+        [formField]="categoryForm.nameAr"
+      />
+    </div>
+
+    <div class="vd-field">
+      <label class="vd-field__label" for="c-parent"
+        >{{ t('categories.parent') }}<span class="opt">{{ t('optional') }}</span></label
+      >
+      <select
+        id="c-parent"
+        class="vd-input"
+        aria-describedby="c-parent-hint"
+        [formField]="categoryForm.parentId"
+      >
+        <option value="">{{ t('categories.choose') }}</option>
+        @for (c of parents(); track c.id) {
+          <option [value]="c.id">{{ c.nameEn }}</option>
+        }
+      </select>
+      <p class="vd-field__hint" id="c-parent-hint">{{ t('categories.parentHint') }}</p>
+    </div>
+
+    <div class="vd-field">
+      <label class="vd-field__label" for="c-sort">{{ t('categories.sortOrder') }}</label>
+      <input
+        id="c-sort"
+        class="vd-input"
+        type="number"
+        inputmode="numeric"
+        step="1"
+        [formField]="categoryForm.sortOrder"
+        [attr.aria-invalid]="sortError() ? true : null"
+        aria-describedby="c-sort-hint"
+      />
+      <p class="vd-field__hint" [class.vd-field__error]="sortError()" id="c-sort-hint">
+        {{ t('categories.sortHint') }}
+      </p>
+    </div>
+
+    <label class="vd-choice toggle">
+      <b id="c-vis-label">{{ t('categories.visible') }}</b>
+      <span id="c-vis-text">{{ t('categories.visibleText') }}</span>
+      <input
+        type="checkbox"
+        role="switch"
+        aria-labelledby="c-vis-label"
+        aria-describedby="c-vis-text"
+        [formField]="categoryForm.visible"
+      />
+    </label>
+  </fieldset>
+
+  <footer class="vd-drawer__foot foot">
+    <button vdButton type="button" [disabled]="saving()" (click)="ref.close()">
+      {{ t('cancel') }}
+    </button>
+    @if (!data.category) {
+      <button vdButton type="button" [disabled]="saving()" (click)="save(true)">
+        {{ t('categories.saveAndAddProduct') }}
+      </button>
+    }
+    <button vdButton="primary" type="submit" [loading]="saving()">
+      <svg lucideCheck aria-hidden="true"></svg>{{ t('categories.save') }}
+    </button>
+  </footer>
+</form>

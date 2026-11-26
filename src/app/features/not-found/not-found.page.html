@@ -1,0 +1,33 @@
+<ng-container *transloco="let t; read: 'errors.notFound'">
+  <header class="top">
+    <a routerLink="/" [attr.aria-label]="t('home')"><vd-wordmark /></a>
+  </header>
+
+  <main class="main">
+    <!-- A swinging shelf tag that rang up 404 -->
+    <div class="tag" aria-hidden="true">
+      <span class="tag__hole"></span>
+      <span class="tag__kicker">{{ t('tagKicker') }}</span>
+      <b class="tag__code" dir="ltr">404</b>
+      <span class="tag__line">{{ t('tagLine') }}</span>
+      <span class="tag__bars" dir="ltr">
+        @for (w of bars; track $index) {
+          <i [style.width.px]="w"></i>
+        }
+      </span>
+      <span class="tag__sku" dir="ltr">SKU · PAGE-NOT-FOUND</span>
+    </div>
+
+    <h1>{{ t('title') }}</h1>
+    <p>{{ t('text') }}</p>
+
+    <div class="acts">
+      <a vdButton="primary" routerLink="/overview"
+        ><svg lucideHouse aria-hidden="true"></svg>{{ t('overview') }}</a
+      >
+      <a vdButton routerLink="/"
+        ><svg lucideArrowLeft class="vd-flip-rtl" aria-hidden="true"></svg>{{ t('home') }}</a
+      >
+    </div>
+  </main>
+</ng-container>

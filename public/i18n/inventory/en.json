@@ -1,0 +1,192 @@
+{
+  "opening": {
+    "title": "Opening stock",
+    "text": "Record what’s already on your shelves when you start using Vendora.",
+    "steps": {
+      "label": "Opening stock steps",
+      "select": "Select item",
+      "quantities": "Enter quantities",
+      "review": "Review"
+    },
+    "loading": "Loading products…",
+    "errorTitle": "We couldn’t load the products",
+    "errorText": "Check your connection and try again.",
+    "tryAgain": "Try again",
+    "emptyTitle": "No products track inventory yet",
+    "emptyText": "Turn on Track inventory for a product, then come back to count it.",
+    "toProducts": "Go to products",
+    "sections": {
+      "item": "Branch and item",
+      "quantities": "Quantities"
+    },
+    "choose": "Choose…",
+    "branch": "Branch",
+    "product": "Product",
+    "productHint": "Only products that track inventory are listed.",
+    "variant": "Variant",
+    "variantHint": "{{name}} has variants, so pick one.",
+    "quantity": "Opening quantity",
+    "quantityHintWhole": "More than 0. Whole numbers only — this unit can’t be split.",
+    "quantityHintFraction": "More than 0. Decimals like 0.5 are allowed.",
+    "lowStock": "Low-stock threshold",
+    "lowStockHint": "Warn when stock falls to this number. 0 turns warnings off.",
+    "cancel": "Cancel",
+    "review": "Review",
+    "back": "Back",
+    "confirm": "Confirm opening stock",
+    "crateText": "First count for this branch. Later changes are stock adjustments, not opening stock.",
+    "fixOne": "Fix 1 field to continue. Everything you typed is kept.",
+    "fixMany": "Fix {{count}} fields to continue. Everything you typed is kept.",
+    "errors": {
+      "branchId": "Choose a branch.",
+      "productId": "Choose a product.",
+      "variantId": "Choose a variant.",
+      "quantity": "Enter a quantity more than 0.",
+      "lowStockThreshold": "Enter 0 or more.",
+      "whole": "Use a whole number — this unit can’t be split.",
+      "alreadyCounted": "{{item}} already has opening stock at {{branch}}. To change it, use a stock adjustment.",
+      "failed": "We couldn’t save the opening stock. Check your connection and try again."
+    },
+    "slip": {
+      "title": "Opening stock slip",
+      "stamp": "Opening count",
+      "unit": "Unit",
+      "note": "This sets the starting quantity. To correct stock later, use a stock adjustment instead."
+    },
+    "saved": "Opening stock saved",
+    "savedText": "{{quantity}} {{unit}} of {{item}} are now on hand at {{branch}}.",
+    "addAnother": "Add another item",
+    "viewInventory": "View inventory"
+  },
+  "list": {
+    "title": "Inventory",
+    "text": "What’s on hand at {{branch}}. Only products that track inventory are listed.",
+    "opening": "Opening stock",
+    "kpi": {
+      "tracked": "Tracked items",
+      "trackedHint": "Products and variants",
+      "low": "Low stock",
+      "lowHint": "At or under their threshold",
+      "out": "Out of stock",
+      "outHint": "Can’t be sold until restocked"
+    },
+    "loading": "Loading inventory…",
+    "errorTitle": "We couldn’t load the inventory",
+    "errorText": "Check your connection and try again.",
+    "tryAgain": "Try again",
+    "emptyTitle": "Nothing counted yet",
+    "emptyText": "Record your opening stock to see what’s on hand here.",
+    "search": "Product, variant or SKU",
+    "searchLabel": "Search inventory",
+    "filters": {
+      "all": "All",
+      "low": "Low stock",
+      "out": "Out of stock"
+    },
+    "cols": {
+      "item": "Item",
+      "sku": "SKU",
+      "onHand": "On hand",
+      "lowAt": "Low at",
+      "status": "Status",
+      "updated": "Last change"
+    },
+    "levels": {
+      "in": "In stock",
+      "low": "Low",
+      "out": "Out"
+    },
+    "adjust": "Adjust",
+    "adjustLabel": "Adjust stock of {{name}}",
+    "noMatch": "No items match.",
+    "history": "History",
+    "historyLabel": "Stock history of {{name}}"
+  },
+  "adjust": {
+    "title": "Adjust stock",
+    "close": "Close",
+    "onHandAt": "On hand at {{branch}}:",
+    "what": "What happened?",
+    "kinds": {
+      "add": "Add",
+      "addText": "Received or found",
+      "remove": "Remove",
+      "removeText": "Damaged, lost, returned",
+      "set": "Set count",
+      "setText": "After counting"
+    },
+    "quantity": "Quantity",
+    "counted": "Counted quantity",
+    "reason": "Reason",
+    "reasons": {
+      "received": "Received from supplier",
+      "returned": "Customer return",
+      "found": "Found in store",
+      "damaged": "Damaged",
+      "lost": "Lost or stolen",
+      "supplierReturn": "Returned to supplier",
+      "count": "Stock count",
+      "other": "Other"
+    },
+    "note": "Note",
+    "notePlaceholder": "Invoice number, what happened…",
+    "optional": "Optional",
+    "result": "After this change",
+    "negative": "This takes stock below zero.",
+    "cancel": "Cancel",
+    "save": "Save adjustment",
+    "errors": {
+      "min": "Enter more than 0.",
+      "minSet": "Enter 0 or more.",
+      "whole": "Use a whole number — this unit can’t be split.",
+      "note": "Say what happened.",
+      "belowZero": "There isn’t that much on hand. Lower the quantity, or set the counted amount instead.",
+      "failed": "We couldn’t save the adjustment. Check your connection and try again."
+    }
+  },
+  "history": {
+    "loading": "Loading stock history…",
+    "errorTitle": "Couldn't load the history",
+    "errorText": "Check your connection and try again.",
+    "tryAgain": "Try again",
+    "at": "at {{branch}}",
+    "adjust": "Adjust stock",
+    "onHand": "On hand",
+    "levels": {
+      "in": "In stock",
+      "low": "Low stock",
+      "out": "Out of stock"
+    },
+    "added": "Added",
+    "removed": "Removed",
+    "inList": "In the changes below",
+    "kinds": {
+      "all": "All",
+      "sale": "Sale",
+      "return": "Return",
+      "adjustment": "Adjustment",
+      "opening": "Opening count"
+    },
+    "emptyTitle": "No changes yet",
+    "emptyText": "Sales, returns and adjustments of this item show here.",
+    "noMatch": "No changes of this kind.",
+    "cols": {
+      "when": "When",
+      "what": "What happened",
+      "by": "By",
+      "change": "Change",
+      "after": "On hand after"
+    },
+    "loadMore": "Show older",
+    "reasons": {
+      "received": "Received from supplier",
+      "returned": "Customer return",
+      "found": "Found in store",
+      "damaged": "Damaged",
+      "lost": "Lost or stolen",
+      "supplierReturn": "Returned to supplier",
+      "count": "Stock count",
+      "other": "Other"
+    }
+  }
+}

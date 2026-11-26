@@ -1,0 +1,13 @@
+<ng-container *transloco="let t">
+  <!-- First thing a keyboard user reaches: jumps past the header. -->
+  <a class="skip" href="#main" (click)="skipToContent($event)">{{ t('site.skip') }}</a>
+</ng-container>
+
+<app-site-header [lang]="lang()" (languageChange)="changeLanguage($event)" />
+
+<!-- tabindex="-1" lets the skip link move focus here. -->
+<main id="main" #main tabindex="-1">
+  <router-outlet />
+</main>
+
+<app-site-footer [lang]="lang()" (languageChange)="changeLanguage($event)" />

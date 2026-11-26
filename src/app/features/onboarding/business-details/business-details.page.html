@@ -1,0 +1,133 @@
+<ng-container *transloco="let t; read: 'onboarding'">
+  <app-onb-head
+    [kicker]="t('details.kicker')"
+    [title]="t('details.title')"
+    [lead]="t('details.lead')"
+    titleId="details-title"
+  />
+
+  <p class="req-note"><b aria-hidden="true">*</b>{{ t('details.required') }}</p>
+
+  <form class="form" novalidate aria-labelledby="details-title" (submit)="onSubmit($event)">
+    <!-- Name in English (required) -->
+    <div class="vd-field">
+      <div class="vd-field__top">
+        <label class="vd-field__label" for="name-en">
+          {{ t('details.nameEn') }}<span class="star" aria-hidden="true">*</span>
+        </label>
+        <span class="vd-field__counter" aria-hidden="true"
+          >{{ model().nameEn.length }}/{{ maxLength }}</span
+        >
+      </div>
+      <input
+        id="name-en"
+        class="vd-input vd-input--lg"
+        type="text"
+        lang="en"
+        dir="ltr"
+        autocomplete="organization"
+        [placeholder]="t('details.nameEnPlaceholder')"
+        [formField]="detailsForm.nameEn"
+        [attr.aria-invalid]="nameEnError() ? true : null"
+        [attr.aria-describedby]="nameEnError() ? 'name-en-error' : null"
+      />
+      @if (nameEnError()) {
+        <p id="name-en-error" class="vd-field__error">
+          <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+          >{{ t('details.errors.nameEn') }}
+        </p>
+      }
+    </div>
+
+    <!-- Name in Arabic (optional) -->
+    <div class="vd-field">
+      <div class="vd-field__top">
+        <label class="vd-field__label" for="name-ar">{{ t('details.nameAr') }}</label>
+        <span class="end">
+          <span class="opt-tag">{{ t('optional') }}</span>
+          <span class="vd-field__counter" aria-hidden="true"
+            >{{ model().nameAr.length }}/{{ maxLength }}</span
+          >
+        </span>
+      </div>
+      <input
+        id="name-ar"
+        class="vd-input vd-input--lg arabic"
+        type="text"
+        lang="ar"
+        dir="rtl"
+        [placeholder]="t('details.nameArPlaceholder')"
+        [formField]="detailsForm.nameAr"
+      />
+    </div>
+
+    <!-- Business type (required) -->
+    <div class="vd-field">
+      <div class="vd-field__top">
+        <label class="vd-field__label" for="btype">
+          {{ t('details.type') }}<span class="star" aria-hidden="true">*</span>
+        </label>
+      </div>
+      <div class="sel">
+        <span class="sel__ic" aria-hidden="true"><svg lucideStore></svg></span>
+        <select
+          id="btype"
+          class="vd-input vd-input--lg"
+          [formField]="detailsForm.type"
+          [attr.aria-invalid]="typeError() ? true : null"
+          [attr.aria-describedby]="typeError() ? 'btype-error' : null"
+        >
+          <option value="" disabled>{{ t('details.typePlaceholder') }}</option>
+          @for (type of types; track type) {
+            <option [value]="type">{{ t('types.' + type) }}</option>
+          }
+        </select>
+      </div>
+      @if (typeError()) {
+        <p id="btype-error" class="vd-field__error">
+          <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('details.errors.type') }}
+        </p>
+      }
+    </div>
+
+    <!-- Currency: fixed to EGP for now -->
+    <div class="vd-field">
+      <span class="vd-field__label" id="currency-label">{{ t('details.currency') }}</span>
+      <div
+        class="lock"
+        role="group"
+        aria-labelledby="currency-label"
+        aria-describedby="currency-help"
+      >
+        <span class="lock__code" lang="en">EGP</span>
+        <span>{{ t('details.currencyName') }}</span>
+        <svg lucideLock aria-hidden="true"></svg>
+      </div>
+      <p class="vd-field__hint" id="currency-help">{{ t('details.currencyHelp') }}</p>
+    </div>
+
+    <!-- Inventory tracking -->
+    <fieldset class="inv">
+      <legend>{{ t('details.inventory') }}<span class="star" aria-hidden="true">*</span></legend>
+      <div class="inv__opts">
+        <label class="rcard">
+          <input type="radio" value="track" [formField]="detailsForm.inventory" />
+          <b>{{ t('details.track') }}</b>
+          <span>{{ t('details.trackText') }}</span>
+        </label>
+        <label class="rcard">
+          <input type="radio" value="none" [formField]="detailsForm.inventory" />
+          <b>{{ t('details.noTrack') }}</b>
+          <span>{{ t('details.noTrackText') }}</span>
+        </label>
+      </div>
+    </fieldset>
+
+    <div class="actions">
+      <span class="grow"></span>
+      <button vdButton="primary" size="lg" type="submit">
+        {{ t('continue') }}<svg lucideArrowRight class="vd-flip-rtl" aria-hidden="true"></svg>
+      </button>
+    </div>
+  </form>
+</ng-container>

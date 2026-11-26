@@ -1,0 +1,91 @@
+// ---------- Badge: short status label ----------
+// <span class="vd-badge vd-badge--success vd-badge--dot">Active</span>
+// Tones: (none) neutral · --success · --warning · --danger · --info · --brand · --outline
+// Shape: --pill (round ends) · --dot (dot before the label)
+
+.vd-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 22px;
+  padding-inline: var(--space-2);
+  border-radius: var(--radius-xs);
+  background: var(--paper-100);
+  color: var(--ink-700);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  white-space: nowrap;
+
+  svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  &--success {
+    background: var(--success-bg);
+    color: var(--success-fg);
+  }
+
+  &--warning {
+    background: var(--warning-bg);
+    color: var(--warning-fg);
+  }
+
+  &--danger {
+    background: var(--danger-bg);
+    color: var(--danger-fg);
+  }
+
+  &--info {
+    background: var(--info-bg);
+    color: var(--info-fg);
+  }
+
+  &--brand {
+    background: var(--pine-100);
+    color: var(--pine-700);
+  }
+
+  &--outline {
+    background: transparent;
+    border: 1px solid var(--line-strong);
+  }
+
+  // Round ends, for statuses in tables (Active, Inactive).
+  &--pill {
+    min-height: 24px;
+    padding-inline: 9px;
+    border-radius: var(--radius-pill);
+  }
+
+  // A small dot in the current text colour, before the label.
+  &--dot::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+}
+
+// ---------- Count: number bubble (cart, notifications) ----------
+// <span class="vd-count">3</span>
+.vd-count {
+  display: inline-block;
+  min-width: 18px;
+  height: 18px;
+  padding-inline: 5px;
+  border-radius: var(--radius-pill);
+  background: var(--ink-900);
+  color: var(--butter-300);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  // "99+" must not become "+99" in Arabic.
+  direction: ltr;
+  unicode-bidi: isolate;
+}

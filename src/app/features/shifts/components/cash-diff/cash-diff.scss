@@ -1,0 +1,101 @@
+:host {
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+  border: 2px solid;
+  border-radius: var(--radius-md);
+
+  &.is-shortage {
+    border-color: var(--danger-fg);
+    background: var(--danger-bg);
+    color: var(--danger-fg);
+  }
+
+  &.is-balanced {
+    border-color: var(--success-fg);
+    background: var(--success-bg);
+    color: var(--success-fg);
+  }
+
+  &.is-overage {
+    border-color: var(--info-fg);
+    background: var(--info-bg);
+    color: var(--info-fg);
+  }
+}
+
+.h {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+
+  b {
+    font: 700 30px/1 var(--font-display);
+    unicode-bidi: isolate;
+  }
+}
+
+// Stamped label, slightly crooked.
+.lbl {
+  padding: 6px 10px;
+  border: 2px solid currentColor;
+  border-radius: 4px;
+  font: 700 12px/1 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  rotate: -4deg;
+
+  :host-context(:lang(ar)) & {
+    font-family: 'IBM Plex Sans Arabic', var(--font-sans);
+    letter-spacing: 0;
+  }
+}
+
+// Red (short) · green (balanced) · blue (over), start to end.
+.scale {
+  position: relative;
+  height: 10px;
+  border-radius: 10px;
+  background: linear-gradient(
+    to right,
+    var(--danger-fg) 0 40%,
+    var(--success-fg) 40% 60%,
+    var(--info-fg) 60%
+  );
+  opacity: 0.8;
+
+  // In Arabic the scale runs right to left, like the reading direction.
+  :host-context([dir='rtl']) & {
+    background: linear-gradient(
+      to left,
+      var(--danger-fg) 0 40%,
+      var(--success-fg) 40% 60%,
+      var(--info-fg) 60%
+    );
+  }
+
+  i {
+    position: absolute;
+    top: -6px;
+    width: 4px;
+    height: 22px;
+    margin-inline-start: -2px;
+    border-radius: 2px;
+    background: var(--ink-900);
+    transition: inset-inline-start 600ms cubic-bezier(0.3, 1.5, 0.5, 1);
+  }
+}
+
+p {
+  margin: 0;
+  color: var(--ink-700);
+  font-size: 13px;
+  line-height: 19px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scale i {
+    transition: none;
+  }
+}

@@ -1,0 +1,145 @@
+@use 'abstracts' as *;
+@use '../../../shared/styles/app-forms' as forms;
+
+:host {
+  display: contents;
+}
+
+.grid {
+  @include forms.grid;
+  @include forms.field-bits;
+}
+
+.col {
+  @include forms.column;
+
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.two {
+  @include forms.two;
+}
+
+.arabic {
+  font-family: 'IBM Plex Sans Arabic', var(--font-sans);
+}
+
+.foot {
+  @include forms.foot;
+}
+
+// Read-only facts: label on the start, locked value on the end.
+.facts {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+
+  div {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--line);
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  dt {
+    color: var(--ink-500);
+    font-size: 14px;
+  }
+
+  dd {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+
+    svg {
+      width: 14px;
+      height: 14px;
+      color: var(--ink-500);
+    }
+  }
+}
+
+.preview {
+  @include forms.preview;
+
+  &__cap {
+    @include forms.preview-cap;
+  }
+
+  &__note {
+    @include forms.preview-note;
+  }
+}
+
+// A short receipt: business name on top, the footer message at the bottom.
+.slip {
+  display: grid;
+  gap: 8px;
+  padding: 22px 20px 26px;
+  background: var(--paper-0);
+  box-shadow:
+    0 1px 0 var(--line),
+    0 10px 24px rgb(1 62 55 / 8%);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  text-align: center;
+  // Torn paper edge at the bottom.
+  mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 14px 100%;
+
+  hr {
+    width: 100%;
+    margin: 4px 0;
+    border: 0;
+    border-top: 1.5px dashed var(--line-strong);
+  }
+
+  &__name {
+    font: 700 16px/1.25 var(--font-display);
+    overflow-wrap: anywhere;
+  }
+
+  &__ar {
+    color: var(--ink-700);
+    font-size: 14px;
+    overflow-wrap: anywhere;
+  }
+
+  // Grey bars stand in for item lines.
+  &__row {
+    display: flex;
+    justify-content: space-between;
+
+    i {
+      height: 8px;
+      border-radius: 4px;
+      background: var(--paper-200);
+    }
+
+    &--total {
+      font-weight: 700;
+    }
+  }
+
+  &__foot {
+    margin: 0;
+    color: var(--ink-900);
+    line-height: 1.45;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+
+    &--empty {
+      color: var(--ink-500);
+      font-style: italic;
+    }
+  }
+}

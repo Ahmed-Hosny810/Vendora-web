@@ -1,0 +1,13 @@
+<div class="au">
+  <app-auth-side
+    class="au__side"
+    [kind]="panel.kind()"
+    [provider]="panel.provider()"
+    [lang]="lang()"
+    (languageChange)="changeLanguage($event)"
+  />
+
+  <main class="au__stage" id="main">
+    <router-outlet />
+  </main>
+</div>

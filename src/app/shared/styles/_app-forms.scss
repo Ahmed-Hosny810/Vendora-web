@@ -1,0 +1,186 @@
+// Pieces shared by the app's create/edit forms (branch, product, employee…).
+//   @use '../../../shared/styles/app-forms' as forms;   (path from the page)
+//   .grid { @include forms.grid; }
+
+@use 'abstracts' as *;
+
+// Form on the start side, sticky live preview (340px) on the end side.
+// Phones: one column, preview first.
+@mixin grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  align-items: start;
+  gap: 24px;
+
+  @include down(lg) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@mixin column {
+  display: grid;
+  gap: 18px;
+  min-width: 0;
+}
+
+// Two fields side by side; stacked on phones.
+@mixin two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  // Each field keeps its own height (a hint under one doesn't stretch the other).
+  align-items: start;
+
+  @include down(md) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Field details used in these forms: red star, "Optional" pill, counter.
+@mixin field-bits {
+  .vd-input {
+    min-height: 44px;
+  }
+
+  textarea.vd-input {
+    min-height: 84px;
+  }
+
+  .vd-field__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .req {
+    color: var(--danger-fg);
+  }
+
+  .opt {
+    padding: 3px 7px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    background: var(--paper-100);
+    color: var(--ink-500);
+    font: 500 11px/1 var(--font-sans);
+  }
+
+  .vd-field__counter {
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+
+  .mono {
+    font-family: var(--font-mono);
+    letter-spacing: 0.02em;
+  }
+}
+
+// A switch with a title and a line of explanation.
+@mixin toggle-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 4px 16px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--paper-0);
+  cursor: pointer;
+
+  b {
+    font-size: 14px;
+  }
+
+  span {
+    grid-column: 1;
+    color: var(--ink-500);
+    font-size: 13px;
+    line-height: 18px;
+  }
+
+  input {
+    grid-row: 1 / span 2;
+    grid-column: 2;
+  }
+}
+
+// "* Required" on the start, Cancel + Save on the end.
+// Phones: stacked full-width buttons, Save on top.
+@mixin foot {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 4px;
+
+  .grow {
+    margin-inline-end: auto;
+    color: var(--ink-500);
+    font-size: 13px;
+  }
+
+  @include down(md) {
+    flex-direction: column-reverse;
+    align-items: stretch;
+
+    .vd-btn {
+      justify-content: center;
+      min-height: 48px;
+    }
+  }
+}
+
+// Sticky column of live previews beside the form.
+@mixin preview {
+  position: sticky;
+  top: 20px;
+  display: grid;
+  gap: 12px;
+
+  @include down(lg) {
+    position: static;
+    order: -1;
+  }
+}
+
+// "● LIVE PREVIEW" with a pulsing green dot.
+@mixin preview-cap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--ink-500);
+  font: 600 11px/1 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+
+  &::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--success-fg);
+    box-shadow: 0 0 0 3px var(--success-bg);
+    animation: forms-live 2s ease-in-out infinite;
+  }
+
+  :host-context(:lang(ar)) & {
+    font-family: 'IBM Plex Sans Arabic', var(--font-sans);
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  @keyframes forms-live {
+    50% {
+      box-shadow: 0 0 0 6px rgb(227 241 218 / 40%);
+    }
+  }
+}
+
+@mixin preview-note {
+  margin: 0;
+  color: var(--ink-500);
+  font-size: 12px;
+  line-height: 17px;
+}

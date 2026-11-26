@@ -1,0 +1,173 @@
+@use 'abstracts' as *;
+
+.vd-btn {
+  --vd-btn-h: 40px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--vd-btn-h);
+  padding-inline: var(--space-4);
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+
+  svg {
+    flex: none;
+    width: 18px;
+    height: 18px;
+  }
+
+  // ---------- Sizes ----------
+  &--sm {
+    --vd-btn-h: 32px;
+    padding-inline: var(--space-3);
+    font-size: 13px;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &--lg {
+    --vd-btn-h: 52px;
+    padding-inline: var(--space-6);
+    border-radius: var(--radius-md);
+    font-size: 16px;
+  }
+
+  &--block {
+    width: 100%;
+  }
+
+  // ---------- Variants ----------
+  &--primary {
+    background: var(--pine-600);
+    color: var(--butter-300);
+
+    @include hover {
+      background: var(--pine-700);
+    }
+
+    &:active {
+      background: var(--pine-800);
+      transform: translateY(1px);
+    }
+  }
+
+  &--secondary {
+    background: var(--paper-0);
+    color: var(--ink-900);
+    border-color: var(--line-strong);
+
+    @include hover {
+      background: var(--paper-100);
+      border-color: var(--ink-900);
+    }
+  }
+
+  &--ghost {
+    background: transparent;
+    color: var(--ink-900);
+
+    @include hover {
+      background: var(--paper-100);
+    }
+  }
+
+  &--danger {
+    background: var(--danger-fg);
+    color: #fff;
+
+    @include hover {
+      filter: brightness(0.92);
+    }
+  }
+
+  &--accent {
+    background: var(--butter-300);
+    color: var(--ink-900);
+    border-color: var(--ink-900);
+  }
+
+  &--stamp {
+    border-color: var(--ink-900);
+
+    @include hover {
+      transform: translate(-2px, -2px);
+      box-shadow: var(--shadow-stamp);
+    }
+
+    &:active {
+      transform: none;
+      box-shadow: none;
+    }
+  }
+
+  // ---------- States ----------
+  &:disabled,
+  &[aria-disabled='true']:not([aria-busy='true']) {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  // Loading: hide the label (still read by screen readers), draw a spinner.
+  &[aria-busy='true'] {
+    position: relative;
+    color: transparent;
+    cursor: progress;
+
+    svg {
+      visibility: hidden;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      width: 16px;
+      height: 16px;
+      border: 2px solid var(--ink-on-dark);
+      border-inline-end-color: transparent;
+      border-radius: 50%;
+      animation: vd-spin 700ms linear infinite;
+    }
+  }
+
+  &--secondary[aria-busy='true']::after,
+  &--ghost[aria-busy='true']::after,
+  &--accent[aria-busy='true']::after {
+    border-color: var(--ink-900);
+    border-inline-end-color: transparent;
+  }
+}
+
+// On dark surfaces (.vd-inverse) the secondary button turns outline.
+.vd-inverse .vd-btn--secondary {
+  background: transparent;
+  color: var(--ink-on-dark);
+  border-color: var(--ink-on-dark-muted);
+
+  @include hover {
+    background: rgb(255 251 234 / 0.08);
+    border-color: var(--ink-on-dark);
+  }
+}

@@ -1,0 +1,60 @@
+@use 'abstracts' as *;
+
+:host {
+  display: contents;
+}
+
+.prod {
+  min-width: 200px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.vd-badge svg {
+  width: 14px;
+  height: 14px;
+}
+
+.cost-note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-inline-start: auto;
+  color: var(--ink-500);
+  font-size: 12px;
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  @include down(lg) {
+    width: 100%;
+    margin-inline-start: 0;
+  }
+}
+
+.empty {
+  padding-block: 56px;
+
+  &__tag {
+    width: 280px;
+    margin-bottom: 8px;
+  }
+
+  &__acts {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 8px;
+  }
+}
+
+.no-match {
+  margin: 0;
+  padding: 32px 16px;
+  color: var(--ink-500);
+  text-align: center;
+}

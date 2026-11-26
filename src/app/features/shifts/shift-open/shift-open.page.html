@@ -1,0 +1,196 @@
+<div class="page" *transloco="let t; read: 'shifts.open'">
+  @let shift = openShift();
+  <app-cash-drawer-art
+    class="art"
+    [amount]="drawerAmount()"
+    [open]="!!shift || opening()"
+    [caption]="
+      shift
+        ? t('captionContinue', { time: time(shift.openedAt) })
+        : opening()
+          ? t('captionOpening')
+          : t('caption')
+    "
+  />
+
+  <section class="side">
+    @switch (status()) {
+      @case ('loading') {
+        <div class="loading" aria-busy="true">
+          <span class="vd-skeleton" style="height: 40px; width: 60%"></span>
+          <span class="vd-skeleton" style="height: 70px"></span>
+          <span class="vd-skeleton" style="height: 160px"></span>
+          <span class="vd-sr">{{ t('loading') }}</span>
+        </div>
+      }
+      @case ('error') {
+        <app-load-error
+          [title]="t('errorTitle')"
+          [text]="t('errorText')"
+          [retryLabel]="t('tryAgain')"
+          (retry)="load()"
+        />
+      }
+      @default {
+        @if (shift) {
+          <!-- Already open: continue it -->
+          <span class="vd-badge vd-badge--success tag">{{ t('alreadyTag') }}</span>
+          <h1>{{ t('continueTitle') }}</h1>
+          <p class="lead">
+            {{
+              t('continueText', {
+                terminal: shift.terminalName,
+                branch: shift.branchName,
+                time: time(shift.openedAt),
+              })
+            }}
+          </p>
+          <ng-container *ngTemplateOutlet="who" />
+          <dl class="dl">
+            <dt>{{ t('branch') }}</dt>
+            <dd>{{ shift.branchName }}</dd>
+            <dt>{{ t('terminal') }}</dt>
+            <dd>{{ shift.terminalName }}</dd>
+            <dt>{{ t('openedAt') }}</dt>
+            <dd dir="ltr">{{ time(shift.openedAt) }}</dd>
+            <dt>{{ t('openingCash') }}</dt>
+            <dd class="mono" dir="ltr">{{ cash(shift.openingCash) }} {{ t('egp') }}</dd>
+          </dl>
+          <button vdButton="primary" size="lg" block type="button" (click)="continueShift()">
+            {{ t('continue') }}<svg lucideArrowRight class="dir" aria-hidden="true"></svg>
+          </button>
+        } @else {
+          <!-- Open a new shift -->
+          <form class="form" novalidate (submit)="onSubmit($event)">
+            <h1>{{ t('title') }}</h1>
+            <p class="lead">{{ t('text') }}</p>
+            <ng-container *ngTemplateOutlet="who" />
+
+            @if (openStatus() === 'failed') {
+              <div class="vd-banner vd-banner--danger" role="alert">
+                <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+                <span class="vd-banner__body">{{ t('errors.failed') }}</span>
+              </div>
+            } @else if (removedBranch(); as name) {
+              <div class="vd-banner vd-banner--danger" role="status">
+                <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+                <span class="vd-banner__body">{{ t('errors.branchRemoved', { name }) }}</span>
+              </div>
+            }
+
+            <fieldset class="fields" [disabled]="opening()">
+              <legend class="vd-sr">{{ t('title') }}</legend>
+              <div class="two">
+                <div class="vd-field">
+                  <label class="vd-field__label" for="so-branchId"
+                    >{{ t('branch') }}<span class="req" aria-hidden="true">*</span></label
+                  >
+                  <select
+                    id="so-branchId"
+                    class="vd-input"
+                    [formField]="shiftForm.branchId"
+                    [attr.aria-invalid]="errors().branchId ? true : null"
+                    [attr.aria-describedby]="errors().branchId ? 'so-branch-error' : null"
+                  >
+                    <option value="" disabled>{{ t('choose') }}</option>
+                    @for (b of session.branches(); track b.id) {
+                      <option [value]="b.id">{{ b.name }}</option>
+                    }
+                  </select>
+                  @if (errors().branchId) {
+                    <p id="so-branch-error" class="vd-field__error">
+                      <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+                      >{{ t('errors.branch') }}
+                    </p>
+                  }
+                </div>
+
+                <div class="vd-field">
+                  <label class="vd-field__label" for="so-terminalId"
+                    >{{ t('terminal') }}<span class="req" aria-hidden="true">*</span></label
+                  >
+                  <select
+                    id="so-terminalId"
+                    class="vd-input"
+                    [formField]="shiftForm.terminalId"
+                    [attr.aria-invalid]="errors().terminalId ? true : null"
+                    [attr.aria-describedby]="
+                      errors().terminalId ? 'so-terminal-error' : 'so-terminal-hint'
+                    "
+                  >
+                    <option value="" disabled>
+                      {{ branchTerminals().length ? t('choose') : t('noTerminals') }}
+                    </option>
+                    @for (x of branchTerminals(); track x.id) {
+                      <option [value]="x.id">{{ x.name }}</option>
+                    }
+                  </select>
+                  @if (terminalBusyBy(); as by) {
+                    <p id="so-terminal-error" class="vd-field__error">
+                      <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+                      >{{ t('errors.terminalBusy', { terminal: terminalLabel(), name: by }) }}
+                    </p>
+                  } @else if (errors().terminalId) {
+                    <p id="so-terminal-error" class="vd-field__error">
+                      <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+                      >{{ t('errors.terminal') }}
+                    </p>
+                  } @else {
+                    <p id="so-terminal-hint" class="vd-field__hint">{{ t('terminalHint') }}</p>
+                  }
+                </div>
+              </div>
+
+              <div class="vd-field">
+                <label class="vd-field__label" for="so-openingCash"
+                  >{{ t('openingCash') }}<span class="req" aria-hidden="true">*</span></label
+                >
+                <div class="cashin">
+                  <input
+                    id="so-openingCash"
+                    type="number"
+                    inputmode="decimal"
+                    step="0.01"
+                    dir="ltr"
+                    [formField]="shiftForm.openingCash"
+                    [attr.aria-invalid]="errors().openingCash ? true : null"
+                    aria-describedby="so-cash-hint"
+                  />
+                  <span aria-hidden="true">{{ t('egp') }}</span>
+                </div>
+                @if (errors().openingCash) {
+                  <p class="vd-field__error">
+                    <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+                    >{{ t('errors.openingCash') }}
+                  </p>
+                }
+                <p id="so-cash-hint" class="vd-field__hint">{{ t('cashHint') }}</p>
+              </div>
+            </fieldset>
+
+            <button vdButton="primary" size="lg" block type="submit" [loading]="opening()">
+              @if (!opening()) {
+                <svg lucideArchive aria-hidden="true"></svg>
+              }
+              {{ opening() ? t('opening') : t('open') }}
+            </button>
+          </form>
+        }
+      }
+    }
+
+    <!-- "Youssef Samir · Signed in as cashier · You" -->
+    <ng-template #who>
+      @if (session.user(); as u) {
+        <div class="who">
+          <span class="av" aria-hidden="true">{{ initials() }}</span>
+          <span class="who__t">
+            <b>{{ u.name }}</b>
+            <span>{{ t('signedInAs', { role: t('roles.' + u.role) }) }}</span>
+          </span>
+          <span class="vd-badge vd-badge--brand">{{ t('you') }}</span>
+        </div>
+      }
+    </ng-template>
+  </section>
+</div>

@@ -1,0 +1,141 @@
+<form class="vd-drawer" novalidate *transloco="let t; read: 'catalog'" (submit)="onSubmit($event)">
+  <header class="vd-drawer__head">
+    <h2 class="vd-drawer__title" vdDialogTitle>
+      {{ data.unit ? t('units.editTitle') : t('units.addTitle') }}
+    </h2>
+    <button vdIconButton type="button" [label]="t('close')" (click)="ref.close()">
+      <svg lucideX></svg>
+    </button>
+  </header>
+
+  <fieldset class="vd-drawer__body body" [disabled]="saving()">
+    <legend class="vd-sr">{{ data.unit ? t('units.editTitle') : t('units.addTitle') }}</legend>
+    @if (status() === 'failed') {
+      <div class="vd-banner vd-banner--danger" role="alert">
+        <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+        <span class="vd-banner__body">{{ t('units.failed') }}</span>
+      </div>
+    }
+
+    <div class="two">
+      <div class="vd-field">
+        <div class="vd-field__top">
+          <label class="vd-field__label" for="u-name"
+            >{{ t('units.name') }}<span class="req" aria-hidden="true">*</span></label
+          >
+          <span class="vd-field__counter" aria-hidden="true"
+            >{{ model().name.length }}/{{ limits.unitName }}</span
+          >
+        </div>
+        <input
+          id="u-name"
+          class="vd-input"
+          type="text"
+          dir="auto"
+          [placeholder]="t('units.namePlaceholder')"
+          [formField]="unitForm.name"
+          [attr.aria-invalid]="nameError() ? true : null"
+          [attr.aria-describedby]="nameError() ? 'u-name-error' : null"
+        />
+        @if (nameError()) {
+          <p id="u-name-error" class="vd-field__error">
+            <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('units.nameRequired') }}
+          </p>
+        }
+      </div>
+
+      <div class="vd-field">
+        <div class="vd-field__top">
+          <label class="vd-field__label" for="u-symbol"
+            >{{ t('units.symbol') }}<span class="req" aria-hidden="true">*</span></label
+          >
+          <span class="vd-field__counter" aria-hidden="true"
+            >{{ model().symbol.length }}/{{ limits.unitSymbol }}</span
+          >
+        </div>
+        <input
+          id="u-symbol"
+          class="vd-input mono"
+          type="text"
+          dir="auto"
+          spellcheck="false"
+          placeholder="kg"
+          [formField]="unitForm.symbol"
+          [attr.aria-invalid]="symbolError() ? true : null"
+          [attr.aria-describedby]="symbolError() ? 'u-symbol-error' : null"
+        />
+        @if (symbolError(); as error) {
+          <p id="u-symbol-error" class="vd-field__error">
+            <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('units.' + error) }}
+          </p>
+        }
+      </div>
+    </div>
+
+    <label class="vd-choice toggle">
+      <b id="u-frac-label">{{ t('units.fractions') }}</b>
+      <span id="u-frac-text">{{ t('units.fractionsText') }}</span>
+      <input
+        type="checkbox"
+        role="switch"
+        aria-labelledby="u-frac-label"
+        aria-describedby="u-frac-text"
+        [formField]="unitForm.allowFractions"
+      />
+    </label>
+
+    <!-- What the switch means, on a little shop scale. -->
+    <div class="scale" aria-hidden="true">
+      <svg viewBox="0 0 200 140">
+        <rect
+          x="40"
+          y="112"
+          width="120"
+          height="22"
+          rx="6"
+          fill="var(--pine-700)"
+          stroke="var(--pine-900)"
+          stroke-width="2"
+        />
+        <rect x="70" y="117" width="60" height="12" rx="2" fill="var(--pine-100)" />
+        <text x="100" y="127" text-anchor="middle" class="scale__lcd">{{ reading() }}</text>
+        <path d="M100 112 V92" stroke="var(--pine-900)" stroke-width="4" />
+        <g class="scale__pan" [class.whole]="!model().allowFractions">
+          <path
+            d="M44 92 H156 L146 80 H54 Z"
+            fill="var(--butter-300)"
+            stroke="var(--pine-900)"
+            stroke-width="2"
+          />
+          <circle
+            cx="84"
+            cy="68"
+            r="12"
+            fill="var(--butter-500)"
+            stroke="var(--pine-900)"
+            stroke-width="2"
+          />
+          @if (model().allowFractions) {
+            <path
+              d="M98 80 Q110 50 126 64 Q128 76 118 80 Z"
+              fill="var(--pine-300)"
+              stroke="var(--pine-900)"
+              stroke-width="2"
+            />
+          }
+        </g>
+      </svg>
+      <span class="scale__big" dir="ltr">{{ reading() }}</span>
+      <p>{{ model().allowFractions ? t('units.scaleOn') : t('units.scaleOff') }}</p>
+    </div>
+  </fieldset>
+
+  <footer class="vd-drawer__foot">
+    <button vdButton type="button" [disabled]="saving()" (click)="ref.close()">
+      {{ t('cancel') }}
+    </button>
+    <button vdButton="primary" type="submit" [loading]="saving()">
+      <svg lucideCheck aria-hidden="true"></svg>{{ t('units.save') }}
+    </button>
+  </footer>
+</form>

@@ -1,0 +1,9 @@
+@use '../../../shared/styles/tags';
+
+:host {
+  display: contents;
+}
+
+.default-tag {
+  @include tags.price-tag;
+}

@@ -1,0 +1,121 @@
+<form
+  class="vd-drawer"
+  novalidate
+  *transloco="let t; read: 'branches.terminal'"
+  (submit)="onSubmit($event)"
+>
+  <header class="vd-drawer__head">
+    <h2 class="vd-drawer__title" vdDialogTitle>
+      {{ data.terminal ? t('editTitle') : t('addTitle') }}
+    </h2>
+    <button vdIconButton type="button" [label]="t('close')" (click)="ref.close()">
+      <svg lucideX></svg>
+    </button>
+  </header>
+
+  <fieldset class="vd-drawer__body" [disabled]="saving()">
+    <legend class="vd-sr">{{ data.terminal ? t('editTitle') : t('addTitle') }}</legend>
+
+    @if (status() === 'failed') {
+      <div class="vd-banner vd-banner--danger" role="alert">
+        <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+        <span class="vd-banner__body">{{ t('errors.failed') }}</span>
+      </div>
+    }
+
+    <!-- Branch -->
+    <div class="vd-field">
+      <label class="vd-field__label" for="t-branch">
+        {{ t('branch') }}<span class="req" aria-hidden="true">*</span>
+      </label>
+      <select
+        id="t-branch"
+        class="vd-input"
+        aria-describedby="t-branch-hint"
+        [formField]="terminalForm.branchId"
+      >
+        @for (b of data.branches; track b.id) {
+          <option [value]="b.id">{{ b.nameEn }}</option>
+        }
+      </select>
+      <p class="vd-field__hint" id="t-branch-hint">{{ t('branchHint') }}</p>
+    </div>
+
+    <!-- Name -->
+    @let nameError = errorOf('name');
+    <div class="vd-field">
+      <div class="vd-field__top">
+        <label class="vd-field__label" for="t-name">
+          {{ t('name') }}<span class="req" aria-hidden="true">*</span>
+        </label>
+        <span class="vd-field__counter" aria-hidden="true"
+          >{{ model().name.length }}/{{ limits.name }}</span
+        >
+      </div>
+      <input
+        id="t-name"
+        class="vd-input"
+        type="text"
+        [placeholder]="t('namePlaceholder')"
+        [formField]="terminalForm.name"
+        [attr.aria-invalid]="nameError ? true : null"
+        [attr.aria-describedby]="nameError ? 't-name-error' : 't-name-hint'"
+      />
+      @if (nameError) {
+        <p id="t-name-error" class="vd-field__error">
+          <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('errors.' + nameError) }}
+        </p>
+      } @else {
+        <p class="vd-field__hint" id="t-name-hint">{{ t('nameHint') }}</p>
+      }
+    </div>
+
+    <!-- Device code -->
+    @let codeError = errorOf('deviceCode');
+    <div class="vd-field">
+      <div class="vd-field__top">
+        <label class="vd-field__label" for="t-code">
+          {{ t('code') }}<span class="req" aria-hidden="true">*</span>
+        </label>
+        <span class="vd-field__counter" aria-hidden="true">
+          {{ model().deviceCode.length }}/{{ limits.deviceCode }}
+        </span>
+      </div>
+      <input
+        id="t-code"
+        class="vd-input mono"
+        type="text"
+        dir="ltr"
+        autocapitalize="characters"
+        spellcheck="false"
+        placeholder="NASR-POS-01"
+        [formField]="terminalForm.deviceCode"
+        [attr.aria-invalid]="codeError ? true : null"
+        [attr.aria-describedby]="codeError ? 't-code-error' : 't-code-hint'"
+      />
+      @if (codeError) {
+        <p id="t-code-error" class="vd-field__error">
+          <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('errors.' + codeError) }}
+        </p>
+      } @else {
+        <p class="vd-field__hint" id="t-code-hint">{{ t('codeHint') }}</p>
+      }
+    </div>
+
+    <app-terminal-device
+      [branchName]="branchName()"
+      [name]="model().name"
+      [code]="model().deviceCode"
+    />
+    <p class="note">{{ t('note') }}</p>
+  </fieldset>
+
+  <footer class="vd-drawer__foot">
+    <button vdButton type="button" [disabled]="saving()" (click)="ref.close()">
+      {{ t('cancel') }}
+    </button>
+    <button vdButton="primary" type="submit" [loading]="saving()">
+      <svg lucideCheck aria-hidden="true"></svg>{{ t('save') }}
+    </button>
+  </footer>
+</form>

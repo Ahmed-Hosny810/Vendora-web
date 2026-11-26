@@ -1,0 +1,39 @@
+// ============================================================
+// Reset: removes browser differences so we start from zero.
+// Uses :where() for zero specificity, so any component rule wins.
+// ============================================================
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box; // width includes padding and border
+}
+
+:where(body, h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd) {
+  margin: 0;
+}
+
+:where(ul, ol)[role='list'] {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+// Form controls don't inherit fonts by default; make them.
+:where(button, input, select, textarea) {
+  font: inherit;
+  color: inherit;
+}
+
+:where(img, picture, svg, video, canvas) {
+  display: block;
+  max-width: 100%;
+}
+
+:where(h1, h2, h3, h4, h5, h6, p) {
+  overflow-wrap: break-word;
+}
+
+:where(table) {
+  border-collapse: collapse;
+}

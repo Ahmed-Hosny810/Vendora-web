@@ -1,0 +1,333 @@
+<ng-container *transloco="let t; read: 'products.form'">
+  <app-page-head
+    [title]="productId ? t('editTitle') : t('addTitle')"
+    [text]="productId ? t('editText') : t('addText')"
+  />
+
+  <div class="grid">
+    <form class="col" novalidate (submit)="onSubmit($event)">
+      @if (status() === 'failed') {
+        <div class="vd-banner vd-banner--danger" role="alert">
+          <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+          <span class="vd-banner__body">{{ t('errors.failed') }}</span>
+        </div>
+      } @else if (tried() && errors().length) {
+        <div class="vd-banner vd-banner--danger" role="alert">
+          <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+          <span class="vd-banner__body">
+            {{ errors().length === 1 ? t('fixOne') : t('fixMany', { count: errors().length }) }}
+          </span>
+        </div>
+      }
+
+      <fieldset class="col" [disabled]="saving()">
+        <legend class="vd-sr">{{ productId ? t('editTitle') : t('addTitle') }}</legend>
+
+        <!-- 1 · Basic information -->
+        <app-form-section [n]="1" [title]="t('sections.basic')">
+          <div class="two">
+            <div class="vd-field">
+              <div class="vd-field__top">
+                <label class="vd-field__label" for="p-en"
+                  >{{ t('nameEn') }}<span class="req" aria-hidden="true">*</span></label
+                >
+                <span class="vd-field__counter" aria-hidden="true"
+                  >{{ model().nameEn.length }}/{{ limits.name }}</span
+                >
+              </div>
+              <input
+                id="p-en"
+                class="vd-input"
+                type="text"
+                lang="en"
+                dir="ltr"
+                [formField]="productForm.nameEn"
+                [attr.aria-invalid]="hasError('nameEn') ? true : null"
+                [attr.aria-describedby]="hasError('nameEn') ? 'p-en-error' : null"
+              />
+              @if (hasError('nameEn')) {
+                <p id="p-en-error" class="vd-field__error">
+                  <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+                  >{{ t('errors.nameEn') }}
+                </p>
+              }
+            </div>
+            <div class="vd-field">
+              <div class="vd-field__top">
+                <label class="vd-field__label" for="p-ar"
+                  >{{ t('nameAr') }}<span class="opt">{{ t('optional') }}</span></label
+                >
+                <span class="vd-field__counter" aria-hidden="true"
+                  >{{ model().nameAr.length }}/{{ limits.name }}</span
+                >
+              </div>
+              <input
+                id="p-ar"
+                class="vd-input arabic"
+                type="text"
+                lang="ar"
+                dir="rtl"
+                [formField]="productForm.nameAr"
+              />
+            </div>
+          </div>
+
+          <div class="two">
+            <div class="vd-field">
+              <div class="vd-field__top">
+                <label class="vd-field__label" for="p-cat"
+                  >{{ t('category') }}<span class="req" aria-hidden="true">*</span></label
+                >
+                <button type="button" class="new-link" (click)="openQuickCategory()">
+                  <svg lucidePlus aria-hidden="true"></svg>{{ t('newCategory') }}
+                </button>
+              </div>
+              <select
+                id="p-cat"
+                class="vd-input"
+                [formField]="productForm.categoryId"
+                [attr.aria-invalid]="hasError('categoryId') ? true : null"
+                [attr.aria-describedby]="hasError('categoryId') ? 'p-cat-error' : null"
+              >
+                <option value="" disabled>{{ t('choose') }}</option>
+                @for (o of categories(); track o.id) {
+                  <option [value]="o.id">{{ o.label }}</option>
+                }
+              </select>
+              @if (hasError('categoryId')) {
+                <p id="p-cat-error" class="vd-field__error">
+                  <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+                  >{{ t('errors.category') }}
+                </p>
+              }
+            </div>
+            <div class="vd-field">
+              <div class="vd-field__top">
+                <label class="vd-field__label" for="p-unit"
+                  >{{ t('unit') }}<span class="req" aria-hidden="true">*</span></label
+                >
+                <a class="new-link" routerLink="/units"
+                  ><svg lucidePlus aria-hidden="true"></svg>{{ t('newUnit') }}</a
+                >
+              </div>
+              <select
+                id="p-unit"
+                class="vd-input"
+                [formField]="productForm.unitId"
+                [attr.aria-invalid]="hasError('unitId') ? true : null"
+                [attr.aria-describedby]="hasError('unitId') ? 'p-unit-error' : null"
+              >
+                <option value="" disabled>{{ t('choose') }}</option>
+                @for (o of units(); track o.id) {
+                  <option [value]="o.id">{{ o.label }}</option>
+                }
+              </select>
+              @if (hasError('unitId')) {
+                <p id="p-unit-error" class="vd-field__error">
+                  <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('errors.unit') }}
+                </p>
+              }
+            </div>
+          </div>
+        </app-form-section>
+
+        <!-- 2 · Product image -->
+        <app-form-section [n]="2" [title]="t('sections.image')" [note]="t('optional')">
+          <app-image-picker [currentUrl]="currentImageUrl()" (fileChange)="onImage($event)" />
+        </app-form-section>
+
+        <!-- 3 · Identification -->
+        <app-form-section [n]="3" [title]="t('sections.identification')">
+          <div class="two">
+            <div class="vd-field">
+              <div class="vd-field__top">
+                <label class="vd-field__label" for="p-sku"
+                  >{{ t('sku') }}<span class="opt">{{ t('optional') }}</span></label
+                >
+                <span class="vd-field__counter" aria-hidden="true"
+                  >{{ model().sku.length }}/{{ limits.sku }}</span
+                >
+              </div>
+              <input
+                id="p-sku"
+                class="vd-input mono"
+                type="text"
+                dir="ltr"
+                spellcheck="false"
+                autocapitalize="characters"
+                [formField]="productForm.sku"
+                [attr.aria-invalid]="duplicate() ? true : null"
+                [attr.aria-describedby]="duplicate() ? 'p-dup' : null"
+              />
+            </div>
+            <div class="vd-field">
+              <div class="vd-field__top">
+                <label class="vd-field__label" for="p-bc"
+                  >{{ t('barcode') }}<span class="opt">{{ t('optional') }}</span></label
+                >
+                <span class="vd-field__counter" aria-hidden="true"
+                  >{{ model().barcode.length }}/{{ limits.barcode }}</span
+                >
+              </div>
+              <input
+                id="p-bc"
+                class="vd-input mono"
+                type="text"
+                dir="ltr"
+                inputmode="numeric"
+                spellcheck="false"
+                aria-describedby="p-bc-hint"
+                [formField]="productForm.barcode"
+                [attr.aria-invalid]="duplicate() ? true : null"
+              />
+              <p class="vd-field__hint" id="p-bc-hint">{{ t('barcodeHint') }}</p>
+            </div>
+          </div>
+          @if (duplicate()) {
+            <p class="vd-field__error" id="p-dup" role="alert">
+              <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('errors.duplicate') }}
+            </p>
+          }
+        </app-form-section>
+
+        <!-- 4 · Pricing and tax -->
+        <app-form-section [n]="4" [title]="t('sections.pricing')">
+          <div class="three" [class.no-cost]="!session.isManager()">
+            @if (session.isManager()) {
+              <div class="vd-field">
+                <label class="vd-field__label" for="p-cost"
+                  >{{ t('cost') }}<span class="req" aria-hidden="true">*</span></label
+                >
+                <div class="vd-inputgroup">
+                  <input
+                    id="p-cost"
+                    class="vd-input mono"
+                    type="number"
+                    inputmode="decimal"
+                    step="0.01"
+                    dir="ltr"
+                    [formField]="productForm.costPrice"
+                    [attr.aria-invalid]="hasError('costPrice') ? true : null"
+                    [attr.aria-describedby]="hasError('costPrice') ? 'p-cost-error' : null"
+                  />
+                  <span class="vd-inputgroup__affix" aria-hidden="true">{{ t('egp') }}</span>
+                </div>
+                @if (hasError('costPrice')) {
+                  <p id="p-cost-error" class="vd-field__error">
+                    <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+                    >{{ t('errors.price') }}
+                  </p>
+                }
+              </div>
+            }
+            <div class="vd-field">
+              <label class="vd-field__label" for="p-price"
+                >{{ t('price') }}<span class="req" aria-hidden="true">*</span></label
+              >
+              <div class="vd-inputgroup">
+                <input
+                  id="p-price"
+                  class="vd-input mono"
+                  type="number"
+                  inputmode="decimal"
+                  step="0.01"
+                  dir="ltr"
+                  [formField]="productForm.sellingPrice"
+                  [attr.aria-invalid]="hasError('sellingPrice') ? true : null"
+                  [attr.aria-describedby]="hasError('sellingPrice') ? 'p-price-error' : null"
+                />
+                <span class="vd-inputgroup__affix" aria-hidden="true">{{ t('egp') }}</span>
+              </div>
+              @if (hasError('sellingPrice')) {
+                <p id="p-price-error" class="vd-field__error">
+                  <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('errors.price') }}
+                </p>
+              }
+            </div>
+            <div class="vd-field">
+              <div class="vd-field__top">
+                <label class="vd-field__label" for="p-tax"
+                  >{{ t('taxRate') }}<span class="req" aria-hidden="true">*</span></label
+                >
+                <a class="new-link" routerLink="/tax-rates"
+                  ><svg lucidePlus aria-hidden="true"></svg>{{ t('newRate') }}</a
+                >
+              </div>
+              <select
+                id="p-tax"
+                class="vd-input"
+                [formField]="productForm.taxRateId"
+                [attr.aria-invalid]="hasError('taxRateId') ? true : null"
+                [attr.aria-describedby]="hasError('taxRateId') ? 'p-tax-error' : null"
+              >
+                <option value="" disabled>{{ t('choose') }}</option>
+                @for (o of taxRates(); track o.id) {
+                  <option [value]="o.id">{{ o.label }}</option>
+                }
+              </select>
+              @if (hasError('taxRateId')) {
+                <p id="p-tax-error" class="vd-field__error">
+                  <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+                  >{{ t('errors.taxRate') }}
+                </p>
+              }
+            </div>
+          </div>
+          @if (session.isManager()) {
+            <p class="note"><svg lucideLock aria-hidden="true"></svg>{{ t('costNote') }}</p>
+          }
+        </app-form-section>
+
+        <!-- 5 · Inventory -->
+        <app-form-section [n]="5" [title]="t('sections.inventory')">
+          <label class="vd-choice toggle">
+            <b id="p-trk-label">{{ t('track') }}</b>
+            <span id="p-trk-text">{{
+              businessTracksInventory() ? t('trackTextOn') : t('trackText')
+            }}</span>
+            <input
+              type="checkbox"
+              role="switch"
+              aria-labelledby="p-trk-label"
+              aria-describedby="p-trk-text"
+              [formField]="productForm.trackInventory"
+            />
+          </label>
+        </app-form-section>
+      </fieldset>
+
+      <div class="foot">
+        <span class="grow"><span class="req" aria-hidden="true">*</span> {{ t('required') }}</span>
+        <a vdButton [routerLink]="productId ? ['/products', productId] : '/products'">{{
+          t('cancel')
+        }}</a>
+        <button vdButton="primary" type="submit" [loading]="saving()">
+          <svg lucideCheck aria-hidden="true"></svg>{{ productId ? t('saveChanges') : t('save') }}
+        </button>
+      </div>
+    </form>
+
+    <aside class="preview">
+      <p class="preview__cap">{{ t('tagPreview') }}</p>
+      <app-shelf-tag
+        [category]="categoryName()"
+        [nameEn]="model().nameEn"
+        [nameAr]="model().nameAr"
+        [price]="model().sellingPrice"
+        [sku]="model().sku"
+        [barcode]="model().barcode"
+        [cost]="session.isManager() ? model().costPrice : null"
+      />
+      <p class="preview__cap">{{ t('cardPreview') }}</p>
+      <app-product-card-preview
+        [nameEn]="model().nameEn"
+        [nameAr]="model().nameAr"
+        [price]="model().sellingPrice"
+        [imageUrl]="cardImage()"
+      />
+      @if (!productId) {
+        <p class="preview__note">{{ t('variantsNote') }}</p>
+      }
+    </aside>
+  </div>
+</ng-container>

@@ -1,0 +1,13 @@
+// Keyframes shared by several components (global, so any component can use them).
+
+@keyframes vd-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes vd-shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}

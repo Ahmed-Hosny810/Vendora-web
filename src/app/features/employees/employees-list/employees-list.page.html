@@ -1,0 +1,183 @@
+<ng-container *transloco="let t; read: 'employees.list'">
+  <app-page-head
+    [title]="t('title')"
+    [text]="t('text', { business: session.business()?.name ?? '' })"
+  >
+    <a vdButton="primary" routerLink="/employees/invite">
+      <svg lucideUserPlus aria-hidden="true"></svg>{{ t('invite') }}
+    </a>
+  </app-page-head>
+
+  @switch (status()) {
+    @case ('loading') {
+      <div class="vd-tablewrap">
+        <app-skeleton-rows [label]="t('loading')" [rows]="3" [columns]="5" />
+      </div>
+    }
+    @case ('error') {
+      <div class="vd-tablewrap">
+        <app-load-error
+          [title]="t('errorTitle')"
+          [text]="t('errorText')"
+          [retryLabel]="t('tryAgain')"
+          (retry)="load()"
+        />
+      </div>
+    }
+    @default {
+      @if (employees().length > 1) {
+        <div class="vd-tablewrap">
+          <div class="vd-tablescroll">
+            <table class="vd-table">
+              <thead>
+                <tr>
+                  <th scope="col">{{ t('cols.name') }}</th>
+                  <th scope="col">{{ t('cols.username') }}</th>
+                  <th scope="col">{{ t('cols.email') }}</th>
+                  <th scope="col">{{ t('cols.role') }}</th>
+                  <th scope="col">{{ t('cols.status') }}</th>
+                  <th scope="col">
+                    <span class="vd-sr">{{ t('cols.actions') }}</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (e of employees(); track e.id) {
+                  <tr [class.is-new]="e.id === newId()">
+                    <td>
+                      <span class="who">
+                        <span class="av" aria-hidden="true">{{ initials(e.fullName) }}</span>
+                        <b dir="auto">{{ e.fullName }}</b>
+                      </span>
+                    </td>
+                    <td class="mono">
+                      <bdi>{{ e.username }}</bdi>
+                    </td>
+                    <td class="email">
+                      <bdi>{{ e.email }}</bdi>
+                    </td>
+                    <td class="nowrap">{{ t('roles.' + e.role) }}</td>
+                    <td>
+                      @switch (e.status) {
+                        @case ('active') {
+                          <span class="vd-badge vd-badge--pill vd-badge--dot vd-badge--success">{{
+                            t('status.active')
+                          }}</span>
+                        }
+                        @case ('invited') {
+                          <span class="vd-badge vd-badge--pill vd-badge--dot vd-badge--warning">{{
+                            t('status.invited')
+                          }}</span>
+                        }
+                        @default {
+                          <span class="vd-badge vd-badge--pill vd-badge--dot">{{
+                            t('status.inactive')
+                          }}</span>
+                        }
+                      }
+                    </td>
+                    <td class="actions">
+                      @if (e.isYou) {
+                        <span class="you">{{ t('you') }}</span>
+                      } @else if (e.role !== 'owner') {
+                        <span class="acts">
+                          @switch (e.status) {
+                            @case ('invited') {
+                              <button
+                                vdButton="ghost"
+                                size="sm"
+                                type="button"
+                                [loading]="isBusy(e.id)"
+                                [attr.aria-label]="t('resendLabel', { name: e.fullName })"
+                                (click)="resend(e)"
+                              >
+                                <svg lucideSend aria-hidden="true"></svg>{{ t('resend') }}
+                              </button>
+                              <span class="more">
+                                <button
+                                  vdButton="ghost"
+                                  size="sm"
+                                  type="button"
+                                  [attr.aria-label]="t('moreLabel', { name: e.fullName })"
+                                  [attr.aria-expanded]="menuFor() === e.id"
+                                  [attr.aria-controls]="'menu-' + e.id"
+                                  (click)="toggleMenu(e.id, $event)"
+                                >
+                                  <svg lucideEllipsis aria-hidden="true"></svg>
+                                </button>
+                                @if (menuFor() === e.id) {
+                                  <span
+                                    class="menu"
+                                    [id]="'menu-' + e.id"
+                                    [style.top.px]="menuPos().top"
+                                    [style.inset-inline-end.px]="menuPos().end"
+                                  >
+                                    <button
+                                      type="button"
+                                      class="menu__item danger"
+                                      (click)="cancelInvite(e)"
+                                    >
+                                      {{ t('cancelInvite') }}
+                                    </button>
+                                  </span>
+                                }
+                              </span>
+                            }
+                            @case ('active') {
+                              <button
+                                vdButton="ghost"
+                                size="sm"
+                                type="button"
+                                [loading]="isBusy(e.id)"
+                                [attr.aria-label]="t('deactivateLabel', { name: e.fullName })"
+                                (click)="deactivate(e)"
+                              >
+                                {{ t('deactivate') }}
+                              </button>
+                            }
+                            @default {
+                              <button
+                                vdButton="ghost"
+                                size="sm"
+                                type="button"
+                                [loading]="isBusy(e.id)"
+                                [attr.aria-label]="t('reactivateLabel', { name: e.fullName })"
+                                (click)="reactivate(e)"
+                              >
+                                {{ t('reactivate') }}
+                              </button>
+                            }
+                          }
+                        </span>
+                      }
+                      <a
+                        vdButton="ghost"
+                        size="sm"
+                        class="view"
+                        [routerLink]="['/employees', e.id]"
+                        [attr.aria-label]="t('viewLabel', { name: e.fullName })"
+                        >{{ t('view') }}</a
+                      >
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      } @else {
+        <!-- Only the owner so far -->
+        <div class="vd-tablewrap">
+          <div class="vd-empty">
+            <span class="vd-empty__art"><svg lucideUsers></svg></span>
+            <h2 class="vd-empty__title">{{ t('emptyTitle') }}</h2>
+            <p class="vd-empty__text">{{ t('emptyText') }}</p>
+            <a vdButton="primary" routerLink="/employees/invite">
+              <svg lucideUserPlus aria-hidden="true"></svg>{{ t('invite') }}
+            </a>
+          </div>
+        </div>
+      }
+    }
+  }
+</ng-container>

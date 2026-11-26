@@ -1,0 +1,38 @@
+<section class="panel" *transloco="let t; read: 'shell'" [attr.aria-label]="t('notifications')">
+  <header class="panel__head">
+    <h2>{{ t('notifications') }}</h2>
+    @if (hasUnread()) {
+      <button type="button" class="link" (click)="markAllRead.emit()">
+        {{ t('markAllRead') }}
+      </button>
+    }
+  </header>
+
+  @if (notifications().length) {
+    <ul class="list">
+      @for (n of notifications(); track n.id) {
+        <li>
+          <button type="button" class="item" [class.unread]="n.unread" (click)="openItem.emit(n)">
+            <span class="item__icon" aria-hidden="true"
+              ><svg [lucideIcon]="icons[n.kind]"></svg
+            ></span>
+            <span class="item__text">
+              <b>{{ n.title }}</b>
+              <span>{{ n.text }}</span>
+            </span>
+            <time class="item__time" [attr.datetime]="n.createdAt.toISOString()">{{
+              timeAgo(n.createdAt)
+            }}</time>
+          </button>
+        </li>
+      }
+    </ul>
+    <button type="button" class="panel__foot" (click)="seeAll.emit()">{{ t('seeAll') }}</button>
+  } @else {
+    <div class="empty">
+      <svg lucideBellOff aria-hidden="true"></svg>
+      <b>{{ t('caughtUp') }}</b>
+      <span>{{ t('caughtUpText') }}</span>
+    </div>
+  }
+</section>

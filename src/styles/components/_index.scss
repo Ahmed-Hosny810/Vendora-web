@@ -1,0 +1,16 @@
+// ============================================================
+// CSS-only components: things that are pure appearance, so they
+// are plain classes instead of Angular components. No TypeScript
+// to maintain; anyone who knows CSS classes can use them.
+//
+//   <span class="vd-badge vd-badge--success">Active</span>
+// ============================================================
+
+@use 'badge';
+@use 'card';
+@use 'banner';
+@use 'forms';
+@use 'overlays';
+@use 'feedback';
+@use 'table';
+@use 'tabs';

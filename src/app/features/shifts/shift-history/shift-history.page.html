@@ -1,0 +1,91 @@
+<ng-container *transloco="let t; read: 'shifts.history'">
+  <app-page-head [title]="t('title')" [text]="t('text', { branch: session.branch()?.name ?? '' })">
+    <a vdButton routerLink="/pos"><svg lucideMonitor aria-hidden="true"></svg>{{ t('openPos') }}</a>
+  </app-page-head>
+
+  <div class="periods" role="group" [attr.aria-label]="t('period')">
+    @for (p of periods; track p) {
+      <button
+        type="button"
+        class="vd-chip"
+        [attr.aria-pressed]="period() === p"
+        (click)="period.set(p)"
+      >
+        {{ t('periods.' + p) }}
+      </button>
+    }
+  </div>
+
+  @if (status() === 'ready') {
+    <div class="kpis">
+      <app-kpi-card [label]="t('kpi.count')" [value]="kpis().count" [hint]="t('kpi.countHint')" />
+      <app-kpi-card [label]="t('kpi.open')" [value]="kpis().open" [hint]="t('kpi.openHint')" />
+      <app-kpi-card [label]="t('kpi.net')" [value]="cash(kpis().net)" [hint]="t('kpi.egp')" />
+      <app-kpi-card
+        [label]="t('kpi.short')"
+        [value]="kpis().shortCount"
+        [hint]="
+          kpis().shortCount
+            ? t('kpi.shortHint', { amount: cash(kpis().shortTotal) })
+            : t('kpi.shortNone')
+        "
+      />
+    </div>
+  }
+
+  <div class="vd-tablewrap">
+    @switch (status()) {
+      @case ('loading') {
+        <app-skeleton-rows [label]="t('loading')" [rows]="5" [columns]="7" />
+      }
+      @case ('error') {
+        <app-load-error
+          [title]="t('errorTitle')"
+          [text]="t('errorText')"
+          [retryLabel]="t('tryAgain')"
+          (retry)="load()"
+        />
+      }
+      @default {
+        @if (!shifts().length) {
+          <div class="vd-empty">
+            <span class="vd-empty__art"><svg lucideHistory></svg></span>
+            <h2 class="vd-empty__title">{{ t('emptyTitle') }}</h2>
+            <p class="vd-empty__text">{{ t('emptyText') }}</p>
+            <a vdButton="primary" routerLink="/pos"
+              ><svg lucideMonitor aria-hidden="true"></svg>{{ t('openPos') }}</a
+            >
+          </div>
+        } @else {
+          <div class="vd-toolbar">
+            <label class="vd-search">
+              <svg lucideSearch aria-hidden="true"></svg>
+              <input
+                type="search"
+                [placeholder]="t('search')"
+                [attr.aria-label]="t('searchLabel')"
+                [value]="query()"
+                (input)="query.set($any($event.target).value)"
+              />
+            </label>
+            @for (s of states; track s) {
+              <button
+                type="button"
+                class="vd-chip"
+                [attr.aria-pressed]="stateFilter() === s"
+                (click)="stateFilter.set(s)"
+              >
+                {{ t('states.' + s) }}
+              </button>
+            }
+          </div>
+          @if (visible().length) {
+            <app-shift-table [shifts]="visible()" [lang]="lang()" />
+          } @else {
+            <p class="no-match">{{ t('noMatch') }}</p>
+          }
+        }
+      }
+    }
+  </div>
+</ng-container>

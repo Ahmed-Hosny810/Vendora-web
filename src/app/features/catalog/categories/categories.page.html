@@ -1,0 +1,94 @@
+<ng-container *transloco="let t; read: 'catalog'">
+  <app-page-head [title]="t('categories.title')" [text]="t('categories.text')">
+    <button vdButton="primary" type="button" (click)="open()">
+      <svg lucidePlus aria-hidden="true"></svg>{{ t('categories.addTitle') }}
+    </button>
+  </app-page-head>
+
+  <app-catalog-tabs />
+
+  <div class="vd-tablewrap">
+    @switch (status()) {
+      @case ('loading') {
+        <app-skeleton-rows [label]="t('loading')" [columns]="4" />
+      }
+      @case ('error') {
+        <app-load-error
+          [title]="t('categories.errorTitle')"
+          [text]="t('errorText')"
+          [retryLabel]="t('tryAgain')"
+          (retry)="load()"
+        />
+      }
+      @default {
+        @if (rows().length) {
+          <div class="vd-tablescroll">
+            <table class="vd-table">
+              <thead>
+                <tr>
+                  <th scope="col">{{ t('categories.cols.category') }}</th>
+                  <th scope="col">{{ t('categories.cols.parent') }}</th>
+                  <th scope="col">{{ t('categories.cols.order') }}</th>
+                  <th scope="col">{{ t('categories.cols.status') }}</th>
+                  <th scope="col">
+                    <span class="vd-sr">{{ t('edit') }}</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (c of rows(); track c.id) {
+                  <tr [class.is-new]="c.id === newId()">
+                    <td [style.padding-inline-start.px]="12 + c.depth * 20">
+                      <b>
+                        @if (c.depth) {
+                          <span class="branch-line" aria-hidden="true">└</span>
+                        }
+                        <bdi lang="en">{{ c.nameEn }}</bdi>
+                      </b>
+                      @if (c.nameAr) {
+                        <small
+                          ><bdi lang="ar">{{ c.nameAr }}</bdi></small
+                        >
+                      }
+                    </td>
+                    <td>{{ c.parentName || '—' }}</td>
+                    <td class="mono">{{ c.sortOrder }}</td>
+                    <td>
+                      <span
+                        class="vd-badge vd-badge--pill vd-badge--dot"
+                        [class.vd-badge--success]="c.visible"
+                        [class.vd-badge--warning]="!c.visible"
+                      >
+                        {{ c.visible ? t('categories.visible') : t('categories.hidden') }}
+                      </span>
+                    </td>
+                    <td class="actions">
+                      <button
+                        vdButton="ghost"
+                        size="sm"
+                        type="button"
+                        [attr.aria-label]="t('editLabel', { name: c.nameEn })"
+                        (click)="open(c)"
+                      >
+                        <svg lucidePencil aria-hidden="true"></svg>{{ t('edit') }}
+                      </button>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        } @else {
+          <div class="vd-empty">
+            <span class="vd-empty__art"><svg lucideFolder></svg></span>
+            <h2 class="vd-empty__title">{{ t('categories.emptyTitle') }}</h2>
+            <p class="vd-empty__text">{{ t('categories.emptyText') }}</p>
+            <button vdButton="primary" type="button" (click)="open()">
+              <svg lucidePlus aria-hidden="true"></svg>{{ t('categories.addTitle') }}
+            </button>
+          </div>
+        }
+      }
+    }
+  </div>
+</ng-container>

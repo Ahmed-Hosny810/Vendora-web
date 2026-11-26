@@ -1,0 +1,112 @@
+{
+  "title": "Settings",
+  "text": "Your business and your own account.",
+  "tabs": "Settings sections",
+  "tabNames": {
+    "business": "Business",
+    "account": "My account",
+    "password": "Password"
+  },
+  "business": {
+    "loading": "Loading your business settings…",
+    "errorTitle": "Couldn't load your settings",
+    "errorText": "Check your connection and try again.",
+    "tryAgain": "Try again",
+    "failed": "Couldn't save your changes. Everything you typed is kept, try again.",
+    "legend": "Business settings",
+    "sections": {
+      "business": "Business details",
+      "receipt": "Receipt",
+      "fixed": "Set when the business was created"
+    },
+    "nameEn": "Business name in English",
+    "nameAr": "Business name in Arabic",
+    "optional": "Optional",
+    "type": "Business type",
+    "typePlaceholder": "Choose a type",
+    "typeHint": "Used to suggest categories and units. Changing it keeps your products.",
+    "errors": {
+      "nameEn": "Enter the business name in English.",
+      "type": "Choose a business type."
+    },
+    "footer": "Message at the bottom of receipts",
+    "footerPlaceholder": "Thank you! Exchanges within 14 days with the receipt.",
+    "footerHint": "Printed on every receipt, at every branch.",
+    "fixedNote": "Contact Vendora support to change these.",
+    "inventory": "Inventory",
+    "tracked": "Stock is counted",
+    "notTracked": "Not counted",
+    "currency": "Currency",
+    "created": "Created on",
+    "required": "Required",
+    "discard": "Discard changes",
+    "save": "Save changes",
+    "preview": "Receipt preview",
+    "namePlaceholder": "Your business",
+    "total": "Total",
+    "footerEmpty": "Your message shows here",
+    "previewNote": "Each branch adds its own address and phone at the top.",
+    "types": {
+      "restaurant": "Restaurant",
+      "cafe": "Café",
+      "grocery": "Grocery",
+      "minimarket": "Mini Market",
+      "pharmacy": "Pharmacy",
+      "clothing": "Clothing Store",
+      "furniture": "Furniture Store",
+      "cosmetics": "Cosmetics Store",
+      "accessories": "Accessories Store",
+      "electronics": "Electronics Store",
+      "salon": "Salon",
+      "retail": "General Retail"
+    }
+  },
+  "account": {
+    "loading": "Loading your account…",
+    "errorTitle": "Couldn't load your account",
+    "errorText": "Check your connection and try again.",
+    "tryAgain": "Try again",
+    "failed": "Couldn't save your changes. Try again.",
+    "legend": "Your details",
+    "section": "Your details",
+    "fullName": "Full name",
+    "phone": "Mobile",
+    "optional": "Optional",
+    "email": "Email",
+    "emailHint": "You sign in with this email, so it can't be changed here.",
+    "errors": {
+      "name": "Enter your full name."
+    },
+    "required": "Required",
+    "discard": "Discard changes",
+    "save": "Save changes",
+    "roles": {
+      "owner": "Owner",
+      "admin": "Admin",
+      "cashier": "Cashier",
+      "inventoryStaff": "Inventory staff"
+    }
+  },
+  "password": {
+    "saved": "Password changed. Use the new one next time you sign in.",
+    "failed": "Couldn't change your password. Try again.",
+    "legend": "Change password",
+    "section": "Change password",
+    "note": "Type your current password first.",
+    "current": "Current password",
+    "next": "New password",
+    "confirm": "Type the new password again",
+    "nextHint": "At least 8 characters, with an upper-case letter, a lower-case letter and a number.",
+    "errors": {
+      "currentRequired": "Enter your current password.",
+      "wrongCurrent": "That isn't your current password.",
+      "nextRequired": "Choose a new password.",
+      "rules": "This password doesn't meet the rules below.",
+      "same": "Choose a password different from the current one.",
+      "confirmRequired": "Type the new password again.",
+      "mismatch": "The two passwords don't match."
+    },
+    "staySignedIn": "You stay signed in on this device.",
+    "submit": "Change password"
+  }
+}

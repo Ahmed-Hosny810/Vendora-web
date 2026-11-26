@@ -1,0 +1,57 @@
+:host {
+  display: block;
+}
+
+.ob {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: clip;
+  background: var(--paper-50);
+  color: var(--ink-900);
+}
+
+// Form column (max 640px) beside the scene. Welcome: wide form, narrow scene.
+.body {
+  display: grid;
+  flex: 1;
+  grid-template-columns: minmax(0, 640px) minmax(0, 1fr);
+
+  &--wide {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 560px);
+  }
+
+  // Tablets and phones: one column, scene on top.
+  @media (max-width: 1100px) {
+    &,
+    &--wide {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    app-scene-panel {
+      order: -1;
+    }
+  }
+}
+
+// Each page's top-level blocks sit in this grid (pages use display: contents).
+.pane {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  gap: 28px;
+  min-width: 0;
+  padding: 48px 64px 56px;
+
+  @media (max-width: 640px) {
+    gap: 22px;
+    padding: 28px 20px 40px;
+  }
+}
+
+// <router-outlet> is an empty marker element: keep it out of the grid,
+// or the grid gap would add space above the page.
+router-outlet {
+  display: none;
+}

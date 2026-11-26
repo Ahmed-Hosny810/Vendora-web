@@ -1,0 +1,76 @@
+@use 'abstracts' as *;
+
+ol {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--ink-500);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  // The short line between two steps.
+  & + li::before {
+    content: '';
+    flex: none;
+    width: 28px;
+    height: 2px;
+    background: var(--line-strong);
+  }
+}
+
+.n {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 50%;
+  font: 600 12px/1 var(--font-mono);
+
+  svg {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+.cur {
+  color: var(--ink-900);
+
+  .n {
+    border-color: var(--pine-600);
+    background: var(--butter-300);
+  }
+}
+
+.done .n {
+  border-color: var(--pine-600);
+  background: var(--pine-600);
+  color: var(--butter-300);
+}
+
+// Phones: labels wrap under each other instead of pushing the row wider.
+@include down(md) {
+  ol {
+    gap: 6px;
+  }
+
+  li {
+    flex: 1 1 0;
+    min-width: 0;
+    gap: 6px;
+
+    & + li::before {
+      width: 20px;
+    }
+  }
+}

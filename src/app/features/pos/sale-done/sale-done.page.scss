@@ -1,0 +1,253 @@
+@use 'abstracts' as *;
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+// Message on the start side, receipt on the end side.
+.page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  align-items: start;
+  gap: 32px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px;
+
+  @include down(md) {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 20px 16px 40px;
+  }
+}
+
+.msg {
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  gap: 16px;
+  padding-top: 24px;
+
+  h1 {
+    margin: 0;
+    font: 700 40px/1.05 var(--font-display);
+    letter-spacing: -0.03em;
+
+    :host-context(:lang(ar)) & {
+      font-family: 'Alexandria', var(--font-display);
+      letter-spacing: 0;
+    }
+
+    @include down(md) {
+      font-size: 32px;
+    }
+  }
+
+  > p {
+    margin: 0;
+    color: var(--ink-700);
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
+
+// Check tile, stamped in.
+.tick {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  background: var(--pine-600);
+  color: var(--butter-300);
+  box-shadow: 5px 5px 0 var(--butter-500);
+  animation: stamp-in 600ms cubic-bezier(0.2, 1.6, 0.4, 1) both;
+
+  svg {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+// "Give change 239.84 EGP" on a butter card.
+.change {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 12px;
+  margin: 0;
+  padding: 16px 22px;
+  border: 2px solid var(--pine-600);
+  border-radius: var(--radius-md);
+  background: var(--butter-300);
+  box-shadow: 4px 4px 0 var(--pine-600);
+
+  span {
+    font-weight: 700;
+  }
+
+  b {
+    font: 700 36px/1 var(--font-display);
+    unicode-bidi: isolate;
+
+    small {
+      font-size: 14px;
+    }
+  }
+}
+
+.acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  @include down(md) {
+    flex-direction: column;
+    align-self: stretch;
+
+    .vd-btn {
+      justify-content: center;
+    }
+  }
+}
+
+kbd {
+  margin-inline-start: 6px;
+  padding: 3px 6px;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  font: 600 11px/1 var(--font-mono);
+  opacity: 0.8;
+
+  @include down(md) {
+    display: none;
+  }
+}
+
+// ---------- Needs attention ----------
+.attn {
+  display: grid;
+  gap: 14px;
+  padding: 20px;
+  border: 2px solid var(--warning-fg);
+  border-radius: var(--radius-lg);
+  background: var(--paper-0);
+  box-shadow: 5px 5px 0 var(--warning-bg);
+
+  h1 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    font: 700 20px/1.2 var(--font-display);
+
+    :host-context(:lang(ar)) & {
+      font-family: 'Alexandria', var(--font-display);
+    }
+
+    svg {
+      flex: none;
+      width: 24px;
+      height: 24px;
+      color: var(--warning-fg);
+    }
+  }
+
+  p {
+    margin: 0;
+    color: var(--ink-700);
+    font-size: 15px;
+    line-height: 22px;
+  }
+}
+
+.safe {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--success-bg);
+  color: var(--success-fg) !important;
+  font-weight: 600;
+
+  svg {
+    flex: none;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.steps {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+  }
+
+  i {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+
+    svg {
+      width: 13px;
+      height: 13px;
+    }
+  }
+
+  .ok i {
+    background: var(--success-fg);
+    color: var(--paper-0);
+  }
+
+  .wait i {
+    border: 2px solid var(--warning-fg);
+    border-top-color: transparent;
+    animation: spin 1s linear infinite;
+  }
+}
+
+.fail {
+  color: var(--danger-fg) !important;
+  font-size: 13px !important;
+}
+
+.rc {
+  @include down(md) {
+    order: 2;
+  }
+}
+
+@keyframes stamp-in {
+  from {
+    opacity: 0;
+    transform: scale(1.4) rotate(-6deg);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tick {
+    animation: none;
+  }
+
+  .steps .wait i {
+    animation-duration: 3s;
+  }
+}

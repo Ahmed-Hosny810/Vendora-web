@@ -1,0 +1,151 @@
+@use 'abstracts' as *;
+
+:host {
+  display: contents;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+// "Today", "Yesterday", "Earlier": a small grey caption over each list.
+.group {
+  & + & {
+    border-top: 1px solid var(--line);
+  }
+
+  &__h {
+    margin: 0;
+    padding: 14px 20px 6px;
+    color: var(--ink-500);
+    font: 600 11px/1 var(--font-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+
+    :host-context(:lang(ar)) & {
+      font-family: 'IBM Plex Sans Arabic', var(--font-sans);
+      font-size: 13px;
+      letter-spacing: 0;
+    }
+  }
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li + li {
+    border-top: 1px solid var(--line);
+  }
+}
+
+// One notification: coloured icon tile, title and text, time on the end.
+.item {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 14px;
+  width: 100%;
+  padding: 14px 20px;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: start;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--paper-50);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: -2px;
+  }
+
+  &.unread {
+    background: var(--pine-50);
+  }
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--paper-100);
+    color: var(--pine-600);
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  // The tile takes the kind's colour; the title says what it is too.
+  &--success &__icon {
+    background: var(--success-bg);
+    color: var(--success-fg);
+  }
+
+  &--warning &__icon {
+    background: var(--warning-bg);
+    color: var(--warning-fg);
+  }
+
+  &--invoice &__icon {
+    background: var(--info-bg);
+    color: var(--info-fg);
+  }
+
+  &__text {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+
+    b {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+    }
+
+    span {
+      color: var(--ink-700);
+    }
+  }
+
+  &__time {
+    color: var(--ink-500);
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  @include down(md) {
+    grid-template-columns: 40px minmax(0, 1fr);
+
+    .item__time {
+      grid-column: 2;
+    }
+  }
+}
+
+.dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--pine-600);
+}
+
+.more {
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+  border-top: 1px solid var(--line);
+}

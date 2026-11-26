@@ -1,0 +1,272 @@
+@use 'abstracts' as *;
+
+// ============================================================
+// Pieces of the point-of-sale screen (product tiles, basket lines,
+// totals, payment buttons). Used by the hero demo and by the POS
+// screen in "See it work", so both always look the same.
+//
+//   @use '../../../styles/pos';
+//   @include pos.parts;
+// ============================================================
+@mixin parts {
+  .search {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    height: 34px;
+    padding: 0 10px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
+    background: var(--paper-0);
+    color: var(--ink-500);
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+
+  .cats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+
+    span {
+      padding: 4px 10px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-pill);
+      background: var(--paper-0);
+      color: var(--ink-700);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .on {
+      border-color: var(--ink-900);
+      background: var(--ink-900);
+      color: var(--ink-on-dark);
+    }
+  }
+
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2);
+  }
+
+  .tile {
+    position: relative;
+    display: grid;
+    gap: 6px;
+    padding: var(--space-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--paper-0);
+
+    b {
+      font-size: 11.5px;
+      font-weight: 600;
+      line-height: 14px;
+    }
+  }
+
+  .tile__img {
+    display: grid;
+    place-items: center;
+    height: 40px;
+    border-radius: 6px;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    &[data-tone='butter'] {
+      background: var(--butter-100);
+    }
+
+    &[data-tone='mint'] {
+      background: var(--pine-50);
+    }
+
+    &[data-tone='pine'] {
+      background: var(--pine-100);
+    }
+  }
+
+  .tile__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--ink-500);
+    font-size: 11px;
+
+    .fig {
+      color: var(--ink-900);
+      font-weight: 500;
+    }
+  }
+
+  .cust {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 7px var(--space-2);
+    border: 1px dashed var(--line-strong);
+    border-radius: var(--radius-sm);
+    font-size: 11.5px;
+  }
+
+  .av {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--pine-100);
+    color: var(--pine-700);
+    font-size: 10px;
+    font-weight: 700;
+  }
+
+  .cust__change {
+    margin-inline-start: auto;
+    color: var(--pine-600);
+    font-weight: 600;
+  }
+
+  .line {
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1fr) auto;
+    gap: var(--space-2);
+    align-items: start;
+    padding: 7px 0;
+    border-block-end: 1px solid var(--line);
+
+    .q {
+      border-radius: 4px;
+      background: var(--paper-100);
+      font: 600 11px/18px var(--font-mono);
+      text-align: center;
+    }
+
+    .n {
+      font-size: 11.5px;
+      font-weight: 600;
+    }
+
+    .v {
+      color: var(--ink-500);
+      font-size: 10.5px;
+    }
+
+    .d {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--success-fg);
+      font-size: 10.5px;
+      font-weight: 600;
+
+      svg {
+        width: 12px;
+        height: 12px;
+      }
+    }
+
+    .a {
+      font: 500 11.5px var(--font-mono);
+      text-align: end;
+      direction: ltr;
+    }
+
+    s {
+      display: block;
+      color: var(--ink-500);
+      font-size: 10px;
+    }
+  }
+
+  .tot {
+    display: grid;
+    gap: 4px;
+    font-size: 11.5px;
+
+    > div {
+      display: flex;
+      justify-content: space-between;
+      color: var(--ink-700);
+    }
+  }
+
+  .grand {
+    align-items: baseline;
+    margin-block-start: 4px;
+    padding-block-start: var(--space-2);
+    border-block-start: 1.5px solid var(--ink-900);
+    color: var(--ink-900) !important;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .pays {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .pay {
+    display: grid;
+    justify-items: center;
+    gap: 2px;
+    padding: 7px 6px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
+    background: var(--paper-0);
+    color: var(--ink-700);
+    font-size: 10.5px;
+    font-weight: 600;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    &.on {
+      border-color: var(--pine-600);
+      background: var(--pine-50);
+      box-shadow: inset 0 0 0 1px var(--pine-600);
+      color: var(--pine-700);
+    }
+  }
+
+  .change-due {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px var(--space-2);
+    border-radius: 6px;
+    background: var(--success-bg);
+    color: var(--success-fg);
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+
+  .complete {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    background: var(--pine-600);
+    color: var(--ink-on-dark);
+    font-size: 13px;
+    font-weight: 700;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}

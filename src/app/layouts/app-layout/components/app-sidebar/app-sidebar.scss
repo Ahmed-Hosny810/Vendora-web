@@ -1,0 +1,197 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-height: 100%;
+  padding: 18px 14px;
+  background: var(--pine-900);
+  color: var(--ink-on-dark);
+}
+
+.brand {
+  padding-inline: 8px;
+  text-decoration: none;
+
+  // Butter wordmark on the dark sidebar (it draws in its own color).
+  vd-wordmark {
+    color: var(--butter-300);
+  }
+}
+
+// ---------- business card ----------
+.biz {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid rgb(255 239 179 / 16%);
+  border-radius: 12px;
+  background: rgb(255 239 179 / 8%);
+
+  // A tiny striped awning over a white shop front.
+  &__awning {
+    position: relative;
+    flex: none;
+    width: 34px;
+    height: 34px;
+    overflow: hidden;
+    border-radius: 8px;
+    background: repeating-linear-gradient(90deg, var(--butter-300) 0 7px, var(--pine-700) 7px 14px);
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 14px 0 0;
+      border-radius: 6px 6px 0 0;
+      background: var(--paper-0);
+    }
+  }
+
+  &__text {
+    display: grid;
+    min-width: 0;
+
+    b {
+      overflow: hidden;
+      color: var(--paper-0);
+      font-size: 14px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    span {
+      color: var(--ink-on-dark-muted);
+      font-size: 12px;
+    }
+  }
+}
+
+// ---------- nav ----------
+.nav {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  &__cap {
+    padding: 12px 10px 6px;
+    color: rgb(196 216 207 / 70%);
+    font: 600 11px/1 var(--font-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+
+    :host-context(:lang(ar)) & {
+      font-family: 'IBM Plex Sans Arabic', var(--font-sans);
+      letter-spacing: 0;
+      text-transform: none;
+    }
+  }
+
+  &__link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 40px;
+    padding: 0 10px;
+    border-radius: 10px;
+    color: var(--ink-on-dark);
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+
+    svg {
+      flex: none;
+      width: 18px;
+      height: 18px;
+      opacity: 0.85;
+    }
+
+    &:hover {
+      background: rgb(255 239 179 / 10%);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--butter-300);
+      outline-offset: 2px;
+    }
+
+    // Current page: a butter price tag with a hole on the end.
+    &.is-active {
+      border-radius: 6px;
+      border-start-end-radius: 20px;
+      border-end-end-radius: 20px;
+      background: var(--butter-300);
+      color: var(--pine-900);
+      font-weight: 700;
+
+      &::after {
+        content: '';
+        position: absolute;
+        inset-inline-end: 12px;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--pine-900);
+      }
+    }
+
+    // Point of sale stands out with a dashed edge.
+    &--pos:not(.is-active) {
+      margin-bottom: 6px;
+      border: 1.5px dashed rgb(255 239 179 / 60%);
+      color: var(--butter-300);
+      font-weight: 700;
+
+      &:hover {
+        border-style: solid;
+        background: rgb(255 239 179 / 12%);
+      }
+    }
+
+    &--pos.is-active {
+      margin-bottom: 6px;
+    }
+  }
+}
+
+// ---------- setup progress ----------
+.setup {
+  display: grid;
+  gap: 8px;
+  margin-top: auto;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgb(255 239 179 / 10%);
+  color: var(--ink-on-dark);
+  font-size: 13px;
+  text-decoration: none;
+
+  b {
+    color: var(--butter-300);
+  }
+
+  &:hover {
+    background: rgb(255 239 179 / 16%);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--butter-300);
+    outline-offset: 2px;
+  }
+
+  &__meter {
+    height: 6px;
+    overflow: hidden;
+    border-radius: 6px;
+    background: rgb(255 255 255 / 14%);
+
+    i {
+      display: block;
+      height: 100%;
+      border-radius: 6px;
+      background: var(--butter-300);
+    }
+  }
+}

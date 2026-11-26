@@ -1,0 +1,28 @@
+@use 'abstracts' as *;
+
+:host {
+  display: contents;
+}
+
+.periods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+
+  @include down(lg) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.no-match {
+  margin: 0;
+  padding: 32px 16px;
+  color: var(--ink-500);
+  text-align: center;
+}

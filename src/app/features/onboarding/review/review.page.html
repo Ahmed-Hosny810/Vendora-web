@@ -1,0 +1,119 @@
+<ng-container *transloco="let t; read: 'onboarding'">
+  <app-onb-head
+    [kicker]="t('review.kicker')"
+    [title]="t('review.title')"
+    [lead]="t('review.lead')"
+  />
+
+  @if (status() === 'error') {
+    <div class="vd-banner vd-banner--danger" role="alert">
+      <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+      <span class="vd-banner__body">
+        <strong>{{ t('review.errorTitle') }}</strong> {{ t('review.errorText') }}
+      </span>
+    </div>
+  }
+
+  @let d = details();
+  <div class="rev">
+    <section class="rev__sec" aria-labelledby="review-business">
+      <div class="rev__head">
+        <h2 id="review-business">{{ t('review.business') }}</h2>
+        <a
+          class="edit"
+          [routerLink]="busy() ? null : '/onboarding'"
+          [attr.aria-label]="t('review.editBusiness')"
+          [attr.aria-disabled]="busy() || null"
+        >
+          <svg lucidePencil aria-hidden="true"></svg><span>{{ t('review.edit') }}</span>
+        </a>
+      </div>
+      <dl>
+        <dt>{{ t('review.nameEn') }}</dt>
+        <dd>
+          <bdi lang="en">{{ d.nameEn }}</bdi>
+        </dd>
+        <dt>{{ t('review.nameAr') }}</dt>
+        <dd>
+          @if (d.nameAr.trim()) {
+            <bdi lang="ar">{{ d.nameAr }}</bdi>
+          } @else {
+            <span class="none">{{ t('review.none') }}</span>
+          }
+        </dd>
+        <dt>{{ t('review.type') }}</dt>
+        <dd>{{ d.type ? t('types.' + d.type) : '' }}</dd>
+        <dt>{{ t('review.currency') }}</dt>
+        <dd>{{ t('review.currencyValue') }}</dd>
+        <dt>{{ t('review.inventory') }}</dt>
+        <dd>{{ d.inventory === 'track' ? t('review.track') : t('review.noTrack') }}</dd>
+      </dl>
+    </section>
+
+    @let p = plan();
+    <section class="rev__sec" aria-labelledby="review-plan">
+      <div class="rev__head">
+        <h2 id="review-plan">{{ t('review.plan') }}</h2>
+        <a
+          class="edit"
+          [routerLink]="busy() ? null : '/onboarding/plan'"
+          [attr.aria-label]="t('review.editPlan')"
+          [attr.aria-disabled]="busy() || null"
+        >
+          <svg lucidePencil aria-hidden="true"></svg><span>{{ t('review.edit') }}</span>
+        </a>
+      </div>
+      <dl>
+        <dt>{{ t('review.plan') }}</dt>
+        <dd>{{ p?.name }}</dd>
+        <dt>{{ t('review.limits') }}</dt>
+        <dd>
+          @if (p) {
+            @for (key of limitKeys; track key; let last = $last) {
+              @let value = p.limits[key];
+              {{ value === null ? t('plan.unlimited') : value.toLocaleString('en-US')
+              }}{{ last ? '' : ' · ' }}
+            }
+          }
+        </dd>
+      </dl>
+    </section>
+
+    <div class="rev__total">
+      <span>{{ t('review.monthlyPrice') }}</span>
+      <b>{{ p?.price?.toLocaleString('en-US') }} {{ t('egp') }}</b>
+    </div>
+  </div>
+
+  <div class="actions">
+    <a
+      vdButton
+      size="lg"
+      [routerLink]="busy() ? null : '/onboarding/plan'"
+      [attr.aria-disabled]="busy() || null"
+      [class.locked]="busy()"
+    >
+      <svg lucideArrowLeft class="vd-flip-rtl" aria-hidden="true"></svg>{{ t('back') }}
+    </a>
+    <span class="grow"></span>
+    <button
+      vdButton="primary"
+      class="keep-label"
+      size="lg"
+      type="button"
+      [loading]="busy()"
+      (click)="create()"
+    >
+      @if (busy()) {
+        {{ t('review.creating') }}
+      } @else if (status() === 'error') {
+        <svg lucideRefreshCw aria-hidden="true"></svg>{{ t('tryAgain') }}
+      } @else {
+        <svg lucideCheck aria-hidden="true"></svg>{{ t('review.create') }}
+      }
+    </button>
+  </div>
+  @if (busy()) {
+    <p class="calm" role="status">{{ t('review.calm') }}</p>
+  }
+</ng-container>

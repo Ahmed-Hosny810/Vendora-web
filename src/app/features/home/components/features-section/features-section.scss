@@ -1,0 +1,474 @@
+@use 'abstracts' as *;
+@use '../../styles/home';
+
+.sec {
+  @include home.section-space;
+}
+
+.head {
+  @include home.reveal;
+  margin-block-end: 36px;
+
+  @include up(md) {
+    margin-block-end: 56px;
+  }
+}
+
+.fig {
+  @include home.figure;
+}
+
+.illus {
+  @include home.illustrative;
+  margin: 20px 0 0;
+}
+
+// ============================================================
+// Bento grid. Each card has a named area; the map below says
+// where each area goes. Change the map, the cards move.
+//
+//   Phone:   a / b / c / d / e  (one column)
+//   Tablet:  a a / b c / d d / e e
+//   Desktop: a a a a a a a b b b b b
+//            a a a a a a a c c c c c
+//            d d d d d d d d e e e e
+// ============================================================
+.bento {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: 'a' 'b' 'c' 'd' 'e';
+  gap: 16px;
+
+  @include up(md) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas: 'a a' 'b c' 'd d' 'e e';
+    gap: 20px;
+  }
+
+  @include up(lg) {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-areas:
+      'a a a a a a a b b b b b'
+      'a a a a a a a c c c c c'
+      'd d d d d d d d e e e e';
+  }
+}
+
+.card {
+  @include home.reveal;
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 20px;
+  overflow: hidden;
+  padding: 24px;
+  border-radius: var(--radius-lg);
+  transition:
+    transform var(--duration-slow) var(--ease-out),
+    box-shadow var(--duration-slow) var(--ease-out);
+
+  @include up(md) {
+    padding: 32px;
+  }
+
+  h3 {
+    margin: 0;
+    font: 700 26px/1.08 var(--font-display);
+    letter-spacing: -0.025em;
+
+    @include up(md) {
+      font-size: 30px;
+    }
+  }
+
+  .sub {
+    @include home.arabic-body;
+    max-width: 46ch;
+    margin: 0;
+    color: var(--ink-700);
+    font-size: 16px;
+    line-height: 25px;
+  }
+}
+
+.card__text {
+  display: grid;
+  align-content: start;
+  gap: 18px;
+}
+
+// A: yellow, text + receipt side by side from tablet up.
+.card--sell {
+  grid-area: a;
+  border: 1.5px solid var(--ink-900);
+  background: var(--butter-300);
+
+  @include up(md) {
+    grid-template-columns: minmax(0, 1fr) 210px;
+    gap: 24px;
+  }
+
+  @include hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 6px 6px 0 var(--ink-900);
+  }
+}
+
+.card--catalog {
+  grid-area: b;
+  border: 1px solid var(--line);
+  background: var(--paper-0);
+}
+
+.card--team {
+  grid-area: c;
+  @include home.inverse-surface;
+
+  .sub {
+    color: var(--ink-on-dark-muted);
+  }
+}
+
+// D: text + table side by side from tablet up.
+.card--reports {
+  grid-area: d;
+  border: 1px solid var(--line);
+  background: var(--paper-0);
+
+  @include up(md) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 32px;
+  }
+}
+
+.card--returns {
+  grid-area: e;
+  border: 1.5px solid var(--ink-900);
+  background: var(--pine-50);
+
+  @include hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 6px 6px 0 var(--ink-900);
+  }
+}
+
+.card--catalog,
+.card--reports,
+.card--team {
+  @include hover {
+    transform: translateY(-4px);
+  }
+}
+
+.card--catalog,
+.card--reports {
+  @include hover {
+    box-shadow: var(--shadow-2);
+  }
+}
+
+// ---------- Capability chips ----------
+.caps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-pill);
+    background: rgb(255 253 249 / 75%);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .card--catalog &,
+  .card--reports & {
+    li {
+      background: var(--paper-50);
+    }
+  }
+
+  .card--team & li {
+    border-color: rgb(251 246 238 / 28%);
+    background: rgb(251 246 238 / 8%);
+    color: var(--ink-on-dark);
+  }
+}
+
+// ---------- Pictures inside the cards ----------
+
+// Tilted receipt in card A.
+.rcpt {
+  position: relative;
+  justify-self: center;
+  align-self: start;
+  width: 200px;
+  margin-block-start: var(--space-2);
+  padding: 14px 14px 10px;
+  border: 1px solid var(--line);
+  border-block-end: 0;
+  background: var(--paper-0);
+  box-shadow: var(--shadow-2);
+  font: 10.5px/15px var(--font-mono);
+  transform: rotate(2.5deg);
+
+  @include up(md) {
+    width: auto;
+  }
+
+  // Torn paper edge.
+  &::after {
+    content: '';
+    position: absolute;
+    right: -1px;
+    bottom: -8px;
+    left: -1px;
+    height: 9px;
+    background:
+      linear-gradient(-45deg, transparent 6px, var(--paper-0) 6px) 0 0 / 12px 9px repeat-x,
+      linear-gradient(45deg, transparent 6px, var(--paper-0) 6px) 0 0 / 12px 9px repeat-x;
+  }
+
+  hr {
+    margin: 6px 0;
+    border: 0;
+    border-block-start: 1px dashed var(--ink-500);
+  }
+
+  .c {
+    text-align: center;
+  }
+
+  .b {
+    font-weight: 600;
+  }
+
+  .r {
+    display: flex;
+    justify-content: space-between;
+    gap: 6px;
+  }
+
+  bdi {
+    direction: ltr;
+  }
+
+  :host-context(:lang(ar)) & {
+    font-family: var(--font-sans);
+    line-height: 17px;
+
+    bdi {
+      font-family: var(--font-mono);
+    }
+  }
+}
+
+// Stock meters in card B.
+.meter {
+  display: grid;
+  gap: 10px;
+
+  > div {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 4px 12px;
+    font-size: 13px;
+  }
+
+  .fig {
+    font-weight: 500;
+  }
+}
+
+.track {
+  grid-column: 1 / -1;
+  overflow: hidden;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--paper-100);
+
+  i {
+    display: block;
+    height: 100%;
+    border-radius: 4px;
+    background: var(--pine-300);
+    transform-origin: left;
+
+    :host-context([dir='rtl']) & {
+      transform-origin: right;
+    }
+
+    .low & {
+      background: var(--butter-300);
+    }
+  }
+}
+
+// Branch "pins" in card C.
+.pins {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.pin {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) 12px var(--space-2) var(--space-2);
+  border: 1px solid rgb(251 246 238 / 20%);
+  border-radius: var(--radius-md);
+  background: rgb(251 246 238 / 8%);
+  font-size: 13px;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    color: var(--butter-300);
+  }
+
+  small {
+    color: var(--ink-on-dark-muted);
+    font-size: 12px;
+  }
+}
+
+// Overlapping round avatars.
+.avatars {
+  display: flex;
+
+  span {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 2px solid var(--pine-900);
+    border-radius: 50%;
+    color: var(--ink-900);
+    font-size: 12px;
+    font-weight: 700;
+
+    & + span {
+      margin-inline-start: -8px;
+    }
+  }
+}
+
+// Cashier table in card D.
+.mini {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  font-size: 12.5px;
+
+  > div {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 12px;
+    align-items: center;
+    padding: 9px 12px;
+    border-block-end: 1px solid var(--line);
+
+    &:last-child {
+      border-block-end: 0;
+    }
+  }
+
+  .fig {
+    text-align: end;
+  }
+}
+
+.mini__head {
+  background: var(--paper-100);
+  color: var(--ink-500);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+// Notification cards in card E.
+.notes {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.note {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 12px;
+  padding: 12px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--paper-0);
+  font-size: 13px;
+  line-height: 18px;
+
+  strong {
+    display: block;
+  }
+
+  small {
+    color: var(--ink-500);
+    font-size: 12px;
+  }
+}
+
+.note__icon {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: var(--pine-100);
+  color: var(--pine-700);
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  &--warn {
+    background: var(--warning-bg);
+    color: var(--warning-fg);
+  }
+}
+
+// ---------- Scroll effects ----------
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    // Cards on the right start a moment later than the big one.
+    .card--catalog {
+      animation-range: entry 8% entry 45%;
+    }
+
+    .card--reports {
+      animation-range: entry 4% entry 40%;
+    }
+
+    .card--returns {
+      animation-range: entry 12% entry 50%;
+    }
+
+    .track i {
+      animation: grow-x linear both;
+      animation-timeline: view();
+      animation-range: entry 20% cover 40%;
+    }
+  }
+}
+
+@keyframes grow-x {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+:host-context(:lang(ar)) .card h3 {
+  letter-spacing: 0;
+}

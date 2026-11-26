@@ -1,0 +1,66 @@
+@use 'abstracts' as *;
+
+:host {
+  display: block;
+}
+
+h3 {
+  margin: 0 0 16px;
+  font: 600 22px/28px var(--font-display);
+}
+
+.scroll {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--paper-0);
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+th,
+td {
+  padding: 12px 16px;
+  border-block-end: 1px solid var(--line);
+  text-align: center;
+  white-space: nowrap;
+}
+
+tbody tr:last-child > * {
+  border-block-end: 0;
+}
+
+thead th {
+  background: var(--paper-100);
+  color: var(--ink-700);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+// Numbers only; the word "Unlimited" keeps the normal font.
+.num {
+  font-family: var(--font-mono);
+}
+
+// First column stays put while the rest scrolls sideways.
+th:first-child {
+  position: sticky;
+  inset-inline-start: 0;
+  z-index: 1;
+  background: var(--paper-0);
+  font-weight: 600;
+  text-align: start;
+}
+
+thead th:first-child {
+  background: var(--paper-100);
+}

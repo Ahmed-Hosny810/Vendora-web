@@ -1,0 +1,16 @@
+<!-- Everything waits for the translations, so nothing flashes in untranslated. -->
+<div class="ob" *transloco="let t">
+  <app-onboarding-bar
+    [step]="stage.step()"
+    [lang]="lang()"
+    (languageChange)="changeLanguage($event)"
+    (signOut)="signOut()"
+  />
+
+  <div class="body" [class.body--wide]="stage.wide()">
+    <main class="pane" id="main">
+      <router-outlet />
+    </main>
+    <app-scene-panel [scene]="stage.scene()" [details]="draft.details()" [wide]="stage.wide()" />
+  </div>
+</div>

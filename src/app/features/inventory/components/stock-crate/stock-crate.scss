@@ -1,0 +1,59 @@
+:host {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  padding: 20px 16px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--butter-300);
+}
+
+svg {
+  width: 210px;
+  height: 150px;
+
+  // Every shape gets the same dark outline.
+  :is(path, rect) {
+    stroke: var(--pine-900);
+    stroke-width: 2;
+  }
+
+  path:not([fill]) {
+    fill: none;
+  }
+
+  text {
+    fill: var(--pine-900);
+    font: 700 11px var(--font-mono);
+    // Keep "× 24" left to right in Arabic too.
+    direction: ltr;
+    unicode-bidi: plaintext;
+  }
+}
+
+// The shirts drop in with a small bounce.
+.item {
+  transform-box: fill-box;
+  animation: crate-drop 900ms cubic-bezier(0.3, 1.4, 0.5, 1) both;
+}
+
+p {
+  margin: 0;
+  color: var(--ink-700);
+  font-size: 13px;
+  line-height: 20px;
+  text-align: center;
+}
+
+@keyframes crate-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-60px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item {
+    animation: none;
+  }
+}

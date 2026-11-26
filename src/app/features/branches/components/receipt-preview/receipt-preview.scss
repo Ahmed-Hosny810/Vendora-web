@@ -1,0 +1,79 @@
+:host {
+  display: block;
+}
+
+// Receipt paper: zig-zag edges cut with a mask, soft shadow under it.
+.rc {
+  padding: 20px 18px 18px;
+  background: var(--paper-0);
+  color: var(--ink-900);
+  font: 500 12px/1.6 var(--font-mono);
+  filter: drop-shadow(0 2px 0 var(--line)) drop-shadow(0 8px 14px rgb(1 62 55 / 8%));
+  mask:
+    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 16px 100%,
+    conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) 50% / 16px 100%;
+  mask-composite: intersect;
+
+  :host-context(:lang(ar)) & {
+    font-family: 'IBM Plex Sans Arabic', var(--font-mono);
+  }
+
+  hr {
+    margin: 10px 0;
+    border: 0;
+    border-top: 1.5px dashed var(--line-strong);
+  }
+
+  &__top {
+    display: grid;
+    gap: 2px;
+    text-align: center;
+
+    b {
+      font-size: 14px;
+      letter-spacing: 0.04em;
+    }
+  }
+
+  // The receipt header: what the owner is editing, so it's highlighted.
+  &__hl {
+    display: grid;
+    border-radius: 2px;
+    background: var(--butter-300);
+    outline: 2px dashed var(--pine-600);
+    outline-offset: 2px;
+    animation: hl-blink 2.4s ease-in-out infinite;
+  }
+
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+
+    span:last-child {
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+  }
+
+  &__muted {
+    color: var(--ink-500);
+  }
+
+  &__big {
+    font-size: 15px;
+    font-weight: 700;
+  }
+}
+
+@keyframes hl-blink {
+  50% {
+    outline-color: transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rc__hl {
+    animation: none;
+  }
+}

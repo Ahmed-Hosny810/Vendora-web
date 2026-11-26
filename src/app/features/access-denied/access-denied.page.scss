@@ -1,0 +1,60 @@
+.denied {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  padding: 72px 24px;
+  text-align: center;
+
+  // Padlock in a dashed circle, with a STAFF ONLY tag hanging under it.
+  &__ic {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 88px;
+    height: 88px;
+    border: 2px dashed var(--line-strong);
+    border-radius: 50%;
+    background: var(--paper-0);
+    color: var(--ink-500);
+
+    svg {
+      width: 36px;
+      height: 36px;
+    }
+  }
+
+  &__tag {
+    position: absolute;
+    bottom: -12px;
+    max-width: 84px;
+    padding: 5px 8px;
+    border-radius: 4px;
+    background: var(--pine-600);
+    color: var(--butter-300);
+    font: 700 10px/1 var(--font-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+
+    :host-context(:lang(ar)) & {
+      font-family: 'IBM Plex Sans Arabic', var(--font-sans);
+      font-size: 11px;
+      letter-spacing: 0;
+    }
+  }
+
+  h1 {
+    margin: 8px 0 0;
+    font: 700 26px/1.2 var(--font-display);
+
+    :host-context(:lang(ar)) & {
+      font-family: 'Alexandria', var(--font-display);
+    }
+  }
+
+  p {
+    max-width: 420px;
+    margin: 0;
+    color: var(--ink-700);
+    line-height: 22px;
+  }
+}

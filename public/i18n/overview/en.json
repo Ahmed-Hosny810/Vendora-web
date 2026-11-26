@@ -1,0 +1,91 @@
+{
+  "welcome": "Welcome, {{name}}",
+  "progress": "Nice progress, {{name}}",
+  "welcomeText": "Your subscription is active. Here’s what’s left before your first sale.",
+  "progressText": "A few steps left before your first sale.",
+  "openPos": "Open POS",
+  "setup": {
+    "title": "Get your shop ready to sell",
+    "text": "Do these in any order. Optional ones won’t block you.",
+    "progress": "Setup progress",
+    "start": "Start",
+    "done": "Done",
+    "donePrefix": "Done: ",
+    "tags": {
+      "tracked": "Tracked products only",
+      "optional": "Optional"
+    },
+    "tasks": {
+      "branch": {
+        "title": "Create the first branch",
+        "text": "Where you sell. Receipts use its details."
+      },
+      "terminal": {
+        "title": "Add a checkout terminal",
+        "text": "Name the counter your cashiers sell from."
+      },
+      "catalog": {
+        "title": "Prepare categories, units and tax rates",
+        "text": "Every product needs all three."
+      },
+      "products": {
+        "title": "Add products",
+        "text": "Names, prices and how you identify them."
+      },
+      "stock": {
+        "title": "Add opening stock",
+        "text": "Count what is on your shelves today."
+      },
+      "payments": {
+        "title": "Configure payment methods",
+        "text": "Cash, card, wallet — how customers pay you."
+      },
+      "employees": {
+        "title": "Invite employees",
+        "text": "Cashiers and staff get their own sign-in."
+      },
+      "shift": {
+        "title": "Open a shift and start selling",
+        "text": "Count the drawer, then ring up the first sale."
+      }
+    }
+  },
+  "plan": {
+    "title": "Your plan",
+    "text": "Branches, products and cashiers are limited by your plan.",
+    "billing": "View billing"
+  },
+  "help": {
+    "title": "Need a hand?",
+    "text": "Each step opens the right screen and brings you back here when you’re done."
+  },
+  "kpi": {
+    "salesToday": "Sales today",
+    "salesTodayEmpty": "Appears after your first sale",
+    "openShifts": "Open shifts",
+    "openShiftsEmpty": "No cashier is selling yet",
+    "lowStock": "Low stock",
+    "lowStockEmpty": "Appears once stock is counted"
+  },
+  "cashier": {
+    "morning": "Good morning, {{name}}",
+    "afternoon": "Good afternoon, {{name}}",
+    "evening": "Good evening, {{name}}",
+    "text": "You can sell and look up customers. Ask your manager if you need anything else.",
+    "ready": "Ready when you are",
+    "openShift": "Open your shift on {{terminal}} at {{branch}} to start selling.",
+    "openShiftPlain": "Open your shift to start selling.",
+    "lastShift": "Your last shift",
+    "noShifts": "No shifts yet.",
+    "when": "Shift",
+    "sales": "Sales",
+    "drawer": "Cash drawer",
+    "stillOpen": "Still open",
+    "diff": {
+      "balanced": "Balanced",
+      "shortage": "Short",
+      "overage": "Over"
+    },
+    "viewShift": "View shift summary"
+  }
+}

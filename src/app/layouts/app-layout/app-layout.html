@@ -1,0 +1,45 @@
+<div class="app" *transloco="let t; read: 'shell'">
+  <app-sidebar
+    class="side"
+    [class.is-open]="shell.navOpen()"
+    [role]="session.role()"
+    [business]="session.business()"
+    [setupDone]="setupDone()"
+    [setupTotal]="session.setupTotal"
+    (navigate)="shell.navOpen.set(false)"
+  />
+  @if (shell.navOpen()) {
+    <button
+      type="button"
+      class="scrim"
+      [attr.aria-label]="t('closeMenu')"
+      (click)="shell.navOpen.set(false)"
+    ></button>
+  }
+
+  <div class="main">
+    <app-topbar
+      [title]="shell.title()"
+      [crumbs]="shell.crumbs()"
+      [user]="session.user()"
+      [businessName]="session.business()?.name ?? ''"
+      [branches]="session.branches()"
+      [branch]="session.branch()"
+      [notifications]="session.notifications()"
+      [unreadCount]="session.unreadCount()"
+      [lang]="lang()"
+      (menuClick)="shell.navOpen.set(true)"
+      (branchChange)="changeBranch($event)"
+      (languageChange)="changeLanguage($event)"
+      (profile)="openProfile()"
+      (changePassword)="openChangePassword()"
+      (signOut)="signOut()"
+      (markAllRead)="markAllRead()"
+      (openNotification)="openNotification($event)"
+      (seeAllNotifications)="seeAllNotifications()"
+    />
+    <main class="content" id="main" tabindex="-1">
+      <router-outlet />
+    </main>
+  </div>
+</div>

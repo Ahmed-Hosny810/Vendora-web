@@ -1,0 +1,86 @@
+<ng-container *transloco="let t; read: 'onboarding'">
+  <app-onb-head
+    [kicker]="t('invoice.kicker')"
+    [title]="t('invoice.title')"
+    [lead]="t('invoice.lead')"
+  />
+
+  @switch (status()) {
+    @case ('error') {
+      <app-error-box
+        [title]="t('invoice.errorTitle')"
+        [text]="t('invoice.errorText')"
+        [retryLabel]="t('tryAgain')"
+        (retry)="loadInvoice()"
+      />
+    }
+
+    @case ('loading') {
+      <div class="sk" aria-busy="true">
+        <span class="vd-sr" role="status">{{ t('invoice.loading') }}</span>
+      </div>
+    }
+
+    @default {
+      @let inv = invoice();
+      <article class="inv" aria-labelledby="invoice-title">
+        <div class="inv__top">
+          <div class="inv__id">
+            <h2 id="invoice-title">{{ t('invoice.invoice') }}</h2>
+            <span class="inv__no">{{ t('invoice.number', { number: inv?.number }) }}</span>
+          </div>
+          <span class="vd-badge vd-badge--warning vd-badge--dot">{{ t('invoice.unpaid') }}</span>
+        </div>
+        <dl>
+          <dt>{{ t('invoice.business') }}</dt>
+          <dd>
+            <bdi lang="en">{{ inv?.businessName }}</bdi>
+          </dd>
+          <dt>{{ t('invoice.plan') }}</dt>
+          <dd>{{ inv?.planName }}</dd>
+          <dt>{{ t('invoice.billing') }}</dt>
+          <dd>{{ t('invoice.monthly') }}</dd>
+          <dt>{{ t('invoice.currency') }}</dt>
+          <dd>{{ t('invoice.currencyValue') }}</dd>
+          <dt>{{ t('invoice.status') }}</dt>
+          <dd>{{ t('invoice.unpaid') }}</dd>
+        </dl>
+        <div class="inv__due">
+          <span>{{ t('invoice.amountDue') }}</span>
+          <b
+            >{{ inv?.amount?.toLocaleString('en-US', { minimumFractionDigits: 2 }) }}
+            {{ t('egp') }}</b
+          >
+        </div>
+      </article>
+
+      <p class="secure">
+        <svg lucideLock aria-hidden="true"></svg><span>{{ t('invoice.secure') }}</span>
+      </p>
+
+      <div class="actions">
+        <span class="grow"></span>
+        <button
+          vdButton="primary"
+          class="keep-label"
+          size="lg"
+          type="button"
+          [loading]="redirecting()"
+          (click)="pay()"
+        >
+          @if (redirecting()) {
+            {{ t('invoice.opening') }}
+          } @else {
+            {{ t('invoice.pay') }}<svg lucideExternalLink aria-hidden="true"></svg>
+          }
+        </button>
+      </div>
+      @if (redirecting()) {
+        <p class="calm" role="status">
+          {{ t('invoice.didntOpen') }}
+          <button type="button" class="calm__link" (click)="pay()">{{ t('tryAgain') }}</button>
+        </p>
+      }
+    }
+  }
+</ng-container>

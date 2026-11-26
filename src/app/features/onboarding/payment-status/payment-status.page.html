@@ -1,0 +1,62 @@
+<ng-container *transloco="let t; read: 'onboarding'">
+  @let s = status();
+  <div
+    class="status"
+    [attr.role]="s === 'failed' ? 'alert' : 'status'"
+    [attr.aria-live]="s === 'failed' ? null : 'polite'"
+  >
+    <span class="ic ic--{{ s }}" aria-hidden="true">
+      @switch (s) {
+        @case ('waiting') {
+          <svg lucideHourglass></svg>
+        }
+        @case ('failed') {
+          <svg lucideX></svg>
+        }
+        @case ('activating') {
+          <svg lucideSparkles></svg>
+        }
+        @default {
+          <svg lucideCheck></svg>
+        }
+      }
+    </span>
+
+    <app-onb-head
+      [kicker]="s === 'active' ? t('status.active.kicker') : t('status.kicker')"
+      [title]="t('status.' + s + '.title')"
+      [lead]="t('status.' + s + '.lead')"
+    />
+
+    @if (s === 'waiting' || s === 'activating') {
+      <div
+        class="waitbar"
+        role="progressbar"
+        [attr.aria-label]="t(s === 'waiting' ? 'status.steps.waiting' : 'status.steps.activating')"
+      ></div>
+    }
+
+    <app-steps-mini [steps]="mini()" />
+
+    <div class="actions">
+      @switch (s) {
+        @case ('waiting') {
+          <button vdButton size="lg" type="button" [loading]="checking()" (click)="checkAgain()">
+            <svg lucideRefreshCw aria-hidden="true"></svg>{{ t('status.waiting.check') }}
+          </button>
+        }
+        @case ('failed') {
+          <a vdButton="primary" size="lg" routerLink="/onboarding/invoice">
+            <svg lucideReceiptText aria-hidden="true"></svg>{{ t('status.failed.return') }}
+          </a>
+        }
+        @case ('active') {
+          <a vdButton="primary" size="lg" routerLink="/onboarding/welcome">
+            {{ t('status.active.setup')
+            }}<svg lucideArrowRight class="vd-flip-rtl" aria-hidden="true"></svg>
+          </a>
+        }
+      }
+    </div>
+  </div>
+</ng-container>

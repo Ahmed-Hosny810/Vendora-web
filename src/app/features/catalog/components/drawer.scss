@@ -1,0 +1,42 @@
+// Shared by the three catalog drawers (category, unit, tax rate).
+@use '../../../shared/styles/app-forms' as forms;
+
+:host {
+  display: contents;
+  @include forms.field-bits;
+}
+
+.vd-drawer {
+  height: 100%;
+  margin: 0;
+}
+
+.body {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+  min-width: 0;
+  margin: 0;
+  border: 0;
+}
+
+.two {
+  @include forms.two;
+}
+
+.arabic {
+  font-family: 'IBM Plex Sans Arabic', var(--font-sans);
+}
+
+.toggle {
+  @include forms.toggle-row;
+}
+
+.cap {
+  @include forms.preview-cap;
+}
+
+// Three buttons don't fit one row in a 420px drawer: wrap, main button last.
+.foot {
+  flex-wrap: wrap;
+}

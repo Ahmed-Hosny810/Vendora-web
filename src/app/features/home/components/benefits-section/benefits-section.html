@@ -1,0 +1,70 @@
+<section
+  class="sec"
+  id="benefits"
+  aria-labelledby="benefits-title"
+  *transloco="let t; read: 'home'"
+>
+  <div class="vd-container grid">
+    <app-section-heading
+      class="head"
+      headingId="benefits-title"
+      [overline]="t('benefits.overline')"
+      [title]="t('benefits.title')"
+      [highlight]="t('benefits.highlight')"
+      [lead]="t('benefits.lead')"
+    >
+      <span class="illus">{{ t('benefits.illustrative') }}</span>
+    </app-section-heading>
+
+    <ol class="ledger">
+      @for (row of rows; track row) {
+        <li class="row">
+          <span class="row__n" aria-hidden="true">0{{ $index + 1 }}</span>
+          <div>
+            <h3>{{ t('benefits.' + row + '.title') }}</h3>
+            <p>{{ t('benefits.' + row + '.text') }}</p>
+          </div>
+
+          <!-- A small "proof" under each benefit, drawn from the product. -->
+          <div class="proof">
+            @switch (row) {
+              @case ('checkout') {
+                <span class="chip"
+                  ><svg lucideBanknote aria-hidden="true"></svg>{{ t('pos.cash') }}
+                  <bdi>520.00</bdi></span
+                >
+                <span class="chip"
+                  ><svg lucideCreditCard aria-hidden="true"></svg>{{ t('pos.card') }}
+                  <bdi>643.00</bdi></span
+                >
+                <span class="chip">{{ t('pos.change') }} <bdi>20.00</bdi></span>
+              }
+              @case ('stock') {
+                <span class="chip">{{ t('benefits.proof.lowItem') }} <bdi>4</bdi></span>
+                <span class="vd-badge vd-badge--warning">
+                  <svg lucideTriangleExclamationPoint aria-hidden="true"></svg
+                  >{{ t('benefits.proof.lowStock') }}
+                </span>
+              }
+              @case ('people') {
+                <span class="vd-badge vd-badge--brand">{{ t('roles.owner') }}</span>
+                <span class="vd-badge vd-badge--brand">{{ t('roles.manager') }}</span>
+                <span class="vd-badge vd-badge--brand">{{ t('roles.cashier') }}</span>
+                <span class="chip">{{ t('benefits.proof.branchList') }}</span>
+              }
+              @case ('cash') {
+                <span class="chip">{{ t('benefits.proof.expected') }} <bdi>6,420.00</bdi></span>
+                <span class="chip">{{ t('benefits.proof.counted') }} <bdi>6,380.00</bdi></span>
+                <span class="vd-badge vd-badge--danger">
+                  <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+                  >{{ t('benefits.proof.difference') }}
+                  <bdi dir="ltr">−40.00</bdi>
+                </span>
+              }
+            }
+          </div>
+        </li>
+      }
+    </ol>
+  </div>
+</section>

@@ -1,0 +1,32 @@
+<article class="plan" *transloco="let t; read: 'home.pricing'">
+  <div class="plan__head">
+    <h3 class="plan__name">{{ plan().name }}</h3>
+    <p class="plan__desc">{{ plan().description }}</p>
+  </div>
+
+  <p class="price">
+    <vd-money
+      class="price__amount"
+      [amount]="plan().price"
+      [currency]="plan().currency"
+      [fractionDigits]="0"
+    />
+    <span class="price__per">{{ t('perPeriod', { period: plan().period }) }}</span>
+  </p>
+
+  <button vdButton="primary" size="lg" block type="button" (click)="choose.emit(plan())">
+    {{ t('choose') }}
+  </button>
+
+  <ul class="limits">
+    @for (limit of limits; track limit) {
+      <li>
+        <span>{{ t(limit) }}</span>
+        <!-- null means the plan has no limit for this. -->
+        <b [class.num]="plan().limits[limit] !== null">{{
+          plan().limits[limit] ?? t('unlimited')
+        }}</b>
+      </li>
+    }
+  </ul>
+</article>

@@ -1,0 +1,128 @@
+<ng-container *transloco="let t; read: 'settings.account'">
+  @switch (loadStatus()) {
+    @case ('loading') {
+      <div class="col" aria-busy="true">
+        <span class="vd-skeleton" style="height: 96px"></span>
+        <span class="vd-skeleton" style="height: 240px"></span>
+      </div>
+      <span class="vd-sr" role="status">{{ t('loading') }}</span>
+    }
+    @case ('error') {
+      <div class="vd-tablewrap">
+        <app-load-error
+          [title]="t('errorTitle')"
+          [text]="t('errorText')"
+          [retryLabel]="t('tryAgain')"
+          (retry)="load()"
+        />
+      </div>
+    }
+    @default {
+      <form class="col" novalidate (submit)="onSubmit($event)">
+        <!-- Who you are: initials, name, role, email -->
+        <div class="who">
+          <span class="who__av" aria-hidden="true">{{
+            initials(model().fullName || session.user()?.name || '')
+          }}</span>
+          <div class="who__t">
+            <b
+              ><bdi>{{ model().fullName || session.user()?.name }}</bdi></b
+            >
+            <span class="who__mail"
+              ><bdi dir="ltr">{{ email() }}</bdi></span
+            >
+          </div>
+          @if (session.role(); as role) {
+            <span class="vd-badge vd-badge--brand">{{ t('roles.' + role) }}</span>
+          }
+        </div>
+
+        @if (status() === 'failed') {
+          <div class="vd-banner vd-banner--danger" role="alert">
+            <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+            <span class="vd-banner__body">{{ t('failed') }}</span>
+          </div>
+        }
+
+        <fieldset class="col" [disabled]="saving()">
+          <legend class="vd-sr">{{ t('legend') }}</legend>
+
+          <app-form-section [n]="1" [title]="t('section')">
+            <div class="two">
+              <div class="vd-field">
+                <div class="vd-field__top">
+                  <label class="vd-field__label" for="ac-name">
+                    {{ t('fullName') }}<span class="req" aria-hidden="true">*</span>
+                  </label>
+                  <span class="vd-field__counter" aria-hidden="true"
+                    >{{ model().fullName.length }}/{{ limits.fullName }}</span
+                  >
+                </div>
+                <input
+                  id="ac-name"
+                  class="vd-input"
+                  type="text"
+                  dir="auto"
+                  autocomplete="name"
+                  [formField]="accountForm.fullName"
+                  [attr.aria-invalid]="nameError() ? true : null"
+                  [attr.aria-describedby]="nameError() ? 'ac-name-error' : null"
+                />
+                @if (nameError()) {
+                  <p id="ac-name-error" class="vd-field__error">
+                    <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+                    >{{ t('errors.name') }}
+                  </p>
+                }
+              </div>
+
+              <div class="vd-field">
+                <label class="vd-field__label" for="ac-phone">
+                  {{ t('phone') }}<span class="opt">{{ t('optional') }}</span>
+                </label>
+                <input
+                  id="ac-phone"
+                  class="vd-input"
+                  type="tel"
+                  dir="ltr"
+                  inputmode="tel"
+                  autocomplete="tel"
+                  [formField]="accountForm.phone"
+                />
+              </div>
+            </div>
+
+            <div class="vd-field">
+              <label class="vd-field__label" for="ac-email">{{ t('email') }}</label>
+              <div class="locked" dir="ltr">
+                <svg lucideLock aria-hidden="true"></svg>
+                <input
+                  id="ac-email"
+                  class="vd-input"
+                  type="email"
+                  dir="ltr"
+                  readonly
+                  aria-describedby="ac-email-hint"
+                  [value]="email()"
+                />
+              </div>
+              <p id="ac-email-hint" class="vd-field__hint">{{ t('emailHint') }}</p>
+            </div>
+          </app-form-section>
+        </fieldset>
+
+        <div class="foot">
+          <span class="grow"
+            ><span class="req" aria-hidden="true">*</span> {{ t('required') }}</span
+          >
+          <button vdButton type="button" [disabled]="!changed() || saving()" (click)="discard()">
+            <svg lucideRotateCcw aria-hidden="true"></svg>{{ t('discard') }}
+          </button>
+          <button vdButton="primary" type="submit" [loading]="saving()">
+            <svg lucideCheck aria-hidden="true"></svg>{{ t('save') }}
+          </button>
+        </div>
+      </form>
+    }
+  }
+</ng-container>

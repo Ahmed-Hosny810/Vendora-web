@@ -1,0 +1,143 @@
+@use 'sass:map';
+
+// The type scale from the design system.
+// family: display | sans | mono → var(--font-*)
+$type-scale: (
+  display-xl: (
+    family: display,
+    size: 88px,
+    line: 0.95,
+    weight: 700,
+    tracking: -0.035em,
+  ),
+  display-lg: (
+    family: display,
+    size: 64px,
+    line: 1,
+    weight: 700,
+    tracking: -0.03em,
+  ),
+  display-md: (
+    family: display,
+    size: 44px,
+    line: 1.05,
+    weight: 700,
+    tracking: -0.025em,
+  ),
+  heading-lg: (
+    family: display,
+    size: 30px,
+    line: 36px,
+    weight: 650,
+    tracking: -0.02em,
+  ),
+  heading-md: (
+    family: display,
+    size: 22px,
+    line: 28px,
+    weight: 600,
+    tracking: -0.01em,
+  ),
+  heading-sm: (
+    family: display,
+    size: 17px,
+    line: 24px,
+    weight: 600,
+    tracking: 0,
+  ),
+  lead: (
+    family: sans,
+    size: 20px,
+    line: 30px,
+    weight: 400,
+    tracking: 0,
+  ),
+  body: (
+    family: sans,
+    size: 16px,
+    line: 26px,
+    weight: 400,
+    tracking: 0,
+  ),
+  body-ui: (
+    family: sans,
+    size: 14px,
+    line: 20px,
+    weight: 400,
+    tracking: 0,
+  ),
+  label: (
+    family: sans,
+    size: 14px,
+    line: 20px,
+    weight: 600,
+    tracking: 0,
+  ),
+  label-lg: (
+    family: sans,
+    size: 16px,
+    line: 24px,
+    weight: 600,
+    tracking: 0,
+  ),
+  caption: (
+    family: sans,
+    size: 12px,
+    line: 16px,
+    weight: 500,
+    tracking: 0,
+  ),
+  overline: (
+    family: sans,
+    size: 12px,
+    line: 16px,
+    weight: 700,
+    tracking: 0.1em,
+  ),
+  figure-lg: (
+    family: mono,
+    size: 32px,
+    line: 36px,
+    weight: 500,
+    tracking: -0.02em,
+  ),
+  figure: (
+    family: mono,
+    size: 14px,
+    line: 20px,
+    weight: 500,
+    tracking: 0,
+  ),
+  receipt: (
+    family: mono,
+    size: 13px,
+    line: 18px,
+    weight: 400,
+    tracking: 0,
+  ),
+);
+
+// @include type(heading-md);
+@mixin type($name) {
+  $s: map.get($type-scale, $name);
+
+  @if not $s {
+    @error 'Unknown type style "#{$name}". Use one of: #{map.keys($type-scale)}';
+  }
+
+  font-family: var(--font-#{map.get($s, family)});
+  font-size: map.get($s, size);
+  line-height: map.get($s, line);
+  font-weight: map.get($s, weight);
+  letter-spacing: map.get($s, tracking);
+
+  // Arabic letters join together; letter-spacing breaks the joins.
+  &:lang(ar) {
+    letter-spacing: 0;
+  }
+
+  // Numbers: equal-width digits so totals line up.
+  @if map.get($s, family) == mono {
+    font-variant-numeric: tabular-nums;
+  }
+}

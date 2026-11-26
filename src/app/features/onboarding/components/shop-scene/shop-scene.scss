@@ -1,0 +1,710 @@
+// Paint and motion for the 12 window displays (from the design export).
+// Fills: f-b butter-500, f-l butter-300, f-p paper-0, f-g pine-300,
+//        f-m pine-100, f-d pine-700, f-n none.
+
+:host {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.sc {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  direction: ltr; // drawings never mirror in Arabic
+}
+
+.sc * {
+  stroke: var(--pine-600);
+  stroke-width: 3;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.sc .thin {
+  stroke-width: 2;
+}
+.sc .nos {
+  stroke: none;
+}
+.f-b {
+  fill: var(--butter-500);
+}
+.f-l {
+  fill: var(--butter-300);
+}
+.f-p {
+  fill: var(--paper-0);
+}
+.f-g {
+  fill: var(--pine-300);
+}
+.f-m {
+  fill: var(--pine-100);
+}
+.f-d {
+  fill: var(--pine-700);
+}
+.f-n {
+  fill: none;
+}
+.sc .glow {
+  opacity: 0.55;
+}
+.sc g {
+  transform-box: fill-box;
+}
+/* clothing */
+.cl-track {
+  animation: slideX 16s linear infinite;
+}
+.sw {
+  transform-origin: 50% 0;
+  animation: sway 2.6s ease-in-out infinite;
+}
+.sw2 {
+  transform-origin: 50% 0;
+  animation: sway 3s ease-in-out infinite;
+}
+.fold {
+  animation: none;
+}
+/* restaurant */
+.lamp {
+  transform-origin: 50% 0;
+  animation: sway 5s ease-in-out infinite;
+}
+.lamp .glow {
+  animation: glow 3s ease-in-out infinite;
+}
+.cloche {
+  transform-origin: 100% 100%;
+  animation: cloche 5s cubic-bezier(0.5, 0, 0.2, 1) infinite;
+}
+.steam {
+  opacity: 0;
+  animation: steam 2.6s ease-out infinite;
+}
+.sc--restaurant .steam {
+  animation-duration: 5s;
+  animation-name: steamR;
+}
+/* café */
+.bean {
+  opacity: 0;
+  animation: bean 4s cubic-bezier(0.5, 0, 0.9, 0.6) infinite;
+}
+.bean-l {
+  stroke: var(--butter-300) !important;
+  stroke-width: 2 !important;
+}
+.handle-in {
+  stroke: var(--paper-0) !important;
+}
+.latte {
+  animation: latte 4s ease-in-out infinite;
+  transform-origin: 50% 50%;
+  transform-box: fill-box;
+}
+/* grocery */
+.belt {
+  stroke: var(--butter-300) !important;
+  stroke-width: 3 !important;
+  stroke-dasharray: 14 14;
+  animation: belt 1s linear infinite;
+  fill: none;
+}
+.gr-track {
+  animation: slideX 9s linear infinite;
+}
+.bob {
+  animation: bob 1s ease-in-out infinite;
+}
+.scan {
+  stroke: var(--butter-500) !important;
+  stroke-width: 4 !important;
+  animation: scan 1.2s ease-in-out infinite;
+}
+.leaves {
+  transform-origin: 50% 100%;
+  animation: sway 3.4s ease-in-out infinite;
+}
+.pop2 {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: pop2 2.4s ease-in-out infinite;
+}
+/* mini market */
+.pop {
+  transform-origin: 50% 100%;
+  animation: pop 7s var(--ease-out) infinite;
+}
+.basket {
+  transform-origin: 50% 100%;
+  animation: basket 2.2s ease-in-out infinite;
+}
+/* pharmacy */
+.cross {
+  transform-origin: 50% 50%;
+  animation: cross 2.4s ease-in-out infinite;
+}
+.ring {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  stroke: var(--pine-300) !important;
+  animation: ring 2.4s ease-out infinite;
+}
+.ecg {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: ecg 2.8s linear infinite;
+  stroke: var(--pine-700) !important;
+}
+.cap {
+  opacity: 0;
+  animation: cap 6s linear infinite;
+}
+/* furniture */
+.frame {
+  transform-origin: 50% 0;
+  animation: sway 4s ease-in-out infinite;
+}
+.rock {
+  transform-origin: 50% 100%;
+  animation: rock 3.2s ease-in-out infinite;
+}
+.shade {
+  transform-origin: 50% 0;
+  animation: sway 3s ease-in-out infinite;
+}
+.sc--furniture .glow {
+  animation: glow 2.8s ease-in-out infinite;
+}
+/* cosmetics */
+.lip {
+  animation: lip 3.2s ease-in-out infinite;
+}
+.pump {
+  animation: pump 2.4s ease-in-out infinite;
+}
+.mist {
+  transform-box: fill-box;
+  transform-origin: 0 50%;
+  opacity: 0;
+  animation: mist 2.4s ease-out infinite;
+}
+.spark {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: spark 2.2s ease-in-out infinite;
+}
+/* accessories */
+.glasses {
+  animation: bob2 3s ease-in-out infinite;
+}
+.glint {
+  stroke: var(--paper-0) !important;
+  animation: glint 3s ease-in-out infinite;
+}
+.hand-h,
+.hand-m {
+  transform-box: view-box;
+  transform-origin: 100px 150px;
+}
+.hand-m {
+  animation: spin 4s linear infinite;
+}
+.hand-h {
+  animation: spin 48s linear infinite;
+}
+.sc .bag {
+  transform-box: view-box;
+  transform-origin: 316px 104px;
+  animation: sway 2.8s ease-in-out infinite;
+}
+.ring-spin {
+  transform-origin: 50% 50%;
+  animation: ringSpin 2.4s ease-in-out infinite;
+}
+.gem {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: gem 2.4s ease-in-out infinite;
+}
+/* electronics */
+.trace {
+  stroke: var(--pine-300) !important;
+}
+.pulse {
+  fill: none;
+  stroke: var(--butter-500) !important;
+  stroke-width: 5 !important;
+  stroke-dasharray: 8 92;
+  animation: pulse 2.4s linear infinite;
+}
+.sc .ebar {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: bars 2.4s ease-in-out infinite alternate;
+}
+.notif {
+  transform-box: fill-box;
+  animation: notif 3.2s ease-in-out infinite;
+}
+.wave {
+  opacity: 0;
+  animation: wave 1.6s ease-out infinite;
+}
+.phones {
+  transform-origin: 50% 100%;
+  animation: bob2 2s ease-in-out infinite;
+}
+/* salon */
+.pole {
+  animation: pole 2s linear infinite;
+}
+.sc .blade-a,
+.sc .blade-b {
+  transform-box: view-box;
+  transform-origin: 200px 140px;
+}
+.blade-a {
+  animation: snipA 1s ease-in-out infinite;
+}
+.blade-b {
+  animation: snipB 1s ease-in-out infinite;
+}
+.hair {
+  opacity: 0;
+  animation: hair 2s ease-in infinite;
+}
+.air {
+  stroke-dasharray: 10 8;
+  animation: air 0.6s linear infinite;
+  stroke: var(--pine-300) !important;
+}
+.comb {
+  animation: comb 3s ease-in-out infinite;
+}
+/* general retail */
+.ptag {
+  transform-origin: 50% 0;
+  animation: sway 2.6s ease-in-out infinite;
+}
+.drop {
+  animation: drop 1100ms cubic-bezier(0.3, 0, 0.3, 1) both;
+}
+.bagsw {
+  transform-origin: 50% 0;
+  animation: sway 3s ease-in-out infinite;
+}
+.paper {
+  transform-origin: 50% 100%;
+  animation: print 3s steps(6, end) infinite;
+}
+
+// ---------- keyframes ----------
+@keyframes slideX {
+  to {
+    transform: translateX(-400px);
+  }
+}
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(4deg);
+  }
+}
+@keyframes rock {
+  0%,
+  100% {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(5deg);
+  }
+}
+@keyframes glow {
+  50% {
+    opacity: 0.2;
+  }
+}
+@keyframes cloche {
+  0%,
+  22% {
+    transform: none;
+  }
+  38%,
+  68% {
+    transform: translate(14px, -78px) rotate(14deg);
+  }
+  84%,
+  100% {
+    transform: none;
+  }
+}
+@keyframes steamR {
+  0%,
+  36% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  48% {
+    opacity: 0.9;
+  }
+  72% {
+    opacity: 0;
+    transform: translateY(-34px);
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes steam {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  30% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+}
+@keyframes bean {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px) rotate(0);
+  }
+  10% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(310px) rotate(260deg);
+  }
+}
+@keyframes latte {
+  50% {
+    transform: scale(1.18);
+  }
+}
+@keyframes belt {
+  to {
+    stroke-dashoffset: 28;
+  }
+}
+@keyframes bob {
+  50% {
+    transform: translateY(-4px);
+  }
+}
+@keyframes bob2 {
+  50% {
+    transform: translateY(-8px);
+  }
+}
+@keyframes scan {
+  50% {
+    opacity: 0.2;
+  }
+}
+@keyframes pop2 {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+@keyframes pop {
+  0% {
+    transform: scale(0);
+  }
+  6% {
+    transform: scale(1.15);
+  }
+  9%,
+  86% {
+    transform: scale(1);
+  }
+  92%,
+  100% {
+    transform: scale(0);
+  }
+}
+@keyframes basket {
+  0%,
+  100% {
+    transform: rotate(-3deg) translateY(0);
+  }
+  50% {
+    transform: rotate(3deg) translateY(-6px);
+  }
+}
+@keyframes cross {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(1.12);
+  }
+  30% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.08);
+  }
+}
+@keyframes ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+@keyframes ecg {
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+@keyframes cap {
+  0% {
+    opacity: 0;
+    transform: translateY(0) rotate(0);
+  }
+  10% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-300px) rotate(220deg);
+  }
+}
+@keyframes lip {
+  0%,
+  20% {
+    transform: translateY(30px);
+  }
+  45%,
+  75% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(30px);
+  }
+}
+@keyframes pump {
+  0%,
+  30%,
+  60%,
+  100% {
+    transform: none;
+  }
+  40%,
+  50% {
+    transform: translateY(6px);
+  }
+}
+@keyframes mist {
+  0%,
+  40% {
+    opacity: 0;
+    transform: translateX(0) scale(0.4);
+  }
+  50% {
+    opacity: 1;
+  }
+  90%,
+  100% {
+    opacity: 0;
+    transform: translateX(34px) scale(2);
+  }
+}
+@keyframes spark {
+  0%,
+  100% {
+    transform: scale(0.4) rotate(0);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.1) rotate(45deg);
+    opacity: 1;
+  }
+}
+@keyframes glint {
+  0%,
+  60%,
+  100% {
+    opacity: 0;
+  }
+  70%,
+  80% {
+    opacity: 1;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes ringSpin {
+  0%,
+  100% {
+    transform: scaleX(1);
+  }
+  50% {
+    transform: scaleX(0.25);
+  }
+}
+@keyframes gem {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-3px) scale(1.12);
+  }
+}
+@keyframes pulse {
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+@keyframes bars {
+  0% {
+    transform: scaleY(0.3);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+@keyframes notif {
+  0%,
+  15% {
+    transform: translateY(-14px);
+    opacity: 0;
+  }
+  30%,
+  75% {
+    transform: none;
+    opacity: 1;
+  }
+  90%,
+  100% {
+    transform: translateY(-14px);
+    opacity: 0;
+  }
+}
+@keyframes wave {
+  0% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+}
+@keyframes pole {
+  to {
+    transform: translateY(40px);
+  }
+}
+@keyframes snipA {
+  0%,
+  100% {
+    transform: rotate(-14deg);
+  }
+  50% {
+    transform: rotate(0);
+  }
+}
+@keyframes snipB {
+  0%,
+  100% {
+    transform: rotate(14deg);
+  }
+  50% {
+    transform: rotate(0);
+  }
+}
+@keyframes hair {
+  0% {
+    opacity: 0;
+    transform: translateY(0) rotate(0);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(80px) rotate(40deg);
+  }
+}
+@keyframes air {
+  to {
+    stroke-dashoffset: 18;
+  }
+}
+@keyframes comb {
+  50% {
+    transform: translateX(-30px);
+  }
+}
+@keyframes drop {
+  0% {
+    transform: translateY(-260px);
+  }
+  60% {
+    transform: translateY(0);
+  }
+  72% {
+    transform: translateY(-26px);
+  }
+  84% {
+    transform: translateY(0);
+  }
+  92% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: none;
+  }
+}
+@keyframes print {
+  0% {
+    transform: scaleY(0);
+  }
+  70%,
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sc *,
+  .sc g {
+    animation: none !important;
+  }
+}

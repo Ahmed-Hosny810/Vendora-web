@@ -1,0 +1,123 @@
+<ng-container *transloco="let t; read: 'customers.details'">
+  @switch (status()) {
+    @case ('loading') {
+      <span class="vd-skeleton" style="height: 64px; width: 50%"></span>
+      <span class="vd-skeleton" style="height: 300px"></span>
+      <span class="vd-sr">{{ t('loading') }}</span>
+    }
+    @case ('error') {
+      <div class="vd-tablewrap">
+        <app-load-error
+          [title]="t('errorTitle')"
+          [text]="t('errorText')"
+          [retryLabel]="t('tryAgain')"
+          (retry)="load()"
+        />
+      </div>
+    }
+    @default {
+      @if (customer(); as c) {
+        <div class="head">
+          <span class="av" aria-hidden="true">{{ initials(c.fullName) }}</span>
+          <div class="head__t">
+            <h1 dir="auto">{{ c.fullName }}</h1>
+            <a class="phone" [href]="'tel:' + c.phone"
+              ><svg lucidePhone aria-hidden="true"></svg><bdi dir="ltr">{{ c.phone }}</bdi></a
+            >
+          </div>
+          <button vdButton type="button" (click)="edit()">
+            <svg lucidePencil aria-hidden="true"></svg>{{ t('edit') }}
+          </button>
+        </div>
+
+        <div class="kpis">
+          <app-kpi-card
+            [label]="t('kpi.sales')"
+            [value]="c.salesCount"
+            [hint]="t('kpi.since', { date: date(c.createdAt, lang()) })"
+          />
+          <app-kpi-card [label]="t('kpi.spent')" [value]="money(c.totalSpent)" [hint]="t('egp')" />
+          <app-kpi-card
+            [label]="t('kpi.average')"
+            [value]="average() === null ? null : money(average()!)"
+            [hint]="t('egp')"
+          />
+          <app-kpi-card
+            [label]="t('kpi.lastVisit')"
+            [value]="c.lastVisit ? date(c.lastVisit, lang()) : null"
+            [hint]="c.lastVisit ? '' : t('never')"
+          />
+        </div>
+
+        <div class="grid">
+          <section class="card" aria-labelledby="cu-info">
+            <h2 class="card__h" id="cu-info">{{ t('info') }}</h2>
+            <dl class="dl">
+              <dt>{{ t('phone') }}</dt>
+              <dd>
+                <bdi dir="ltr">{{ c.phone }}</bdi>
+              </dd>
+              <dt>{{ t('area') }}</dt>
+              <dd>{{ c.area || '—' }}</dd>
+              <dt>{{ t('city') }}</dt>
+              <dd>{{ c.city || '—' }}</dd>
+              <dt>{{ t('address') }}</dt>
+              <dd dir="auto">{{ c.address || '—' }}</dd>
+              <dt>{{ t('notes') }}</dt>
+              <dd dir="auto" class="notes">{{ c.notes || '—' }}</dd>
+            </dl>
+          </section>
+
+          <section class="card" aria-labelledby="cu-sales">
+            <h2 class="card__h" id="cu-sales">{{ t('sales') }}</h2>
+            @if (sales().length) {
+              <div class="vd-tablescroll">
+                <table class="vd-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">{{ t('cols.receipt') }}</th>
+                      <th scope="col">{{ t('cols.date') }}</th>
+                      <th scope="col">{{ t('cols.branch') }}</th>
+                      <th scope="col" class="num">{{ t('cols.items') }}</th>
+                      <th scope="col" class="num">{{ t('cols.total') }}</th>
+                      <th scope="col">
+                        <span class="vd-sr">{{ t('receipt') }}</span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (s of sales(); track s.id) {
+                      <tr>
+                        <td class="mono">
+                          <bdi>{{ s.receiptNumber }}</bdi>
+                        </td>
+                        <td class="nowrap">
+                          <bdi>{{ dateTime(s.createdAt, lang()) }}</bdi>
+                        </td>
+                        <td>{{ s.branchName }}</td>
+                        <td class="num">{{ s.itemCount }}</td>
+                        <td class="num">{{ money(s.total) }}</td>
+                        <td class="actions">
+                          <a
+                            vdButton="ghost"
+                            size="sm"
+                            [routerLink]="['/sales', s.id, 'receipt']"
+                            [attr.aria-label]="t('receiptLabel', { number: s.receiptNumber })"
+                          >
+                            <svg lucideReceiptText aria-hidden="true"></svg>{{ t('receipt') }}
+                          </a>
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            } @else {
+              <p class="none">{{ t('noSales') }}</p>
+            }
+          </section>
+        </div>
+      }
+    }
+  }
+</ng-container>

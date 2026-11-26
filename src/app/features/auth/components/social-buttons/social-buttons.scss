@@ -1,0 +1,136 @@
+@use 'abstracts' as *;
+
+:host {
+  display: grid;
+  gap: 12px;
+}
+
+// "—— or continue with ——"
+.or {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  font-size: 13px;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+  }
+}
+
+// Two side by side; stacked on small phones.
+.buttons {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px;
+
+  @include up(sm) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 12px;
+  color: var(--ink-900);
+  font: 600 14px/1.2 var(--font-sans);
+  text-align: center;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.6;
+  }
+}
+
+.mark {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--pine-100);
+  color: var(--pine-900);
+  font: 800 12px/1 var(--font-display);
+}
+
+// ---------- On the dark terminal: raised keys you can press ----------
+:host(.is-key) {
+  padding: 0 4px;
+
+  .or {
+    color: var(--ink-on-dark-muted);
+
+    &::before,
+    &::after {
+      height: 1px;
+      background: rgb(255 239 179 / 22%);
+    }
+  }
+
+  .btn {
+    min-height: 52px;
+    border: 0;
+    border-radius: 14px;
+    background: var(--paper-0);
+    // The "key" look: a solid lip under the button.
+    box-shadow:
+      0 4px 0 #b8ad8c,
+      0 6px 10px rgb(0 0 0 / 25%);
+    transition:
+      transform var(--duration-instant),
+      box-shadow var(--duration-instant);
+
+    &:hover:not(:disabled) {
+      background: #fffbea;
+    }
+
+    // Pressed: the key goes down, the lip gets thinner.
+    &:active:not(:disabled) {
+      transform: translateY(3px);
+      box-shadow:
+        0 1px 0 #b8ad8c,
+        0 2px 4px rgb(0 0 0 / 25%);
+    }
+
+    &:focus-visible {
+      @include focus-ring;
+      outline-color: var(--butter-300);
+    }
+  }
+}
+
+// ---------- On the receipt: outlined, receipt-style divider ----------
+:host(.is-outline) {
+  .or {
+    color: var(--ink-500);
+    font: 500 12px/1 var(--font-mono);
+
+    &::before,
+    &::after {
+      border-top: 1.5px dashed var(--line);
+    }
+
+    :host-context(:lang(ar)) & {
+      font-family: var(--font-sans);
+    }
+  }
+
+  .btn {
+    min-height: 54px;
+    padding: 0 10px;
+    border: 1.5px solid var(--ink-900);
+    border-radius: 12px;
+    background: var(--paper-0);
+
+    &:hover:not(:disabled) {
+      background: var(--butter-100);
+    }
+  }
+}

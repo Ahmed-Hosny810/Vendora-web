@@ -1,0 +1,58 @@
+@use 'abstracts' as *;
+
+:host {
+  display: contents;
+}
+
+.periods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+
+  @include down(lg) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+// A sale that needs attention: red edge on the start side.
+.attn td:first-child {
+  box-shadow: inset 4px 0 0 var(--danger-fg);
+
+  :host-context([dir='rtl']) & {
+    box-shadow: inset -4px 0 0 var(--danger-fg);
+  }
+}
+
+.vd-badge svg {
+  width: 14px;
+  height: 14px;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.sub {
+  display: block;
+  color: var(--ink-500);
+  font-size: 12px;
+}
+
+.muted {
+  color: var(--ink-500);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.no-match {
+  margin: 0;
+  padding: 32px 16px;
+  color: var(--ink-500);
+  text-align: center;
+}

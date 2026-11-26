@@ -1,0 +1,67 @@
+@use 'abstracts' as *;
+
+.vd-iconbtn {
+  --vd-iconbtn-size: 40px;
+
+  position: relative; // anchors a .vd-count badge
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: var(--vd-iconbtn-size);
+  height: var(--vd-iconbtn-size);
+  padding: 0;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--ink-700);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  @include hover {
+    background: var(--paper-100);
+    color: var(--ink-900);
+  }
+
+  &--sm {
+    --vd-iconbtn-size: 32px;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &--outline {
+    border-color: var(--line-strong);
+    background: var(--paper-0);
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  // Notification count in the top corner (flips side in Arabic).
+  .vd-count {
+    position: absolute;
+    top: 2px;
+    inset-inline-end: 2px;
+  }
+}
+
+.vd-inverse .vd-iconbtn {
+  color: var(--ink-on-dark-muted);
+
+  @include hover {
+    background: rgb(255 251 234 / 0.08);
+    color: var(--ink-on-dark);
+  }
+}

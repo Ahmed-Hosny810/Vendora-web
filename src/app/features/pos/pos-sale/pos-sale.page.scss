@@ -1,0 +1,417 @@
+@use 'abstracts' as *;
+
+:host {
+  display: grid;
+  min-width: 0;
+}
+
+// Products on the start side, the sale on the end side. On wide screens each
+// half scrolls on its own and the page fits the screen under the 64px bar.
+.sale {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 420px;
+  height: calc(100dvh - 64px);
+  min-width: 0;
+
+  @include down(lg) {
+    grid-template-columns: minmax(0, 1fr) 380px;
+  }
+
+  // Phones: products first, then the sale below.
+  @include down(md) {
+    grid-template-columns: minmax(0, 1fr);
+    height: auto;
+  }
+}
+
+// ========== Products ==========
+.cat {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  min-width: 0;
+  padding: 18px 20px;
+  overflow-y: auto;
+
+  @include down(md) {
+    padding: 14px;
+    overflow: visible;
+  }
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 56px;
+  padding: 0 16px;
+  border: 2px solid var(--pine-600);
+  border-radius: var(--radius-md);
+  background: var(--paper-0);
+  box-shadow: 3px 3px 0 var(--butter-500);
+
+  &:focus-within {
+    box-shadow:
+      3px 3px 0 var(--butter-500),
+      0 0 0 3px var(--butter-300);
+  }
+
+  &--miss {
+    border-color: var(--danger-fg);
+  }
+
+  > svg {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    color: var(--pine-600);
+  }
+
+  input {
+    flex: 1;
+    width: 0;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--ink-900);
+    font: 500 17px/1 var(--font-sans);
+  }
+
+  kbd {
+    padding: 5px 7px;
+    border: 1px solid var(--line-strong);
+    border-radius: 5px;
+    background: var(--paper-100);
+    color: var(--ink-700);
+    font: 600 11px/1 var(--font-mono);
+
+    // Phones have no F2 key.
+    @include down(md) {
+      display: none;
+    }
+  }
+}
+
+.miss {
+  margin: -6px 0 0;
+  color: var(--danger-fg);
+  font-size: 13px;
+}
+
+// Category chips in one row that scrolls sideways.
+.chips {
+  display: flex;
+  gap: 8px;
+  padding-bottom: 2px;
+  overflow-x: auto;
+
+  .vd-chip {
+    flex: none;
+    min-height: 40px;
+    padding: 0 16px;
+    font-size: 14px;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+  gap: 12px;
+
+  @include down(sm) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+}
+
+.tile-sk {
+  height: 200px;
+  border-radius: 6px 16px 16px 6px;
+}
+
+.empty {
+  margin: 24px 0;
+  color: var(--ink-500);
+  text-align: center;
+}
+
+// ========== Current sale ==========
+.basket {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  min-height: 0;
+  border-inline-start: 1px solid var(--line);
+  background: var(--paper-0);
+
+  // Torn receipt edge along the top.
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    inset-inline: 0;
+    height: 8px;
+    background:
+      linear-gradient(-45deg, transparent 6px, var(--paper-100) 6px) 0 0 / 12px 8px repeat-x,
+      linear-gradient(45deg, transparent 6px, var(--paper-100) 6px) 0 0 / 12px 8px repeat-x;
+    transform: scaleY(-1);
+  }
+
+  @include down(md) {
+    border-inline-start: 0;
+    border-top: 1px solid var(--line);
+  }
+}
+
+.bk-h {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 18px 10px;
+
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    font: 700 18px/1 var(--font-display);
+
+    :host-context(:lang(ar)) & {
+      font-family: 'Alexandria', var(--font-display);
+    }
+  }
+}
+
+// Add customer (dashed) / attached customer (solid green).
+.cust {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  margin: 0 18px 10px;
+  padding: 0 12px;
+  border: 1.5px dashed var(--line-strong);
+  border-radius: var(--radius-md);
+  background: var(--paper-50);
+  color: var(--ink-700);
+  font: inherit;
+  font-size: 14px;
+  text-align: start;
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--pine-600);
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  svg {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    color: var(--pine-600);
+  }
+
+  b {
+    color: var(--ink-900);
+  }
+
+  .muted {
+    color: var(--ink-500);
+  }
+
+  .end {
+    margin-inline-start: auto;
+    color: var(--pine-600);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  &--set {
+    border-style: solid;
+    border-color: var(--pine-300);
+    background: var(--pine-50);
+  }
+}
+
+.lines {
+  min-height: 0;
+  padding: 0 18px;
+  overflow-y: auto;
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+}
+
+.none {
+  margin: 32px 0;
+  color: var(--ink-500);
+  font-size: 14px;
+  text-align: center;
+}
+
+// The whole-sale discount, under the lines.
+.sd {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--line);
+  font-size: 13px;
+
+  > span {
+    flex: 1;
+  }
+
+  b {
+    color: var(--success-fg);
+    font-family: var(--font-mono);
+    unicode-bidi: isolate;
+  }
+
+  .disc {
+    margin-inline-start: 4px;
+    padding: 3px 8px;
+    border-radius: var(--radius-pill);
+    background: var(--success-bg);
+    color: var(--success-fg);
+    font-size: 12px;
+    font-weight: 600;
+  }
+}
+
+// ---------- Totals and actions ----------
+.totals {
+  display: grid;
+  gap: 6px;
+  padding: 14px 18px 18px;
+  border-top: 2px solid var(--pine-600);
+  background: var(--paper-50);
+
+  .r {
+    display: flex;
+    justify-content: space-between;
+    color: var(--ink-700);
+    font-size: 14px;
+
+    span:last-child {
+      direction: ltr;
+      unicode-bidi: isolate;
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+    }
+  }
+
+  .disc span:last-child {
+    color: var(--success-fg);
+  }
+}
+
+.grand {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 4px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--line-strong);
+
+  span {
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  b {
+    font: 700 32px/1 var(--font-display);
+    letter-spacing: -0.02em;
+    unicode-bidi: isolate;
+
+    small {
+      font-size: 14px;
+    }
+  }
+}
+
+.acts {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+
+  .act {
+    min-height: 60px;
+  }
+
+  // Tablets: the Discount button shows only its icon.
+  @include down(lg) {
+    .act__t {
+      display: none;
+    }
+  }
+}
+
+// Charge: big butter button with a hard shadow.
+.pay {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  min-height: 60px;
+  padding: 0 20px;
+  border: 2px solid var(--pine-900);
+  border-radius: var(--radius-md);
+  background: var(--butter-300);
+  box-shadow: 4px 4px 0 var(--pine-900);
+  color: var(--pine-900);
+  font: 700 18px/1 var(--font-sans);
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    transform 120ms var(--ease-out),
+    box-shadow 120ms;
+
+  :host-context([dir='rtl']) & {
+    box-shadow: -4px 4px 0 var(--pine-900);
+  }
+
+  b {
+    font-family: var(--font-mono);
+    unicode-bidi: isolate;
+  }
+
+  &:hover:not([aria-disabled='true']) {
+    box-shadow: 5px 5px 0 var(--pine-900);
+    transform: translate(-1px, -1px);
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 3px;
+  }
+
+  // Stays focusable so screen readers still find it; it just doesn't charge.
+  &[aria-disabled='true'] {
+    box-shadow: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  @include down(lg) {
+    padding: 0 14px;
+    font-size: 16px;
+  }
+}
+
+.block {
+  margin: 4px 0 0;
+  color: var(--danger-fg);
+  font-size: 12px;
+  text-align: end;
+}

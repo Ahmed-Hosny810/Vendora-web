@@ -1,0 +1,120 @@
+{
+  "page": {
+    "title": "الفوترة",
+    "text": "باقة Vendora بتاعتك، حدودها، وفواتيرك.",
+    "loading": "بنحمّل الفوترة…",
+    "errorTitle": "ماقدرناش نحمّل الفوترة",
+    "errorText": "اتأكد من الاتصال وجرّب تاني.",
+    "tryAgain": "جرّب تاني",
+    "dueTitle": "فيه فاتورة محتاجة تتدفع.",
+    "dueText": "الفاتورة {{number}} بمبلغ {{amount}} ج.م مستحقة يوم {{date}}. ادفعها علشان البيع يفضل شغال من غير ما يقف.",
+    "expiredTitle": "اشتراكك خلص.",
+    "expiredText": "ادفع الفاتورة {{number}} ({{amount}} ج.م) علشان ترجّع البيع.",
+    "payNow": "ادفع على Paymob",
+    "currentPlan": "باقتك الحالية",
+    "status": {
+      "active": "شغالة",
+      "pastDue": "مستنية الدفع",
+      "expired": "خلصت"
+    },
+    "perMonth": "ج.م / شهر",
+    "period": "الفترة الحالية",
+    "renewsOn": "بتتجدد يوم",
+    "endedOn": "خلصت يوم",
+    "changePlan": "غيّر الباقة",
+    "usage": "استخدامك",
+    "limits": {
+      "branches": "الفروع",
+      "products": "المنتجات",
+      "cashiers": "الكاشيرية",
+      "variants": "أشكال المنتجات"
+    },
+    "usedOf": "{{used}} من {{limit}}",
+    "usedUnlimited": "{{used}} · من غير حد",
+    "level": {
+      "near": "قربت توصل للحد",
+      "full": "وصلت للحد. غيّر الباقة علشان تزوّد."
+    },
+    "included": "موجودة",
+    "notIncluded": "مش في الباقة دي",
+    "invoices": "الفواتير",
+    "noInvoices": "مفيش فواتير لسه",
+    "noInvoicesText": "فواتيرك من Vendora هتظهر هنا.",
+    "cols": {
+      "number": "الفاتورة",
+      "issued": "اتعملت",
+      "period": "الفترة",
+      "amount": "المبلغ (ج.م)",
+      "status": "الحالة",
+      "actions": "إجراءات"
+    },
+    "invoiceStatus": {
+      "paid": "مدفوعة",
+      "unpaid": "غير مدفوعة",
+      "failed": "الدفع فشل"
+    },
+    "pay": "ادفع",
+    "payInvoice": "ادفع الفاتورة {{number}}",
+    "view": "عرض",
+    "viewInvoice": "اعرض الفاتورة {{number}}"
+  },
+  "change": {
+    "title": "غيّر الباقة",
+    "close": "اقفل",
+    "lead": "انت على باقة {{plan}}. اختار الباقة اللي عايزها.",
+    "failed": "ماقدرناش نغيّر الباقة. جرّب تاني.",
+    "legend": "الباقات",
+    "current": "باقتك الحالية",
+    "blockedTitle": "باقة {{plan}} أصغر من استخدامك دلوقتي:",
+    "over": {
+      "branches": "عندك {{used}} فروع، والباقة بتسمح بـ {{limit}}.",
+      "products": "عندك {{used}} منتج، والباقة بتسمح بـ {{limit}}.",
+      "cashiers": "عندك {{used}} كاشير، والباقة بتسمح بـ {{limit}}."
+    },
+    "when": "السعر الجديد بيبدأ من الفاتورة الجاية.",
+    "cancel": "إلغاء",
+    "pickOther": "اختار باقة تانية",
+    "switch": "حوّل لباقة {{plan}}"
+  },
+  "invoice": {
+    "back": "الفوترة",
+    "print": "اطبع",
+    "pay": "ادفع على Paymob",
+    "loading": "بنحمّل الفاتورة…",
+    "errorTitle": "ماقدرناش نحمّل الفاتورة دي",
+    "errorText": "اتأكد من الاتصال وجرّب تاني.",
+    "tryAgain": "جرّب تاني",
+    "title": "فاتورة",
+    "billedTo": "مطلوبة من",
+    "issued": "تاريخ الإصدار",
+    "paidOn": "اتدفعت يوم",
+    "paidWith": "اتدفعت بـ",
+    "due": "آخر ميعاد",
+    "status": "الحالة",
+    "statuses": {
+      "paid": "مدفوعة",
+      "unpaid": "غير مدفوعة",
+      "failed": "الدفع فشل"
+    },
+    "description": "البيان",
+    "amount": "المبلغ (ج.م)",
+    "line": "باقة Vendora {{plan}}، شهري",
+    "totalPaid": "إجمالي المدفوع",
+    "totalDue": "المبلغ المستحق",
+    "egp": "ج.م",
+    "note": "الدفع بيتم عن طريق Paymob. Vendora مابتشوفش ولا بتحفظ بيانات الكارت.",
+    "stamp": "مدفوعة",
+    "stampDue": "غير مدفوعة"
+  },
+  "result": {
+    "checkingTitle": "بنتأكد من الدفع…",
+    "checkingText": "Paymob بيأكّد الدفع. ده بياخد ثواني عادةً؛ خلّي الصفحة مفتوحة.",
+    "paidTitle": "الدفع وصل",
+    "paidText": "الفاتورة {{number}} ({{amount}} ج.م) اتدفعت. باقتك شغالة لحد {{date}}.",
+    "failedTitle": "الدفع ماتمّش",
+    "failedText": "مفيش فلوس اتخصمت. جرّب تاني، أو استخدم كارت تاني.",
+    "tryAgain": "جرّب تاني على Paymob",
+    "backToBilling": "ارجع للفوترة",
+    "viewInvoice": "اعرض الفاتورة"
+  }
+}

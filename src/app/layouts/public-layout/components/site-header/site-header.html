@@ -1,0 +1,81 @@
+<header class="hdr" *transloco="let t">
+  <div class="vd-container hdr__in">
+    <a class="hdr__brand" routerLink="/" [attr.aria-label]="t('site.homeLabel')">
+      <vd-wordmark intro />
+    </a>
+
+    <nav class="hdr__nav" [attr.aria-label]="t('site.mainNav')">
+      @for (link of links; track link.fragment) {
+        <a routerLink="/" [fragment]="link.fragment">{{ t(link.label) }}</a>
+      }
+    </nav>
+
+    <div class="hdr__actions">
+      <!-- The label is in the OTHER language, so it gets that lang attribute. -->
+      <button
+        class="hdr__lang"
+        type="button"
+        [attr.aria-label]="t('site.switchLanguage')"
+        (click)="pickLanguage()"
+      >
+        <svg lucideGlobe aria-hidden="true"></svg>
+        <span [attr.lang]="otherLang()">{{ t('language.' + otherLang()) }}</span>
+      </button>
+
+      <a class="hdr__signin" routerLink="/sign-in">{{ t('site.signIn') }}</a>
+      <a class="hdr__start" vdButton="primary" routerLink="/sign-up">{{ t('site.getStarted') }}</a>
+
+      <button
+        #menuButton
+        class="hdr__menu"
+        type="button"
+        aria-controls="site-menu"
+        [attr.aria-expanded]="menuOpen()"
+        [attr.aria-label]="t(menuOpen() ? 'site.closeMenu' : 'site.openMenu')"
+        (click)="toggleMenu()"
+      >
+        @if (menuOpen()) {
+          <svg lucideX aria-hidden="true"></svg>
+        } @else {
+          <svg lucideMenu aria-hidden="true"></svg>
+        }
+      </button>
+    </div>
+  </div>
+
+  <!-- Shows how far down the page you are (only in browsers that support it). -->
+  <span class="hdr__progress" aria-hidden="true"></span>
+
+  <!-- Mobile menu: only exists in the page while it's open. -->
+  @if (menuOpen()) {
+    <div class="sheet" id="site-menu">
+      <nav [attr.aria-label]="t('site.mainNav')">
+        @for (link of links; track link.fragment) {
+          <a class="sheet__link" routerLink="/" [fragment]="link.fragment" (click)="closeMenu()">
+            {{ t(link.label) }}
+            <svg lucideArrowRight class="vd-flip-rtl" aria-hidden="true"></svg>
+          </a>
+        }
+      </nav>
+      <div class="sheet__foot">
+        <a vdButton="primary" size="lg" block routerLink="/sign-up" (click)="closeMenu()">
+          {{ t('site.getStarted') }}
+        </a>
+        <div class="sheet__row">
+          <a class="hdr__signin" routerLink="/sign-in" (click)="closeMenu()">{{
+            t('site.signIn')
+          }}</a>
+          <button
+            class="hdr__lang"
+            type="button"
+            [attr.aria-label]="t('site.switchLanguage')"
+            (click)="pickLanguage()"
+          >
+            <svg lucideGlobe aria-hidden="true"></svg>
+            <span [attr.lang]="otherLang()">{{ t('language.' + otherLang()) }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</header>

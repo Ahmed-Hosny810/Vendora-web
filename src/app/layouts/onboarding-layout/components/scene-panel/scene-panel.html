@@ -1,0 +1,45 @@
+<ng-container *transloco="let t; read: 'onboarding'">
+  <aside class="scene" [attr.aria-label]="t('shop.preview')">
+    @for (n of [1, 2]; track n) {
+      <svg class="floaty floaty--{{ n }}" viewBox="0 0 28 22" aria-hidden="true">
+        <path class="floaty__body" [attr.d]="tagPath" />
+        <circle class="floaty__hole" cx="9.5" cy="11" r="2.2" />
+      </svg>
+    }
+
+    @let d = details();
+    <app-shop-front
+      [nameEn]="d.nameEn"
+      [nameAr]="d.nameAr"
+      [type]="d.type"
+      [trackInventory]="d.inventory === 'track'"
+      [mood]="scene().mood"
+      [door]="scene().door"
+      [live]="scene().live"
+    />
+
+    @if (scene().confetti) {
+      <div class="confetti" aria-hidden="true">
+        @for (c of confetti; track $index) {
+          <svg
+            viewBox="0 0 28 22"
+            [style.left.%]="c[0]"
+            [style.animation-delay.s]="c[1]"
+            [style.width.px]="c[2]"
+          >
+            <path class="confetti__body" [class.alt]="$odd" [attr.d]="tagPath" />
+            <circle class="confetti__hole" cx="9.5" cy="11" r="2.2" />
+          </svg>
+        }
+      </div>
+    }
+
+    @let k = 'captions.' + scene().caption;
+    <p class="cap">
+      <b>{{
+        t(k + '.title', { name: d.nameEn.trim(), type: d.type ? t('types.' + d.type) : '' })
+      }}</b>
+      <span>{{ t(k + '.text') }}</span>
+    </p>
+  </aside>
+</ng-container>

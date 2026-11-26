@@ -1,0 +1,129 @@
+<ng-container *transloco="let t; read: 'overview'">
+  @if (session.isManager()) {
+    <!-- ================= Owner / admin ================= -->
+    <div class="ph">
+      <div class="ph__t">
+        <h1>
+          {{
+            anyDone() ? t('progress', { name: firstName() }) : t('welcome', { name: firstName() })
+          }}
+        </h1>
+        <p>{{ anyDone() ? t('progressText') : t('welcomeText') }}</p>
+      </div>
+      <a vdButton routerLink="/pos" class="ph__btn">
+        <svg lucideMonitor aria-hidden="true"></svg>{{ t('openPos') }}
+      </a>
+    </div>
+
+    <div class="hero">
+      @if (!setupComplete()) {
+        <app-setup-checklist [done]="session.setupDone()" [justDone]="justDone()" />
+      }
+      <div class="side">
+        <section class="card" aria-labelledby="plan-title">
+          <h2 id="plan-title">{{ t('plan.title') }}</h2>
+          @if (planName(); as plan) {
+            <span class="plan-name">{{ plan }}</span>
+          }
+          <p>{{ t('plan.text') }}</p>
+          <a class="link" routerLink="/billing">{{ t('plan.billing') }}</a>
+        </section>
+        <section class="card" aria-labelledby="help-title">
+          <h2 id="help-title">{{ t('help.title') }}</h2>
+          <p>{{ t('help.text') }}</p>
+        </section>
+      </div>
+    </div>
+
+    <div class="kpis">
+      <app-kpi-card
+        [label]="t('kpi.salesToday')"
+        [value]="salesToday()"
+        [hint]="t('kpi.salesTodayEmpty')"
+      />
+      <app-kpi-card
+        [label]="t('kpi.openShifts')"
+        [value]="openShifts()"
+        [hint]="t('kpi.openShiftsEmpty')"
+      />
+      <app-kpi-card
+        [label]="t('kpi.lowStock')"
+        [value]="lowStock()"
+        [hint]="t('kpi.lowStockEmpty')"
+      />
+    </div>
+  } @else {
+    <!-- ================= Cashier ================= -->
+    <div class="ph">
+      <div class="ph__t">
+        <h1>{{ t('cashier.' + dayPart, { name: firstName() }) }}</h1>
+        <p>{{ t('cashier.text') }}</p>
+      </div>
+    </div>
+
+    <div class="hero">
+      <section class="card card--ready" aria-labelledby="ready-title">
+        <h2 id="ready-title">{{ t('cashier.ready') }}</h2>
+        <p>
+          @if (terminalName() && session.branch()) {
+            {{
+              t('cashier.openShift', { terminal: terminalName(), branch: session.branch()?.name })
+            }}
+          } @else {
+            {{ t('cashier.openShiftPlain') }}
+          }
+        </p>
+        <div>
+          <a vdButton="primary" routerLink="/pos">
+            <svg lucideMonitor aria-hidden="true"></svg>{{ t('openPos') }}
+          </a>
+        </div>
+      </section>
+      <section class="card" aria-labelledby="last-title">
+        <h2 id="last-title">{{ t('cashier.lastShift') }}</h2>
+        @if (lastShift(); as s) {
+          <dl class="last">
+            <div>
+              <dt>{{ t('cashier.when') }}</dt>
+              <dd>
+                <bdi>{{ s.terminalName }}</bdi> · <bdi>{{ dateTime(s.openedAt, lang()) }}</bdi>
+              </dd>
+            </div>
+            <div>
+              <dt>{{ t('cashier.sales') }}</dt>
+              <dd>
+                {{ s.salesCount }} · <bdi dir="ltr">{{ cash(s.netSales) }}</bdi>
+              </dd>
+            </div>
+            <div>
+              <dt>{{ t('cashier.drawer') }}</dt>
+              <dd>
+                @if (lastDiff(); as d) {
+                  <span
+                    class="vd-badge vd-badge--pill"
+                    [class.vd-badge--success]="d.kind === 'balanced'"
+                    [class.vd-badge--danger]="d.kind === 'shortage'"
+                    [class.vd-badge--warning]="d.kind === 'overage'"
+                    >{{ t('cashier.diff.' + d.kind) }}
+                    @if (d.kind !== 'balanced') {
+                      <bdi dir="ltr">{{ d.signed }}</bdi>
+                    }
+                  </span>
+                } @else {
+                  <span class="vd-badge vd-badge--pill vd-badge--info">{{
+                    t('cashier.stillOpen')
+                  }}</span>
+                }
+              </dd>
+            </div>
+          </dl>
+          <div>
+            <a vdButton size="sm" [routerLink]="['/shifts', s.id]">{{ t('cashier.viewShift') }}</a>
+          </div>
+        } @else {
+          <p>{{ t('cashier.noShifts') }}</p>
+        }
+      </section>
+    </div>
+  }
+</ng-container>

@@ -1,0 +1,91 @@
+@use 'abstracts' as *;
+@use '../../../shared/styles/app-forms' as forms;
+
+:host {
+  display: contents;
+}
+
+// One narrow column: a profile form doesn't need the full width.
+.col {
+  @include forms.column;
+  @include forms.field-bits;
+
+  max-width: 760px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.two {
+  @include forms.two;
+}
+
+.foot {
+  @include forms.foot;
+}
+
+// Initials, name and email, with the role on the end.
+.who {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--paper-0);
+
+  &__av {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border: 2px solid var(--pine-600);
+    border-radius: 50%;
+    background: var(--butter-300);
+    color: var(--pine-900);
+    font: 700 17px/1 var(--font-sans);
+  }
+
+  &__t {
+    display: grid;
+    flex: 1;
+    gap: 3px;
+    min-width: 0;
+
+    b {
+      font: 700 18px/1.2 var(--font-display);
+      overflow-wrap: anywhere;
+    }
+  }
+
+  &__mail {
+    color: var(--ink-500);
+    font-size: 14px;
+    overflow-wrap: anywhere;
+  }
+}
+
+// Read-only email: a lock inside the box, greyed background.
+.locked {
+  position: relative;
+
+  svg {
+    position: absolute;
+    top: 50%;
+    inset-inline-start: 12px;
+    width: 16px;
+    height: 16px;
+    color: var(--ink-500);
+    transform: translateY(-50%);
+  }
+
+  .vd-input {
+    padding-inline-start: 36px;
+    text-align: left; // an email reads left to right in both languages
+    background: var(--paper-100);
+    color: var(--ink-700);
+    cursor: default;
+  }
+}

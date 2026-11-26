@@ -1,0 +1,84 @@
+:host {
+  display: grid;
+  justify-items: center;
+  padding-top: 24px;
+}
+
+// One centred card; its icon tile takes the state's colour.
+.card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: 100%;
+  max-width: 520px;
+  padding: 40px 28px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--paper-0);
+  text-align: center;
+
+  h1 {
+    margin: 0;
+    font: 700 26px/1.2 var(--font-display);
+
+    :host-context(:lang(ar)) & {
+      font-family: 'Alexandria', var(--font-display);
+    }
+  }
+
+  p {
+    max-width: 400px;
+    margin: 0;
+    color: var(--ink-700);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+}
+
+.ic {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+  background: var(--paper-100);
+  color: var(--pine-600);
+
+  svg {
+    width: 34px;
+    height: 34px;
+  }
+
+  .is-paid & {
+    background: var(--pine-600);
+    color: var(--butter-300);
+    box-shadow: 5px 5px 0 var(--butter-500);
+  }
+
+  .is-failed & {
+    background: var(--danger-bg);
+    color: var(--danger-fg);
+  }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation-duration: 3s;
+  }
+}
+
+@keyframes spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+.acts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 6px;
+}

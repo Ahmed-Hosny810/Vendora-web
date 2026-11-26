@@ -1,0 +1,117 @@
+// Shared bits for the onboarding pages.
+//   @use '../styles/onb';
+//   :host { @include onb.page; }
+//   .actions { @include onb.actions; }
+
+// A page lays its blocks straight into the layout's .pane grid,
+// and they fade up one after another.
+@mixin page {
+  display: contents;
+
+  > * {
+    animation: onb-fade-up 500ms var(--ease-out) both;
+  }
+
+  @for $i from 2 through 6 {
+    > :nth-child(#{$i}) {
+      animation-delay: #{($i - 1) * 60}ms;
+    }
+  }
+
+  @keyframes onb-fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    > * {
+      animation: none;
+    }
+  }
+}
+
+// Back on the start, main button on the end. Phones: stacked, main on top.
+@mixin actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding-top: 4px;
+
+  .grow {
+    flex: 1;
+  }
+
+  .vd-btn--lg {
+    min-width: 180px;
+  }
+
+  @media (max-width: 640px) {
+    flex-direction: column-reverse;
+    align-items: stretch;
+
+    .grow {
+      display: none;
+    }
+
+    .vd-btn--lg {
+      width: 100%;
+    }
+  }
+}
+
+// Onboarding's main buttons carry the butter offset shadow.
+@mixin primary-shadow {
+  .vd-btn--primary {
+    box-shadow: 3px 3px 0 0 var(--butter-500);
+
+    &:hover:not([aria-disabled='true'], :disabled) {
+      transform: translate(-1px, -1px);
+      box-shadow: 4px 4px 0 0 var(--butter-500);
+    }
+  }
+
+  // Busy but the label stays ("Creating your business…"): the button's
+  // spinner moves in front of the text instead of covering it.
+  .vd-btn--primary.keep-label[aria-busy='true'] {
+    color: var(--butter-300);
+    opacity: 0.75;
+
+    &::after {
+      position: static;
+      order: -1;
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      border-color: rgb(255 239 179 / 30%);
+      border-top-color: var(--butter-300);
+    }
+  }
+}
+
+// Paper card with a pine edge and butter shadow (review, invoice).
+@mixin paper-card {
+  overflow: hidden;
+  border: 1.5px solid var(--pine-600);
+  border-radius: var(--radius-lg);
+  background: var(--paper-0);
+  box-shadow: 5px 5px 0 0 var(--butter-500);
+}
+
+// Small grey line under the buttons ("This only happens once…").
+@mixin calm {
+  margin: 0;
+  color: var(--ink-500);
+  font-size: 13px;
+  line-height: 19px;
+}
+
+@mixin display-font {
+  font-family: var(--font-display);
+
+  :host-context(:lang(ar)) & {
+    font-family: 'Alexandria', var(--font-display);
+  }
+}

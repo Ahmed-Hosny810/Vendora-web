@@ -1,0 +1,93 @@
+// Shared bits of the shift pages. Use with: @use '../shifts' as shifts;
+
+// "Youssef Samir · Signed in as cashier" card with a "You" badge.
+@mixin who {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--paper-0);
+
+  .av {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border: 1.5px solid var(--pine-600);
+    border-radius: 50%;
+    background: var(--butter-300);
+    color: var(--pine-900);
+    font: 700 12px/1 var(--font-sans);
+  }
+
+  &__t {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+
+    b {
+      font-size: 15px;
+    }
+
+    span {
+      color: var(--ink-500);
+      font-size: 12px;
+    }
+  }
+
+  .vd-badge {
+    margin-inline-start: auto;
+  }
+}
+
+// Big money box: "1,000.00   EGP".
+@mixin cash-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 64px;
+  padding: 0 16px;
+  border: 2px solid var(--pine-600);
+  border-radius: var(--radius-md);
+  background: var(--paper-0);
+
+  &:focus-within {
+    box-shadow: 0 0 0 3px var(--butter-300);
+  }
+
+  &:has([aria-invalid='true']) {
+    border-color: var(--danger-fg);
+  }
+
+  // Without width: 0 a number field keeps its built-in width and pushes the page wider on phones.
+  min-width: 0;
+
+  input {
+    flex: 1;
+    width: 0;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--ink-900);
+    font: 700 28px/1 var(--font-mono);
+    // Arabic pages: the number still starts on the left, like in a calculator.
+    text-align: start;
+    // No up/down arrows: cashiers type the amount.
+    appearance: textfield;
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      margin: 0;
+      appearance: none;
+    }
+  }
+
+  span {
+    color: var(--ink-500);
+    font: 700 14px/1 var(--font-mono);
+  }
+}

@@ -1,0 +1,179 @@
+@use 'abstracts' as *;
+
+:host {
+  display: contents;
+}
+
+// Icon tile, name, code and status; Edit / Turn off on the end.
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+
+  &__t {
+    display: grid;
+    flex: 1;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  h1 {
+    margin: 0;
+    font: 700 30px/1.1 var(--font-display);
+    letter-spacing: -0.02em;
+    overflow-wrap: anywhere;
+
+    :host-context(:lang(ar)) & {
+      font-family: 'Alexandria', var(--font-display);
+      letter-spacing: 0;
+    }
+
+    @include down(md) {
+      font-size: 24px;
+    }
+  }
+
+  p {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+  }
+}
+
+// Same tile as the list.
+.ic {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border: 1.5px solid var(--pine-600);
+  border-radius: 14px;
+  background: var(--pine-50);
+  color: var(--pine-600);
+
+  svg {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+.code {
+  padding: 3px 8px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-sm);
+  color: var(--ink-700);
+  font: 500 12px/1.2 var(--font-mono);
+  letter-spacing: 0.04em;
+}
+
+.acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  @include down(md) {
+    width: 100%;
+
+    .vd-btn {
+      flex: 1;
+      justify-content: center;
+    }
+  }
+}
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+
+  @include down(lg) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+// Settings on the start (narrow), recent payments on the end.
+.grid {
+  display: grid;
+  grid-template-columns: 340px minmax(0, 1fr);
+  align-items: start;
+  gap: 16px;
+
+  @include down(lg) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--paper-0);
+
+  &__h {
+    margin: 0;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--line);
+    font: 700 16px/1.2 var(--font-display);
+
+    :host-context(:lang(ar)) & {
+      font-family: 'Alexandria', var(--font-display);
+    }
+  }
+}
+
+.dl {
+  display: grid;
+  margin: 0;
+  padding: 8px 20px;
+  font-size: 14px;
+
+  div {
+    display: grid;
+    gap: 2px;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--line);
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  dt {
+    color: var(--ink-500);
+    font-size: 13px;
+  }
+
+  dd {
+    margin: 0;
+    font-weight: 600;
+  }
+}
+
+.note {
+  margin: 0;
+  padding: 14px 20px;
+  border-top: 1px solid var(--line);
+  background: var(--paper-50);
+  color: var(--ink-700);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.link {
+  color: var(--pine-700);
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

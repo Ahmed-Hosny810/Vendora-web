@@ -1,0 +1,27 @@
+<div class="printer">
+  <div class="row">
+    <app-status-leds [state]="led()" />
+    <span class="title" role="status">{{ title() }}</span>
+    <span class="brand" aria-hidden="true">vendora</span>
+  </div>
+  <div class="slot" aria-hidden="true"></div>
+</div>
+
+<div class="slip">
+  <div class="paper" [class.thud]="stamp()">
+    <ng-content />
+  </div>
+  <div class="tear" aria-hidden="true"></div>
+
+  @if (stamp(); as stamp) {
+    <div
+      class="stamp"
+      role="img"
+      [class.void]="stamp.tone === 'void'"
+      [class.corner]="stamp.placement === 'corner'"
+      [attr.aria-label]="stamp.word + ': ' + stamp.sub"
+    >
+      {{ stamp.word }}<small>{{ stamp.sub }}</small>
+    </div>
+  }
+</div>

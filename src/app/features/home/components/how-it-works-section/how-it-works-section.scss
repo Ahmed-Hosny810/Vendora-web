@@ -1,0 +1,178 @@
+@use 'abstracts' as *;
+@use '../../styles/home';
+
+.sec {
+  @include home.section-space;
+  background: var(--paper-100);
+}
+
+.head {
+  @include home.reveal;
+  margin-block-end: 36px;
+
+  @include up(md) {
+    margin-block-end: 56px;
+  }
+}
+
+// Phone: one column, a dashed line runs down beside the numbers.
+// Tablet: 2 × 2. Desktop: 4 in a row, joined by a dashed line.
+.steps {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  @include up(md) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px 24px;
+  }
+
+  @include up(lg) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
+
+    // The line behind the four numbers.
+    &::before {
+      content: '';
+      position: absolute;
+      top: 31px;
+      inset-inline: 32px;
+      border-block-start: 2px dashed var(--line-strong);
+      transform-origin: left center;
+    }
+
+    :host-context([dir='rtl']) &::before {
+      transform-origin: right center;
+    }
+  }
+}
+
+.step {
+  @include home.reveal;
+  position: relative;
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  column-gap: 16px;
+  row-gap: 14px;
+  align-content: start;
+  padding-block-end: 32px;
+
+  // Phone: number on the side, everything else in column 2.
+  > :not(.step__n) {
+    grid-column: 2;
+  }
+
+  // Phone: dashed line from this number down to the next.
+  &::before {
+    content: '';
+    position: absolute;
+    top: 52px;
+    bottom: 0;
+    inset-inline-start: 25px;
+    border-inline-start: 2px dashed var(--line-strong);
+  }
+
+  &:last-child::before {
+    display: none;
+  }
+
+  @include up(md) {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 0;
+
+    > :not(.step__n) {
+      grid-column: auto;
+    }
+
+    &::before {
+      display: none;
+    }
+  }
+
+  h3 {
+    margin: 0;
+    font: 600 22px/28px var(--font-display);
+    letter-spacing: -0.015em;
+  }
+
+  p {
+    @include home.arabic-body;
+    margin: 0;
+    color: var(--ink-700);
+    font-size: 15.5px;
+    line-height: 25px;
+  }
+}
+
+// Big round number with a hard shadow; each step has its own colour.
+.step__n {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-row: 1 / span 3;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border: 1.5px solid var(--ink-900);
+  border-radius: 50%;
+  background: var(--paper-0);
+  box-shadow: 3px 3px 0 var(--ink-900);
+  font: 700 20px/1 var(--font-display);
+  transition: transform var(--duration-base) var(--ease-pop);
+
+  @include up(md) {
+    grid-row: auto;
+    width: 64px;
+    height: 64px;
+    font-size: 24px;
+  }
+
+  .step:nth-child(1) & {
+    background: var(--butter-300);
+  }
+
+  .step:nth-child(2) & {
+    background: var(--pine-100);
+  }
+
+  .step:nth-child(3) & {
+    background: var(--pine-50);
+  }
+
+  .step:nth-child(4) & {
+    background: var(--butter-100);
+  }
+
+  .step:hover & {
+    transform: rotate(-8deg) scale(1.06);
+  }
+}
+
+.chip {
+  @include home.proof-chip;
+  justify-self: start;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    // The dashed line draws itself as the steps scroll in.
+    .steps::before {
+      animation: grow-x linear both;
+      animation-timeline: view();
+      animation-range: entry 30% cover 45%;
+    }
+  }
+}
+
+@keyframes grow-x {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+:host-context(:lang(ar)) .step h3 {
+  letter-spacing: 0;
+}

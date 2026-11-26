@@ -1,0 +1,24 @@
+:host {
+  display: block;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.muted {
+  color: var(--ink-500);
+}
+
+// A shift that was short: red edge on the start side.
+.short td:first-child {
+  box-shadow: inset 4px 0 0 var(--danger-fg);
+
+  :host-context([dir='rtl']) & {
+    box-shadow: inset -4px 0 0 var(--danger-fg);
+  }
+}
+
+.vd-badge bdi {
+  font-family: var(--font-mono);
+}

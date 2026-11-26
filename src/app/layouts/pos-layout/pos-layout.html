@@ -1,0 +1,65 @@
+<div class="pos" *transloco="let t; read: 'pos.bar'">
+  <header class="bar" [class.bar--closed]="closed()" [class.vd-inverse]="!closed()">
+    <a class="logo" routerLink="/pos" [attr.aria-label]="t('home')"><vd-wordmark /></a>
+
+    <div class="ctx">
+      @if (session.branch(); as b) {
+        <span class="pill"
+          ><svg lucideStore aria-hidden="true"></svg><span class="vd-sr">{{ t('branch') }}</span
+          >{{ b.name }}</span
+        >
+      }
+      @if (shell.terminalName(); as name) {
+        <span class="pill"
+          ><svg lucideMonitor aria-hidden="true"></svg><span class="vd-sr">{{ t('terminal') }}</span
+          >{{ name }}</span
+        >
+      }
+      @if (shell.shift(); as s) {
+        @if (s.closed) {
+          <span class="pill"><svg lucideLock aria-hidden="true"></svg>{{ t('shiftClosed') }}</span>
+        } @else {
+          <span class="pill pill--shift"
+            ><span class="dot" aria-hidden="true"></span
+            >{{ t('shiftOpen', { time: time(s.openedAt) }) }}</span
+          >
+        }
+      }
+    </div>
+
+    <span class="held">
+      <button
+        vdIconButton
+        type="button"
+        class="ibtn"
+        [label]="shell.heldCount() ? t('heldCount', { count: shell.heldCount() }) : t('held')"
+        (click)="openHeld()"
+      >
+        <svg lucideClock></svg>
+      </button>
+      @if (shell.heldCount()) {
+        <span class="held__n" aria-hidden="true">{{ shell.heldCount() }}</span>
+      }
+    </span>
+    <button vdIconButton type="button" class="ibtn" [label]="t('findSale')" (click)="findSale()">
+      <svg lucideSearch></svg>
+    </button>
+    <a vdIconButton class="ibtn" routerLink="/pos/shift/close" [label]="t('currentShift')">
+      <svg lucideArchive></svg>
+    </a>
+
+    @if (session.user(); as u) {
+      <span class="who">
+        <span class="av" aria-hidden="true">{{ initials() }}</span>
+        <span class="who__t">
+          <b>{{ u.name }}</b>
+          <small>{{ t('roles.' + u.role) }}</small>
+        </span>
+      </span>
+    }
+  </header>
+
+  <main class="body">
+    <router-outlet />
+  </main>
+</div>

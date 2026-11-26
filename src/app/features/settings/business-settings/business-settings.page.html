@@ -1,0 +1,207 @@
+<ng-container *transloco="let t; read: 'settings.business'">
+  @switch (loadStatus()) {
+    @case ('loading') {
+      <div class="grid" aria-busy="true">
+        <div class="col">
+          <span class="vd-skeleton" style="height: 260px"></span>
+          <span class="vd-skeleton" style="height: 160px"></span>
+        </div>
+        <span class="vd-skeleton" style="height: 300px"></span>
+      </div>
+      <span class="vd-sr" role="status">{{ t('loading') }}</span>
+    }
+    @case ('error') {
+      <div class="vd-tablewrap">
+        <app-load-error
+          [title]="t('errorTitle')"
+          [text]="t('errorText')"
+          [retryLabel]="t('tryAgain')"
+          (retry)="load()"
+        />
+      </div>
+    }
+    @default {
+      <div class="grid">
+        <form class="col" novalidate (submit)="onSubmit($event)">
+          @if (status() === 'failed') {
+            <div class="vd-banner vd-banner--danger" role="alert">
+              <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+              <span class="vd-banner__body">{{ t('failed') }}</span>
+            </div>
+          }
+
+          <fieldset class="col" [disabled]="saving()">
+            <legend class="vd-sr">{{ t('legend') }}</legend>
+
+            <!-- 1 · Business -->
+            <app-form-section [n]="1" [title]="t('sections.business')">
+              <div class="two">
+                <div class="vd-field">
+                  <div class="vd-field__top">
+                    <label class="vd-field__label" for="bs-name-en">
+                      {{ t('nameEn') }}<span class="req" aria-hidden="true">*</span>
+                    </label>
+                    <span class="vd-field__counter" aria-hidden="true"
+                      >{{ model().nameEn.length }}/{{ limits.name }}</span
+                    >
+                  </div>
+                  <input
+                    id="bs-name-en"
+                    class="vd-input"
+                    type="text"
+                    lang="en"
+                    dir="ltr"
+                    [formField]="businessForm.nameEn"
+                    [attr.aria-invalid]="nameEnError() ? true : null"
+                    [attr.aria-describedby]="nameEnError() ? 'bs-name-en-error' : null"
+                  />
+                  @if (nameEnError()) {
+                    <p id="bs-name-en-error" class="vd-field__error">
+                      <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+                      >{{ t('errors.nameEn') }}
+                    </p>
+                  }
+                </div>
+
+                <div class="vd-field">
+                  <div class="vd-field__top">
+                    <label class="vd-field__label" for="bs-name-ar">
+                      {{ t('nameAr') }}<span class="opt">{{ t('optional') }}</span>
+                    </label>
+                    <span class="vd-field__counter" aria-hidden="true"
+                      >{{ model().nameAr.length }}/{{ limits.name }}</span
+                    >
+                  </div>
+                  <input
+                    id="bs-name-ar"
+                    class="vd-input arabic"
+                    type="text"
+                    lang="ar"
+                    dir="rtl"
+                    [formField]="businessForm.nameAr"
+                  />
+                </div>
+              </div>
+
+              <div class="vd-field">
+                <label class="vd-field__label" for="bs-type">
+                  {{ t('type') }}<span class="req" aria-hidden="true">*</span>
+                </label>
+                <select
+                  id="bs-type"
+                  class="vd-input"
+                  [formField]="businessForm.type"
+                  [attr.aria-invalid]="typeError() ? true : null"
+                  [attr.aria-describedby]="typeError() ? 'bs-type-error' : 'bs-type-hint'"
+                >
+                  <option value="" disabled>{{ t('typePlaceholder') }}</option>
+                  @for (type of types; track type) {
+                    <option [value]="type">{{ t('types.' + type) }}</option>
+                  }
+                </select>
+                @if (typeError()) {
+                  <p id="bs-type-error" class="vd-field__error">
+                    <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+                    >{{ t('errors.type') }}
+                  </p>
+                } @else {
+                  <p id="bs-type-hint" class="vd-field__hint">{{ t('typeHint') }}</p>
+                }
+              </div>
+            </app-form-section>
+
+            <!-- 2 · Receipt -->
+            <app-form-section [n]="2" [title]="t('sections.receipt')">
+              <div class="vd-field">
+                <div class="vd-field__top">
+                  <label class="vd-field__label" for="bs-footer">
+                    {{ t('footer') }}<span class="opt">{{ t('optional') }}</span>
+                  </label>
+                  <span class="vd-field__counter" aria-hidden="true"
+                    >{{ model().receiptFooter.length }}/{{ limits.receiptFooter }}</span
+                  >
+                </div>
+                <textarea
+                  id="bs-footer"
+                  class="vd-input"
+                  rows="3"
+                  dir="auto"
+                  aria-describedby="bs-footer-hint"
+                  [placeholder]="t('footerPlaceholder')"
+                  [formField]="businessForm.receiptFooter"
+                ></textarea>
+                <p id="bs-footer-hint" class="vd-field__hint">{{ t('footerHint') }}</p>
+              </div>
+            </app-form-section>
+
+            <!-- 3 · Fixed facts (read-only) -->
+            @if (facts(); as f) {
+              <app-form-section
+                [n]="3"
+                [title]="t('sections.fixed')"
+                [note]="t('fixedNote')"
+                advanced
+              >
+                <dl class="facts">
+                  <div>
+                    <dt>{{ t('inventory') }}</dt>
+                    <dd>
+                      <svg lucideLock aria-hidden="true"></svg
+                      >{{ t(f.inventory === 'track' ? 'tracked' : 'notTracked') }}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>{{ t('currency') }}</dt>
+                    <dd><svg lucideLock aria-hidden="true"></svg>{{ f.currency }}</dd>
+                  </div>
+                  <div>
+                    <dt>{{ t('created') }}</dt>
+                    <dd>
+                      <svg lucideLock aria-hidden="true"></svg>{{ date(f.createdAt, lang()) }}
+                    </dd>
+                  </div>
+                </dl>
+              </app-form-section>
+            }
+          </fieldset>
+
+          <div class="foot">
+            <span class="grow"
+              ><span class="req" aria-hidden="true">*</span> {{ t('required') }}</span
+            >
+            <button vdButton type="button" [disabled]="!changed() || saving()" (click)="discard()">
+              <svg lucideRotateCcw aria-hidden="true"></svg>{{ t('discard') }}
+            </button>
+            <button vdButton="primary" type="submit" [loading]="saving()">
+              <svg lucideCheck aria-hidden="true"></svg>{{ t('save') }}
+            </button>
+          </div>
+        </form>
+
+        <aside class="preview">
+          <p class="preview__cap">{{ t('preview') }}</p>
+          <div class="slip" aria-hidden="true">
+            <b class="slip__name" dir="ltr">{{ model().nameEn || t('namePlaceholder') }}</b>
+            @if (model().nameAr) {
+              <span class="slip__ar arabic" dir="rtl">{{ model().nameAr }}</span>
+            }
+            <hr />
+            <span class="slip__row"><i style="width: 58%"></i><i style="width: 18%"></i></span>
+            <span class="slip__row"><i style="width: 44%"></i><i style="width: 18%"></i></span>
+            <span class="slip__row slip__row--total"
+              ><span>{{ t('total') }}</span
+              ><bdi dir="ltr">375.00</bdi></span
+            >
+            <hr />
+            @if (model().receiptFooter.trim()) {
+              <p class="slip__foot" dir="auto">{{ model().receiptFooter }}</p>
+            } @else {
+              <p class="slip__foot slip__foot--empty">{{ t('footerEmpty') }}</p>
+            }
+          </div>
+          <p class="preview__note">{{ t('previewNote') }}</p>
+        </aside>
+      </div>
+    }
+  }
+</ng-container>

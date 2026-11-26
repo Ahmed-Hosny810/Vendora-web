@@ -1,0 +1,74 @@
+<ng-container *transloco="let t; read: 'home'">
+  <div class="bar">
+    <span class="title">{{ t('showcase.team.title') }}</span>
+    <span class="spacer"></span>
+    <span class="invite"><svg lucideUserPlus></svg>{{ t('showcase.team.invite') }}</span>
+  </div>
+
+  <div class="body">
+    <div class="branches">
+      @for (branch of branches; track branch.key) {
+        <div class="branch" [class.selected]="branch.selected">
+          <div class="branch__head">
+            <b>{{ t('branches.' + branch.key) }}</b>
+            <span class="vd-badge vd-badge--success vd-badge--dot">{{
+              t('showcase.team.open')
+            }}</span>
+          </div>
+          <div class="terminals">
+            @for (n of counters(branch.counters); track n) {
+              <span class="terminal"
+                ><svg lucideMonitor></svg>{{ t('showcase.team.counter', { n }) }}</span
+              >
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="table">
+      <table>
+        <thead>
+          <tr>
+            <th>{{ t('showcase.team.employee') }}</th>
+            <th>{{ t('showcase.team.role') }}</th>
+            <th class="hide-phone">{{ t('showcase.team.access') }}</th>
+            <th>{{ t('showcase.team.status') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (person of people; track person.initials) {
+            <tr>
+              <td>
+                <div class="who">
+                  <span class="av" [style.background]="person.color">{{ person.initials }}</span>
+                  <bdi class="strong">{{ person.name }}</bdi>
+                </div>
+              </td>
+              <td>
+                <span class="vd-badge vd-badge--brand">{{ t('roles.' + person.role) }}</span>
+              </td>
+              <td class="hide-phone">
+                @for (place of person.access; track place; let last = $last) {
+                  {{ place === 'all' ? t('showcase.team.allBranches') : t('branches.' + place)
+                  }}{{ last ? '' : t('listSeparator') }}
+                }
+              </td>
+              <td>
+                @if (person.invited) {
+                  <span class="vd-badge vd-badge--info"
+                    ><svg lucideMail></svg>{{ t('showcase.team.invited') }}</span
+                  >
+                } @else {
+                  <span class="vd-badge vd-badge--success"
+                    ><svg lucideCheck></svg>{{ t('showcase.team.active') }}</span
+                  >
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-container>

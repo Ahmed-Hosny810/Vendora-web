@@ -1,0 +1,140 @@
+<ng-container *transloco="let t; read: 'reports.page'">
+  <app-page-head [title]="t('title')" [text]="t('text', { branch: session.branch()?.name ?? '' })">
+    <button
+      vdButton
+      type="button"
+      [disabled]="status() !== 'ready' || !report()?.count"
+      [loading]="exporting()"
+      (click)="exportCsv()"
+    >
+      <svg lucideDownload aria-hidden="true"></svg>{{ t('export') }}
+    </button>
+  </app-page-head>
+
+  <div class="periods" role="group" [attr.aria-label]="t('period')">
+    @for (p of periods; track p) {
+      <button
+        type="button"
+        class="vd-chip"
+        [attr.aria-pressed]="period() === p"
+        (click)="period.set(p)"
+      >
+        {{ t('periods.' + p) }}
+      </button>
+    }
+  </div>
+
+  @switch (status()) {
+    @case ('loading') {
+      <div class="kpis" aria-hidden="true">
+        @for (i of [1, 2, 3, 4]; track i) {
+          <span class="vd-skeleton" style="height: 104px"></span>
+        }
+      </div>
+      <div class="vd-tablewrap">
+        <app-skeleton-rows [label]="t('loading')" [rows]="5" [columns]="4" />
+      </div>
+    }
+    @case ('error') {
+      <div class="vd-tablewrap">
+        <app-load-error
+          [title]="t('errorTitle')"
+          [text]="t('errorText')"
+          [retryLabel]="t('tryAgain')"
+          (retry)="load()"
+        />
+      </div>
+    }
+    @default {
+      @if (report(); as r) {
+        <div class="kpis">
+          <app-kpi-card [label]="t('kpi.net')" [value]="money(r.netSales)" [hint]="t('egp')" />
+          <app-kpi-card
+            [label]="t('kpi.count')"
+            [value]="qty(r.count)"
+            [hint]="t('kpi.countHint')"
+          />
+          <app-kpi-card
+            [label]="t('kpi.average')"
+            [value]="average() === null ? null : money(average()!)"
+            [hint]="t('egp')"
+          />
+          <app-kpi-card
+            [label]="t('kpi.items')"
+            [value]="qty(r.items)"
+            [hint]="t('kpi.discounts', { amount: money(r.discounts) })"
+          />
+        </div>
+
+        @if (!r.count) {
+          <div class="vd-tablewrap">
+            <div class="vd-empty">
+              <span class="vd-empty__art"><svg lucideChartColumn></svg></span>
+              <h2 class="vd-empty__title">{{ t('emptyTitle') }}</h2>
+              <p class="vd-empty__text">{{ t('emptyText') }}</p>
+              <a vdButton="primary" routerLink="/pos"
+                ><svg lucideMonitor aria-hidden="true"></svg>{{ t('openPos') }}</a
+              >
+            </div>
+          </div>
+        } @else {
+          <section class="card" aria-labelledby="rp-chart">
+            <h2 class="card__h" id="rp-chart">
+              {{ t(period() === 'today' ? 'byHour' : 'byDay') }}
+              <span>{{ t('netEgp') }}</span>
+            </h2>
+            <div class="card__body">
+              <app-sales-chart [points]="r.series" [period]="period()" [lang]="lang()" />
+            </div>
+          </section>
+
+          <div class="two">
+            <section class="card" aria-labelledby="rp-pay">
+              <h2 class="card__h" id="rp-pay">{{ t('payments') }}</h2>
+              <div class="card__body">
+                <app-share-bars [rows]="paymentRows()" [label]="t('payments')" />
+              </div>
+            </section>
+
+            <section class="card" aria-labelledby="rp-top">
+              <h2 class="card__h" id="rp-top">
+                {{ t('topProducts') }} <span>{{ t('byRevenue') }}</span>
+              </h2>
+              <div class="card__body">
+                <app-share-bars [rows]="productRows()" [label]="t('topProducts')" />
+              </div>
+            </section>
+          </div>
+
+          <section class="vd-tablewrap" aria-labelledby="rp-cashiers">
+            <h2 class="card__h" id="rp-cashiers">{{ t('cashiers') }}</h2>
+            <div class="vd-tablescroll">
+              <table class="vd-table">
+                <thead>
+                  <tr>
+                    <th scope="col">{{ t('cols.cashier') }}</th>
+                    <th scope="col" class="num">{{ t('cols.sales') }}</th>
+                    <th scope="col" class="num">{{ t('cols.net') }}</th>
+                    <th scope="col" class="num">{{ t('cols.average') }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (c of r.cashiers; track c.name) {
+                    <tr>
+                      <td>
+                        <b dir="auto">{{ c.name }}</b>
+                      </td>
+                      <td class="num">{{ c.count }}</td>
+                      <td class="num">{{ money(c.revenue) }}</td>
+                      <td class="num">{{ c.count ? money(c.revenue / c.count) : '—' }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </section>
+        }
+      }
+    }
+  }
+</ng-container>

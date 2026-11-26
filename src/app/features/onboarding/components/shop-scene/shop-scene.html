@@ -1,0 +1,896 @@
+<!-- Generated from the design export (scenes.py). One animated window display per business type. -->
+@switch (type()) {
+  @case ('restaurant') {
+    <svg class="sc sc--restaurant" viewBox="0 0 400 300" focusable="false">
+      <g class="lamp">
+        <path class="f-n thin" d="M200 0 V38" />
+        <path class="f-b" d="M168 70 Q170 38 200 38 Q230 38 232 70 Z" />
+        <path class="f-l glow nos" d="M172 72 H228 L276 210 H124 Z" />
+      </g>
+      <rect class="f-d" x="34" y="230" width="332" height="12" rx="4" />
+      <path class="f-n" d="M60 242 V296 M340 242 V296" />
+      <g class="fork">
+        <path class="f-n" d="M62 138 V226 M54 138 V160 Q62 172 70 160 V138 M62 138 V160" />
+      </g>
+      <g class="knife">
+        <path class="f-p" d="M338 138 Q350 160 344 190 H338 Z" />
+        <path class="f-n" d="M341 190 V226" />
+      </g>
+      <ellipse class="f-p" cx="200" cy="222" rx="96" ry="14" />
+      <ellipse class="f-n thin" cx="200" cy="220" rx="72" ry="8" />
+      <g class="dish">
+        <path class="f-b" d="M146 218 Q160 176 200 174 Q240 176 254 218 Z" />
+        <circle class="f-g" cx="182" cy="190" r="8" />
+        <circle class="f-g" cx="214" cy="186" r="7" />
+        <circle class="f-d nos" cx="200" cy="200" r="4" />
+      </g>
+      <path class="f-n steam" style="animation-delay: 0s" d="M174 196 q-9 -12 0 -24 q9 -12 0 -24" />
+      <path
+        class="f-n steam"
+        style="animation-delay: 0.5s"
+        d="M200 196 q-9 -12 0 -24 q9 -12 0 -24"
+      />
+      <path class="f-n steam" style="animation-delay: 1s" d="M226 196 q-9 -12 0 -24 q9 -12 0 -24" />
+      <g class="cloche">
+        <path class="f-p" d="M118 218 Q118 140 200 140 Q282 140 282 218 Z" />
+        <path class="f-n thin" d="M140 196 Q148 162 182 152" />
+        <circle class="f-l" cx="200" cy="133" r="9" />
+      </g>
+    </svg>
+  }
+  @case ('cafe') {
+    <svg class="sc sc--cafe" viewBox="0 0 400 300" focusable="false">
+      <g transform="translate(46 0)">
+        <g class="bean" style="animation-delay: 0s; animation-duration: 4.2s">
+          <ellipse class="f-d" cx="0" cy="0" rx="9" ry="12" />
+          <path class="f-n bean-l" d="M0 -10 Q-4 0 0 10" />
+        </g>
+      </g>
+      <g transform="translate(92 0)">
+        <g class="bean" style="animation-delay: 1.6s; animation-duration: 3.6s">
+          <ellipse class="f-d" cx="0" cy="0" rx="9" ry="12" />
+          <path class="f-n bean-l" d="M0 -10 Q-4 0 0 10" />
+        </g>
+      </g>
+      <g transform="translate(318 0)">
+        <g class="bean" style="animation-delay: 0.8s; animation-duration: 4s">
+          <ellipse class="f-d" cx="0" cy="0" rx="9" ry="12" />
+          <path class="f-n bean-l" d="M0 -10 Q-4 0 0 10" />
+        </g>
+      </g>
+      <g transform="translate(364 0)">
+        <g class="bean" style="animation-delay: 2.4s; animation-duration: 3.4s">
+          <ellipse class="f-d" cx="0" cy="0" rx="9" ry="12" />
+          <path class="f-n bean-l" d="M0 -10 Q-4 0 0 10" />
+        </g>
+      </g>
+      <g transform="translate(70 0)">
+        <g class="bean" style="animation-delay: 2.9s; animation-duration: 4.4s">
+          <ellipse class="f-d" cx="0" cy="0" rx="9" ry="12" />
+          <path class="f-n bean-l" d="M0 -10 Q-4 0 0 10" />
+        </g>
+      </g>
+      <g transform="translate(342 0)">
+        <g class="bean" style="animation-delay: 3.6s; animation-duration: 3.8s">
+          <ellipse class="f-d" cx="0" cy="0" rx="9" ry="12" />
+          <path class="f-n bean-l" d="M0 -10 Q-4 0 0 10" />
+        </g>
+      </g>
+      <ellipse class="f-p" cx="200" cy="252" rx="104" ry="14" />
+      <path class="f-n" d="M266 168 q40 0 40 26 q0 26 -40 26" style="stroke-width: 12" />
+      <path class="f-n handle-in" d="M266 168 q40 0 40 26 q0 26 -40 26" style="stroke-width: 4" />
+      <path class="f-p" d="M126 148 H274 V200 Q274 250 200 250 Q126 250 126 200 Z" />
+      <rect class="f-d" x="126" y="178" width="148" height="26" />
+      <path class="f-l nos" d="M192 184 l8 -4 8 4 v12 h-16 Z" style="opacity: 0" />
+      <ellipse class="f-b" cx="200" cy="148" rx="74" ry="11" />
+      <path
+        class="f-p latte"
+        d="M200 156 c-12 -8 -16 -14 -9 -18 c4 -2 8 0 9 3 c1 -3 5 -5 9 -3 c7 4 3 10 -9 18 Z"
+      />
+      <path
+        class="f-n steam"
+        style="animation-delay: 0s"
+        d="M178 130 q-10 -14 0 -28 q10 -14 0 -28"
+      />
+      <path
+        class="f-n steam"
+        style="animation-delay: 0.7s"
+        d="M202 130 q-10 -14 0 -28 q10 -14 0 -28"
+      />
+      <path
+        class="f-n steam"
+        style="animation-delay: 1.4s"
+        d="M226 130 q-10 -14 0 -28 q10 -14 0 -28"
+      />
+    </svg>
+  }
+  @case ('grocery') {
+    <svg class="sc sc--grocery" viewBox="0 0 400 300" focusable="false">
+      <g transform="translate(40 48)">
+        <rect class="f-l" x="0" y="20" width="130" height="50" rx="4" />
+        <path class="f-n thin" d="M0 36 H130 M0 52 H130" />
+        <circle class="f-b pop2" style="animation-delay: 0s" cx="18" cy="16" r="12" />
+        <circle class="f-b pop2" style="animation-delay: 0.2s" cx="42" cy="16" r="12" />
+        <circle class="f-b pop2" style="animation-delay: 0.4s" cx="66" cy="16" r="12" />
+        <circle class="f-b pop2" style="animation-delay: 0.6s" cx="90" cy="16" r="12" />
+        <circle class="f-b pop2" style="animation-delay: 0.8s" cx="114" cy="16" r="12" />
+      </g>
+      <g transform="translate(230 48)">
+        <rect class="f-l" x="0" y="20" width="130" height="50" rx="4" />
+        <path class="f-n thin" d="M0 36 H130 M0 52 H130" />
+        <circle class="f-g pop2" style="animation-delay: 0s" cx="18" cy="16" r="12" />
+        <circle class="f-g pop2" style="animation-delay: 0.2s" cx="42" cy="16" r="12" />
+        <circle class="f-g pop2" style="animation-delay: 0.4s" cx="66" cy="16" r="12" />
+        <circle class="f-g pop2" style="animation-delay: 0.6s" cx="90" cy="16" r="12" />
+        <circle class="f-g pop2" style="animation-delay: 0.8s" cx="114" cy="16" r="12" />
+      </g>
+      <g class="leaves">
+        <path class="f-g" d="M190 70 q-12 -30 6 -48 q8 22 -6 48Z" />
+        <path class="f-g" d="M196 70 q10 -26 30 -30 q-6 24 -30 30Z" />
+      </g>
+      <rect class="f-d" x="-10" y="206" width="420" height="26" rx="13" />
+      <path class="belt" d="M-10 219 H410" />
+      <g class="gr-track">
+        <g transform="translate(40 204)">
+          <g class="bob">
+            <circle class="f-b" cx="0" cy="-16" r="15" />
+            <path class="f-n thin" d="M0 -31 q2 -8 8 -9" />
+            <path class="f-g thin" d="M2 -32 q8 -6 12 0 q-6 4 -12 0Z" />
+          </g>
+        </g>
+        <g transform="translate(120 204)">
+          <g class="bob">
+            <path class="f-l" d="M-26 -10 L22 -18 Q30 -10 22 -2 Z" />
+            <path class="f-g thin" d="M24 -14 l12 -10 M25 -10 l14 -2 M24 -6 l12 8" />
+          </g>
+        </g>
+        <g transform="translate(200 204)">
+          <g class="bob">
+            <path class="f-b" d="M-30 0 Q-30 -26 0 -26 Q30 -26 30 0 Z" />
+            <path class="f-n thin" d="M-14 -20 l6 10 M0 -22 l6 10 M14 -20 l6 10" />
+          </g>
+        </g>
+        <g transform="translate(280 204)">
+          <g class="bob">
+            <path class="f-p" d="M-14 0 V-34 L-8 -44 H8 L14 -34 V0 Z" />
+            <rect class="f-g nos" x="-14" y="-26" width="28" height="12" />
+            <path class="f-n thin" d="M-14 -34 H14" />
+          </g>
+        </g>
+        <g transform="translate(360 204)">
+          <g class="bob">
+            <ellipse class="f-g" cx="0" cy="-18" rx="24" ry="18" />
+            <path class="f-n thin" d="M-14 -32 Q-20 -18 -14 -4 M0 -36 V0 M14 -32 Q20 -18 14 -4" />
+          </g>
+        </g>
+        <g transform="translate(440 204)">
+          <g class="bob">
+            <circle class="f-b" cx="0" cy="-16" r="15" />
+            <path class="f-n thin" d="M0 -31 q2 -8 8 -9" />
+            <path class="f-g thin" d="M2 -32 q8 -6 12 0 q-6 4 -12 0Z" />
+          </g>
+        </g>
+        <g transform="translate(520 204)">
+          <g class="bob">
+            <path class="f-l" d="M-26 -10 L22 -18 Q30 -10 22 -2 Z" />
+            <path class="f-g thin" d="M24 -14 l12 -10 M25 -10 l14 -2 M24 -6 l12 8" />
+          </g>
+        </g>
+        <g transform="translate(600 204)">
+          <g class="bob">
+            <path class="f-b" d="M-30 0 Q-30 -26 0 -26 Q30 -26 30 0 Z" />
+            <path class="f-n thin" d="M-14 -20 l6 10 M0 -22 l6 10 M14 -20 l6 10" />
+          </g>
+        </g>
+        <g transform="translate(680 204)">
+          <g class="bob">
+            <path class="f-p" d="M-14 0 V-34 L-8 -44 H8 L14 -34 V0 Z" />
+            <rect class="f-g nos" x="-14" y="-26" width="28" height="12" />
+            <path class="f-n thin" d="M-14 -34 H14" />
+          </g>
+        </g>
+        <g transform="translate(760 204)">
+          <g class="bob">
+            <ellipse class="f-g" cx="0" cy="-18" rx="24" ry="18" />
+            <path class="f-n thin" d="M-14 -32 Q-20 -18 -14 -4 M0 -36 V0 M14 -32 Q20 -18 14 -4" />
+          </g>
+        </g>
+      </g>
+      <g transform="translate(322 128)">
+        <rect class="f-p" x="0" y="0" width="66" height="76" rx="8" />
+        <rect class="f-d" x="10" y="12" width="46" height="30" rx="4" />
+        <path class="scan" d="M14 27 H52" />
+        <path class="f-n thin" d="M14 56 H52 M14 64 H40" />
+      </g>
+    </svg>
+  }
+  @case ('minimarket') {
+    <svg class="sc sc--minimarket" viewBox="0 0 400 300" focusable="false">
+      <rect class="f-p" x="58" y="24" width="284" height="226" rx="6" />
+      <path class="f-n" d="M58 98 H342 M58 168 H342 M58 238 H342" />
+      <g transform="translate(92 98)">
+        <g class="pop" style="animation-delay: 0s">
+          <rect class="f-b" x="-12" y="-34" width="24" height="34" rx="3" />
+          <path class="f-n thin" d="M-12 -26 H12 M-12 -8 H12" />
+        </g>
+      </g>
+      <g transform="translate(135 98)">
+        <g class="pop" style="animation-delay: 0.12s">
+          <rect class="f-g" x="-16" y="-44" width="32" height="44" rx="2" />
+          <rect class="f-p nos" x="-9" y="-34" width="18" height="12" rx="2" />
+        </g>
+      </g>
+      <g transform="translate(178 98)">
+        <g class="pop" style="animation-delay: 0.24s">
+          <path class="f-m" d="M-10 0 V-30 Q-10 -38 -4 -42 V-52 H4 V-42 Q10 -38 10 -30 V0 Z" />
+          <rect class="f-p nos" x="-10" y="-24" width="20" height="10" />
+        </g>
+      </g>
+      <g transform="translate(221 98)">
+        <g class="pop" style="animation-delay: 0.36s">
+          <rect class="f-d" x="-12" y="-34" width="24" height="34" rx="3" />
+          <path class="f-n thin" d="M-12 -26 H12 M-12 -8 H12" />
+        </g>
+      </g>
+      <g transform="translate(264 98)">
+        <g class="pop" style="animation-delay: 0.48s">
+          <rect class="f-l" x="-14" y="-30" width="28" height="30" rx="6" />
+          <rect class="f-d" x="-12" y="-38" width="24" height="8" rx="2" />
+        </g>
+      </g>
+      <g transform="translate(307 98)">
+        <g class="pop" style="animation-delay: 0.6s">
+          <rect class="f-b" x="-16" y="-44" width="32" height="44" rx="2" />
+          <rect class="f-p nos" x="-9" y="-34" width="18" height="12" rx="2" />
+        </g>
+      </g>
+      <g transform="translate(92 168)">
+        <g class="pop" style="animation-delay: 0.72s">
+          <path class="f-g" d="M-10 0 V-30 Q-10 -38 -4 -42 V-52 H4 V-42 Q10 -38 10 -30 V0 Z" />
+          <rect class="f-p nos" x="-10" y="-24" width="20" height="10" />
+        </g>
+      </g>
+      <g transform="translate(135 168)">
+        <g class="pop" style="animation-delay: 0.84s">
+          <rect class="f-b" x="-14" y="-30" width="28" height="30" rx="6" />
+          <rect class="f-d" x="-12" y="-38" width="24" height="8" rx="2" />
+        </g>
+      </g>
+      <g transform="translate(178 168)">
+        <g class="pop" style="animation-delay: 0.96s">
+          <rect class="f-p" x="-12" y="-34" width="24" height="34" rx="3" />
+          <path class="f-n thin" d="M-12 -26 H12 M-12 -8 H12" />
+        </g>
+      </g>
+      <g transform="translate(221 168)">
+        <g class="pop" style="animation-delay: 1.08s">
+          <rect class="f-d" x="-16" y="-44" width="32" height="44" rx="2" />
+          <rect class="f-p nos" x="-9" y="-34" width="18" height="12" rx="2" />
+        </g>
+      </g>
+      <g transform="translate(264 168)">
+        <g class="pop" style="animation-delay: 1.2s">
+          <path class="f-l" d="M-10 0 V-30 Q-10 -38 -4 -42 V-52 H4 V-42 Q10 -38 10 -30 V0 Z" />
+          <rect class="f-p nos" x="-10" y="-24" width="20" height="10" />
+        </g>
+      </g>
+      <g transform="translate(307 168)">
+        <g class="pop" style="animation-delay: 1.32s">
+          <rect class="f-g" x="-12" y="-34" width="24" height="34" rx="3" />
+          <path class="f-n thin" d="M-12 -26 H12 M-12 -8 H12" />
+        </g>
+      </g>
+      <g transform="translate(92 238)">
+        <g class="pop" style="animation-delay: 1.44s">
+          <rect class="f-l" x="-16" y="-44" width="32" height="44" rx="2" />
+          <rect class="f-p nos" x="-9" y="-34" width="18" height="12" rx="2" />
+        </g>
+      </g>
+      <g transform="translate(135 238)">
+        <g class="pop" style="animation-delay: 1.56s">
+          <rect class="f-b" x="-12" y="-34" width="24" height="34" rx="3" />
+          <path class="f-n thin" d="M-12 -26 H12 M-12 -8 H12" />
+        </g>
+      </g>
+      <g transform="translate(178 238)">
+        <g class="pop" style="animation-delay: 1.68s">
+          <rect class="f-g" x="-14" y="-30" width="28" height="30" rx="6" />
+          <rect class="f-d" x="-12" y="-38" width="24" height="8" rx="2" />
+        </g>
+      </g>
+      <g transform="translate(221 238)">
+        <g class="pop" style="animation-delay: 1.8s">
+          <path class="f-b" d="M-10 0 V-30 Q-10 -38 -4 -42 V-52 H4 V-42 Q10 -38 10 -30 V0 Z" />
+          <rect class="f-p nos" x="-10" y="-24" width="20" height="10" />
+        </g>
+      </g>
+      <g transform="translate(264 238)">
+        <g class="pop" style="animation-delay: 1.92s">
+          <rect class="f-d" x="-12" y="-34" width="24" height="34" rx="3" />
+          <path class="f-n thin" d="M-12 -26 H12 M-12 -8 H12" />
+        </g>
+      </g>
+      <g transform="translate(307 238)">
+        <g class="pop" style="animation-delay: 2.04s">
+          <rect class="f-p" x="-14" y="-30" width="28" height="30" rx="6" />
+          <rect class="f-d" x="-12" y="-38" width="24" height="8" rx="2" />
+        </g>
+      </g>
+      <g transform="translate(330 262)">
+        <g class="basket">
+          <path class="f-n" d="M-30 -24 Q0 -64 30 -24" />
+          <path class="f-b" d="M-42 -24 H42 L32 20 H-32 Z" />
+          <path class="f-n thin" d="M-20 -24 L-16 20 M0 -24 V20 M20 -24 L16 20 M-38 -4 H38" />
+        </g>
+      </g>
+    </svg>
+  }
+  @case ('pharmacy') {
+    <svg class="sc sc--pharmacy" viewBox="0 0 400 300" focusable="false">
+      <circle class="ring f-n" cx="200" cy="74" r="44" />
+      <circle class="ring f-n" style="animation-delay: 1.2s" cx="200" cy="74" r="44" />
+      <g class="cross">
+        <path class="f-g" d="M184 36 H216 V58 H238 V90 H216 V112 H184 V90 H162 V58 H184 Z" />
+      </g>
+      <path
+        class="ecg f-n"
+        pathLength="100"
+        d="M10 156 H120 L134 136 L150 182 L166 120 L182 168 L194 156 H390"
+      />
+      <g transform="translate(40 300)">
+        <g class="cap" style="animation-delay: 0s; animation-duration: 6s">
+          <rect class="f-p" x="-8" y="-18" width="16" height="36" rx="8" />
+          <path class="f-g" d="M-8 0 V10 a8 8 0 0 0 16 0 V0 Z" />
+        </g>
+      </g>
+      <g transform="translate(110 300)">
+        <g class="cap" style="animation-delay: 2.2s; animation-duration: 5.4s">
+          <rect class="f-p" x="-8" y="-18" width="16" height="36" rx="8" />
+          <path class="f-g" d="M-8 0 V10 a8 8 0 0 0 16 0 V0 Z" />
+        </g>
+      </g>
+      <g transform="translate(300 300)">
+        <g class="cap" style="animation-delay: 1.1s; animation-duration: 6.4s">
+          <rect class="f-p" x="-8" y="-18" width="16" height="36" rx="8" />
+          <path class="f-g" d="M-8 0 V10 a8 8 0 0 0 16 0 V0 Z" />
+        </g>
+      </g>
+      <g transform="translate(360 300)">
+        <g class="cap" style="animation-delay: 3.4s; animation-duration: 5.8s">
+          <rect class="f-p" x="-8" y="-18" width="16" height="36" rx="8" />
+          <path class="f-g" d="M-8 0 V10 a8 8 0 0 0 16 0 V0 Z" />
+        </g>
+      </g>
+      <g transform="translate(250 300)">
+        <g class="cap" style="animation-delay: 4.4s; animation-duration: 6.2s">
+          <rect class="f-p" x="-8" y="-18" width="16" height="36" rx="8" />
+          <path class="f-g" d="M-8 0 V10 a8 8 0 0 0 16 0 V0 Z" />
+        </g>
+      </g>
+      <path class="f-n" d="M40 250 H360" />
+      <g transform="translate(90 248)">
+        <rect class="f-b" x="-18" y="-44" width="36" height="44" rx="6" />
+        <rect class="f-d" x="-14" y="-56" width="28" height="12" rx="3" />
+        <rect class="f-p nos" x="-12" y="-32" width="24" height="16" rx="2" />
+      </g>
+      <g transform="translate(150 248)">
+        <rect class="f-l" x="-18" y="-44" width="36" height="44" rx="6" />
+        <rect class="f-d" x="-14" y="-56" width="28" height="12" rx="3" />
+        <rect class="f-p nos" x="-12" y="-32" width="24" height="16" rx="2" />
+      </g>
+      <g transform="translate(250 248)">
+        <rect class="f-p" x="-34" y="-40" width="68" height="40" rx="3" />
+        <path class="f-g nos" d="M-6 -30 h12 v8 h8 v12 h-8 v8 h-12 v-8 h-8 v-12 h8 Z" />
+      </g>
+      <g transform="translate(320 248)">
+        <rect class="f-g" x="-18" y="-44" width="36" height="44" rx="6" />
+        <rect class="f-d" x="-14" y="-56" width="28" height="12" rx="3" />
+        <rect class="f-p nos" x="-12" y="-32" width="24" height="16" rx="2" />
+      </g>
+    </svg>
+  }
+  @case ('clothing') {
+    <svg class="sc sc--clothing" viewBox="0 0 400 300" focusable="false">
+      <rect class="f-m nos" x="0" y="248" width="400" height="52" />
+      <g class="rail"><path class="f-n" d="M100 56 V-10 M300 56 V-10" /></g>
+      <g class="cl-track">
+        <g transform="translate(-360 62)">
+          <g class="sw" style="animation-delay: -0s">
+            <path class="f-n" d="M0 14 V7 a6 6 0 1 1 6 -6" />
+            <path class="f-n" d="M0 14 L-30 29 H30 Z" />
+            <path
+              class="f-b"
+              d="M-30 30 L-12 26 Q0 35 12 26 L30 30 L44 48 L33 55 L28 50 L28 104 L-28 104 L-28 50 L-33 55 L-44 48 Z"
+            />
+            <path class="f-n thin" d="M-12 26 Q0 35 12 26" />
+          </g>
+        </g>
+        <g transform="translate(-280 62)">
+          <g class="sw" style="animation-delay: -0.37s">
+            <path class="f-n" d="M0 14 V7 a6 6 0 1 1 6 -6" />
+            <path class="f-n" d="M0 14 L-24 28 H24 Z" />
+            <path class="f-g" d="M-13 28 L13 28 L17 52 L42 124 L-42 124 L-17 52 Z" />
+            <path class="f-n thin" d="M-17 52 H17" />
+          </g>
+        </g>
+        <g transform="translate(-200 62)">
+          <g class="sw" style="animation-delay: -0.74s">
+            <path class="f-n" d="M0 14 V7 a6 6 0 1 1 6 -6" />
+            <path class="f-n" d="M0 14 L-26 24 H26 Z" />
+            <path class="f-d" d="M-24 27 H24 L27 126 H6 L0 58 L-6 126 H-27 Z" />
+            <path class="f-n thin" d="M-24 37 H24" />
+          </g>
+        </g>
+        <g transform="translate(-120 62)">
+          <g class="sw" style="animation-delay: -1.11s">
+            <path class="f-n" d="M0 14 V7 a6 6 0 1 1 6 -6" />
+            <path class="f-n" d="M0 14 L-32 29 H32 Z" />
+            <path
+              class="f-p"
+              d="M-32 30 L-10 26 L0 40 L10 26 L32 30 L42 112 L30 114 L28 64 L28 116 L-28 116 L-28 64 L-30 114 L-42 112 Z"
+            />
+            <path class="f-n thin" d="M0 40 V116 M-10 26 L-4 60 M10 26 L4 60" />
+          </g>
+        </g>
+        <g transform="translate(-40 62)">
+          <g class="sw" style="animation-delay: -1.48s">
+            <path class="f-n" d="M0 14 V7 a6 6 0 1 1 6 -6" />
+            <path class="f-n" d="M0 14 L-30 29 H30 Z" />
+            <path
+              class="f-l"
+              d="M-30 31 Q0 18 30 31 L46 100 L34 102 L28 62 L28 110 L-28 110 L-28 62 L-34 102 L-46 100 Z"
+            />
+            <path class="f-n thin" d="M-14 28 Q0 50 14 28 M-16 86 H16 V100 H-16 Z" />
+          </g>
+        </g>
+        <g transform="translate(40 62)">
+          <g class="sw" style="animation-delay: -0s">
+            <path class="f-n" d="M0 14 V7 a6 6 0 1 1 6 -6" />
+            <path class="f-n" d="M0 14 L-30 29 H30 Z" />
+            <path
+              class="f-b"
+              d="M-30 30 L-12 26 Q0 35 12 26 L30 30 L44 48 L33 55 L28 50 L28 104 L-28 104 L-28 50 L-33 55 L-44 48 Z"
+            />
+            <path class="f-n thin" d="M-12 26 Q0 35 12 26" />
+          </g>
+        </g>
+        <g transform="translate(120 62)">
+          <g class="sw" style="animation-delay: -0.37s">
+            <path class="f-n" d="M0 14 V7 a6 6 0 1 1 6 -6" />
+            <path class="f-n" d="M0 14 L-24 28 H24 Z" />
+            <path class="f-g" d="M-13 28 L13 28 L17 52 L42 124 L-42 124 L-17 52 Z" />
+            <path class="f-n thin" d="M-17 52 H17" />
+          </g>
+        </g>
+        <g transform="translate(200 62)">
+          <g class="sw" style="animation-delay: -0.74s">
+            <path class="f-n" d="M0 14 V7 a6 6 0 1 1 6 -6" />
+            <path class="f-n" d="M0 14 L-26 24 H26 Z" />
+            <path class="f-d" d="M-24 27 H24 L27 126 H6 L0 58 L-6 126 H-27 Z" />
+            <path class="f-n thin" d="M-24 37 H24" />
+          </g>
+        </g>
+        <g transform="translate(280 62)">
+          <g class="sw" style="animation-delay: -1.11s">
+            <path class="f-n" d="M0 14 V7 a6 6 0 1 1 6 -6" />
+            <path class="f-n" d="M0 14 L-32 29 H32 Z" />
+            <path
+              class="f-p"
+              d="M-32 30 L-10 26 L0 40 L10 26 L32 30 L42 112 L30 114 L28 64 L28 116 L-28 116 L-28 64 L-30 114 L-42 112 Z"
+            />
+            <path class="f-n thin" d="M0 40 V116 M-10 26 L-4 60 M10 26 L4 60" />
+          </g>
+        </g>
+        <g transform="translate(360 62)">
+          <g class="sw" style="animation-delay: -1.48s">
+            <path class="f-n" d="M0 14 V7 a6 6 0 1 1 6 -6" />
+            <path class="f-n" d="M0 14 L-30 29 H30 Z" />
+            <path
+              class="f-l"
+              d="M-30 31 Q0 18 30 31 L46 100 L34 102 L28 62 L28 110 L-28 110 L-28 62 L-34 102 L-46 100 Z"
+            />
+            <path class="f-n thin" d="M-14 28 Q0 50 14 28 M-16 86 H16 V100 H-16 Z" />
+          </g>
+        </g>
+        <g transform="translate(440 62)">
+          <g class="sw" style="animation-delay: -0s">
+            <path class="f-n" d="M0 14 V7 a6 6 0 1 1 6 -6" />
+            <path class="f-n" d="M0 14 L-30 29 H30 Z" />
+            <path
+              class="f-b"
+              d="M-30 30 L-12 26 Q0 35 12 26 L30 30 L44 48 L33 55 L28 50 L28 104 L-28 104 L-28 50 L-33 55 L-44 48 Z"
+            />
+            <path class="f-n thin" d="M-12 26 Q0 35 12 26" />
+          </g>
+        </g>
+        <g transform="translate(520 62)">
+          <g class="sw" style="animation-delay: -0.37s">
+            <path class="f-n" d="M0 14 V7 a6 6 0 1 1 6 -6" />
+            <path class="f-n" d="M0 14 L-24 28 H24 Z" />
+            <path class="f-g" d="M-13 28 L13 28 L17 52 L42 124 L-42 124 L-17 52 Z" />
+            <path class="f-n thin" d="M-17 52 H17" />
+          </g>
+        </g>
+        <g transform="translate(600 62)">
+          <g class="sw" style="animation-delay: -0.74s">
+            <path class="f-n" d="M0 14 V7 a6 6 0 1 1 6 -6" />
+            <path class="f-n" d="M0 14 L-26 24 H26 Z" />
+            <path class="f-d" d="M-24 27 H24 L27 126 H6 L0 58 L-6 126 H-27 Z" />
+            <path class="f-n thin" d="M-24 37 H24" />
+          </g>
+        </g>
+        <g transform="translate(680 62)">
+          <g class="sw" style="animation-delay: -1.11s">
+            <path class="f-n" d="M0 14 V7 a6 6 0 1 1 6 -6" />
+            <path class="f-n" d="M0 14 L-32 29 H32 Z" />
+            <path
+              class="f-p"
+              d="M-32 30 L-10 26 L0 40 L10 26 L32 30 L42 112 L30 114 L28 64 L28 116 L-28 116 L-28 64 L-30 114 L-42 112 Z"
+            />
+            <path class="f-n thin" d="M0 40 V116 M-10 26 L-4 60 M10 26 L4 60" />
+          </g>
+        </g>
+        <g transform="translate(760 62)">
+          <g class="sw" style="animation-delay: -1.48s">
+            <path class="f-n" d="M0 14 V7 a6 6 0 1 1 6 -6" />
+            <path class="f-n" d="M0 14 L-30 29 H30 Z" />
+            <path
+              class="f-l"
+              d="M-30 31 Q0 18 30 31 L46 100 L34 102 L28 62 L28 110 L-28 110 L-28 62 L-34 102 L-46 100 Z"
+            />
+            <path class="f-n thin" d="M-14 28 Q0 50 14 28 M-16 86 H16 V100 H-16 Z" />
+          </g>
+        </g>
+      </g>
+      <path class="f-n" d="M-300 56 H700" style="stroke-width: 5" />
+      <g class="fold">
+        <rect class="f-d" x="30" y="232" width="78" height="16" rx="4" />
+        <rect class="f-b" x="36" y="216" width="70" height="16" rx="4" />
+        <rect class="f-p" x="32" y="200" width="74" height="16" rx="4" />
+      </g>
+      <g transform="translate(352 176)">
+        <g class="sw2">
+          <path class="f-n thin" d="M0 0 V18" />
+          <path class="f-l" d="M-12 18 H12 V52 L0 62 L-12 52 Z" />
+          <circle class="f-d nos" cx="0" cy="26" r="3" />
+        </g>
+      </g>
+    </svg>
+  }
+  @case ('furniture') {
+    <svg class="sc sc--furniture" viewBox="0 0 400 300" focusable="false">
+      <g class="frame">
+        <circle class="f-d nos" cx="96" cy="22" r="3" />
+        <path class="f-n thin" d="M96 22 L70 46 M96 22 L122 46" />
+        <rect class="f-l" x="58" y="46" width="76" height="58" rx="3" />
+        <path class="f-g thin" d="M64 98 L84 72 L98 88 L110 76 L128 98 Z" />
+        <circle class="f-b nos" cx="116" cy="60" r="6" />
+      </g>
+      <ellipse class="f-l" cx="190" cy="270" rx="150" ry="18" />
+      <g class="rock">
+        <path class="f-n" d="M120 262 Q190 282 262 256" style="stroke-width: 5" />
+        <path class="f-n" d="M146 262 L150 200 M236 260 L232 200" />
+        <path class="f-b" d="M136 196 H246 V214 H136 Z" />
+        <path class="f-g" d="M146 196 V112 Q191 96 236 112 V196 Z" />
+        <path class="f-n thin" d="M162 120 V190 M191 112 V190 M220 120 V190" />
+        <path class="f-p" d="M128 160 h18 v40 h-18 Z M236 160 h18 v40 h-18 Z" />
+      </g>
+      <g>
+        <path class="f-l glow nos" d="M318 96 H366 L392 250 H292 Z" />
+        <path class="f-n" d="M342 92 V262 M318 266 H366" />
+        <g class="shade"><path class="f-b" d="M318 96 L326 58 H358 L366 96 Z" /></g>
+      </g>
+      <g transform="translate(40 266)">
+        <rect class="f-d" x="-6" y="-56" width="54" height="10" rx="3" />
+        <path class="f-n" d="M2 -46 V0 M40 -46 V0" />
+        <path class="f-p" d="M10 -56 L14 -80 H34 L38 -56 Z" />
+        <g class="leaves">
+          <path class="f-g" d="M24 -80 q-18 -18 -10 -40 q14 16 10 40Z" />
+          <path class="f-g" d="M24 -80 q16 -22 34 -22 q-8 22 -34 22Z" />
+        </g>
+      </g>
+    </svg>
+  }
+  @case ('cosmetics') {
+    <svg class="sc sc--cosmetics" viewBox="0 0 400 300" focusable="false">
+      <g transform="translate(60 60) scale(1)">
+        <path
+          class="f-b spark"
+          style="animation-delay: 0s"
+          d="M0 -12 Q2 -2 12 0 Q2 2 0 12 Q-2 2 -12 0 Q-2 -2 0 -12Z"
+        />
+      </g>
+      <g transform="translate(330 50) scale(1.3)">
+        <path
+          class="f-b spark"
+          style="animation-delay: 0.7s"
+          d="M0 -12 Q2 -2 12 0 Q2 2 0 12 Q-2 2 -12 0 Q-2 -2 0 -12Z"
+        />
+      </g>
+      <g transform="translate(150 40) scale(0.8)">
+        <path
+          class="f-b spark"
+          style="animation-delay: 1.3s"
+          d="M0 -12 Q2 -2 12 0 Q2 2 0 12 Q-2 2 -12 0 Q-2 -2 0 -12Z"
+        />
+      </g>
+      <g transform="translate(370 150) scale(0.9)">
+        <path
+          class="f-b spark"
+          style="animation-delay: 2s"
+          d="M0 -12 Q2 -2 12 0 Q2 2 0 12 Q-2 2 -12 0 Q-2 -2 0 -12Z"
+        />
+      </g>
+      <g transform="translate(40 170) scale(0.7)">
+        <path
+          class="f-b spark"
+          style="animation-delay: 1.6s"
+          d="M0 -12 Q2 -2 12 0 Q2 2 0 12 Q-2 2 -12 0 Q-2 -2 0 -12Z"
+        />
+      </g>
+      <path class="f-n" d="M30 250 H370" />
+      <g transform="translate(96 250)">
+        <g class="lip"><path class="f-b" d="M-10 -60 V-92 Q-10 -104 4 -110 L10 -110 V-60 Z" /></g>
+        <rect class="f-d" x="-14" y="-62" width="28" height="12" rx="2" />
+        <rect class="f-l" x="-16" y="-50" width="32" height="50" rx="3" />
+      </g>
+      <g transform="translate(200 250)">
+        <rect class="f-m" x="-40" y="-120" width="80" height="120" rx="14" />
+        <rect class="f-b nos" x="-34" y="-70" width="68" height="64" rx="10" />
+        <rect class="f-p" x="-20" y="-100" width="40" height="20" rx="4" />
+        <rect class="f-d" x="-10" y="-134" width="20" height="14" rx="2" />
+        <g class="pump">
+          <rect class="f-l" x="-16" y="-158" width="32" height="20" rx="5" />
+          <path class="f-n thin" d="M16 -150 h14" />
+        </g>
+      </g>
+      <circle class="mist f-m" style="animation-delay: 0s" cx="238" cy="98" r="4" />
+      <circle class="mist f-m" style="animation-delay: 0.15s" cx="252" cy="90" r="3" />
+      <circle class="mist f-m" style="animation-delay: 0.3s" cx="250" cy="106" r="3" />
+      <circle class="mist f-m" style="animation-delay: 0.45s" cx="266" cy="96" r="2.5" />
+      <circle class="mist f-m" style="animation-delay: 0.6s" cx="264" cy="112" r="2" />
+      <g transform="translate(310 250)">
+        <rect class="f-g" x="-24" y="-46" width="48" height="46" rx="10" />
+        <rect class="f-d" x="-8" y="-86" width="16" height="40" rx="3" />
+        <path class="f-p nos" d="M-14 -36 q4 -4 8 0" />
+      </g>
+    </svg>
+  }
+  @case ('accessories') {
+    <svg class="sc sc--accessories" viewBox="0 0 400 300" focusable="false">
+      <g class="glasses">
+        <path class="f-n" d="M150 70 H250" />
+        <path class="f-d" d="M128 64 H184 Q186 98 158 98 Q130 98 128 64Z" />
+        <path class="f-d" d="M216 64 H272 Q270 98 242 98 Q214 98 216 64Z" />
+        <path class="f-n" d="M184 70 Q200 60 216 70" />
+        <path class="glint f-n" d="M140 74 L152 66 M228 74 L240 66" />
+      </g>
+      <g>
+        <rect class="f-d" x="82" y="70" width="36" height="140" rx="10" />
+        <circle class="f-p" cx="100" cy="150" r="36" />
+        <circle class="f-n thin" cx="100" cy="150" r="28" />
+        <path class="hand-h f-n" d="M100 150 V128" />
+        <path class="hand-m f-n thin" d="M100 150 V122" />
+        <circle class="f-d nos" cx="100" cy="150" r="4" />
+        <path class="f-n" d="M64 262 H136 M100 210 V262" />
+      </g>
+      <circle class="f-d nos" cx="316" cy="104" r="4" />
+      <g class="bag">
+        <path class="f-n" d="M296 158 Q296 104 316 104 Q336 104 336 158" />
+        <path class="f-b" d="M272 158 H360 L352 244 H280 Z" />
+        <path class="f-l" d="M272 158 H360 L346 188 H286 Z" />
+        <circle class="f-d nos" cx="316" cy="190" r="5" />
+      </g>
+      <g transform="translate(200 250)">
+        <path class="f-g" d="M-40 0 Q-40 -26 0 -26 Q40 -26 40 0 Z" />
+        <g class="ring-spin">
+          <ellipse class="f-n" cx="0" cy="-44" rx="18" ry="18" style="stroke-width: 5" />
+        </g>
+        <path class="f-l gem" d="M-8 -68 H8 L12 -62 L0 -52 L-12 -62 Z" />
+      </g>
+      <path class="f-n" d="M30 262 H370" />
+    </svg>
+  }
+  @case ('electronics') {
+    <svg class="sc sc--electronics" viewBox="0 0 400 300" focusable="false">
+      <path class="f-n trace" d="M20 290 V262 H120 V240 M380 290 V270 H300 V230 M200 300 V258" />
+      <path class="pulse" pathLength="100" d="M20 290 V262 H120 V240" />
+      <path
+        class="pulse"
+        pathLength="100"
+        style="animation-delay: 0.8s"
+        d="M380 290 V270 H300 V230"
+      />
+      <path class="pulse" pathLength="100" style="animation-delay: 1.6s" d="M200 300 V258" />
+      <g>
+        <rect class="f-d" x="126" y="84" width="148" height="100" rx="8" />
+        <rect class="f-m nos" x="136" y="94" width="128" height="80" rx="3" />
+        <rect
+          class="ebar f-b nos"
+          style="animation-delay: 0s"
+          x="150"
+          y="100"
+          width="14"
+          height="60"
+          rx="2"
+        />
+        <rect
+          class="ebar f-b nos"
+          style="animation-delay: 0.25s"
+          x="172"
+          y="100"
+          width="14"
+          height="60"
+          rx="2"
+        />
+        <rect
+          class="ebar f-b nos"
+          style="animation-delay: 0.5s"
+          x="194"
+          y="100"
+          width="14"
+          height="60"
+          rx="2"
+        />
+        <rect
+          class="ebar f-b nos"
+          style="animation-delay: 0.75s"
+          x="216"
+          y="100"
+          width="14"
+          height="60"
+          rx="2"
+        />
+        <rect
+          class="ebar f-b nos"
+          style="animation-delay: 1s"
+          x="238"
+          y="100"
+          width="14"
+          height="60"
+          rx="2"
+        />
+        <path class="f-p" d="M104 184 H296 L310 206 H90 Z" />
+        <path class="f-n thin" d="M182 196 H218" />
+      </g>
+      <g class="phone">
+        <rect class="f-p" x="304" y="96" width="62" height="112" rx="12" />
+        <rect class="f-m nos" x="312" y="110" width="46" height="84" rx="4" />
+        <rect class="notif f-b" x="316" y="116" width="38" height="14" rx="7" />
+      </g>
+      <g class="phones">
+        <path class="f-n" d="M44 120 Q44 70 84 70 Q124 70 124 120" style="stroke-width: 5" />
+        <rect class="f-b" x="34" y="112" width="22" height="40" rx="8" />
+        <rect class="f-b" x="112" y="112" width="22" height="40" rx="8" />
+      </g>
+      <path class="wave f-n thin" d="M146 116 q8 16 0 32" />
+      <path class="wave f-n thin" style="animation-delay: 0.4s" d="M156 108 q12 24 0 48" />
+    </svg>
+  }
+  @case ('salon') {
+    <svg class="sc sc--salon" viewBox="0 0 400 300" focusable="false">
+      <defs>
+        <clipPath id="pole-clip"><rect x="42" y="56" width="36" height="164" rx="6" /></clipPath>
+      </defs>
+      <g>
+        <rect class="f-d" x="36" y="36" width="48" height="20" rx="10" />
+        <rect class="f-p" x="42" y="56" width="36" height="164" rx="6" />
+        <g clip-path="url(#pole-clip)">
+          <g class="pole">
+            <path class="f-b nos" d="M30 -40 L90 -70 V-50 L30 -20Z" />
+            <path class="f-b nos" d="M30 0 L90 -30 V-10 L30 20Z" />
+            <path class="f-b nos" d="M30 40 L90 10 V30 L30 60Z" />
+            <path class="f-b nos" d="M30 80 L90 50 V70 L30 100Z" />
+            <path class="f-b nos" d="M30 120 L90 90 V110 L30 140Z" />
+            <path class="f-b nos" d="M30 160 L90 130 V150 L30 180Z" />
+            <path class="f-b nos" d="M30 200 L90 170 V190 L30 220Z" />
+            <path class="f-b nos" d="M30 240 L90 210 V230 L30 260Z" />
+            <path class="f-b nos" d="M30 280 L90 250 V270 L30 300Z" />
+            <path class="f-b nos" d="M30 320 L90 290 V310 L30 340Z" />
+          </g>
+        </g>
+        <rect class="f-n" x="42" y="56" width="36" height="164" rx="6" />
+        <rect class="f-d" x="36" y="220" width="48" height="20" rx="10" />
+      </g>
+      <g class="blade-a">
+        <path class="f-p" d="M194 146 L278 104 Q290 106 282 118 L206 150 Z" />
+        <circle class="f-b" cx="164" cy="168" r="16" />
+        <path class="f-n" d="M176 158 L200 140" />
+      </g>
+      <g class="blade-b">
+        <path class="f-p" d="M194 134 L278 176 Q290 174 282 162 L206 130 Z" />
+        <circle class="f-b" cx="164" cy="112" r="16" />
+        <path class="f-n" d="M176 122 L200 140" />
+      </g>
+      <circle class="f-d nos" cx="200" cy="140" r="4" />
+      <path class="hair f-n thin" style="animation-delay: 0s" d="M186 178 q4 8 -2 14" />
+      <path class="hair f-n thin" style="animation-delay: 0.5s" d="M200 178 q4 8 -2 14" />
+      <path class="hair f-n thin" style="animation-delay: 1s" d="M214 178 q4 8 -2 14" />
+      <path class="hair f-n thin" style="animation-delay: 1.5s" d="M194 178 q4 8 -2 14" />
+      <g transform="translate(330 120)">
+        <path class="f-g" d="M-30 -24 H24 Q40 -24 40 0 Q40 24 24 24 H-30 Z" />
+        <path class="f-d" d="M-30 -14 H-52 V14 H-30 Z" />
+        <path class="f-g" d="M4 24 L12 80 H-6 L-12 24 Z" />
+        <path class="air f-n thin" d="M-60 -8 H-110 M-60 4 H-96 M-60 14 H-116" />
+      </g>
+      <g class="comb">
+        <rect class="f-d" x="140" y="236" width="120" height="14" rx="4" />
+        <path
+          class="f-n thin"
+          d="M146 250 V264 M154 250 V264 M162 250 V264 M170 250 V264 M178 250 V264 M186 250 V264 M194 250 V264 M202 250 V264 M210 250 V264 M218 250 V264 M226 250 V264 M234 250 V264 M242 250 V264 M250 250 V264 M258 250 V264"
+        />
+      </g>
+      <path class="f-n" d="M20 270 H380" />
+    </svg>
+  }
+  @case ('retail') {
+    <svg class="sc sc--retail" viewBox="0 0 400 300" focusable="false">
+      <path class="f-n thin" d="M10 20 Q200 46 390 20" />
+      <g transform="translate(70 0)">
+        <g class="ptag" style="animation-delay: 0s">
+          <path class="f-n thin" d="M0 0 V26" />
+          <path class="f-b" d="M-14 26 H14 V60 L0 72 L-14 60 Z" />
+          <circle class="f-d nos" cx="0" cy="35" r="3" />
+        </g>
+      </g>
+      <g transform="translate(140 0)">
+        <g class="ptag" style="animation-delay: 0.4s">
+          <path class="f-n thin" d="M0 0 V32" />
+          <path class="f-l" d="M-14 32 H14 V66 L0 78 L-14 66 Z" />
+          <circle class="f-d nos" cx="0" cy="41" r="3" />
+        </g>
+      </g>
+      <g transform="translate(260 0)">
+        <g class="ptag" style="animation-delay: 0.8s">
+          <path class="f-n thin" d="M0 0 V32" />
+          <path class="f-g" d="M-14 32 H14 V66 L0 78 L-14 66 Z" />
+          <circle class="f-d nos" cx="0" cy="41" r="3" />
+        </g>
+      </g>
+      <g transform="translate(330 0)">
+        <g class="ptag" style="animation-delay: 1.2s">
+          <path class="f-n thin" d="M0 0 V26" />
+          <path class="f-b" d="M-14 26 H14 V60 L0 72 L-14 60 Z" />
+          <circle class="f-d nos" cx="0" cy="35" r="3" />
+        </g>
+      </g>
+      <g transform="translate(110 250)">
+        <g class="drop" style="animation-delay: 0s">
+          <g class="bagsw" style="animation-delay: 1s">
+            <path class="f-n" d="M-19.5 -86 Q-19.5 -116 0 -116 Q19.5 -116 19.5 -86" />
+            <path class="f-b" d="M-39.0 -86 H39.0 L35.0 0 H-35.0 Z" />
+            <path class="f-p nos" d="M-8 -50.0 H6 L12 -43.0 L6 -36.0 H-8 Z" />
+          </g>
+        </g>
+      </g>
+      <g transform="translate(196 250)">
+        <g class="drop" style="animation-delay: 0.25s">
+          <g class="bagsw" style="animation-delay: 1.25s">
+            <path class="f-n" d="M-16.0 -110 Q-16.0 -140 0 -140 Q16.0 -140 16.0 -110" />
+            <path class="f-g" d="M-32.0 -110 H32.0 L28.0 0 H-28.0 Z" />
+            <path class="f-p nos" d="M-8 -62.0 H6 L12 -55.0 L6 -48.0 H-8 Z" />
+          </g>
+        </g>
+      </g>
+      <g transform="translate(270 250)">
+        <g class="drop" style="animation-delay: 0.5s">
+          <g class="bagsw" style="animation-delay: 1.5s">
+            <path class="f-n" d="M-17.5 -74 Q-17.5 -104 0 -104 Q17.5 -104 17.5 -74" />
+            <path class="f-p" d="M-35.0 -74 H35.0 L31.0 0 H-31.0 Z" />
+            <path class="f-p nos" d="M-8 -44.0 H6 L12 -37.0 L6 -30.0 H-8 Z" />
+          </g>
+        </g>
+      </g>
+      <g transform="translate(346 250)">
+        <rect class="f-d" x="-26" y="-56" width="52" height="56" rx="8" />
+        <rect class="f-b nos" x="-16" y="-46" width="32" height="10" rx="2" />
+        <g class="paper">
+          <path class="f-p" d="M-16 -56 V-112 H16 V-56 Z" />
+          <path class="f-n thin" d="M-10 -100 H10 M-10 -90 H6 M-10 -80 H10 M-10 -70 H2" />
+        </g>
+        <rect class="f-d" x="-22" y="-60" width="44" height="6" rx="2" />
+      </g>
+      <path class="f-n" d="M20 252 H380" />
+    </svg>
+  }
+}

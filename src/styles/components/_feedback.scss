@@ -1,0 +1,134 @@
+// ============================================================
+// Loading and empty states.
+// ============================================================
+
+// ---------- Spinner: "working, please wait" ----------
+// <span class="vd-spinner" role="status" [attr.aria-label]="t('common.loading')"></span>
+// Sizes: --sm (16px) · default (20px) · --lg (32px)
+.vd-spinner {
+  display: inline-block;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--paper-200);
+  border-top-color: var(--pine-600);
+  border-radius: 50%;
+  animation: vd-spin 700ms linear infinite;
+
+  &--sm {
+    width: 16px;
+    height: 16px;
+  }
+
+  &--lg {
+    width: 32px;
+    height: 32px;
+    border-width: 3px;
+  }
+
+  .vd-inverse & {
+    border-color: rgb(255 251 234 / 0.25);
+    border-top-color: var(--butter-300);
+  }
+}
+
+// ---------- Skeleton: grey shapes where content will appear ----------
+// <div class="vd-skeleton vd-skeleton--text" style="width: 60%"></div>
+// <div class="vd-skeleton vd-skeleton--circle" style="width: 40px"></div>
+// <div class="vd-skeleton" style="height: 120px"></div>
+// Hide skeletons from screen readers (aria-hidden="true") and put
+// role="status" + a "Loading" label on the area around them instead.
+.vd-skeleton {
+  display: block;
+  height: 16px;
+  border-radius: var(--radius-xs);
+  background: linear-gradient(
+    90deg,
+    var(--paper-100) 0%,
+    var(--paper-200) 50%,
+    var(--paper-100) 100%
+  );
+  background-size: 200% 100%;
+  animation: vd-shimmer 1.4s linear infinite;
+
+  // One line of text: as tall as the text, with a little air.
+  &--text {
+    height: 0.8em;
+    margin-block: 0.35em;
+  }
+
+  &--circle {
+    aspect-ratio: 1;
+    height: auto;
+    border-radius: 50%;
+  }
+}
+
+// The shimmer runs right-to-left in Arabic too, following the reading direction.
+:root[dir='rtl'] .vd-skeleton {
+  animation-direction: reverse;
+}
+
+// ---------- Empty state: "loaded, and there's nothing here" ----------
+// <div class="vd-empty">
+//   <span class="vd-empty__art"><svg lucidePackage></svg></span>
+//   <h3 class="vd-empty__title">No products yet</h3>
+//   <p class="vd-empty__text">Add your first product to start selling.</p>
+//   <button vdButton="primary">Add product</button>
+// </div>
+// --compact: smaller, for inside a card or a table.
+.vd-empty {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  padding: var(--space-8) var(--space-4);
+  text-align: center;
+
+  &__art {
+    display: grid;
+    place-items: center;
+    width: 72px;
+    height: 72px;
+    margin-block-end: var(--space-1);
+    border: 1.5px dashed var(--line-strong);
+    border-radius: 50%;
+    background: var(--butter-100);
+    color: var(--ink-700);
+
+    svg {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  &__title {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 24px;
+  }
+
+  &__text {
+    max-width: 320px;
+    color: var(--ink-500);
+    font-size: 14px;
+  }
+
+  > .vd-btn {
+    margin-block-start: var(--space-2);
+  }
+
+  &--compact {
+    padding-block: var(--space-5);
+
+    .vd-empty__art {
+      width: 48px;
+      height: 48px;
+
+      svg {
+        width: 22px;
+        height: 22px;
+      }
+    }
+  }
+}

@@ -1,0 +1,60 @@
+<section
+  class="sec"
+  id="pricing"
+  aria-labelledby="pricing-title"
+  *transloco="let t; read: 'home.pricing'"
+>
+  <div class="vd-container">
+    <app-section-heading
+      class="head"
+      headingId="pricing-title"
+      [overline]="t('overline')"
+      [title]="t('title')"
+      [lead]="t('lead')"
+    />
+
+    @if (billingOptions().length > 1) {
+      <div class="billing" role="group" [attr.aria-label]="t('billingLabel')">
+        @for (option of billingOptions(); track option.id) {
+          <button
+            type="button"
+            [attr.aria-pressed]="option.id === selectedBilling()"
+            (click)="billingChange.emit(option.id)"
+          >
+            {{ option.label }}
+          </button>
+        }
+      </div>
+    }
+
+    @if (loading()) {
+      <div class="plans" role="status">
+        <span class="vd-sr">{{ t('loading') }}</span>
+        @for (n of placeholders; track n) {
+          <div class="ghost" aria-hidden="true">
+            <span class="vd-skeleton" style="width: 50%; height: 26px"></span>
+            <span class="vd-skeleton" style="width: 80%"></span>
+            <span class="vd-skeleton" style="width: 40%; height: 40px"></span>
+            <span class="vd-skeleton" style="height: 52px"></span>
+            <span class="vd-skeleton"></span>
+            <span class="vd-skeleton"></span>
+            <span class="vd-skeleton"></span>
+          </div>
+        }
+      </div>
+    } @else if (plans().length > 0) {
+      <div class="plans">
+        @for (plan of plans(); track plan.id) {
+          <app-pricing-card class="card" [plan]="plan" (choose)="planChosen.emit($event)" />
+        }
+      </div>
+
+      <app-plan-comparison class="compare" [plans]="plans()" />
+    }
+
+    <p class="fine">
+      <svg lucideInfo aria-hidden="true"></svg>
+      <span>{{ t('fine') }}</span>
+    </p>
+  </div>
+</section>

@@ -1,0 +1,143 @@
+<form
+  class="vd-drawer"
+  novalidate
+  *transloco="let t; read: 'paymentMethods.drawer'"
+  (submit)="onSubmit($event)"
+>
+  <header class="vd-drawer__head">
+    <h2 class="vd-drawer__title" vdDialogTitle>
+      {{ data.method ? t('editTitle') : t('addTitle') }}
+    </h2>
+    <button vdIconButton type="button" [label]="t('close')" (click)="ref.close()">
+      <svg lucideX></svg>
+    </button>
+  </header>
+
+  <fieldset class="vd-drawer__body body" [disabled]="saving()">
+    <legend class="vd-sr">{{ data.method ? t('editTitle') : t('addTitle') }}</legend>
+
+    @if (status() === 'failed') {
+      <div class="vd-banner vd-banner--danger" role="alert">
+        <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+        <span class="vd-banner__body">{{ t('errors.failed') }}</span>
+      </div>
+    }
+
+    <div class="vd-banner vd-banner--info">
+      <svg lucideInfo aria-hidden="true"></svg>
+      <span class="vd-banner__body">{{ t('info') }}</span>
+    </div>
+
+    <div class="two">
+      <div class="vd-field">
+        <div class="vd-field__top">
+          <label class="vd-field__label" for="pm-name"
+            >{{ t('name') }}<span class="req" aria-hidden="true">*</span></label
+          >
+          <span class="vd-field__counter" aria-hidden="true"
+            >{{ model().name.length }}/{{ limits.name }}</span
+          >
+        </div>
+        <input
+          id="pm-name"
+          class="vd-input"
+          type="text"
+          dir="auto"
+          [placeholder]="t('namePlaceholder')"
+          [formField]="methodForm.name"
+          [attr.aria-invalid]="nameError() ? true : null"
+          [attr.aria-describedby]="nameError() ? 'pm-name-error' : null"
+        />
+        @if (nameError()) {
+          <p id="pm-name-error" class="vd-field__error">
+            <svg lucideCircleExclamationPoint aria-hidden="true"></svg
+            >{{ t('errors.nameRequired') }}
+          </p>
+        }
+      </div>
+
+      <div class="vd-field">
+        <div class="vd-field__top">
+          <label class="vd-field__label" for="pm-code"
+            >{{ t('code') }}<span class="req" aria-hidden="true">*</span></label
+          >
+          <span class="vd-field__counter" aria-hidden="true"
+            >{{ model().code.length }}/{{ limits.code }}</span
+          >
+        </div>
+        <input
+          id="pm-code"
+          class="vd-input mono"
+          type="text"
+          dir="ltr"
+          spellcheck="false"
+          autocapitalize="characters"
+          [placeholder]="t('codePlaceholder')"
+          [formField]="methodForm.code"
+          (blur)="upperCode()"
+          [attr.aria-invalid]="codeError() ? true : null"
+          [attr.aria-describedby]="codeError() ? 'pm-code-error pm-code-hint' : 'pm-code-hint'"
+        />
+        @if (codeError(); as error) {
+          <p id="pm-code-error" class="vd-field__error">
+            <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('errors.' + error) }}
+          </p>
+        }
+        <p id="pm-code-hint" class="vd-field__hint">{{ t('codeHint') }}</p>
+      </div>
+    </div>
+
+    <label class="vd-choice toggle">
+      <b id="pm-cash-label">{{ t('isCash') }}</b>
+      <span id="pm-cash-text">{{ t('isCashText') }}</span>
+      <input
+        type="checkbox"
+        role="switch"
+        aria-labelledby="pm-cash-label"
+        aria-describedby="pm-cash-text"
+        [formField]="methodForm.isCash"
+      />
+    </label>
+
+    <label class="vd-choice toggle">
+      <b id="pm-ref-label">{{ t('reference') }}</b>
+      <span id="pm-ref-text">{{ t('referenceText') }}</span>
+      <input
+        type="checkbox"
+        role="switch"
+        aria-labelledby="pm-ref-label"
+        aria-describedby="pm-ref-text"
+        [formField]="methodForm.requiresReference"
+      />
+    </label>
+
+    <div class="vd-field">
+      <label class="vd-field__label" for="pm-order">{{ t('sortOrder') }}</label>
+      <input
+        id="pm-order"
+        class="vd-input"
+        type="number"
+        inputmode="numeric"
+        dir="ltr"
+        [formField]="methodForm.sortOrder"
+        [attr.aria-invalid]="orderError() ? true : null"
+        [attr.aria-describedby]="orderError() ? 'pm-order-error pm-order-hint' : 'pm-order-hint'"
+      />
+      @if (orderError()) {
+        <p id="pm-order-error" class="vd-field__error">
+          <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('errors.sortOrder') }}
+        </p>
+      }
+      <p id="pm-order-hint" class="vd-field__hint">{{ t('sortOrderHint') }}</p>
+    </div>
+  </fieldset>
+
+  <footer class="vd-drawer__foot">
+    <button vdButton type="button" [disabled]="saving()" (click)="ref.close()">
+      {{ t('cancel') }}
+    </button>
+    <button vdButton="primary" type="submit" [loading]="saving()">
+      <svg lucideCheck aria-hidden="true"></svg>{{ t('save') }}
+    </button>
+  </footer>
+</form>

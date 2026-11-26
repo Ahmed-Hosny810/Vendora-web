@@ -1,0 +1,57 @@
+<figure class="shop" [class]="'is-' + mood()" *transloco="let t; read: 'onboarding'">
+  <div class="signwrap">
+    <div class="sign" [class.is-ph]="!enName()">
+      <span class="sign__en" lang="en" dir="ltr">{{ enName() || t('shop.placeholder') }}</span>
+      @if (arName()) {
+        <span class="sign__ar" lang="ar" dir="rtl">{{ arName() }}</span>
+      }
+    </div>
+    <div class="bulbs">
+      @for (i of bulbs; track i) {
+        <i [style.--i]="i"></i>
+      }
+    </div>
+  </div>
+
+  <div class="posts"><i></i><i></i></div>
+  <div class="awning"></div>
+
+  <div class="front">
+    <div class="win">
+      @if (type(); as current) {
+        <!-- Re-created on every pick, so the new display slides in. -->
+        @for (k of [current]; track k) {
+          <div class="scwrap"><app-shop-scene [type]="k" /></div>
+          <span class="win__label">{{ t('types.' + k) }}</span>
+        }
+        @if (live()) {
+          <!-- Created once, on the first pick: the shutter rolls up. -->
+          <div class="shutter shutter--up"></div>
+        }
+      } @else if (live()) {
+        <div class="shutter">
+          <svg lucideArrowLeft class="shutter__arrow"></svg>
+          <b>{{ t('shop.chooseType') }}</b>
+          <small>{{ t('shop.chooseTypeHint') }}</small>
+        </div>
+      }
+
+      <span class="stockpill" [class.stockpill--off]="!trackInventory()">
+        <svg lucideLayers></svg
+        >{{ trackInventory() ? t('shop.trackingOn') : t('shop.trackingOff') }}
+      </span>
+    </div>
+
+    <div class="door">
+      <div
+        class="dsign"
+        [class.is-open]="door() === 'open'"
+        [class.is-closed]="door() === 'closed'"
+      >
+        <span>{{ t('shop.door.' + door()) }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="ground"></div>
+</figure>

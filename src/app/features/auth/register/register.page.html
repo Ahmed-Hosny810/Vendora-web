@@ -1,0 +1,172 @@
+<app-receipt-printer
+  [title]="printerTitle()"
+  [led]="led()"
+  [stamp]="stamp()"
+  *transloco="let t; read: 'auth.register'"
+>
+  <form class="lines" novalidate (submit)="onSubmit($event)">
+    <div class="head" aria-hidden="true">
+      <b>vendora</b>
+      <span>{{ t('receiptKind') }}</span>
+    </div>
+
+    <h2 class="title">{{ t('title') }}</h2>
+    <hr class="rule" />
+
+    <fieldset [disabled]="busy() || done()" [class.busy]="busy()">
+      <legend class="vd-sr">{{ t('legend') }}</legend>
+
+      <div class="vd-field">
+        <label class="vd-field__label" for="reg-name">{{ t('name') }}</label>
+        <input
+          id="reg-name"
+          class="vd-input"
+          autocomplete="name"
+          [formField]="registerForm.name"
+          [attr.aria-invalid]="errors().name ? true : null"
+          [attr.aria-describedby]="errors().name ? 'reg-name-error' : null"
+        />
+        @if (errors().name; as error) {
+          <p id="reg-name-error" class="vd-field__error" role="alert">
+            <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('errors.' + error) }}
+          </p>
+        }
+      </div>
+
+      <div class="vd-field">
+        <label class="vd-field__label" for="reg-username">{{ t('username') }}</label>
+        <input
+          id="reg-username"
+          class="vd-input"
+          autocomplete="username"
+          autocapitalize="none"
+          spellcheck="false"
+          [formField]="registerForm.username"
+          [attr.aria-invalid]="errors().username ? true : null"
+          [attr.aria-describedby]="errors().username ? 'reg-username-error' : null"
+        />
+        @if (errors().username; as error) {
+          <p id="reg-username-error" class="vd-field__error" role="alert">
+            <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('errors.' + error) }}
+          </p>
+        }
+      </div>
+
+      <div class="vd-field">
+        <label class="vd-field__label" for="reg-email">{{ t('email') }}</label>
+        <input
+          id="reg-email"
+          type="email"
+          class="vd-input"
+          autocomplete="email"
+          inputmode="email"
+          [placeholder]="t('emailPlaceholder')"
+          [formField]="registerForm.email"
+          [attr.aria-invalid]="errors().email ? true : null"
+          [attr.aria-describedby]="errors().email ? 'reg-email-error' : null"
+        />
+        @if (errors().email; as error) {
+          <p id="reg-email-error" class="vd-field__error" role="alert">
+            <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+            <!-- One <span> so the message, link and period stay on one line. -->
+            <span>
+              {{ t('errors.' + error) }}
+              @if (error === 'emailTaken') {
+                <a class="link" routerLink="/sign-in">{{ t('errors.signInInstead') }}</a
+                ><span>.</span>
+              }
+            </span>
+          </p>
+        }
+      </div>
+
+      <div class="vd-field">
+        <label class="vd-field__label" for="reg-password">{{ t('password') }}</label>
+        <app-password-input
+          inputId="reg-password"
+          autocomplete="new-password"
+          size="receipt"
+          [field]="registerForm.password"
+          [invalid]="!!errors().password"
+          [describedBy]="
+            errors().password
+              ? 'reg-password-error' + (showRules() ? ' reg-password-rules' : '')
+              : null
+          "
+        />
+        @if (errors().password; as error) {
+          <p id="reg-password-error" class="vd-field__error" role="alert">
+            <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('errors.' + error) }}
+          </p>
+        }
+        @if (showRules()) {
+          <app-password-rules id="reg-password-rules" [checks]="checks()" />
+        }
+      </div>
+
+      <div class="vd-field">
+        <label class="vd-field__label" for="reg-confirm">{{ t('confirm') }}</label>
+        <app-password-input
+          inputId="reg-confirm"
+          autocomplete="new-password"
+          size="receipt"
+          [field]="registerForm.confirm"
+          [invalid]="!!errors().confirm"
+          [describedBy]="errors().confirm ? 'reg-confirm-error' : null"
+        />
+        @if (errors().confirm; as error) {
+          <p id="reg-confirm-error" class="vd-field__error" role="alert">
+            <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('errors.' + error) }}
+          </p>
+        }
+      </div>
+    </fieldset>
+
+    <hr class="rule" />
+
+    <!-- The big "total" button at the bottom of the receipt. -->
+    @if (done()) {
+      <button class="total" type="button" (click)="continueAfterSuccess()">
+        <span>{{ t('checkEmail') }}</span>
+        <small>{{ t('nextStep') }}</small>
+      </button>
+    } @else {
+      <button class="total" type="submit" [attr.aria-busy]="busy() || null">
+        @if (busy()) {
+          <span
+            >{{ t('creating') }}<span class="dots" aria-hidden="true"><i></i><i></i><i></i></span
+          ></span>
+          <small>{{ t('processing') }}</small>
+        } @else {
+          <span>{{ t('submit') }}</span>
+          <small>{{ t('total') }}</small>
+        }
+      </button>
+    }
+
+    <app-social-buttons variant="outline" [disabled]="busy()" (choose)="continueWith($event)" />
+
+    <!-- Periods sit in their own <span> so no space appears before them. -->
+    <p class="legal">
+      {{ t('legalStart') }}
+      @if (termsUrl) {
+        <a class="link" [href]="termsUrl" target="_blank" rel="noopener">{{ t('terms') }}</a>
+      } @else {
+        <span>{{ t('terms') }}</span>
+      }
+      {{ t('legalAnd') }}
+      @if (privacyUrl) {
+        <a class="link" [href]="privacyUrl" target="_blank" rel="noopener">{{ t('privacy') }}</a>
+      } @else {
+        <span>{{ t('privacy') }}</span>
+      }
+      <span>{{ t('legalEnd') }}</span>
+    </p>
+
+    <p class="foot">
+      {{ t('haveAccount') }} <a class="link" routerLink="/sign-in">{{ t('signIn') }}</a>
+    </p>
+
+    <div class="barcode" aria-hidden="true"></div>
+  </form>
+</app-receipt-printer>

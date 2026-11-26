@@ -1,0 +1,49 @@
+<ng-container *transloco="let t; read: 'auth'">
+  <!-- Decorative price tags (desktop only) -->
+  <div class="tags" aria-hidden="true">
+    @for (tag of [1, 2, 3]; track tag) {
+      <svg class="tag tag--{{ tag }}" viewBox="0 0 28 22">
+        <path
+          class="tag__body"
+          d="M9 1.5h15a2.5 2.5 0 0 1 2.5 2.5v14a2.5 2.5 0 0 1-2.5 2.5H9L1.5 11z"
+        />
+        <circle class="tag__hole" cx="9.5" cy="11" r="2.2" />
+      </svg>
+    }
+  </div>
+
+  <div class="top">
+    <a class="brand" routerLink="/" [attr.aria-label]="t('homeLabel')"><vd-wordmark intro /></a>
+    <a class="back" routerLink="/" [attr.aria-label]="t('backHome')">
+      <svg lucideArrowLeft class="vd-flip-rtl" aria-hidden="true"></svg>
+      <span>{{ t('backHome') }}</span>
+    </a>
+  </div>
+
+  <!-- Re-created when the text changes, so it animates in again. -->
+  @for (k of [key()]; track k) {
+    <div class="copy">
+      <p class="kicker">{{ t(k + '.overline', { provider: provider() }) }}</p>
+      <h1>
+        {{ t(k + '.title') }} <em>{{ t(k + '.highlight') }}</em>
+      </h1>
+      <p class="sub">{{ t(k + '.lead', { provider: provider() }) }}</p>
+    </div>
+  }
+
+  <div class="foot">
+    <span>{{ t('copyright', { year }) }}</span>
+    <div class="langsw" role="group" [attr.aria-label]="t('language')">
+      @for (code of languages; track code) {
+        <button
+          type="button"
+          [attr.lang]="code"
+          [attr.aria-pressed]="code === lang()"
+          (click)="code !== lang() && languageChange.emit(code)"
+        >
+          <ng-container *transloco="let g">{{ g('language.' + code) }}</ng-container>
+        </button>
+      }
+    </div>
+  </div>
+</ng-container>

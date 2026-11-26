@@ -1,0 +1,255 @@
+:host {
+  display: block;
+  width: 580px;
+  max-width: 100%;
+}
+
+.body {
+  display: grid;
+  gap: 16px;
+}
+
+.vhead {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  b {
+    display: block;
+    font: 700 18px/1.2 var(--font-display);
+  }
+
+  span span {
+    color: var(--ink-500);
+    font-size: 14px;
+  }
+}
+
+.thumb {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--paper-100);
+  color: var(--ink-500);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  svg {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+// ---------- One option group ----------
+.group {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+
+  legend {
+    margin-bottom: 10px;
+    padding: 0;
+    font-size: 14px;
+    font-weight: 700;
+
+    span {
+      margin-inline-start: 6px;
+      color: var(--ink-500);
+      font-weight: 500;
+    }
+  }
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+// A pill with a hidden radio inside; the picked one turns butter.
+.chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding-block: 0;
+  padding-inline: 12px 18px;
+  border: 2px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  background: var(--paper-0);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform 120ms var(--ease-out),
+    box-shadow 120ms;
+
+  input {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  &:hover {
+    border-color: var(--pine-600);
+  }
+
+  &:has(input:checked) {
+    border-color: var(--pine-600);
+    background: var(--butter-300);
+    box-shadow: 3px 3px 0 var(--pine-600);
+    transform: translate(-1px, -1px);
+  }
+
+  &:has(input:focus-visible) {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 3px;
+  }
+
+  &:has(input:disabled) {
+    border-style: dashed;
+    background: repeating-linear-gradient(135deg, var(--paper-50) 0 6px, var(--paper-100) 6px 12px);
+    opacity: 0.55;
+    cursor: not-allowed;
+
+    b {
+      text-decoration: line-through;
+    }
+  }
+
+  // Sizes: a square with the stock under the letter.
+  &--size {
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    min-width: 88px;
+    min-height: 64px;
+    padding: 6px 14px;
+    border-radius: 14px;
+
+    b {
+      font: 700 20px/1 var(--font-mono);
+    }
+
+    small {
+      color: var(--ink-500);
+      font-size: 11px;
+      font-weight: 500;
+    }
+  }
+}
+
+.sw {
+  width: 26px;
+  height: 26px;
+  border: 2px solid var(--pine-900);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2px var(--paper-0);
+}
+
+// ---------- White / Medium · qty · price ----------
+.res {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--pine-100);
+  border-radius: var(--radius-md);
+  background: var(--pine-50);
+
+  b {
+    display: block;
+    font-size: 15px;
+  }
+
+  span span {
+    color: var(--ink-700);
+    font-size: 13px;
+  }
+
+  @media (width < 520px) {
+    grid-template-columns: 1fr auto;
+
+    > span:first-child {
+      grid-column: 1 / -1;
+    }
+  }
+}
+
+.price {
+  font: 700 18px/1 var(--font-mono) !important;
+  unicode-bidi: isolate;
+}
+
+.step {
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  background: var(--paper-0);
+
+  button {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 36px;
+    border: 0;
+    background: var(--paper-0);
+    color: var(--ink-900);
+    cursor: pointer;
+
+    &:hover {
+      background: var(--paper-100);
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  output {
+    width: 52px;
+    border-inline: 1px solid var(--line);
+    font: 700 15px/36px var(--font-mono);
+    text-align: center;
+  }
+}
+
+// Keyboard help line.
+.keys {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--ink-500);
+  font-size: 12px;
+
+  kbd {
+    padding: 4px 6px;
+    border: 1px solid var(--line-strong);
+    border-radius: 5px;
+    background: var(--paper-0);
+    box-shadow: 0 2px 0 var(--line-strong);
+    color: var(--ink-900);
+    font: 600 11px/1 var(--font-mono);
+  }
+}

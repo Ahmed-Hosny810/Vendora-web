@@ -1,0 +1,72 @@
+<div class="vd-drawer" *transloco="let t; read: 'billing.change'">
+  <header class="vd-drawer__head">
+    <h2 class="vd-drawer__title" vdDialogTitle>{{ t('title') }}</h2>
+    <button vdIconButton type="button" [label]="t('close')" (click)="ref.close()">
+      <svg lucideX></svg>
+    </button>
+  </header>
+
+  <div class="vd-drawer__body body">
+    @if (current(); as c) {
+      <p class="lead">{{ t('lead', { plan: c.name }) }}</p>
+    }
+
+    @if (status() === 'failed') {
+      <div class="vd-banner vd-banner--danger" role="alert">
+        <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+        <span class="vd-banner__body">{{ t('failed') }}</span>
+      </div>
+    }
+
+    <fieldset class="plans" [disabled]="saving()">
+      <legend class="vd-sr">{{ t('legend') }}</legend>
+      @for (plan of data.plans; track plan.id) {
+        <div class="plan">
+          @if (plan.id === data.currentId) {
+            <span class="vd-badge vd-badge--brand current">{{ t('current') }}</span>
+          }
+          <app-plan-card
+            name="change-plan"
+            [plan]="plan"
+            [checked]="plan.id === selectedId()"
+            (pick)="selectedId.set(plan.id); status.set('idle')"
+          />
+        </div>
+      }
+    </fieldset>
+
+    @if (blocked().length) {
+      <div class="vd-banner vd-banner--warning" role="status">
+        <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+        <span class="vd-banner__body">
+          <b>{{ t('blockedTitle', { plan: selected()?.name }) }}</b>
+          @for (key of blocked(); track key) {
+            <span class="over">{{
+              t('over.' + key, { used: data.usage[key], limit: selected()?.limits?.[key] })
+            }}</span>
+          }
+        </span>
+      </div>
+    } @else if (canSwitch()) {
+      <p class="note">
+        <svg lucideInfo aria-hidden="true"></svg>
+        <span>{{ t('when') }}</span>
+      </p>
+    }
+  </div>
+
+  <footer class="vd-drawer__foot">
+    <button vdButton type="button" (click)="ref.close()">{{ t('cancel') }}</button>
+    <button
+      vdButton="primary"
+      type="button"
+      [disabled]="!canSwitch()"
+      [loading]="saving()"
+      (click)="confirm()"
+    >
+      {{
+        selectedId() === data.currentId ? t('pickOther') : t('switch', { plan: selected()?.name })
+      }}
+    </button>
+  </footer>
+</div>

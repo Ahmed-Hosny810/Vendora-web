@@ -1,0 +1,87 @@
+<ng-container *transloco="let t; read: 'reports.chart'">
+  <!-- The picture. Time runs left to right in both languages, like the numbers. -->
+  <div class="plot" dir="ltr" aria-hidden="true">
+    <div class="y">
+      @for (tick of ticks(); track $index) {
+        <span>{{ tick }}</span>
+      }
+    </div>
+
+    <div class="area">
+      <div class="grid"><i></i><i></i><i></i></div>
+
+      <div
+        class="cols"
+        [style.grid-template-columns]="'repeat(' + bars().length + ', minmax(0, 1fr))'"
+      >
+        @for (bar of bars(); track bar.at.getTime(); let i = $index) {
+          <div
+            class="col"
+            [class.on]="hover() === i"
+            (mouseenter)="hover.set(i)"
+            (mouseleave)="hover.set(null)"
+          >
+            @if (i === peak() && hover() !== i) {
+              <b class="peak" [style.bottom.%]="bar.height">{{ bar.compact }}</b>
+            }
+            <i class="bar" [style.height.%]="bar.height"></i>
+            @if (hover() === i) {
+              <span
+                class="tip"
+                [class.tip--start]="bar.edge === 'start'"
+                [class.tip--end]="bar.edge === 'end'"
+                [style.bottom]="'min(' + bar.height + '%, calc(100% - 76px))'"
+              >
+                <span class="tip__when" dir="auto">{{ bar.tip }}</span>
+                <b
+                  >{{ money(bar.amount) }} <small>{{ t('egp') }}</small></b
+                >
+                <span class="tip__count" dir="auto">{{
+                  t(bar.count === 1 ? 'saleOne' : 'sales', { count: bar.count })
+                }}</span>
+              </span>
+            }
+          </div>
+        }
+      </div>
+
+      <div
+        class="x"
+        [style.grid-template-columns]="'repeat(' + bars().length + ', minmax(0, 1fr))'"
+      >
+        @for (bar of bars(); track bar.at.getTime()) {
+          <span>{{ bar.axis }}</span>
+        }
+      </div>
+    </div>
+  </div>
+
+  @if (empty()) {
+    <p class="empty">{{ t('empty') }}</p>
+  }
+
+  <!-- The same numbers for screen readers. -->
+  <table class="vd-sr">
+    <caption>
+      {{
+        t('caption')
+      }}
+    </caption>
+    <thead>
+      <tr>
+        <th scope="col">{{ t(period() === 'today' ? 'hour' : 'day') }}</th>
+        <th scope="col">{{ t('amount') }}</th>
+        <th scope="col">{{ t('count') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (bar of bars(); track bar.at.getTime()) {
+        <tr>
+          <th scope="row">{{ bar.tip }}</th>
+          <td>{{ money(bar.amount) }}</td>
+          <td>{{ bar.count }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</ng-container>

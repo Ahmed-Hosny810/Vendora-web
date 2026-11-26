@@ -1,0 +1,176 @@
+<ng-container *transloco="let t; read: 'employees.invite'">
+  <app-page-head [title]="t('title')" [text]="t('text')" />
+
+  <div class="grid">
+    <form class="col" novalidate (submit)="onSubmit($event)">
+      @if (status() === 'limitReached') {
+        <div class="vd-banner vd-banner--danger" role="alert">
+          <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+          <span class="vd-banner__body">
+            {{ t('errors.limitReached') }}
+            <a routerLink="/billing">{{ t('comparePlans') }}</a>
+          </span>
+        </div>
+      } @else if (status() === 'failed') {
+        <div class="vd-banner vd-banner--danger" role="alert">
+          <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+          <span class="vd-banner__body">{{ t('errors.failed') }}</span>
+        </div>
+      } @else if (tried() && errorCount()) {
+        <div class="vd-banner vd-banner--danger" role="alert">
+          <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+          <span class="vd-banner__body">
+            {{ errorCount() === 1 ? t('fixOne') : t('fixMany', { count: errorCount() }) }}
+          </span>
+        </div>
+      }
+
+      <fieldset class="col plain" [disabled]="sending()">
+        <legend class="vd-sr">{{ t('title') }}</legend>
+
+        <app-form-section [n]="1" [title]="t('sections.who')">
+          <div class="two">
+            <div class="vd-field">
+              <div class="vd-field__top">
+                <label class="vd-field__label" for="inv-fullName"
+                  >{{ t('fullName') }}<span class="req" aria-hidden="true">*</span></label
+                >
+                <span class="vd-field__counter" aria-hidden="true"
+                  >{{ model().fullName.length }}/{{ limits.fullName }}</span
+                >
+              </div>
+              <input
+                id="inv-fullName"
+                class="vd-input"
+                type="text"
+                dir="auto"
+                autocomplete="off"
+                [formField]="inviteForm.fullName"
+                [attr.aria-invalid]="fieldErrors().fullName ? true : null"
+                [attr.aria-describedby]="fieldErrors().fullName ? 'inv-fullName-error' : null"
+              />
+              @if (fieldErrors().fullName; as e) {
+                <p id="inv-fullName-error" class="vd-field__error">
+                  <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('errors.' + e) }}
+                </p>
+              }
+            </div>
+
+            <div class="vd-field">
+              <div class="vd-field__top">
+                <label class="vd-field__label" for="inv-username"
+                  >{{ t('username') }}<span class="req" aria-hidden="true">*</span></label
+                >
+                <span class="vd-field__counter" aria-hidden="true"
+                  >{{ model().username.length }}/{{ limits.username }}</span
+                >
+              </div>
+              <input
+                id="inv-username"
+                class="vd-input mono"
+                type="text"
+                dir="ltr"
+                spellcheck="false"
+                autocapitalize="off"
+                autocomplete="off"
+                [formField]="inviteForm.username"
+                [attr.aria-invalid]="fieldErrors().username ? true : null"
+                [attr.aria-describedby]="
+                  fieldErrors().username
+                    ? 'inv-username-error inv-username-hint'
+                    : 'inv-username-hint'
+                "
+              />
+              @if (fieldErrors().username; as e) {
+                <p id="inv-username-error" class="vd-field__error">
+                  <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('errors.' + e) }}
+                </p>
+              }
+              <p id="inv-username-hint" class="vd-field__hint">{{ t('usernameHint') }}</p>
+            </div>
+          </div>
+
+          <div class="vd-field">
+            <div class="vd-field__top">
+              <label class="vd-field__label" for="inv-email"
+                >{{ t('email') }}<span class="req" aria-hidden="true">*</span></label
+              >
+              <span class="vd-field__counter" aria-hidden="true"
+                >{{ model().email.length }}/{{ limits.email }}</span
+              >
+            </div>
+            <input
+              id="inv-email"
+              class="vd-input"
+              type="email"
+              dir="ltr"
+              autocomplete="off"
+              [formField]="inviteForm.email"
+              [attr.aria-invalid]="fieldErrors().email ? true : null"
+              [attr.aria-describedby]="
+                fieldErrors().email ? 'inv-email-error inv-email-hint' : 'inv-email-hint'
+              "
+            />
+            @if (fieldErrors().email; as e) {
+              <p id="inv-email-error" class="vd-field__error">
+                <svg lucideCircleExclamationPoint aria-hidden="true"></svg>{{ t('errors.' + e) }}
+              </p>
+            }
+            <p id="inv-email-hint" class="vd-field__hint">{{ t('emailHint') }}</p>
+          </div>
+        </app-form-section>
+
+        <app-form-section [n]="2" [title]="t('sections.role')">
+          <fieldset class="roles">
+            <legend class="vd-sr">{{ t('sections.role') }}</legend>
+            @for (r of roles; track r) {
+              <label class="role">
+                <input type="radio" [value]="r" [formField]="inviteForm.role" />
+                <b>
+                  @switch (r) {
+                    @case ('admin') {
+                      <svg lucideShield aria-hidden="true"></svg>
+                    }
+                    @case ('cashier') {
+                      <svg lucideMonitor aria-hidden="true"></svg>
+                    }
+                    @default {
+                      <svg lucidePackage aria-hidden="true"></svg>
+                    }
+                  }
+                  {{ t('roles.' + r) }}
+                </b>
+                <span>{{ t('roles.' + r + 'Text') }}</span>
+              </label>
+            }
+          </fieldset>
+        </app-form-section>
+      </fieldset>
+
+      <div class="vd-banner vd-banner--info">
+        <svg lucideKeyRound aria-hidden="true"></svg>
+        <span class="vd-banner__body">{{ t('passwordNote') }}</span>
+      </div>
+
+      <div class="foot">
+        <span class="grow"><span class="req">*</span> {{ t('required') }}</span>
+        <a vdButton routerLink="/employees">{{ t('cancel') }}</a>
+        <button vdButton="primary" type="submit" [loading]="sending()">
+          <svg lucideSend aria-hidden="true"></svg>{{ t('send') }}
+        </button>
+      </div>
+    </form>
+
+    <aside class="side">
+      <span class="cap">{{ t('badge') }}</span>
+      <app-staff-badge
+        [name]="model().fullName"
+        [placeholder]="t('badgeName')"
+        [username]="model().username"
+        [role]="t('roles.' + model().role)"
+        [business]="session.business()?.name ?? ''"
+      />
+      <p class="note">{{ t('optionalNote') }}</p>
+    </aside>
+  </div>
+</ng-container>

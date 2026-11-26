@@ -1,0 +1,43 @@
+@for (item of toast.toasts(); track item.id) {
+  <div class="toast" [class]="'toast--' + item.type" [class.leaving]="item.leaving">
+    <span class="icon" aria-hidden="true">
+      @switch (item.type) {
+        @case ('success') {
+          <svg lucideCircleCheck></svg>
+        }
+        @case ('warning') {
+          <svg lucideTriangleExclamationPoint></svg>
+        }
+        @case ('error') {
+          <svg lucideCircleExclamationPoint></svg>
+        }
+        @default {
+          <svg lucideInfo></svg>
+        }
+      }
+    </span>
+
+    <div class="text">
+      <p class="title">{{ item.title }}</p>
+      @if (item.body) {
+        <p class="body">{{ item.body }}</p>
+      }
+    </div>
+
+    <div class="actions">
+      @if (item.action) {
+        <button type="button" class="action" (click)="toast.runAction(item)">
+          {{ item.action }}
+        </button>
+      }
+      <button
+        type="button"
+        class="close"
+        [attr.aria-label]="'common.close' | transloco"
+        (click)="toast.dismiss(item.id)"
+      >
+        <svg lucideX></svg>
+      </button>
+    </div>
+  </div>
+}

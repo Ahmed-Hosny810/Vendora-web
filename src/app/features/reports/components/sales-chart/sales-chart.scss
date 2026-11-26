@@ -1,0 +1,168 @@
+:host {
+  position: relative;
+  display: block;
+}
+
+// Axis labels on the left, then the bars.
+.plot {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+}
+
+// Three labels: top, middle, 0. They line up with the three grid lines.
+.y {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 220px;
+  margin-top: -7px;
+  color: var(--ink-500);
+  font: 500 11px/14px var(--font-mono);
+  text-align: end;
+}
+
+.area {
+  position: relative;
+  min-width: 0;
+}
+
+// Faint lines; the bottom one is the solid baseline.
+.grid {
+  position: absolute;
+  inset: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 220px;
+  pointer-events: none;
+
+  i {
+    height: 0;
+    border-top: 1px dashed var(--line);
+
+    &:last-child {
+      border-top: 1px solid var(--line-strong);
+    }
+  }
+}
+
+.cols {
+  position: relative;
+  display: grid;
+  gap: 2px;
+  height: 220px;
+}
+
+// A full-height column: the whole strip reacts to the pointer, not just the bar.
+.col {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 100%;
+  cursor: default;
+
+  &.on {
+    background: rgb(1 62 55 / 5%);
+  }
+}
+
+// Thin bar, rounded only at the top, sitting on the baseline.
+.bar {
+  width: 100%;
+  max-width: 28px;
+  border-radius: 4px 4px 0 0;
+  background: var(--pine-700);
+  transition: height 400ms var(--ease-out);
+
+  .on & {
+    background: var(--pine-900);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+// The best bar's value, just above it.
+.peak {
+  position: absolute;
+  left: 50%;
+  margin-bottom: 4px;
+  color: var(--ink-900);
+  font: 600 11px/1 var(--font-mono);
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+
+.tip {
+  // Sits above the bar, but never higher than the chart's top
+  // (the template caps its bottom at 100% minus its own height).
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  display: grid;
+  gap: 2px;
+  margin-bottom: 8px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--ink-900);
+  box-shadow: 0 6px 16px rgb(1 62 55 / 20%);
+  color: var(--ink-on-dark);
+  font-size: 12px;
+  white-space: nowrap;
+  transform: translateX(-50%);
+  pointer-events: none;
+
+  b {
+    font: 600 14px/1.2 var(--font-mono);
+
+    small {
+      color: var(--ink-on-dark-muted);
+      font-size: 11px;
+    }
+  }
+
+  &__when,
+  &__count {
+    color: var(--ink-on-dark-muted);
+  }
+
+  // Near the edges: open inwards.
+  &--start {
+    left: 0;
+    transform: none;
+  }
+
+  &--end {
+    right: 0;
+    left: auto;
+    transform: none;
+  }
+}
+
+.x {
+  display: grid;
+  gap: 2px;
+  margin-top: 8px;
+  color: var(--ink-500);
+  font: 500 11px/1 var(--font-mono);
+
+  span {
+    overflow: visible;
+    text-align: center;
+    white-space: nowrap;
+  }
+}
+
+.empty {
+  position: absolute;
+  top: 90px;
+  left: 0;
+  right: 0;
+  margin: 0;
+  color: var(--ink-500);
+  font-size: 14px;
+  text-align: center;
+}

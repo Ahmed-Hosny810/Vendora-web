@@ -1,0 +1,51 @@
+:host {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.led {
+  display: block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #0b4d45; // an unlit bulb
+  box-shadow: inset 0 1px 1px rgb(0 0 0 / 40%);
+}
+
+// Lit bulbs glow in their colour.
+.led--ok.on {
+  background: #6fe3a8;
+  box-shadow: 0 0 8px #6fe3a8;
+}
+
+.led--wait.on {
+  background: var(--butter-300);
+  box-shadow: 0 0 8px var(--butter-300);
+}
+
+.led--err.on {
+  background: #ff6b5e;
+  box-shadow: 0 0 10px #ff6b5e;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  // Green blinks 3 times, yellow keeps blinking while waiting,
+  // red blinks 4 times (after the shake).
+  .led--ok.on {
+    animation: blink 1.1s steps(1) 0.4s 3;
+  }
+
+  .led--wait.on {
+    animation: blink 0.7s steps(1) infinite;
+  }
+
+  .led--err.on {
+    animation: blink 0.45s steps(1) 4;
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.15;
+  }
+}

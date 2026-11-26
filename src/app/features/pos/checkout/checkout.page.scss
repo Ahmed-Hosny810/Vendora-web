@@ -1,0 +1,684 @@
+@use 'abstracts' as *;
+@use '../../../shared/styles/app-forms' as forms;
+
+:host {
+  display: grid;
+  min-width: 0;
+}
+
+// The sale (start side) and the payment (end side).
+.co {
+  display: grid;
+  grid-template-columns: 380px minmax(0, 1fr);
+  min-height: calc(100dvh - 64px);
+  min-width: 0;
+  @include forms.field-bits;
+
+  @include down(lg) {
+    grid-template-columns: 320px minmax(0, 1fr);
+  }
+
+  @include down(md) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+// ========== The sale ==========
+.sum {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  padding: 24px 20px;
+  border-inline-end: 1px solid var(--line);
+  background: var(--paper-0);
+
+  h1 {
+    margin: 0;
+    font: 700 18px/1.2 var(--font-display);
+
+    :host-context(:lang(ar)) & {
+      font-family: 'Alexandria', var(--font-display);
+    }
+  }
+
+  @include down(md) {
+    border-inline-end: 0;
+    border-bottom: 1px solid var(--line);
+  }
+}
+
+.back {
+  display: inline-flex;
+  justify-self: start;
+  align-items: center;
+  gap: 8px;
+  color: var(--pine-700);
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  // Once something is paid, leaving would orphan the payment.
+  &--off {
+    color: var(--ink-500);
+    text-decoration: none;
+    opacity: 0.6;
+  }
+}
+
+.items {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  font: 500 13px/1.6 var(--font-mono);
+  list-style: none;
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+
+    span:last-child {
+      direction: ltr;
+      unicode-bidi: isolate;
+      white-space: nowrap;
+    }
+  }
+
+  :host-context(:lang(ar)) & {
+    font-family: 'IBM Plex Sans Arabic', var(--font-mono);
+  }
+}
+
+// Dark "left to pay" box.
+.due {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border-radius: var(--radius-md);
+  background: var(--pine-900);
+  color: var(--ink-on-dark);
+
+  .r {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 14px;
+
+    > :last-child {
+      direction: ltr;
+      unicode-bidi: isolate;
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+  }
+
+  .left {
+    margin-top: 4px;
+    padding-top: 12px;
+    border-top: 1px dashed rgba(255, 239, 179, 0.35);
+    color: var(--butter-300);
+    font-size: 16px;
+    font-weight: 700;
+
+    b {
+      font: 700 30px/1 var(--font-display) !important;
+    }
+  }
+}
+
+// A payment already recorded.
+.paid {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background: var(--success-bg);
+  color: var(--success-fg);
+  font-size: 14px;
+
+  svg {
+    flex: none;
+    width: 16px;
+    height: 16px;
+  }
+
+  span {
+    display: grid;
+    flex: 1;
+    color: var(--ink-700);
+  }
+
+  small {
+    color: var(--success-fg);
+    font: 500 11px/1.4 var(--font-mono);
+  }
+
+  b {
+    direction: ltr;
+    unicode-bidi: isolate;
+    font-family: var(--font-mono);
+    font-weight: 600;
+  }
+}
+
+// ========== Payment ==========
+.pay {
+  display: grid;
+  align-content: start;
+  gap: 18px;
+  min-width: 0;
+  padding: 24px;
+
+  @include down(md) {
+    padding: 18px 14px 40px;
+  }
+}
+
+.partly {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 8px 4px;
+  color: var(--warning-fg);
+  font-size: 14px;
+
+  svg {
+    flex: none;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+// Payment method cards.
+.methods {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+
+  legend {
+    margin-bottom: 8px;
+    padding: 0;
+    color: var(--ink-900);
+    font-size: 14px;
+    font-weight: 600;
+  }
+}
+
+.m {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 18px 10px;
+  border: 2px solid var(--line-strong);
+  border-radius: var(--radius-md);
+  background: var(--paper-0);
+  font-size: 15px;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+
+  input {
+    position: absolute;
+    opacity: 0;
+  }
+
+  svg {
+    width: 28px;
+    height: 28px;
+    color: var(--pine-600);
+  }
+
+  small {
+    min-height: 14px;
+    color: var(--ink-500);
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  &:has(input:checked) {
+    border-color: var(--pine-600);
+    background: var(--butter-300);
+    box-shadow: 4px 4px 0 var(--pine-600);
+    transform: translate(-2px, -2px);
+  }
+
+  &:has(input:focus-visible) {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+}
+
+.lbl {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+// ----- Cash -----
+.cash {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  align-items: start;
+  gap: 20px;
+
+  @include down(lg) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  &__main {
+    display: grid;
+    gap: 12px;
+    min-width: 0;
+
+    .lbl {
+      margin-bottom: -4px;
+    }
+  }
+}
+
+// Big money box ("2000  EGP"), numbers on the end side like a calculator.
+.amt {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 72px;
+  padding: 0 20px;
+  border: 2px solid var(--pine-600);
+  border-radius: var(--radius-md);
+  background: var(--paper-0);
+
+  &:focus-within {
+    box-shadow: 0 0 0 3px var(--butter-300);
+  }
+
+  input {
+    flex: 1;
+    width: 0;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--ink-900);
+    font: 700 34px/1 var(--font-mono);
+    text-align: end;
+  }
+
+  span {
+    color: var(--ink-500);
+    font: 700 14px/1 var(--font-mono);
+  }
+
+  &--sm {
+    min-height: 64px;
+
+    input {
+      font-size: 30px;
+    }
+  }
+
+  &--err {
+    border-color: var(--danger-fg);
+  }
+}
+
+.keys {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--ink-500);
+  font-size: 12px;
+
+  kbd {
+    display: inline-grid;
+    place-items: center;
+    padding: 3px 6px;
+    border: 1px solid var(--line-strong);
+    border-radius: 5px;
+    background: var(--paper-0);
+    box-shadow: 0 2px 0 var(--line-strong);
+    color: var(--ink-900);
+    font: 600 11px/1 var(--font-mono);
+
+    svg {
+      width: 11px;
+      height: 11px;
+    }
+  }
+
+  // Phones use the keypad or their own keyboard.
+  @include down(md) {
+    display: none;
+  }
+}
+
+// Exact · 1,800 · 2,000 · 2,500
+.quick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  button {
+    min-height: 44px;
+    padding: 0 16px;
+    border: 1.5px solid var(--line-strong);
+    border-radius: var(--radius-pill);
+    background: var(--paper-0);
+    color: var(--ink-900);
+    font: 600 14px/1 var(--font-mono);
+    cursor: pointer;
+
+    &:hover {
+      border-color: var(--pine-600);
+      background: var(--butter-100);
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--focus-ring);
+      outline-offset: 2px;
+    }
+  }
+}
+
+// "Exact" is a word, not a number: normal font.
+.quick .word {
+  font-family: var(--font-sans);
+}
+
+// The keypad keeps 1 2 3 on the left in Arabic too (dir="ltr" in the template).
+
+// "Change to give 239.84 EGP"
+.change {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 20px;
+  border: 2px solid var(--pine-600);
+  border-radius: var(--radius-md);
+  background: var(--butter-300);
+  animation: pop 300ms var(--ease-out);
+
+  svg {
+    flex: none;
+    width: 22px;
+    height: 22px;
+  }
+
+  span {
+    flex: 1;
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  b {
+    font: 700 38px/1 var(--font-display);
+    unicode-bidi: isolate;
+
+    small {
+      font-size: 14px;
+    }
+  }
+}
+
+.short {
+  margin: 0;
+  color: var(--warning-fg);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+// 3 × 4 keypad with chunky keys.
+.pad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+
+  button {
+    display: grid;
+    place-items: center;
+    min-height: 58px;
+    border: 1.5px solid var(--pine-600);
+    border-radius: var(--radius-md);
+    background: var(--paper-0);
+    box-shadow: 0 4px 0 var(--line-strong);
+    color: var(--ink-900);
+    font: 700 22px/1 var(--font-mono);
+    cursor: pointer;
+    transition: transform 80ms;
+
+    &:active {
+      box-shadow: 0 1px 0 var(--line-strong);
+      transform: translateY(3px);
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--focus-ring);
+      outline-offset: 2px;
+    }
+
+    svg {
+      width: 22px;
+      height: 22px;
+    }
+  }
+
+  @include down(lg) {
+    max-width: 420px;
+  }
+}
+
+.two {
+  @include forms.two;
+}
+
+.ref {
+  min-height: 64px;
+  font: 500 22px/1 var(--font-mono);
+}
+
+.never {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--ink-500);
+  font-size: 13px;
+
+  svg {
+    flex: none;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+
+  .vd-btn {
+    min-height: 56px;
+  }
+
+  @include down(md) {
+    flex-direction: column-reverse;
+
+    .vd-btn {
+      justify-content: center;
+    }
+  }
+}
+
+// ----- Recording / recovery -----
+.state {
+  display: grid;
+  gap: 12px;
+  padding: 20px;
+  border: 2px solid var(--pine-600);
+  border-radius: var(--radius-lg);
+  background: var(--paper-0);
+  box-shadow: 5px 5px 0 var(--butter-500);
+
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    font: 700 20px/1.2 var(--font-display);
+
+    :host-context(:lang(ar)) & {
+      font-family: 'Alexandria', var(--font-display);
+    }
+
+    svg {
+      flex: none;
+      width: 24px;
+      height: 24px;
+      color: var(--warning-fg);
+    }
+  }
+
+  p {
+    margin: 0;
+    color: var(--ink-700);
+    font-size: 14px;
+  }
+
+  &--warn {
+    border-color: var(--warning-fg);
+    box-shadow: none;
+  }
+}
+
+.spin {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border: 2.5px solid var(--line-strong);
+  border-top-color: var(--pine-600);
+  border-radius: 50%;
+  animation: spin 900ms linear infinite;
+
+  // Inside the locked button: light ring on dark.
+  &--btn {
+    width: 18px;
+    height: 18px;
+    border-color: rgba(255, 255, 255, 0.35);
+    border-top-color: currentColor;
+  }
+}
+
+.steps {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+  }
+
+  i {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    font-style: normal;
+
+    svg {
+      width: 13px;
+      height: 13px;
+    }
+  }
+
+  .ok i {
+    background: var(--success-fg);
+    color: var(--paper-0);
+  }
+
+  .wait i {
+    border: 2px solid var(--warning-fg);
+    border-top-color: transparent;
+    animation: spin 1s linear infinite;
+  }
+}
+
+.keep {
+  font-size: 12px !important;
+  color: var(--ink-500) !important;
+}
+
+.safe {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--success-bg);
+  color: var(--success-fg) !important;
+  font-weight: 600;
+
+  svg {
+    flex: none;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.dir {
+  :host-context([dir='rtl']) & {
+    transform: scaleX(-1);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.97);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spin,
+  .steps .wait i {
+    animation-duration: 3s;
+  }
+
+  .change {
+    animation: none;
+  }
+}

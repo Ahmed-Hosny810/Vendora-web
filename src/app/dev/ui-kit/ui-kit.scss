@@ -1,0 +1,103 @@
+@use 'abstracts' as *;
+
+.kit {
+  display: grid;
+  gap: var(--space-10);
+  padding-block: var(--space-10) var(--space-16);
+}
+
+.kit__head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: start;
+  gap: var(--space-4);
+}
+
+.kit__muted {
+  color: var(--ink-500);
+}
+
+.kit__section {
+  display: grid;
+  gap: var(--space-3);
+  padding-block-start: var(--space-6);
+  border-block-start: 1px solid var(--line);
+
+  h2 {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+  }
+
+  h3 {
+    margin-block-start: var(--space-2);
+  }
+}
+
+.kit__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+
+  &--baseline {
+    align-items: baseline;
+  }
+}
+
+.kit__stack {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.kit__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-4);
+}
+
+.kit__narrow {
+  max-width: 360px;
+}
+
+.kit__dark {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border-radius: var(--radius-md);
+  background: var(--ink-900);
+}
+
+.kit__form {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--space-5);
+  align-items: start;
+}
+
+.kit__wide {
+  grid-column: 1 / -1;
+}
+
+.kit__model {
+  margin: 0;
+  padding: var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--paper-100);
+  white-space: pre-wrap;
+}
+
+.kit__skeleton {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.kit__skeleton-row {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  align-items: center;
+  gap: var(--space-3);
+}

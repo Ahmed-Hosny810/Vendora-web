@@ -1,0 +1,109 @@
+@use 'abstracts' as *;
+@use '../../../shared/styles/app-forms' as forms;
+
+:host {
+  display: contents;
+}
+
+.grid {
+  @include forms.grid;
+  @include forms.field-bits;
+}
+
+.col {
+  @include forms.column;
+
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.two {
+  @include forms.two;
+}
+
+// Cost · Selling price · Tax rate (two columns when cost is hidden).
+.three {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+
+  &.no-cost {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @include down(md) {
+    &,
+    &.no-cost {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+.arabic {
+  font-family: 'IBM Plex Sans Arabic', var(--font-sans);
+}
+
+// "+ New category" on the end of a label row.
+.new-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--pine-700);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--ink-500);
+  font-size: 12px;
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.toggle {
+  @include forms.toggle-row;
+}
+
+.foot {
+  @include forms.foot;
+}
+
+.preview {
+  @include forms.preview;
+
+  &__cap {
+    @include forms.preview-cap;
+  }
+
+  &__note {
+    @include forms.preview-note;
+  }
+}

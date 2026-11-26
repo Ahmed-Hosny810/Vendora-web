@@ -1,0 +1,194 @@
+<figure
+  class="comp"
+  role="img"
+  *transloco="let t; read: 'home'"
+  [attr.aria-label]="t('hero.demoLabel')"
+>
+  <!-- Card: today's sales per branch -->
+  <div class="float branch" aria-hidden="true">
+    <div class="branch__head">
+      <span>{{ t('hero.branchesToday') }}</span>
+      <svg lucideChartColumn></svg>
+    </div>
+    <div class="branch__total">{{ t('hero.branchTotal', { amount: '48,230' }) }}</div>
+    <div class="bars">
+      @for (bar of branches; track bar.key) {
+        <div>
+          <span>{{ t('branches.' + bar.key) }}</span>
+          <i [style.width.%]="bar.share"></i>
+          <bdi class="fig">{{ bar.amount }}</bdi>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- The terminal -->
+  <div class="term" aria-hidden="true">
+    <div class="scr">
+      <div class="scr__top">
+        <span class="dots"><i></i><i></i><i></i></span>
+        <b>{{ t('pos.counter') }}</b>
+        <span class="vd-badge vd-badge--success vd-badge--dot">{{ t('pos.shiftOpen') }}</span>
+      </div>
+
+      <div class="pos">
+        <!-- Left: products -->
+        <div class="pos__catalog">
+          <div class="search"><svg lucideSearch></svg>{{ t('pos.search') }}</div>
+          <div class="cats">
+            @for (cat of t('hero.cats'); track $index) {
+              <span [class.on]="$first">{{ cat }}</span>
+            }
+          </div>
+          <div class="tiles">
+            @for (product of products; track product.key) {
+              <!-- The third tile gets "tapped" during the animation. -->
+              <div class="tile" [class.tap]="$index === 2">
+                <div class="tile__img" [attr.data-tone]="product.tone">
+                  <svg [lucideIcon]="product.icon"></svg>
+                </div>
+                <b>{{ t('products.' + product.key + '.name') }}</b>
+                <div class="tile__row">
+                  <span>{{ t('products.' + product.key + '.variant') }}</span>
+                  <bdi class="fig">{{ product.price }}</bdi>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Right: basket -->
+        <div class="pos__basket">
+          <div class="cust">
+            <span class="av">{{ t('pos.initials') }}</span>
+            <span
+              ><b>{{ t('pos.customer') }}</b> · <bdi dir="ltr">010 •••• 4821</bdi></span
+            >
+            <span class="cust__change">{{ t('pos.change') }}</span>
+          </div>
+
+          <div class="lines">
+            <div class="line">
+              <span class="q">1</span>
+              <div>
+                <div class="n">{{ t('products.coffee.name') }}</div>
+                <div class="v">{{ t('products.coffee.line') }}</div>
+              </div>
+              <span class="a"><bdi>420.00</bdi></span>
+            </div>
+            <div class="line">
+              <span class="q">2</span>
+              <div>
+                <div class="n">{{ t('products.mug.name') }}</div>
+                <div class="v">{{ t('products.mug.line') }}</div>
+                <div class="d"><svg lucidePercent></svg>{{ t('pos.itemDiscount') }}</div>
+              </div>
+              <span class="a"
+                ><s><bdi>570.00</bdi></s
+                ><bdi>513.00</bdi></span
+              >
+            </div>
+            <!-- Added during the animation (the tapped tile). -->
+            <div class="line line--new">
+              <span class="q">1</span>
+              <div>
+                <div class="n">{{ t('products.dates.name') }}</div>
+                <div class="v">{{ t('products.dates.line') }}</div>
+              </div>
+              <span class="a"><bdi>210.00</bdi></span>
+            </div>
+          </div>
+
+          <div class="tot">
+            <div class="tot__sub">
+              <span>{{ t('pos.subtotal') }}</span
+              ><bdi class="fig">1,200.00</bdi>
+            </div>
+            <div>
+              <span>{{ t('pos.discounts') }}</span
+              ><bdi class="fig">−57.00</bdi>
+            </div>
+            <div class="tot__sub">
+              <span>{{ t('pos.vat') }}</span
+              ><bdi class="fig">140.37</bdi>
+            </div>
+            <div class="grand">
+              <span>{{ t('pos.total') }}</span>
+              <!-- Old and new total sit on top of each other; one fades into the other. -->
+              <span class="grand__fig">
+                <bdi class="fig old">933.00</bdi>
+                <bdi class="fig new">1,143.00</bdi>
+              </span>
+            </div>
+          </div>
+
+          <div class="pays">
+            @for (pay of payments; track pay.key) {
+              <div class="pay" [class.on]="pay.amount">
+                <svg [lucideIcon]="pay.icon"></svg>
+                {{ t('pos.' + pay.key) }}
+                <bdi class="fig">{{ pay.amount ?? '—' }}</bdi>
+              </div>
+            }
+          </div>
+
+          <div class="change-due">
+            <span>{{ t('pos.changeDue') }}</span
+            ><bdi class="fig">20.00</bdi>
+          </div>
+          <div class="complete"><svg lucideCheck></svg>{{ t('pos.complete') }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Printed receipt -->
+  <div class="float receipt" aria-hidden="true">
+    <div class="rcpt">
+      <div class="c b">{{ t('hero.receipt.store') }}</div>
+      <div class="c">{{ t('pos.counter') }}</div>
+      <div class="c">{{ t('hero.receipt.number') }}</div>
+      <hr />
+      <div class="r">
+        <span>{{ t('hero.receipt.items.coffee') }}</span
+        ><bdi>420.00</bdi>
+      </div>
+      <div class="r">
+        <span>{{ t('hero.receipt.items.mug') }}</span
+        ><bdi>513.00</bdi>
+      </div>
+      <div class="r">
+        <span>{{ t('hero.receipt.items.dates') }}</span
+        ><bdi>210.00</bdi>
+      </div>
+      <hr />
+      <div class="r b">
+        <span>{{ t('hero.receipt.total') }}</span
+        ><bdi>1,143.00</bdi>
+      </div>
+      <div class="r">
+        <span>{{ t('hero.receipt.card') }}</span
+        ><bdi>643.00</bdi>
+      </div>
+      <div class="r">
+        <span>{{ t('hero.receipt.cash') }}</span
+        ><bdi>520.00</bdi>
+      </div>
+      <div class="r">
+        <span>{{ t('hero.receipt.change') }}</span
+        ><bdi>20.00</bdi>
+      </div>
+      <hr />
+      <div class="c">{{ t('hero.receipt.thanks') }}</div>
+    </div>
+  </div>
+
+  <!-- Low-stock alert that drops in at the end -->
+  <div class="float alert" aria-hidden="true">
+    <span class="alert__icon"><svg lucideTriangleExclamationPoint></svg></span>
+    <div>
+      <div class="alert__title">{{ t('hero.alertTitle') }}</div>
+      <div class="alert__body">{{ t('hero.alertBody') }}</div>
+    </div>
+  </div>
+</figure>

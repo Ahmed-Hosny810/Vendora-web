@@ -1,0 +1,105 @@
+@use 'abstracts' as *;
+@use '../../styles/home';
+
+.sec {
+  @include home.section-space;
+}
+
+.head {
+  @include home.reveal;
+  margin-block-end: 36px;
+
+  @include up(md) {
+    margin-block-end: 56px;
+  }
+}
+
+// Pill switch; the pressed option is filled.
+.billing {
+  display: inline-flex;
+  gap: 4px;
+  margin-block-end: 28px;
+  padding: 4px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  background: var(--paper-0);
+
+  button {
+    min-height: 40px;
+    padding: 0 18px;
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: none;
+    color: var(--ink-700);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+
+    &[aria-pressed='true'] {
+      background: var(--ink-900);
+      color: var(--ink-on-dark);
+    }
+  }
+}
+
+// One column (max 560px) until desktop, then three.
+.plans {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  max-width: 560px;
+
+  @include up(lg) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: none;
+  }
+}
+
+.card {
+  @include home.reveal;
+}
+
+// Later cards arrive a little after the first.
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .card:nth-child(2) {
+      animation-range: entry 8% entry 45%;
+    }
+
+    .card:nth-child(3) {
+      animation-range: entry 16% entry 55%;
+    }
+  }
+}
+
+// Grey placeholder card while plans load.
+.ghost {
+  display: grid;
+  gap: 14px;
+  padding: 28px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--paper-0);
+}
+
+.compare {
+  margin-block-start: 40px;
+}
+
+.fine {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 20px 0 0;
+  color: var(--ink-700);
+  font-size: 14px;
+
+  svg {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    margin-block-start: 2px;
+    color: var(--info-fg);
+  }
+}

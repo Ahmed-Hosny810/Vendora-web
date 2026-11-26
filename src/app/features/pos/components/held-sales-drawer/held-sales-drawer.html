@@ -1,0 +1,90 @@
+<div class="vd-drawer" *transloco="let t; read: 'pos.held'">
+  <header class="vd-drawer__head">
+    <h2 class="vd-drawer__title" vdDialogTitle>{{ t('title') }}</h2>
+    <button vdIconButton type="button" [label]="t('close')" (click)="ref.close()">
+      <svg lucideX></svg>
+    </button>
+  </header>
+
+  <div class="vd-drawer__body body">
+    @if (data.basketHasItems) {
+      <div class="vd-banner vd-banner--warning" role="status">
+        <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+        <span class="vd-banner__body">{{ t('replaceWarning') }}</span>
+      </div>
+    }
+    @if (failed()) {
+      <div class="vd-banner vd-banner--danger" role="alert">
+        <svg lucideCircleExclamationPoint aria-hidden="true"></svg>
+        <span class="vd-banner__body">{{ t('failed') }}</span>
+      </div>
+    }
+
+    @switch (status()) {
+      @case ('loading') {
+        <span class="vd-skeleton" style="height: 96px"></span>
+        <span class="vd-skeleton" style="height: 96px"></span>
+        <span class="vd-sr" role="status">{{ t('loading') }}</span>
+      }
+      @case ('error') {
+        <app-load-error
+          [title]="t('errorTitle')"
+          [text]="t('errorText')"
+          [retryLabel]="t('tryAgain')"
+          (retry)="load()"
+        />
+      }
+      @default {
+        @if (!sales().length) {
+          <div class="vd-empty">
+            <span class="vd-empty__art"><svg lucideClock></svg></span>
+            <h3 class="vd-empty__title">{{ t('emptyTitle') }}</h3>
+            <p class="vd-empty__text">{{ t('emptyText') }}</p>
+          </div>
+        } @else {
+          <ul class="list">
+            @for (s of sales(); track s.id) {
+              @let a = ago(s.heldAt);
+              <li class="held">
+                <div class="held__top">
+                  <span class="held__ago"
+                    ><svg lucideClock aria-hidden="true"></svg
+                    >{{ t('ago.' + a.unit, { n: a.n }) }}</span
+                  >
+                  <b dir="ltr">{{ money(s.total) }}</b>
+                </div>
+                <p class="held__meta">
+                  <bdi>{{ s.customerName || t('walkIn') }}</bdi> ·
+                  {{ t('items', { count: s.itemCount }) }} · <bdi>{{ s.cashierName }}</bdi>
+                </p>
+                <div class="held__acts">
+                  <button
+                    vdButton="primary"
+                    size="sm"
+                    type="button"
+                    [loading]="busyId() === s.id && confirmId() !== s.id"
+                    [disabled]="!!busyId() && busyId() !== s.id"
+                    (click)="resume(s)"
+                  >
+                    <svg lucidePlay class="vd-flip-rtl" aria-hidden="true"></svg>{{ t('resume') }}
+                  </button>
+                  <button
+                    [vdButton]="confirmId() === s.id ? 'danger' : 'ghost'"
+                    size="sm"
+                    type="button"
+                    [loading]="busyId() === s.id && confirmId() === s.id"
+                    [disabled]="!!busyId() && busyId() !== s.id"
+                    (click)="discard(s)"
+                  >
+                    <svg lucideTrash2 aria-hidden="true"></svg
+                    >{{ confirmId() === s.id ? t('discardSure') : t('discard') }}
+                  </button>
+                </div>
+              </li>
+            }
+          </ul>
+        }
+      }
+    }
+  </div>
+</div>

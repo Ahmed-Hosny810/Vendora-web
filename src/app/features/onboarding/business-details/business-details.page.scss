@@ -1,0 +1,233 @@
+@use '../styles/onb';
+
+:host {
+  @include onb.page;
+  @include onb.primary-shadow;
+}
+
+.req-note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--ink-500);
+  font-size: 13px;
+
+  b {
+    color: var(--danger-fg);
+    font-weight: 700;
+  }
+}
+
+.form {
+  display: grid;
+  gap: 22px;
+}
+
+// Slightly bigger labels than the app forms.
+.vd-field {
+  gap: 8px;
+}
+
+.vd-field__label {
+  font-size: 15px;
+}
+
+.star {
+  margin-inline-start: 2px;
+  color: var(--danger-fg);
+}
+
+.vd-field__counter {
+  font-family: var(--font-mono);
+}
+
+.vd-field__error,
+.vd-field__hint {
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.vd-input--lg {
+  min-height: 54px;
+}
+
+.arabic {
+  font-family: 'IBM Plex Sans Arabic', var(--font-sans);
+}
+
+.end {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.opt-tag {
+  padding: 4px 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--paper-100);
+  color: var(--ink-500);
+  font: 500 12px/1 var(--font-sans);
+}
+
+// Select with a small butter store icon at the start.
+.sel {
+  position: relative;
+
+  select {
+    padding-inline-start: 52px;
+    cursor: pointer;
+  }
+
+  &__ic {
+    position: absolute;
+    top: 50%;
+    inset-inline-start: 14px;
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    background: var(--butter-300);
+    color: var(--pine-600);
+    pointer-events: none;
+    translate: 0 -50%;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+
+// Locked currency: dashed, greyed, with a padlock.
+.lock {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 54px;
+  padding: 0 16px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-md);
+  background: var(--paper-100);
+  font-size: 16px;
+  font-weight: 600;
+
+  &__code {
+    padding: 6px 8px;
+    border-radius: 6px;
+    background: var(--pine-600);
+    color: var(--butter-300);
+    font: 600 13px/1 var(--font-mono);
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+    margin-inline-start: auto;
+    color: var(--ink-500);
+  }
+}
+
+// ---------- inventory tracking: two radio cards ----------
+.inv {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+
+  legend {
+    margin-bottom: 8px;
+    padding: 0;
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  &__opts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+
+    @media (max-width: 640px) {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+.rcard {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 4px 12px;
+  padding: 16px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: var(--radius-md);
+  background: var(--paper-0);
+  cursor: pointer;
+  transition:
+    border-color var(--duration-fast),
+    box-shadow var(--duration-fast),
+    transform var(--duration-fast) var(--ease-out);
+
+  &:hover {
+    border-color: var(--ink-700);
+  }
+
+  &:has(input:checked) {
+    border-color: var(--pine-600);
+    box-shadow:
+      inset 0 0 0 1px var(--pine-600),
+      4px 4px 0 0 var(--butter-500);
+    transform: translate(-2px, -2px);
+  }
+
+  input {
+    display: grid;
+    grid-row: span 2;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    margin: 2px 0 0;
+    border: 1.5px solid var(--line-strong);
+    border-radius: 50%;
+    background: var(--paper-0);
+    cursor: pointer;
+    appearance: none;
+
+    &:checked {
+      border-color: var(--pine-600);
+      background: var(--pine-600);
+
+      &::after {
+        content: '';
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--butter-300);
+      }
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--focus-ring);
+      outline-offset: 2px;
+    }
+  }
+
+  b {
+    font-size: 15px;
+  }
+
+  span {
+    color: var(--ink-500);
+    font-size: 13px;
+    line-height: 19px;
+  }
+}
+
+.actions {
+  @include onb.actions;
+}

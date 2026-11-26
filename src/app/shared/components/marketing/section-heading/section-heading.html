@@ -1,0 +1,12 @@
+<p class="overline">{{ overline() }}</p>
+<h2 class="title" [id]="headingId()">
+  {{ title() }}
+  @if (highlight(); as highlight) {
+    <span class="hl">{{ highlight }}</span>
+  }
+</h2>
+@if (lead(); as lead) {
+  <p class="lead">{{ lead }}</p>
+}
+<!-- Anything extra (a link, a note) goes under the lead. -->
+<ng-content />

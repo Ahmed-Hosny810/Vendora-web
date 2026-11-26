@@ -1,0 +1,9 @@
+<div class="denied" *transloco="let t; read: 'shell'">
+  <span class="denied__ic" aria-hidden="true">
+    <svg lucideLock></svg>
+    <span class="denied__tag">{{ t('denied.badge') }}</span>
+  </span>
+  <h1>{{ t('denied.title') }}</h1>
+  <p>{{ t('denied.text', { area: area() ? t('nav.' + area()) : t('denied.thisArea') }) }}</p>
+  <a vdButton="primary" routerLink="/overview">{{ t('denied.back') }}</a>
+</div>

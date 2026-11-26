@@ -1,0 +1,70 @@
+@use 'abstracts' as *;
+
+:host {
+  display: contents;
+}
+
+.periods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+
+  @include down(lg) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+// Payments beside best sellers. Phones: one under the other.
+.two {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+
+  @include down(lg) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.card {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--paper-0);
+
+  &__body {
+    padding: 20px;
+
+    @include down(md) {
+      padding: 16px;
+    }
+  }
+}
+
+// Card heading: title on the start, a grey note on the end.
+.card__h {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--line);
+  font: 700 16px/1.2 var(--font-display);
+
+  :host-context(:lang(ar)) & {
+    font-family: 'Alexandria', var(--font-display);
+  }
+
+  span {
+    color: var(--ink-500);
+    font: 500 12px/1 var(--font-sans);
+  }
+}
